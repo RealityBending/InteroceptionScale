@@ -151,14 +151,17 @@ function intero_plotdata(screen) {
     data = data["trials"][0]["response"]
 
     // Compute average and rescale to percentage
-    cardiac = data["PA_State_Q1"] + data["NA_Cardiac_Q1"]
-    cardiac = (cardiac / 2 / 6) * 100
+    cardiac = Object.keys(data).filter((key) => key.includes("Cardiac"))
+    cardiac = cardiac.map((key) => data[key]).reduce((a, b) => a + b) / cardiac.length
+    cardiac = (cardiac / 6) * 100
 
-    respiratory = data["PA_Respiratory_Q1"] + data["NA_Respiratory_Q1"]
-    respiratory = (respiratory / 2 / 6) * 100
+    respiratory = Object.keys(data).filter((key) => key.includes("Respiratory"))
+    respiratory = respiratory.map((key) => data[key]).reduce((a, b) => a + b) / respiratory.length
+    respiratory = (respiratory / 6) * 100
 
-    state = data["PA_State_Q1"] + data["NA_State_Q1"]
-    state = (state / 2 / 6) * 100
+    state = Object.keys(data).filter((key) => key.includes("State"))
+    state = state.map((key) => data[key]).reduce((a, b) => a + b) / state.length
+    state = (state / 6) * 100
 
     // Prepare output
     var output = {
