@@ -194,5 +194,8 @@ const intero_feedback = {
     },
     canvas_size: plot_getsize(),
     choices: ["Continue"],
-    prompt: "<p>This chart represents how you relate to different body functions. Remember that it is neither good or bad to be high on any of these, and that there is no 'normal'. Everybody is different!</p>",
+    prompt:
+        "<p>This chart represents how you relate to different body functions. <b>What does it mean?</b></p>" +
+        "<p>From what we know so far, it seems like people vary a lot on these dimensions. However, we don't exactly know exactly what these differences mean yet (hence why we do this research).<br>" +
+        "It seems like it is neither good or bad to score high on any of these, and that there is no 'normal': everybody is different!</p>",
 }
