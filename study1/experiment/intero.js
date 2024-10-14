@@ -38,9 +38,45 @@ const intero_items = {
     Sexual_State_Q1: "Sexual Arousal State 1",
     Sexual_Cardiac_Q1: "Sexual Arousal Cardiac 1",
     Sexual_Respiratory_Q1: "Sexual Arousal Respiratory 1",
+    Sexual_Gastric_Q1: "Sexual Arousal Gastric 1",
+    Sexual_Genital_Q1: "Sexual Arousal Genital 1",
+    Sexual_SkinThermo_Q1: "Sexual Arousal Skin Thermoregulation 1",
+    Sexual_ColonBladder_Q1: "Sexual Arousal Colon Bladder 1",
     Anxious_State_Q1: "Anxious Arousal State 1",
     Anxious_Cardiac_Q1: "Anxious Arousal Cardiac 1",
     Anxious_Respiratory_Q1: "Anxious Arousal Respiratory 1",
+    Anxious_Gastric_Q1: "Anxious Arousal Gastric 1",
+    Anxious_Genital_Q1: "Anxious Arousal Genital 1",
+    Anxious_SkinThermo_Q1: "Anxious Arousal Skin Thermoregulation 1",
+    Anxious_ColonBladder_Q1: "Anxious Arousal Colon Bladder 1",
+    Nociception_State_Q1: "Nociception State 1",
+    Nociception_Cardiac_Q1: "Nociception Cardiac 1",
+    Nociception_Respiratory_Q1: "Nociception Respiratory 1",
+    Nociception_Gastric_Q1: "Nociception Gastric 1",
+    Nociception_Genital_Q1: "Nociception Genital 1",
+    Nociception_SkinThermo_Q1: "Nociception Skin Thermoregulation 1",
+    Nociception_ColonBladder_Q1: "Nociception Colon Bladder 1",
+    Sensitivity_State_Q1: "Sensitivity State 1",
+    Sensitivity_Cardiac_Q1: "Sensitivity Cardiac 1",
+    Sensitivity_Respiratory_Q1: "Sensitivity Respiratory 1",
+    Sensitivity_Gastric_Q1: "Sensitivity Gastric 1",
+    Sensitivity_Genital_Q1: "Sensitivity Genital 1",
+    Sensitivity_SkinThermo_Q1: "Sensitivity Skin Thermoregulation 1",
+    Sensitivity_ColonBladder_Q1: "Sensitivity Colon Bladder 1",
+    Accuracy_State_Q1: "Accuracy State 1",
+    Accuracy_Cardiac_Q1: "Accuracy Cardiac 1",
+    Accuracy_Respiratory_Q1: "Accuracy Respiratory 1",
+    Accuracy_Gastric_Q1: "Accuracy Gastric 1",
+    Accuracy_Genital_Q1: "Accuracy Genital 1",
+    Accuracy_SkinThermo_Q1: "Accuracy Skin Thermoregulation 1",
+    Accuracy_ColonBladder_Q1: "Accuracy Colon Bladder 1",
+    Beliefs_State_Q1: "Beliefs State 1",
+    Beliefs_Cardiac_Q1: "Beliefs Cardiac 1",
+    Beliefs_Respiratory_Q1: "Beliefs Respiratory 1",
+    Beliefs_Gastric_Q1: "Beliefs Gastric 1",
+    Beliefs_Genital_Q1: "Beliefs Genital 1",
+    Beliefs_SkinThermo_Q1: "Beliefs Skin Thermoregulation 1",
+    Beliefs_ColonBladder_Q1: "Beliefs Colon Bladder 1",
 }
 
 // Generation code ================================================
@@ -62,6 +98,10 @@ function intero_makegroups(items, condition = "Domains") {
         groups = {
             Sexual: [],
             Anxious: [],
+            Nociception: [],
+            Sensitivity: [],
+            Accuracy: [],
+            Beliefs: [],
         }
 
         for (const k in items) {
@@ -72,6 +112,10 @@ function intero_makegroups(items, condition = "Domains") {
             State: [],
             Cardiac: [],
             Respiratory: [],
+            Gastric: [],
+            Genital: [],
+            SkinThermo: [],
+            ColonBladder: [],
         }
 
         for (const k in items) {
@@ -84,9 +128,9 @@ function intero_makegroups(items, condition = "Domains") {
             Page3: [],
         }
 
-        // Max 2 items per page
+        // Max 14 items per page
         for (const [index, k] of Object.keys(items).entries()) {
-            groups[`Page${Math.floor(index / 2) + 1}`].push({ [k]: items[k] })
+            groups[`Page${Math.floor(index / 14) + 1}`].push({ [k]: items[k] })
         }
     }
     return shuffleObject(groups)
@@ -121,8 +165,8 @@ function intero_makequestions(groups, required = true, ticks = ["Disagree", "Agr
 
 // Questionnaire ================================================
 // The condition is randomly selected when this script is read
-// const intero_condition = ["Domains", "Dimensions"][Math.floor(Math.random() * 2)]
-const intero_condition = "Random"
+const intero_condition = ["Domains", "Dimensions", "Random"][Math.floor(Math.random() * 3)]
+// const intero_condition = "Random"
 
 const intero_questionnaire = {
     type: jsPsychSurvey,
