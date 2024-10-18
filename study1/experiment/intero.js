@@ -185,9 +185,9 @@ function intero_makegroups(items, condition = "Domains") {
             Page3: [],
         }
 
-        // Max 34 items per page
+        // Max 33 items per page
         for (const [index, k] of Object.keys(items).entries()) {
-            groups[`Page${Math.floor(index / 34) + 1}`].push({ [k]: items[k] })
+            groups[`Page${Math.floor(index / 33) + 1}`].push({ [k]: items[k] })
         }
     }
     return shuffleObject(groups)
@@ -264,10 +264,26 @@ function intero_plotdata(screen) {
     state = state.map((key) => data[key]).reduce((a, b) => a + b) / state.length
     state = (state / 6) * 100
 
+    gastric = Object.keys(data).filter((key) => key.includes("Gastric"))
+    gastric = gastric.map((key) => data[key]).reduce((a, b) => a + b) / gastric.length
+    gastric = (gastric / 6) * 100
+
+    genital = Object.keys(data).filter((key) => key.includes("Genital"))
+    genital = genital.map((key) => data[key]).reduce((a, b) => a + b) / genital.length
+    genital = (genital / 6) * 100
+
+    skinthermo = Object.keys(data).filter((key) => key.includes("SkinThermo"))
+    skinthermo = skinthermo.map((key) => data[key]).reduce((a, b) => a + b) / skinthermo.length
+    skinthermo = (skinthermo / 6) * 100
+
+    colonbladder = Object.keys(data).filter((key) => key.includes("ColonBladder"))
+    colonbladder = colonbladder.map((key) => data[key]).reduce((a, b) => a + b) / colonbladder.length
+    colonbladder = (colonbladder / 6) * 100
+
     // Prepare output
     var output = {
-        names: ["Your Heart", "Your Breath", "State"],
-        scores: [cardiac, respiratory, state],
+        names: ["Your Heart", "Your Breath", "Your General State", "Your Gastric Activity", "Your Genitals", "Your Skin", "Your Bladder"],
+        scores: [cardiac, respiratory, state, gastric, genital, skinthermo, colonbladder],
         label: "Connectedness with each organ (%)",
     }
     return output
