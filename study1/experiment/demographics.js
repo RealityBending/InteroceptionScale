@@ -46,7 +46,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (XX/XXXXX/X) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (xx/xxxxx/x) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -208,4 +208,70 @@ var demographic_questions = {
     data: {
         screen: "demographic_questions",
     },
+}
+// Feedback, Debrief, Thank you Screen 
+
+var experiment_feedback = {
+    type: jsPsychSurvey,
+    survey_json: {
+        title: "Feedback",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us feedback. After clicking 'Complete', your data will be saved on our secure servers, after what we will provide you with more information about the study.",
+        completeText: "Complete the experiment",
+        showQuestionNumbers: false,
+        pages: [
+            {
+                elements: [
+                    {
+                        type: "rating",
+                        name: "Feedback_Enjoyment",
+                        title: "Did you enjoy doing this experiment?",
+                        isRequired: false,
+                        rateMin: 0,
+                        rateMax: 4,
+                        rateType: "stars",
+                    },
+                    {
+                        type: "comment",
+                        name: "Feedback_Text",
+                        title: "Anything else you would like to share with us?",
+                        isRequired: false,
+                    },
+                ],
+            },
+        ],
+    },
+    data: {
+        screen: "experiment_feedback",
+    },
+}
+
+var demographics_debriefing = {
+    type: jsPsychCanvasButtonResponse,
+    css_classes: ["narrow-text"],
+    stimulus:
+        "<h2>Debriefing</h2>" +
+        "<p align='left'>The purpose of this study was to create and validate a new questionnaire measuring interoception. " +
+        "Interoception involves being aware of changes happening inside our bodies, both physiological (e.g., our heart rate) and emotional, and it plays a crucial role in how we perceive and experience the world around us. It has been related to emotion regulation, self-awareness and overall mental well-being. " +
+        "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk.</p>" +
+        "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> ",
+    choices: ["Continue"],
+    data: { screen: "debriefing" },
+}
+
+var demographics_endscreen = {
+    type: jsPsychCanvasButtonResponse,
+    css_classes: ["narrow-text"],
+    stimulus: function () {
+        let text =
+            "<h1>Thank you for participating</h1>" +
+            "<p>It means a lot to us. Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
+            "<p><a href='" +      
+            "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" + 
+            "'>" +
+            "<a/></p>"
+        return text + "<p><b>You can safely close the tab now.</b></p>"
+    },
+    choices: ["End"],
+    data: { screen: "endscreen" },
 }

@@ -17,7 +17,7 @@
         <!-- Load parameters here (always below the loading of the JsPsych) -->
         <script src="demographics.js"></script>
         <script src="intero.js"></script>
-
+        
         <link
             href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css"
             rel="stylesheet"
@@ -48,12 +48,15 @@
             },
         })
 
-        timeline.push(ConsentForm)
-        timeline.push(demographic_questions)
+        //timeline.push(ConsentForm)
+        //timeline.push(demographic_questions)
 
-        timeline.push(intero_instructions)
-        timeline.push(intero_questionnaire)
-        timeline.push(intero_feedback)
+        //timeline.push(intero_instructions)
+        //timeline.push(intero_questionnaire)
+       // timeline.push(intero_feedback)
+        timeline.push(experiment_feedback)
+        timeline.push(demographics_debriefing)
+        timeline.push(demographics_endscreen)
 
         /* ----------------- Run the timeline ----------------- */
         jsPsych.run(timeline)
