@@ -21,7 +21,7 @@ const ConsentForm = {
         text +=
             // Overview
             "<p align='left'><b>Invitation to Take Part</b><br>" +
-            "Thank you for considering to take part in this study conducted by Sofia Turcany Diaz and Dr Dominique Makowski from the University of Sussex (see contact information below).</p>" +
+            "Thank you for considering to take part in this study conducted by Dr Dominique Makowski from the University of Sussex (see contact information below).</p>" +
             // Description
             "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
             "The goal is to study how new technology can impact <b>human perception</b>. In this study, you will be shown facial images and asked to complete a few questionnaires and perform some tasks. " +
@@ -46,7 +46,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Sofia Turcany Diaz (<i style='color:DodgerBlue;'>st633@sussex.ac.uk</i>) or Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (ER/ST633/1) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (XX/XXXXX/X) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
