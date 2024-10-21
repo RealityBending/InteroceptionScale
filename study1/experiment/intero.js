@@ -260,17 +260,9 @@ function intero_plotdata(screen) {
     respiratory = respiratory.map((key) => data[key]).reduce((a, b) => a + b) / respiratory.length
     respiratory = (respiratory / 6) * 100
 
-    state = Object.keys(data).filter((key) => key.includes("State"))
-    state = state.map((key) => data[key]).reduce((a, b) => a + b) / state.length
-    state = (state / 6) * 100
-
     gastric = Object.keys(data).filter((key) => key.includes("Gastric"))
     gastric = gastric.map((key) => data[key]).reduce((a, b) => a + b) / gastric.length
     gastric = (gastric / 6) * 100
-
-    genital = Object.keys(data).filter((key) => key.includes("Genital"))
-    genital = genital.map((key) => data[key]).reduce((a, b) => a + b) / genital.length
-    genital = (genital / 6) * 100
 
     skinthermo = Object.keys(data).filter((key) => key.includes("SkinThermo"))
     skinthermo = skinthermo.map((key) => data[key]).reduce((a, b) => a + b) / skinthermo.length
@@ -282,8 +274,8 @@ function intero_plotdata(screen) {
 
     // Prepare output
     var output = {
-        names: ["Your Heart", "Your Breath", "Your General State", "Your Gastric Activity", "Your Genitals", "Your Skin", "Your Bladder"],
-        scores: [cardiac, respiratory, state, gastric, genital, skinthermo, colonbladder],
+        names: ["Your Heart", "Your Breath", "Your Stomach", "Your Skin", "Your Bladder"],
+        scores: [cardiac, respiratory, gastric, skinthermo, colonbladder],
         label: "Connectedness with each organ (%)",
     }
     return output
