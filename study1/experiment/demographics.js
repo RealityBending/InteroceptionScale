@@ -336,8 +336,12 @@ var wearables_questions = {
                         isRequired: true,
                         colCount: 1,
                     },
+                ],
+            },
+            {
+                elements: [
                     {
-                        visibleIf: "{Signals} == 'ECG'",
+                        visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your heart rate with your device in a typical day?",
                         name: "CheckingECG",
                         type: "rating",
@@ -350,7 +354,7 @@ var wearables_questions = {
                             "6+ times per day",
                         ],
                         isRequired: true,
-                        colCount: 1,
+                        colCount: 0,
                     },
                     {
                         visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
@@ -600,14 +604,16 @@ var wearables_questions = {
                         isRequired: true,
                         colCount: 0,
                     },
-                ],
+                ],    
             },
         ],
     },
-    data: {
-        screen: "demographics_wearables",
-    },
+
+data: {
+    screen: "demographics_wearables",
+},
 }
+
 
 // Feedback, Debrief, Thank you Screen 
 
