@@ -16,7 +16,7 @@ const intero_instructions = {
                             "<h1>About you and your body...</h1>" +
                             "<h2>Instructions</h2>" +
                             "<p>In the following questionnaire, you will be asked various questions about the way you feel and you think about your body. " +
-                            "<p> Our goal is to create a new questionaire" +
+                            "Our goal is to create a new questionaire" +
                             "We are interested in understanding <b>what questions are related</b> for you as compared to other people. " +
                             "There are no right or wrong answers.</p>" +
                             "<p> The following questionaire includes <b> attention checks</b> so please <b>read carefully</b>"+
