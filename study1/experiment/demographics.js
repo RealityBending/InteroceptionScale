@@ -248,8 +248,9 @@ var wearables_questions = {
                         visibleIf: "{Ownership} == 'Yes'",
                         title: "How often do you use a wearable device in a typical week (e.g., FitBit, Smart Watch)?",
                         name: "Usage",
-                        type: "radiogroup",
-                        choices: [
+                        type: "rating",
+                        displayMode: "buttons",
+                        rateValues: [
                             {
                                 value: "Never",
                                 text: "Never",
@@ -331,7 +332,7 @@ var wearables_questions = {
             {
                 elements: [
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "({Signals} == 'ECG' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your heart rate with your device in a typical day?",
                         name: "CheckingECG",
                         type: "rating",
@@ -347,7 +348,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "({Signals} == 'ECG' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your heart rate regularly?",
                         name: "ImportanceECG",
                         type: "rating",
@@ -364,7 +365,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "({Signals} == 'CaloriesBurnt' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check how many calories you have burnt with your device in a typical day?",
                         name: "CheckingCaloriesBurnt",
                         type: "rating",
@@ -380,7 +381,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "({Signals} == 'CaloriesBurnt' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check how many calories you have burnt regularly?",
                         name: "ImportanceCaloriesBurnt",
                         type: "rating",
@@ -397,7 +398,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'CalorieIntake' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday')",
                         title: "How often do you check your calorie intake with your device in a typical day?",
                         name: "CheckingCalorieIntake",
                         type: "rating",
@@ -413,7 +414,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'CalorieIntake' && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday')",
                         title: "How important is it for you to check your calorie intake regularly?",
                         name: "ImportanceCalorieIntake",
                         type: "rating",
@@ -430,7 +431,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'Sleep' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How often do you check your sleep quality with your device in a typical day?",
                         name: "CheckingSleep",
                         type: "rating",
@@ -446,7 +447,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'Sleep' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How important is it for you to check your sleep quality regularly?",
                         name: "ImportanceSleep",
                         type: "rating",
@@ -463,7 +464,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'BloodOxygen' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How often do you check your blood oxygen levels with your device in a typical day?",
                         name: "CheckingBloodOxygen",
                         type: "rating",
@@ -479,7 +480,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'BloodOxygen' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How important is it for you to check your blood oxygen levels regularly?",
                         name: "ImportanceBloodOxygen",
                         type: "rating",
@@ -496,7 +497,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'RSP' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How often do you check your respiratory rate with your device in a typical day?",
                         name: "CheckingRSP",
                         type: "rating",
@@ -512,7 +513,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'RSP' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How important is it for you to check your respiratory rate regularly?",
                         name: "ImportanceRSP",
                         type: "rating",
@@ -529,7 +530,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'Composition' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How often do you check your body composition with your device in a typical day?",
                         name: "CheckingComposition",
                         type: "rating",
@@ -545,9 +546,42 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        //visibleIf: "({Signals} == 'ECG' and ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'Composition' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "How important is it for you to check your body composition regularly?",
                         name: "ImportanceComposition",
+                        type: "rating",
+                        displayMode: "buttons",
+                        rateValues: [
+                            "Not at all important",
+                            "Low importance",
+                            "Slightly important",
+                            "Moderately important",
+                            "Very important",
+                            "Extremely important",
+                        ],
+                        isRequired: true,
+                        colCount: 0,
+                    },
+                    {
+                        visibleIf: "{Signals} == 'Other' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
+                        title: "How often do you check any other bodily signals with your device in a typical day?",
+                        name: "CheckingOther",
+                        type: "rating",
+                        displayMode: "buttons",
+                        rateValues: [
+                            "Never",
+                            "Less than once per day",
+                            "1-2 times per day",
+                            "3-5 times per day",
+                            "6+ times per day",
+                        ],
+                        isRequired: true,
+                        colCount: 0,
+                    },
+                    {
+                        visibleIf: "{Signals} == 'Other' && {Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
+                        title: "How important is it for you to check any other bodily signals regularly?",
+                        name: "ImportanceOther",
                         type: "rating",
                         displayMode: "buttons",
                         rateValues: [
