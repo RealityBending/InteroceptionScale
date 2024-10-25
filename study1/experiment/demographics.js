@@ -11,12 +11,22 @@ const ConsentForm = {
         let text =
             "<img src='https://blogs.brighton.ac.uk/sussexwrites/files/2019/06/University-of-Sussex-logo-transparent.png' width='150px' align='right'/><br><br><br><br><br>" +
             "<h1>Informed Consent</h1>"
-
+        
+        // this part is about specific messages for participants based on the recruitment platform
         if (urlvars["exp"] == "surveyswap") {
             text +=
-                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>SurveySwap.io</i> completion code at the end of the experiment.</b></p>"
+                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>SurveySwap.iocompletion code</i>  at the end of the experiment.</b></p>"
         }
 
+        if (jsPsych.data.urlVariables()["exp"] == "prolific") {
+            text +=
+                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>Prolific completion link</i> at the end of the experiment.</b></p>"
+        }
+
+        if (jsPsych.data.urlVariables()["exp"] == "sona") {
+            text +=
+                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>Sona completion code</i> at the end of the experiment.</b></p>"
+        }
         // Main Text
         text +=
             // Overview
@@ -25,7 +35,7 @@ const ConsentForm = {
             // Description
             "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
             "The goal is to study how new technology can impact <b>human perception</b>. In this study, you will be shown facial images and asked to complete a few questionnaires and perform some tasks. " +
-            "The whole experiment will take you <b style='color:#FF5722;'>~35 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
+            "The whole experiment will take you <b style='color:#FF5722;'>~10 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
             // Results and personal information
             "<p align='left'><b>What will happen to the results and my personal information?</b><br>" +
             "The results of this research may be written into a scientific publication. Your anonymity will be ensured in the way described in the consent information below. <b>Please read this information carefully</b> and then, if you wish to take part, please acknowledge that you have fully understood this sheet, and that you consent to take part in the study as it is described here.</p>" +
@@ -38,7 +48,7 @@ const ConsentForm = {
             "<li align='left'>I understand that my collected data will be stored in a de-identified way. De-identified data may be made publicly available through secured scientific online data repositories.</li>"
 
         // Incentive
-        if (["surveyswap", "prolific"].includes(urlvars["exp"])) {
+        if (["surveyswap", "prolific", "sona"].includes(urlvars["exp"])) {
             text +=
                 "<li align='left'>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>"
         }
@@ -217,7 +227,7 @@ var wearables_questions = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Wearable Device Usage",
-        description: "This section is about your usage of 'wearables', i.e. electronic devices that are worn on your body. Some examples of this include smart watches, smart jewelry or medical devices. These wearables have built-in sensors that can detect bodily signals, such as heart rate or respiration rate.",
+        description: "This section is about your usage of 'wearables', i.e. electronic devices that are worn on your body. Some examples of this include smart watches, smart jewellery or medical devices. These wearables have built-in sensors that can detect bodily signals, such as heart rate or respiration rate.",
         completeText: "Continue",
         pageNextText: "Next",
         pagePrevText: "Previous",
@@ -280,8 +290,7 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf:
-                            "{Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
+                        visibleIf: "{Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "Which bodily signals do you check with your device?",
                         description: "Please select all that apply",
                         name: "Signals",
@@ -327,12 +336,8 @@ var wearables_questions = {
                         isRequired: true,
                         colCount: 1,
                     },
-                ]
-            },
-            {
-                elements: [
                     {
-                        visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf: "{Signals} == 'ECG'",
                         title: "How often do you check your heart rate with your device in a typical day?",
                         name: "CheckingECG",
                         type: "rating",
@@ -345,7 +350,7 @@ var wearables_questions = {
                             "6+ times per day",
                         ],
                         isRequired: true,
-                        colCount: 0,
+                        colCount: 1,
                     },
                     {
                         visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
@@ -697,6 +702,3 @@ var demographics_endscreen = {
         screen: "demographics_endscreen" 
     },
 }
-
-//<a href="https://www.w3schools.com/" target="_blank">Visit W3Schools!</a>
-//"https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html"

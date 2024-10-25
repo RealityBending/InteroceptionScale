@@ -19,9 +19,9 @@ const intero_instructions = {
                             "Our goal is to create a new questionaire" +
                             "We are interested in understanding <b>what questions are related</b> for you as compared to other people. " +
                             "There are no right or wrong answers.</p>" +
-                            "<p> The following questionaire includes <b> attention checks</b> so please <b>read carefully</b>"+
-                            "<p> By participating, you agree to follow the instructions and provide honest answers, so awards maynbe witheld if attention checks are failed."+
-                            "<p>We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related). " +
+                            "<p> The following questionaire includes <b> attention checks</b> so please <b>read carefully! </b>"+
+                            "Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>"+
+                            "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related). " +
                             "Please read carefully each item and consider it <i>on its own</i> (<b>without trying to relate it or remember your answers to previous items</b>), and don't hesitate to take breaks if you need.</p>" +
                             "<p style='color:green;'>At the end, you will be shown a <b>graph</b> summarizing your answers.<p>" +
                             "</div>" +
