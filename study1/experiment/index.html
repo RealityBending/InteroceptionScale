@@ -10,7 +10,6 @@
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
 
-
         <!-- Plots -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://realitybending.github.io/JSmisc/misc/plots.js"></script>
@@ -19,7 +18,7 @@
         <!-- Load parameters here (always below the loading of the JsPsych) -->
         <script src="demographics.js"></script>
         <script src="intero.js"></script>
-        
+
         <link
             href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css"
             rel="stylesheet"
@@ -50,16 +49,16 @@
             },
         })
 
-        timeline.push(ConsentForm)
-        timeline.push(demographic_questions)
+        //timeline.push(ConsentForm)
+        // timeline.push(demographic_questions)
 
-        timeline.push(intero_instructions)
-        timeline.push(intero_questionnaire)
-        timeline.push(wearables_questions)
-        timeline.push(intero_feedback)
-        timeline.push(experiment_feedback)
+        // timeline.push(intero_instructions)
+        // timeline.push(intero_questionnaire)
+        // timeline.push(wearables_questions)
+        // timeline.push(intero_feedback)
+        // timeline.push(experiment_feedback)
         timeline.push(demographics_debriefing)
-        timeline.push(demographics_endscreen)
+        // timeline.push(demographics_endscreen)
 
         /* ----------------- Run the timeline ----------------- */
         jsPsych.run(timeline)

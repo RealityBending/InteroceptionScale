@@ -11,7 +11,7 @@ const ConsentForm = {
         let text =
             "<img src='https://blogs.brighton.ac.uk/sussexwrites/files/2019/06/University-of-Sussex-logo-transparent.png' width='150px' align='right'/><br><br><br><br><br>" +
             "<h1>Informed Consent</h1>"
-        
+
         // this part is about specific messages for participants based on the recruitment platform
         if (urlvars["exp"] == "surveyswap") {
             text +=
@@ -34,7 +34,7 @@ const ConsentForm = {
             "Thank you for considering to take part in this study conducted by Dr Dominique Makowski from the University of Sussex (see contact information below).</p>" +
             // Description
             "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
-            "The goal is to study how new technology can impact <b>human perception</b>. In this study, you will be shown facial images and asked to complete a few questionnaires and perform some tasks. " +
+            "The aim of this study is to validate a new questionnaire measuring Interoception. " +
             "The whole experiment will take you <b style='color:#FF5722;'>~10 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
             // Results and personal information
             "<p align='left'><b>What will happen to the results and my personal information?</b><br>" +
@@ -56,7 +56,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (xx/xxxxx/x) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (ER/MB2021/1) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -220,14 +220,14 @@ var demographic_questions = {
     },
 }
 
-
 // Wearable devices survey
 
 var wearables_questions = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Wearable Device Usage",
-        description: "This section is about your usage of 'wearables', i.e. electronic devices that are worn on your body. Some examples of this include smart watches, smart jewellery or medical devices. These wearables have built-in sensors that can detect bodily signals, such as heart rate or respiration rate.",
+        description:
+            "This section is about your usage of 'wearables', i.e. electronic devices that are worn on your body. Some examples of this include smart watches, smart jewellery or medical devices. These wearables have built-in sensors that can detect bodily signals, such as heart rate or respiration rate.",
         completeText: "Continue",
         pageNextText: "Next",
         pagePrevText: "Previous",
@@ -290,7 +290,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
+                        visibleIf:
+                            "{Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'",
                         title: "Which bodily signals do you check with your device?",
                         description: "Please select all that apply",
                         name: "Signals",
@@ -341,7 +342,8 @@ var wearables_questions = {
             {
                 elements: [
                     {
-                        visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your heart rate with your device in a typical day?",
                         name: "CheckingECG",
                         type: "rating",
@@ -357,7 +359,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('ECG') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your heart rate regularly?",
                         name: "ImportanceECG",
                         type: "rating",
@@ -374,7 +377,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('CaloriesBurnt') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('CaloriesBurnt') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check how many calories you have burnt with your device in a typical day?",
                         name: "CheckingCaloriesBurnt",
                         type: "rating",
@@ -390,7 +394,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('CaloriesBurnt') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('CaloriesBurnt') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check how many calories you have burnt regularly?",
                         name: "ImportanceCaloriesBurnt",
                         type: "rating",
@@ -407,7 +412,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('CalorieIntake') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('CalorieIntake') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your calorie intake with your device in a typical day?",
                         name: "CheckingCalorieIntake",
                         type: "rating",
@@ -423,7 +429,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('CalorieIntake') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('CalorieIntake') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your calorie intake regularly?",
                         name: "ImportanceCalorieIntake",
                         type: "rating",
@@ -440,7 +447,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Sleep') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Sleep') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your sleep quality with your device in a typical day?",
                         name: "CheckingSleep",
                         type: "rating",
@@ -456,7 +464,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Sleep') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Sleep') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your sleep quality regularly?",
                         name: "ImportanceSleep",
                         type: "rating",
@@ -473,7 +482,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('BloodOxygen') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('BloodOxygen') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your blood oxygen levels with your device in a typical day?",
                         name: "CheckingBloodOxygen",
                         type: "rating",
@@ -489,7 +499,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('BloodOxygen') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('BloodOxygen') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your blood oxygen levels regularly?",
                         name: "ImportanceBloodOxygen",
                         type: "rating",
@@ -506,7 +517,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('RSP') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('RSP') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your respiratory rate with your device in a typical day?",
                         name: "CheckingRSP",
                         type: "rating",
@@ -522,7 +534,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('RSP') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('RSP') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your respiratory rate regularly?",
                         name: "ImportanceRSP",
                         type: "rating",
@@ -539,7 +552,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Composition') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Composition') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check your body composition with your device in a typical day?",
                         name: "CheckingComposition",
                         type: "rating",
@@ -555,7 +569,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Composition') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Composition') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check your body composition regularly?",
                         name: "ImportanceComposition",
                         type: "rating",
@@ -572,7 +587,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Other') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Other') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How often do you check any other bodily signals with your device in a typical day?",
                         name: "CheckingOther",
                         type: "rating",
@@ -588,7 +604,8 @@ var wearables_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "({Signals}.includes('Other') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
+                        visibleIf:
+                            "({Signals}.includes('Other') && ({Usage} == '<1' || {Usage} == '1-2' || {Usage} == '3-4' || {Usage} == '5-6' || {Usage} == 'Everyday'))",
                         title: "How important is it for you to check any other bodily signals regularly?",
                         name: "ImportanceOther",
                         type: "rating",
@@ -604,18 +621,17 @@ var wearables_questions = {
                         isRequired: true,
                         colCount: 0,
                     },
-                ],    
+                ],
             },
         ],
     },
 
-data: {
-    screen: "demographics_wearables",
-},
+    data: {
+        screen: "demographics_wearables",
+    },
 }
 
-
-// Feedback, Debrief, Thank you Screen 
+// Feedback, Debrief, Thank you Screen
 
 var experiment_feedback = {
     type: jsPsychSurvey,
@@ -664,6 +680,7 @@ var demographics_debriefing = {
                         type: "html",
                         name: "Debrief",
                         html:
+                            "<img src='https://blogs.brighton.ac.uk/sussexwrites/files/2019/06/University-of-Sussex-logo-transparent.png' width='150px' align='right'/><br><br><br><br><br>" +
                             "<h2>Debriefing</h2>" +
                             "<p align='left'>The purpose of this study was to create and validate a new questionnaire measuring interoception. " +
                             "Interoception involves being aware of changes happening inside our bodies, both physiological (e.g., our heart rate) and emotional, and it plays a crucial role in how we perceive and experience the world around us. It has been related to emotion regulation, self-awareness and overall mental well-being. " +
@@ -675,7 +692,7 @@ var demographics_debriefing = {
         ],
     },
     data: {
-        screen: "demographics_debrief" 
+        screen: "demographics_debrief",
     },
 }
 
@@ -691,20 +708,20 @@ var demographics_endscreen = {
                         type: "html",
                         name: "Endscreen",
                         html:
-                           "<h1>Thank you for participating</h1>" +
-                           "<p>It means a lot to us. Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
-                           "<p><a href='" +
-                           "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
-                           "'>" +
-                           "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
-                           "<a/></p>" +
-                           "<p><b>You can safely close the tab now.</b></p>",
+                            "<h1>Thank you for participating</h1>" +
+                            "<p>It means a lot to us. Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
+                            "<p><a href='" +
+                            "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
+                            "'>" +
+                            "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
+                            "<a/></p>" +
+                            "<p><b>You can safely close the tab now.</b></p>",
                     },
                 ],
             },
         ],
     },
     data: {
-        screen: "demographics_endscreen" 
+        screen: "demographics_endscreen",
     },
 }
