@@ -637,8 +637,7 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description:
-            "It is the end of the experiment! Don't hesitate to leave us feedback. After clicking 'Complete', your data will be saved on our secure servers, after what we will provide you with more information about the study. Please note that these comments might be shared publically alongside the results of this study",
+        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -657,6 +656,8 @@ var experiment_feedback = {
                         type: "comment",
                         name: "Feedback_Text",
                         title: "Anything else you would like to share with us?",
+                        description:
+                            "Please note that these comments might be shared publicly as part of the results of this study - avoid sharing personal information.",
                         isRequired: false,
                     },
                 ],
