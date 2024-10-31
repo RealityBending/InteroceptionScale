@@ -1,67 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Title shown in tab -->
-        <title>University of Sussex - Research</title>
 
-        <!-- Load all necessary plugins -->
-        <script src="https://unpkg.com/jspsych@8.0.1"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
+<head>
+    <!-- Title shown in tab -->
+    <title>University of Sussex - Research</title>
 
-        <!-- Plots -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://realitybending.github.io/JSmisc/misc/plots.js"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-canvas-button-response@2.0.0"></script>
+    <!-- Load all necessary plugins -->
+    <script src="https://unpkg.com/jspsych@8.0.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
 
-        <!-- Load parameters here (always below the loading of the JsPsych) -->
-        <script src="demographics.js"></script>
-        <script src="intero.js"></script>
+    <!-- Plots -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://realitybending.github.io/JSmisc/misc/plots.js"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-canvas-button-response@2.0.0"></script>
 
-        <link
-            href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css"
-            rel="stylesheet"
-            type="text/css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css"
-        />
-    </head>
+    <!-- Load parameters here (always below the loading of the JsPsych) -->
+    <script src="demographics.js"></script>
+    <script src="intero.js"></script>
 
-    <body></body>
+    <link href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css" />
+</head>
 
-    <script>
-        // Initialize experiment =================================================
-        var timeline = []
+<body></body>
 
-        var jsPsych = initJsPsych({
-            // show_progress_bar: true,
-            on_finish: function () {
-                jsPsych.data.displayData("json") // Display data in browser
-                // let info = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
-                // if (info["prolific_id"] != undefined) {
-                //     window.location = "https://app.prolific.com/submissions/complete?cc=CZ24J9PV"
-                // } else {
-                //     window.location = "https://realitybending.github.io/research/#participate"
-                // }
-            },
-        })
+<script>
+    // Initialize experiment =================================================
+    var timeline = []
 
-        timeline.push(ConsentForm)
-        // TODO: add browser check
-        // timeline.push(demographic_questions)
+    var jsPsych = initJsPsych({
+        // show_progress_bar: true,
+        on_finish: function () {
+            jsPsych.data.displayData("json") // Display data in browser
+            // let info = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
+            // if (info["prolific_id"] != undefined) {
+            //     window.location = "https://app.prolific.com/submissions/complete?cc=CZ24J9PV"
+            // } else {
+            //     window.location = "https://realitybending.github.io/research/#participate"
+            // }
+        },
+    })
 
-        // timeline.push(intero_instructions)
-        // timeline.push(intero_questionnaire)
-        // timeline.push(wearables_questions)
-        // timeline.push(intero_feedback)
-        // timeline.push(experiment_feedback)
-        // timeline.push(demographics_debriefing)
-        // timeline.push(demographics_endscreen)
+    timeline.push(ConsentForm)
+    // TODO: add browser check
+    // timeline.push(demographic_questions)
 
-        /* ----------------- Run the timeline ----------------- */
-        jsPsych.run(timeline)
-    </script>
+    // timeline.push(intero_instructions)
+    // timeline.push(intero_questionnaire)
+    timeline.push(wearables_questions)
+    // timeline.push(intero_feedback)
+    // timeline.push(experiment_feedback)
+    // timeline.push(demographics_debriefing)
+    // timeline.push(demographics_endscreen)
+
+    /* ----------------- Run the timeline ----------------- */
+    jsPsych.run(timeline)
+</script>
+
 </html>

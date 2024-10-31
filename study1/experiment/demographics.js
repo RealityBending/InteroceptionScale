@@ -31,10 +31,10 @@ const ConsentForm = {
         text +=
             // Overview
             "<p align='left'><b>Invitation to Take Part</b><br>" +
-            "Thank you for considering to take part in this study conducted by Dr Dominique Makowski from the University of Sussex (see contact information below).</p>" +
+            "Thank you for considering to take part in this study conducted by Dr Dominique Makowski from the University of Sussex and his team (see contact information below).</p>" +
             // Description
             "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
-            "The aim of this study is to validate a new questionnaire measuring Interoception. " +
+            "The aim of this study is to validate a new questionnaire measuring Interoception. Interoception refers to the sensing, interpretation and processing of internal bodily signals (e.g., feeling changes in the way one's heart beats). " +
             "The whole experiment will take you <b style='color:#FF5722;'>~10 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
             // Results and personal information
             "<p align='left'><b>What will happen to the results and my personal information?</b><br>" +
@@ -56,7 +56,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (ER/MB2021/1) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Maisie Bennett (<i style='color:DodgerBlue;'>mb2021@sussex.ac.uk</i>). This research has been approved (ER/MB2021/1) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
