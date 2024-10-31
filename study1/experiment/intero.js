@@ -259,6 +259,23 @@ function intero_makequestions(groups, required = true, ticks = ["Disagree", "Agr
     return pages
 }
 
+function check_attentionchecks() {
+    // Compute scores
+    let data = jsPsych.data.get().filter({ screen: "intero_questionnaire" })
+    data = data["trials"][0]["response"]
+
+    let score_A1 = data["Sexual_State_A"] / 6
+    let score_A2 = 1 - data["Anxious_SkinThermo_A"] / 6
+    let score_A3 = 1 - data["Nociception_ColonBladder_A"] / 6
+    let score_A4 = data["Sensitivity_Gastric_A"] / 6
+    let score_A5 = 1 - data["Accuracy_Genital_A"] / 6
+    let score_A6 = data["Sensitivity_Cardiac_A"] / 6
+    let score_A7 = 1 - data["Accuracy_Respiratory_A"] / 6
+
+    // Average
+    return (score_A1 + score_A2 + score_A3 + score_A4 + score_A5 + score_A6 + score_A7) / 7
+}
+
 // Questionnaire ================================================
 // The condition is randomly selected when this script is read
 const intero_condition = ["Domains", "Dimensions", "Random"][Math.floor(Math.random() * 3)]
