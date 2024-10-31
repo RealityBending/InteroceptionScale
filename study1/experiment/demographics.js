@@ -363,28 +363,60 @@ var demographics_debriefing = {
 
 var demographics_endscreen = {
     type: jsPsychSurvey,
-    survey_json: {
-        showQuestionNumbers: false,
-        completeText: "End",
-        pages: [
-            {
-                elements: [
-                    {
-                        type: "html",
-                        name: "Endscreen",
-                        html:
-                            "<h1>Thank you for participating</h1>" +
-                            "<p>It means a lot to us. Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
-                            "<p><a href='" +
-                            "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
-                            "'>" +
-                            "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
-                            "<a/></p>" +
-                            "<p><b>You can safely close the tab now.</b></p>",
-                    },
-                ],
-            },
-        ],
+    survey_json: function () {
+        text =
+            "<h2 style='color:green;'>Data saved successfully!</h2>" +
+            "<p>Thank you for participating, it means a lot to us.</p>"
+
+        // Snowball (uncomment if the study is really fun)
+        // text +=
+        //     "<p>Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
+        //     "<p><a href='" +
+        //     "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
+        //     "'>" +
+        //     "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
+        //     "<a/></p>"
+
+        // Deal with Prolific/SurveyCircle/SurveySwap/SONA
+        if (jsPsych.data.urlVariables()["exp"] == "prolific") {
+            let score = check_attentionchecks() // This function is defined in intero.js
+
+            if (score > 0.75) {
+                jsPsych.data.get().addToLast({ reimbursment: "Automatic" })
+                text +=
+                    "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page.</b> (You can alternatively click " +
+                    "<a href='https://TODO'>here<a/>" +
+                    " to directly access the link)</p>"
+            } else {
+                jsPsych.data.get().addToLast({ reimbursment: "None" })
+                text +=
+                    "<p><b style='color:red;'>Your reimbursement is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific after 7 days in the absence of change.</p>"
+            }
+        }
+        if (jsPsych.data.urlVariables()["exp"] == "surveyswap") {
+            text +=
+                "<p style='color:red;'><b>Click " +
+                "<a href='https://surveyswap.io/sr/E9XP-DWMS-BHA3'>here<a/>" +
+                " to redeem your SurveySwap participation</b><br>(in case the link doesn't work, the code is: E9XP-DWMS-BHA3)</p>"
+        }
+        text += "<p><b>You can safely close the tab now.</b></p>"
+
+        // Return survey
+        return {
+            showQuestionNumbers: false,
+            completeText: "End",
+            pages: [
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            name: "Endscreen",
+                            html: text,
+                        },
+                    ],
+                },
+            ],
+        }
     },
     data: {
         screen: "demographics_endscreen",
