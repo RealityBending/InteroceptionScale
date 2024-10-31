@@ -248,6 +248,7 @@ var wearables_questions = {
                             "Calorie intake",
                             "Sleep quality",
                             "Respiratory rate",
+                            "None",
                         ],
                         showOtherItem: true,
                         showSelectAllItem: false,
