@@ -77,6 +77,33 @@ const ConsentForm = {
     },
 }
 
+var demographics_browser_info = {
+    type: jsPsychBrowserCheck,
+    data: {
+        screen: "browser_info",
+        date: new Date().toLocaleDateString("en-GB"),
+        time: new Date().toLocaleTimeString("en-GB"),
+    },
+    on_finish: function (data) {
+        data["participantID"] = participantID
+        data["condition"] = intero_condition
+
+        // Rename
+        dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
+        data["screen_height"] = dat["height"]
+        data["screen_width"] = dat["width"]
+
+        // Add URL variables - ?sona_id=x&exp=1
+        let urlvars = jsPsych.data.urlVariables()
+        data["researcher"] = urlvars["exp"]
+        data["sona_id"] = urlvars["sona_id"]
+        data["prolific_id"] = urlvars["PROLIFIC_PID"] // Prolific
+        data["study_id"] = urlvars["STUDY_ID"] // Prolific
+        data["session_id"] = urlvars["SESSION_ID"] // Prolific
+    },
+}
+
+
 var demographic_questions = {
     type: jsPsychSurvey,
     survey_json: {
