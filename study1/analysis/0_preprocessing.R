@@ -31,8 +31,30 @@ for (file in files) {
   # Demographics
   demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response)
   demog <- as.data.frame(t(demog))
+  
+  #unlist each column and remove duplicates
+  demog <- as.data.frame(lapply(demog, unlist))
+  demog <- demog[ , !duplicated(names(demog))]
   demog$GenderOther <- NULL
+  
+  #bind the data
   data_ppt<- cbind(data_ppt, demog)
+  
+  
+  # Feedback
+  feedback <- jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"])
+  data_ppt$Experiment_Enjoyment <- feedback$Feedback_Enjoyment
+  data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
+  
+  # Questionnaire + includes attention checks
+  quest <- jsonlite::fromJSON(rawdata[rawdata$screen == "intero_questionnaire","response"])
+  quest <- as.data.frame(quest)
+  
+  ##bind the data
+  data_ppt<- cbind(data_ppt, quest)
+  
+  names(data_ppt)
+  
 }
   
 # Save --------------------------------------------------------------------
