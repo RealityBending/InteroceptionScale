@@ -50,10 +50,10 @@
     timeline.push(ConsentForm)
     timeline.push(demographics_browser_info)
     timeline.push(demographic_questions)
-    // timeline.push(intero_instructions)
-    // timeline.push(intero_questionnaire)
+    timeline.push(intero_instructions)
+    timeline.push(intero_questionnaire)
     timeline.push(wearables_questions)
-    // timeline.push(intero_feedback)
+    timeline.push(intero_feedback)
     timeline.push(experiment_feedback)
     timeline.push(demographics_debriefing)
 
@@ -62,8 +62,8 @@
         type: jsPsychPipe,
         action: "save",
         experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
-        filename: `${participantID}.json`,
-        data_string: () => jsPsych.data.get().json(),
+        filename: `${participantID}.csv`,
+        data_string: () => jsPsych.data.get().csv(),
     })
 
     timeline.push(demographics_endscreen)
