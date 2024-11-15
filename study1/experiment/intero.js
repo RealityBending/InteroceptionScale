@@ -16,7 +16,6 @@ const intero_instructions = {
                             "<h1>About you and your body...</h1>" +
                             "<h2>Instructions</h2>" +
                             "<p>In the following questionnaire, you will be asked various questions about the way you feel and you think about your body. " +
-                            "We are interested in understanding <b>what questions are related</b> for you as compared to other people. " +
                             "There are no right or wrong answers.</p>" +
                             "<p>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>" +
                             "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related). " +
@@ -38,46 +37,49 @@ const intero_instructions = {
 const intero_items = {
     Sexual_State_Q1: "I always know when I am sexually aroused",
     Sexual_State_Q2: "I always feel in my body if I am sexually aroused",
-    Sexual_State_Q3: "My body is in a specific state when I am sexually aroused",
+    Sexual_State_Q3: "My body is always in the same specific state  when I am sexually aroused",
     Sexual_State_Q4:
-        "Being sexually aroused corresponds to a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after a physical effort)",
+        "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)",
     Sexual_State_A: "I always know that I am attentively doing a study", // 'A' stands for attention
     Sexual_Cardiac_Q1:
         "When I am sexually aroused, I always feel changes in the way my heart beats (e.g., faster or stronger)",
     Sexual_Respiratory_Q1:
-        "When I am sexually aroused, I feel changes in the way I breathe (e.g., faster, shallower, or less regular)",
+        "When I am sexually aroused, I feel changes in my breathing (e.g., faster, shallower, or less regular)",
     Sexual_Gastric_Q1:
         "When I am sexually aroused, I feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
     Sexual_Genital_Q1:
-        "When I am sexually aroused, I notice specific sensations in my genital area (e.g., tingling, warmth, wetness)",
+        "When I am sexually aroused, I notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
+    Sexual_Genital_Q2: "During sex or masturbation, I feel very strong sensations coming from my genital areas",
     Sexual_SkinThermo_Q1:
         "When I am sexually aroused, I feel changes in my temperature (e.g., feeling warm or cold)",
     Sexual_SkinThermo_Q2:
         "When I am sexually aroused, I feel like some areas of my skin become sweaty (e.g., palms, back)",
     Sexual_SkinThermo_Q3: "When I am sexually aroused, I feel my mouth becoming dry",
     Sexual_ColonBladder_Q1:
-        "When I am sexually aroused, I feel like I need to relieve myself (e.g., by urinating)",
+        "When I am sexually aroused, I feel like I need to relieve myself by urinating or defecating",
+    Sexual_ColonBladder_Q2: "During sex or masturbation, I feel like I need to relieve myself by urinating or defecating",
     Anxious_State_Q1: "I always know when I am anxious",
     Anxious_State_Q2: "I always feel in my body if I am anxious",
-    Anxious_State_Q3: "My body is in a specific state when I am anxious",
+    Anxious_State_Q3: "My body is always in the same specific state when I am anxious",
     Anxious_State_Q4:
-        "Being anxious corresponds to a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after a physical effort)",
+        "Being anxious corresponds to a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after physical exercise)",
     Anxious_Cardiac_Q1:
         "When I am anxious, I feel changes in the way my heart beats (e.g., faster or stronger)",
     Anxious_Respiratory_Q1:
-        "When I am anxious, I feel changes in the way I breathe (e.g., faster, shallower, or less regular)",
+        "When I am anxious, I feel changes in my breathing (e.g., faster, shallower, or less regular)",
     Anxious_Gastric_Q1:
         "When I am anxious, I feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
     Anxious_Genital_Q1:
-        "When I am anxious, I notice specific sensations in my genital area (e.g., contracting, dryness)",
+        "When I am anxious, I notice specific sensations in my genital area (e.g., contractions, dryness)",
     Anxious_SkinThermo_Q1:
         "When I am anxious, I feel changes in my temperature (e.g., feeling warm or cold)",
     Anxious_SkinThermo_Q2:
         "When I am anxious, I feel like some areas of my skin become sweaty (e.g., palms, back)",
     Anxious_SkinThermo_Q3: "When I am anxious, I feel my mouth becoming dry",
+    Anxious_SkinThermo_Q4: "When I am anxious, I have difficulty swallowing",
     Anxious_SkinThermo_A: "Even if I am anxious, I should now answer all the way to the left",
     Anxious_ColonBladder_Q1:
-        "When I am anxious, I feel like I need to relieve myself (e.g., by urinating)",
+        "When I am anxious, I feel like I need to relieve myself by urinating or defecating",
     Nociception_State_Q1: "I always feel in my body if I am ill",
     Nociception_State_Q2: "I can easily tell when I am feeling ill (e.g., nauseous or sick)",
     Nociception_Cardiac_Q1: "I often feel painful sensations coming from my heart",
@@ -88,17 +90,18 @@ const intero_items = {
     Nociception_SkinThermo_Q1: "My skin is very sensitive to painful stimulations (e.g., pinching)",
     Nociception_SkinThermo_Q2:
         "My skin is very sensitive to pleasant stimulations (e.g., caressing)",
+    Nociception_SkinThermo_Q3: "Changes in temperature (e.g., feeling feverish or cold) are the first things I notice when I am becoming ill",
     Nociception_ColonBladder_Q1:
-        "I often experience a pleasant sensation when relieving myself (e.g., when urinating)",
+        "I often experience a pleasant sensation when relieving myself when urinating or defecating)",
     Nociception_ColonBladder_Q2:
-        "I often experience painful sensations when relieving myself (e.g., when urinating)",
+        "I often experience painful sensations when relieving myself when urinating or defecating",
     Nociception_ColonBladder_A:
         "I often experience sensations, and I will answer zero to this question",
     Sensitivity_State_Q1: "I always know when I am relaxed",
     Sensitivity_State_Q2: "I always feel in my body if I am relaxed",
-    Sensitivity_State_Q3: "My body is in a specific state when I am relaxed",
+    Sensitivity_State_Q3: "My body is always in the same specific state when I am relaxed",
     Sensitivity_State_Q4:
-        "Being relaxed corresponds to a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after a physical effort)",
+        "Being relaxed corresponds to a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after physical exercise)",
     Sensitivity_State_Q5: "When something important is happening, I can feel it in my body",
     Sensitivity_Cardiac_Q1: "In general, I am very sensitive to changes in my heart rate",
     Sensitivity_Cardiac_Q2: "I often notice changes in my heart rate",
@@ -111,14 +114,15 @@ const intero_items = {
         "When something important is happening, I can feel immediately feel changes in my heart rate",
     Sensitivity_Cardiac_A:
         "In general, I am very sensitive and attentive to the questions I am currently answering",
-    Sensitivity_Respiratory_Q1: "In general, I am very sensitive to changes in the way I breathe",
-    Sensitivity_Respiratory_Q2: "I often notice changes in the way I breathe",
-    Sensitivity_Respiratory_Q3: "I can notice even very subtle changes in the way I breathe",
+    Sensitivity_Respiratory_Q1: "In general, I am very sensitive to changes in my breathing",
+    Sensitivity_Respiratory_Q2: "I often notice changes in my breathing",
+    Sensitivity_Respiratory_Q3: "I can notice even very subtle changes in my breathing",
     Sensitivity_Respiratory_Q4: "I am always very aware of how I am breathing, even when I am calm",
     Sensitivity_Respiratory_Q5:
-        "I often only notice how I am breathing when I am breathing very loudly",
-    Sensitivity_Respiratory_Q6:
-        "When something important is happening, I can immediately feel changes in the way I breathe",
+        "I often only notice how I am breathing when it becomes loud",
+    Sensitivity_Respiratory_Q6: "I often only notice how I am breathing when my breathing becomes shallow or irregular",
+    Sensitivity_Respiratory_Q7:
+        "When something important is happening, I can immediately feel changes in my breathing",
     Sensitivity_Gastric_Q1: "In general, I am very sensitive to what my stomach is doing",
     Sensitivity_Gastric_Q2: "I can notice even very subtle changes in what my stomach is doing",
     Sensitivity_Gastric_Q3:
@@ -126,7 +130,7 @@ const intero_items = {
     Sensitivity_Gastric_Q4: "I often check the smell of my own breath",
     Sensitivity_Gastric_Q5: "I often check the smell of my farts",
     Sensitivity_Gastric_Q6: "I often pay attention to the noises of my stomach",
-    Sensitivity_Gastric_A: "I am always very aware of the answers I am giving right now",
+    Sensitivity_Gastric_A: "I often pay attention to the answers I am giving",
     Sensitivity_Genital_Q1: "In general, I am very sensitive to changes in my genital organs",
     Sensitivity_Genital_Q2:
         "I can notice even very subtle changes in the state of my genital organs",
@@ -139,8 +143,11 @@ const intero_items = {
         "I can notice even very subtle changes if my skin becomes dry or sweaty",
     Sensitivity_SkinThermo_Q4: "I am always very aware if my hands and feet are cold or warm",
     Sensitivity_SkinThermo_Q5: "I often check the smell of my armpits",
-    Sensitivity_ColonBladder_Q1: "In general, I am very sensitive to the way I am defecating",
-    Sensitivity_ColonBladder_Q2: "In general, I am very sensitive to the way I am urinating",
+    Sensitivity_SkinThermo_Q6: "I am very prone to having goosebumps",
+    Sensitivity_SkinThermo_Q7: "My skin is susceptible to itchy fabrics and materials",
+    Sensitivity_SkinThermo_Q8: "I enjoy the sensations of touching different materials (e.g., soft fabrics, wooden objects, smooth surfaces)",
+    Sensitivity_ColonBladder_Q1: "In general, I am very aware of the sensations that are happening when I am defecating",
+    Sensitivity_ColonBladder_Q2: "In general, I am very aware of the sensations that are happening when I am urinating",
     Sensitivity_ColonBladder_Q3: "I often check the colour of my urine",
     Sensitivity_ColonBladder_Q4: "I often check the colour of my faeces",
     Accuracy_State_Q1: "I can always accurately feel when I am about to cough",
@@ -159,8 +166,9 @@ const intero_items = {
     Accuracy_Gastric_Q4: "I don't always feel the need to drink until I am really thirsty",
     Accuracy_Gastric_Q5: "I often feel hungry even if I ate recently",
     Accuracy_Gastric_Q6: "I don't always feel the need to eat until I am really hungry",
+    Accuracy_Gastric_Q7: "I often sneeze suddenly without expecting it to happen",
     Accuracy_Genital_Q1:
-        "I can always accurately perceive if my genital organs are in a state of arousal (e.g., hard, wet)",
+        "I can always accurately perceive if my genital organs are in a state of arousal (e.g., hard, wet, pulsating)",
     Accuracy_Genital_A:
         "I can always accurately perceive that to this question I should answer the lowest option",
     Accuracy_SkinThermo_Q1: "I can always accurately feel when something is going to be itchy",
@@ -174,6 +182,17 @@ const intero_items = {
         "I often feel the need to defecate even when my intestine is not full",
     Accuracy_ColonBladder_Q4:
         "I don't always feel the need to defecate until my intestine is very full",
+    Accuracy_ColonBladder_Q5: "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I relieve myself less than I expected",
+    Confusion_State_Q1: "Sometimes I can't tell if the sensations in my body are good or bad",
+    Confusion_State_Q2: "Sometimes I am confused about what sensations in my body mean",
+    Confusion_Cardiac_Q1: "Sometimes my heart starts racing and I often don't know why",
+    Confusion_Respiratory_Q1: "Sometimes my breathing becomes erratic or shallow and I often don't know why",
+    Confusion_Gastric_Q1: "Sometimes I feel negative and realise after eating that I was just hungry",
+    Confusion_Gastric_Q2: "Sometimes I don't realise I was hungry until I ate something",
+    Confusion_Genital_Q1: "Sometimes I notice arousal in my genital areas (e.g., stiffness, wetness) when I am not feeling sexually aroused",
+    Confusion_SkinThermo_Q1: "Sometimes I have sensations on my skin (e.g., itches, goosebumps) without any clear cause",
+    Confusion_ColonBladder_Q1: "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
+    Confusion_ColonBladder_A: "Sometimes I notice that I need to answer all the way to the right",
 }
 
 // Generation code ================================================
@@ -198,6 +217,7 @@ function intero_makegroups(items, condition = "Domains") {
             Nociception: [],
             Sensitivity: [],
             Accuracy: [],
+            Confusion: [],
         }
 
         for (const k in items) {
@@ -224,9 +244,9 @@ function intero_makegroups(items, condition = "Domains") {
             Page3: [],
         }
 
-        // Max 33 items per page
+        // Max 53 items per page
         for (const [index, k] of Object.keys(items).entries()) {
-            groups[`Page${Math.floor(index / 33) + 1}`].push({ [k]: items[k] })
+            groups[`Page${Math.floor(index / 53) + 1}`].push({ [k]: items[k] })
         }
     }
     return shuffleObject(groups)
@@ -271,9 +291,10 @@ function check_attentionchecks() {
     let score_A5 = 1 - data["Accuracy_Genital_A"] / 6
     let score_A6 = data["Sensitivity_Cardiac_A"] / 6
     let score_A7 = 1 - data["Accuracy_Respiratory_A"] / 6
+    let score_A8 = data["Confusion_ColonBladder_A"] / 6
 
     // Average
-    return (score_A1 + score_A2 + score_A3 + score_A4 + score_A5 + score_A6 + score_A7) / 7
+    return (score_A1 + score_A2 + score_A3 + score_A4 + score_A5 + score_A6 + score_A7 + score_A8) / 8
 }
 
 // Questionnaire ================================================
@@ -285,7 +306,7 @@ const intero_questionnaire = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {
-            title: "About your personality",
+            title: "About you and your body",
             description:
                 "Please answer the following questions based on how accurately each statement describes you in general.",
             showQuestionNumbers: false,
