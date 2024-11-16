@@ -103,7 +103,6 @@ var demographics_browser_info = {
     },
 }
 
-
 var demographic_questions = {
     type: jsPsychSurvey,
     survey_json: {
@@ -386,6 +385,15 @@ var demographics_debriefing = {
     data: {
         screen: "demographics_debrief",
     },
+    on_finish: function (data) {
+        let score = check_attentionchecks() // This function is defined in intero.js
+        if (score > 0.0) {
+            //  TODO: Change later
+            data["Reward"] = "Automatic"
+        } else {
+            data["Reward"] = "Manual"
+        }
+    },
 }
 
 var demographics_endscreen = {
@@ -404,20 +412,21 @@ var demographics_endscreen = {
         //     "https://realitybending.github.io/InteroceptionScale/study1/experiment/index.html" +
         //     "<a/></p>"
 
+        // TEST:
+        // data.reimbursment = "Automatic"
+
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            let score = check_attentionchecks() // This function is defined in intero.js
-
-            if (score > 0.75) {
-                jsPsych.data.get().addToLast({ reimbursment: "Automatic" })
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+            if (d["Reward"] == "Automatic") {
                 text +=
-                    "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page.</b> (You can alternatively click " +
+                    "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
                     "<a href='https://TODO'>here<a/>" +
-                    " to directly access the link)</p>"
+                    " to directly access the link).</p>"
             } else {
-                jsPsych.data.get().addToLast({ reimbursment: "None" })
                 text +=
-                    "<p><b style='color:red;'>Your reimbursement is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific after 7 days in the absence of change.</p>"
+                    "<p><b style='color:red;'>Your prolific payment is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific if you don't hear back from us after 7 days.</p>" +
+                    "<p><i>Note that if you you didn't have the time to the study and read all the items carefully and you would like to re-do your participation, you can refresh the page and start again.</i></p>"
             }
         }
         if (jsPsych.data.urlVariables()["exp"] == "surveyswap") {

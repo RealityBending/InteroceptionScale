@@ -49,7 +49,8 @@ const intero_items = {
         "When I am sexually aroused, I feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
     Sexual_Genital_Q1:
         "When I am sexually aroused, I notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
-    Sexual_Genital_Q2: "During sex or masturbation, I feel very strong sensations coming from my genital areas",
+    Sexual_Genital_Q2:
+        "During sex or masturbation, I feel very strong sensations coming from my genital areas",
     Sexual_SkinThermo_Q1:
         "When I am sexually aroused, I feel changes in my temperature (e.g., feeling warm or cold)",
     Sexual_SkinThermo_Q2:
@@ -57,7 +58,8 @@ const intero_items = {
     Sexual_SkinThermo_Q3: "When I am sexually aroused, I feel my mouth becoming dry",
     Sexual_ColonBladder_Q1:
         "When I am sexually aroused, I feel like I need to relieve myself by urinating or defecating",
-    Sexual_ColonBladder_Q2: "During sex or masturbation, I feel like I need to relieve myself by urinating or defecating",
+    Sexual_ColonBladder_Q2:
+        "During sex or masturbation, I feel like I need to relieve myself by urinating or defecating",
     Anxious_State_Q1: "I always know when I am anxious",
     Anxious_State_Q2: "I always feel in my body if I am anxious",
     Anxious_State_Q3: "My body is always in the same specific state when I am anxious",
@@ -90,7 +92,8 @@ const intero_items = {
     Nociception_SkinThermo_Q1: "My skin is very sensitive to painful stimulations (e.g., pinching)",
     Nociception_SkinThermo_Q2:
         "My skin is very sensitive to pleasant stimulations (e.g., caressing)",
-    Nociception_SkinThermo_Q3: "Changes in temperature (e.g., feeling feverish or cold) are the first things I notice when I am becoming ill",
+    Nociception_SkinThermo_Q3:
+        "Changes in temperature (e.g., feeling feverish or cold) are the first things I notice when I am becoming ill",
     Nociception_ColonBladder_Q1:
         "I often experience a pleasant sensation when relieving myself when urinating or defecating)",
     Nociception_ColonBladder_Q2:
@@ -118,9 +121,9 @@ const intero_items = {
     Sensitivity_Respiratory_Q2: "I often notice changes in my breathing",
     Sensitivity_Respiratory_Q3: "I can notice even very subtle changes in my breathing",
     Sensitivity_Respiratory_Q4: "I am always very aware of how I am breathing, even when I am calm",
-    Sensitivity_Respiratory_Q5:
-        "I often only notice how I am breathing when it becomes loud",
-    Sensitivity_Respiratory_Q6: "I often only notice how I am breathing when my breathing becomes shallow or irregular",
+    Sensitivity_Respiratory_Q5: "I often only notice how I am breathing when it becomes loud",
+    Sensitivity_Respiratory_Q6:
+        "I often only notice how I am breathing when my breathing becomes shallow or irregular",
     Sensitivity_Respiratory_Q7:
         "When something important is happening, I can immediately feel changes in my breathing",
     Sensitivity_Gastric_Q1: "In general, I am very sensitive to what my stomach is doing",
@@ -145,9 +148,12 @@ const intero_items = {
     Sensitivity_SkinThermo_Q5: "I often check the smell of my armpits",
     Sensitivity_SkinThermo_Q6: "I am very prone to having goosebumps",
     Sensitivity_SkinThermo_Q7: "My skin is susceptible to itchy fabrics and materials",
-    Sensitivity_SkinThermo_Q8: "I enjoy the sensations of touching different materials (e.g., soft fabrics, wooden objects, smooth surfaces)",
-    Sensitivity_ColonBladder_Q1: "In general, I am very aware of the sensations that are happening when I am defecating",
-    Sensitivity_ColonBladder_Q2: "In general, I am very aware of the sensations that are happening when I am urinating",
+    Sensitivity_SkinThermo_Q8:
+        "I enjoy the sensations of touching different materials (e.g., soft fabrics, wooden objects, smooth surfaces)",
+    Sensitivity_ColonBladder_Q1:
+        "In general, I am very aware of the sensations that are happening when I am defecating",
+    Sensitivity_ColonBladder_Q2:
+        "In general, I am very aware of the sensations that are happening when I am urinating",
     Sensitivity_ColonBladder_Q3: "I often check the colour of my urine",
     Sensitivity_ColonBladder_Q4: "I often check the colour of my faeces",
     Accuracy_State_Q1: "I can always accurately feel when I am about to cough",
@@ -182,16 +188,22 @@ const intero_items = {
         "I often feel the need to defecate even when my intestine is not full",
     Accuracy_ColonBladder_Q4:
         "I don't always feel the need to defecate until my intestine is very full",
-    Accuracy_ColonBladder_Q5: "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I relieve myself less than I expected",
+    Accuracy_ColonBladder_Q5:
+        "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I relieve myself less than I expected",
     Confusion_State_Q1: "Sometimes I can't tell if the sensations in my body are good or bad",
     Confusion_State_Q2: "Sometimes I am confused about what sensations in my body mean",
     Confusion_Cardiac_Q1: "Sometimes my heart starts racing and I often don't know why",
-    Confusion_Respiratory_Q1: "Sometimes my breathing becomes erratic or shallow and I often don't know why",
-    Confusion_Gastric_Q1: "Sometimes I feel negative and realise after eating that I was just hungry",
+    Confusion_Respiratory_Q1:
+        "Sometimes my breathing becomes erratic or shallow and I often don't know why",
+    Confusion_Gastric_Q1:
+        "Sometimes I feel negative and realise after eating that I was just hungry",
     Confusion_Gastric_Q2: "Sometimes I don't realise I was hungry until I ate something",
-    Confusion_Genital_Q1: "Sometimes I notice arousal in my genital areas (e.g., stiffness, wetness) when I am not feeling sexually aroused",
-    Confusion_SkinThermo_Q1: "Sometimes I have sensations on my skin (e.g., itches, goosebumps) without any clear cause",
-    Confusion_ColonBladder_Q1: "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
+    Confusion_Genital_Q1:
+        "Sometimes I notice arousal in my genital areas (e.g., stiffness, wetness) when I am not feeling sexually aroused",
+    Confusion_SkinThermo_Q1:
+        "Sometimes I have sensations on my skin (e.g., itches, goosebumps) without any clear cause",
+    Confusion_ColonBladder_Q1:
+        "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
     Confusion_ColonBladder_A: "Sometimes I notice that I need to answer all the way to the right",
 }
 
@@ -201,7 +213,7 @@ function shuffleObject(obj) {
     const entries = Object.entries(obj)
     for (let i = entries.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
-            ;[entries[i], entries[j]] = [entries[j], entries[i]]
+        ;[entries[i], entries[j]] = [entries[j], entries[i]]
     }
     return Object.fromEntries(entries)
 }
@@ -242,9 +254,12 @@ function intero_makegroups(items, condition = "Domains") {
             Page1: [],
             Page2: [],
             Page3: [],
+            Page4: [],
+            Page5: [],
+            Page6: [],
         }
 
-        // Max 53 items per page
+        // Max 53 items per page (TODO: Make sure we get all the items)
         for (const [index, k] of Object.keys(items).entries()) {
             groups[`Page${Math.floor(index / 53) + 1}`].push({ [k]: items[k] })
         }
@@ -294,7 +309,9 @@ function check_attentionchecks() {
     let score_A8 = data["Confusion_ColonBladder_A"] / 6
 
     // Average
-    return (score_A1 + score_A2 + score_A3 + score_A4 + score_A5 + score_A6 + score_A7 + score_A8) / 8
+    return (
+        (score_A1 + score_A2 + score_A3 + score_A4 + score_A5 + score_A6 + score_A7 + score_A8) / 8
+    )
 }
 
 // Questionnaire ================================================
