@@ -41,11 +41,14 @@
             // show_progress_bar: true,
             on_finish: function () {
                 // jsPsych.data.displayData("json") // Display data in browser
-                window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
+                window.location =
+                    "https://realitybending.github.io/research/#participate" // Redirect to lab website
 
                 // If prolific and passed the attention check, redirect to prolific completion link
                 if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-                    d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+                    d = jsPsych.data
+                        .get()
+                        .filter({ screen: "demographics_debrief" })["trials"][0]
                     if (d["Reward"] == "Automatic") {
                         window.location = "https://realitybending.github.io/"
                     }
@@ -56,7 +59,7 @@
         // Participant ID
         const participantID = jsPsych.randomization.randomID(10)
 
-        // timeline.push(ConsentForm)
+        timeline.push(ConsentForm)
         timeline.push(demographics_browser_info)
         timeline.push(demographic_questions)
         timeline.push(intero_instructions)
@@ -66,13 +69,13 @@
         timeline.push(demographics_debriefing)
 
         // save data via DataPipe
-        timeline.push({
-            type: jsPsychPipe,
-            action: "save",
-            experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
-            filename: `${participantID}.csv`,
-            data_string: () => jsPsych.data.get().csv(),
-        })
+        // timeline.push({
+        //     type: jsPsychPipe,
+        //     action: "save",
+        //     experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
+        //     filename: `${participantID}.csv`,
+        //     data_string: () => jsPsych.data.get().csv(),
+        // })
 
         timeline.push(demographics_endscreen)
 

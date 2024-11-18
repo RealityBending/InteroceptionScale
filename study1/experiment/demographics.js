@@ -20,7 +20,7 @@ const ConsentForm = {
 
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
             text +=
-                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>Prolific completion link</i> at the end of the experiment.</b></p>"
+                "<p style='color:green;' align='left'><b>Note: You will receive information regarding your <i style='color:purple;'>Prolific</i> participation at the end of the experiment.</b></p>"
         }
 
         if (jsPsych.data.urlVariables()["exp"] == "sona") {
@@ -35,7 +35,7 @@ const ConsentForm = {
             // Description
             "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
             "The aim of this study is to validate a new questionnaire measuring Interoception. Interoception refers to the sensing, interpretation and processing of internal bodily signals (e.g., feeling changes in the way one's heart beats). " +
-            "The whole experiment will take you <b style='color:#FF5722;'>~10 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
+            "The whole experiment will take you <b style='color:#FF5722;'>~30 min</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>" +
             // Results and personal information
             "<p align='left'><b>What will happen to the results and my personal information?</b><br>" +
             "The results of this research may be written into a scientific publication. Your anonymity will be ensured in the way described in the consent information below. <b>Please read this information carefully</b> and then, if you wish to take part, please acknowledge that you have fully understood this sheet, and that you consent to take part in the study as it is described here.</p>" +
@@ -56,7 +56,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Maisie Bennett (<i style='color:DodgerBlue;'>mb2021@sussex.ac.uk</i>). This research has been approved (ER/MB2021/1) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>asf25@sussex.ac.uk</i>). This research has been approved (ER/MB2021/1) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -196,7 +196,7 @@ var demographic_questions = {
                     {
                         visibleIf:
                             "{Education} == 'High school' || {Education} == 'Master' || {Education} == 'Bachelor'",
-                        title: "Are you currrently a student?",
+                        title: "Are you currently a student?",
                         name: "Student",
                         type: "boolean",
                         swapOrder: true,
@@ -296,7 +296,8 @@ var wearables_questions = {
                         maxRateDescription: "Very much",
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -327,7 +328,8 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -417,7 +419,9 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
+                "trials"
+            ][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
@@ -425,8 +429,8 @@ var demographics_endscreen = {
                     " to directly access the link).</p>"
             } else {
                 text +=
-                    "<p><b style='color:red;'>Your prolific payment is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific if you don't hear back from us after 7 days.</p>" +
-                    "<p><i>Note that if you you didn't have the time to the study and read all the items carefully and you would like to re-do your participation, you can refresh the page and start again.</i></p>"
+                    "<p><b style='color:red;'>Your prolific payment is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific if you don't hear back from us after 7 days.</p>"
+                // "<p><i>Note that if you think you didn't have the time to do the study and read all the items carefully and would like to re-do your participation, you can refresh the page and start again.</i></p>"
             }
         }
         if (jsPsych.data.urlVariables()["exp"] == "surveyswap") {
