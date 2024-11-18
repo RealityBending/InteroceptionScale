@@ -66,7 +66,7 @@ const intero_items = {
     Anxious_State_Q2: "I always feel in my body if I am anxious",
     Anxious_State_Q3: "My body is always in the same specific state when I am anxious",
     Anxious_State_Q4:
-        "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after physical exercise)",
+        "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after exercise)",
     Anxious_State_Q5: "I can always tell that I am anxious when others tell me",
     Anxious_Cardiac_Q1:
         "When I am anxious, I often feel changes in the way my heart beats (e.g., faster or stronger)",
@@ -79,7 +79,7 @@ const intero_items = {
     Anxious_SkinThermo_Q1:
         "When I am anxious, I often feel changes in my temperature (e.g., feeling warm or cold)",
     Anxious_SkinThermo_Q2:
-        "When I am anxious, I often feel like some areas of my skin become sweaty (e.g., palms, back)",
+        "When I am anxious, I often feel like some areas of my skin become sweaty (e.g., palms, back, forehead)",
     Anxious_SkinThermo_Q3: "When I am anxious, I often feel my mouth becoming dry",
     Anxious_SkinThermo_Q4: "When I am anxious, I often have difficulty swallowing",
     Anxious_SkinThermo_A: "Even if I am anxious, I should now answer all the way to the left",
@@ -110,7 +110,7 @@ const intero_items = {
     Sensitivity_State_Q3: "My body is always in the same specific state when I am relaxed",
     Sensitivity_State_Q4:
         "Being relaxed is a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after exercise)",
-    Sensitivity_State_Q5: "When something important in my life is happening, I can feel it in my body",
+    Sensitivity_State_Q5: "When something important is happening in my life, I can feel it in my body",
     Sensitivity_Cardiac_Q1: "In general, I am very sensitive to changes in my heart rate",
     Sensitivity_Cardiac_Q2: "I often notice changes in my heart rate",
     Sensitivity_Cardiac_Q3: "I can notice even very subtle changes in the way my heart beats",
@@ -179,7 +179,7 @@ const intero_items = {
     Accuracy_Gastric_Q5: "I often feel hungry even if I ate recently",
     Accuracy_Gastric_Q6: "I don't always feel the need to eat until I am really hungry",
     Accuracy_Gastric_Q7: "I often sneeze suddenly without feeling the need building up",
-    Accuracy_Gastric_Q8: "I sometimes feel that burping will produce some relieve but then it doesn't",
+    Accuracy_Gastric_Q8: "I sometimes feel that burping will produce some relief but then it doesn't",
     Accuracy_Genital_Q1:
         "I can always accurately perceive if my genital organs are in a state of arousal (e.g., hard, wet, pulsating)",
     Accuracy_Genital_Q2: "I sometimes feel like I am sexually aroused, but when I try to satisfy the feeling, I realise that I am not as sexually aroused as I initially thought",
