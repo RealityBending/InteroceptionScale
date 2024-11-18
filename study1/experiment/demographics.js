@@ -296,8 +296,7 @@ var wearables_questions = {
                         maxRateDescription: "Very much",
                     },
                     {
-                        visibleIf:
-                            "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -328,8 +327,7 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description:
-            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -389,11 +387,13 @@ var demographics_debriefing = {
     },
     on_finish: function (data) {
         let score = check_attentionchecks() // This function is defined in intero.js
-        if (score > 0.0) {
+        if (score >= 0.75) {
             //  TODO: Change later
             data["Reward"] = "Automatic"
+            data["AttentionScore"] = score
         } else {
-            data["Reward"] = "Manual"
+            data["Reward"] = "Return"
+            data["AttentionScore"] = score
         }
     },
 }
@@ -419,9 +419,7 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
-                "trials"
-            ][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
@@ -429,8 +427,10 @@ var demographics_endscreen = {
                     " to directly access the link).</p>"
             } else {
                 text +=
-                    "<p><b style='color:red;'>Your prolific payment is pending a manual data check and might take a couple of days to be processed.</b> Apologies for the delay and please contact the researcher on Prolific if you don't hear back from us after 7 days.</p>"
-                // "<p><i>Note that if you think you didn't have the time to do the study and read all the items carefully and would like to re-do your participation, you can refresh the page and start again.</i></p>"
+                    "<p><b style='color:red;'>Unfortunately, your participation data did not pass our quality check algorithm (this is typically caused by random patterns of answers and failed attention check questions)." +
+                    " In order to avoid any penalties, we suggest that you return your participation by clicking " +
+                    "<a href='https://app.prolific.com/submissions/complete?cc=C1BHVQIZ'>here<a/>" +
+                    ". We apologize for this outcome. Please don't hesitate to contact us on Prolific if you believe that there was a mistake.</p>"
             }
         }
         if (jsPsych.data.urlVariables()["exp"] == "surveyswap") {

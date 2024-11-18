@@ -41,17 +41,17 @@
             // show_progress_bar: true,
             on_finish: function () {
                 // jsPsych.data.displayData("json") // Display data in browser
-                window.location =
-                    "https://realitybending.github.io/research/#participate" // Redirect to lab website
+                window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
 
                 // If prolific and passed the attention check, redirect to prolific completion link
                 if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-                    d = jsPsych.data
-                        .get()
-                        .filter({ screen: "demographics_debrief" })["trials"][0]
+                    d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
                     if (d["Reward"] == "Automatic") {
                         window.location =
                             "https://app.prolific.com/submissions/complete?cc=C8I1NGST"
+                    } else {
+                        window.location =
+                            "https://app.prolific.com/submissions/complete?cc=C1BHVQIZ"
                     }
                 }
             },
