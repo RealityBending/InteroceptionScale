@@ -50,7 +50,8 @@
                         .get()
                         .filter({ screen: "demographics_debrief" })["trials"][0]
                     if (d["Reward"] == "Automatic") {
-                        window.location = "https://realitybending.github.io/"
+                        window.location =
+                            "https://app.prolific.com/submissions/complete?cc=C8I1NGST"
                     }
                 }
             },
@@ -69,13 +70,13 @@
         timeline.push(demographics_debriefing)
 
         // save data via DataPipe
-        // timeline.push({
-        //     type: jsPsychPipe,
-        //     action: "save",
-        //     experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
-        //     filename: `${participantID}.csv`,
-        //     data_string: () => jsPsych.data.get().csv(),
-        // })
+        timeline.push({
+            type: jsPsychPipe,
+            action: "save",
+            experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
+            filename: `${participantID}.csv`,
+            data_string: () => jsPsych.data.get().csv(),
+        })
 
         timeline.push(demographics_endscreen)
 

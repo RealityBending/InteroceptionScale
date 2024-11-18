@@ -425,7 +425,7 @@ var demographics_endscreen = {
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
-                    "<a href='https://TODO'>here<a/>" +
+                    "<a href='https://app.prolific.com/submissions/complete?cc=C8I1NGST'>here<a/>" +
                     " to directly access the link).</p>"
             } else {
                 text +=
