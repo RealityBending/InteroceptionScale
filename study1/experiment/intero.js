@@ -67,7 +67,7 @@ const intero_items = {
     Anxious_State_Q3: "My body is always in the same specific state when I am anxious",
     Anxious_State_Q4:
         "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after exercise)",
-    Anxious_State_Q5: "I can always tell that I am anxious when others tell me",
+    Anxious_State_Q5: "I often realize that I am anxious only when others tell me",
     Anxious_Cardiac_Q1:
         "When I am anxious, I often feel changes in the way my heart beats (e.g., faster or stronger)",
     Anxious_Respiratory_Q1:
