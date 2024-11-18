@@ -40,52 +40,57 @@ const intero_items = {
     Sexual_State_Q3: "My body is always in the same specific state  when I am sexually aroused",
     Sexual_State_Q4:
         "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)",
+    Sexual_State_Q5: "I can always tell that I am sexually aroused from the way I feel inside",
     Sexual_State_A: "I always know that I am attentively doing a study", // 'A' stands for attention
     Sexual_Cardiac_Q1:
-        "When I am sexually aroused, I always feel changes in the way my heart beats (e.g., faster or stronger)",
+        "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
     Sexual_Respiratory_Q1:
-        "When I am sexually aroused, I feel changes in my breathing (e.g., faster, shallower, or less regular)",
+        "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
     Sexual_Gastric_Q1:
-        "When I am sexually aroused, I feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
+        "When I am sexually aroused, I often feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
+    Sexual_Gastric_Q2: "When I am sexually aroused, I often feel butterflies in my stomach",
     Sexual_Genital_Q1:
-        "When I am sexually aroused, I notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
+        "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
     Sexual_Genital_Q2:
-        "During sex or masturbation, I feel very strong sensations coming from my genital areas",
+        "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
     Sexual_SkinThermo_Q1:
-        "When I am sexually aroused, I feel changes in my temperature (e.g., feeling warm or cold)",
+        "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)",
     Sexual_SkinThermo_Q2:
-        "When I am sexually aroused, I feel like some areas of my skin become sweaty (e.g., palms, back)",
-    Sexual_SkinThermo_Q3: "When I am sexually aroused, I feel my mouth becoming dry",
+        "When I am sexually aroused, I often feel like some areas of my skin become sweaty (e.g., palms, back, forehead)",
+    Sexual_SkinThermo_Q3: "When I am sexually aroused, I often feel my mouth becoming dry",
     Sexual_ColonBladder_Q1:
-        "When I am sexually aroused, I feel like I need to relieve myself by urinating or defecating",
+        "When I am sexually aroused, I often feel like I need to relieve myself by urinating or defecating",
     Sexual_ColonBladder_Q2:
-        "During sex or masturbation, I feel like I need to relieve myself by urinating or defecating",
+        "During sex or masturbation, I often feel like I need to relieve myself by urinating or defecating",
     Anxious_State_Q1: "I always know when I am anxious",
     Anxious_State_Q2: "I always feel in my body if I am anxious",
     Anxious_State_Q3: "My body is always in the same specific state when I am anxious",
     Anxious_State_Q4:
-        "Being anxious corresponds to a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after physical exercise)",
+        "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after physical exercise)",
+    Anxious_State_Q5: "I can always tell that I am anxious when others tell me",
     Anxious_Cardiac_Q1:
-        "When I am anxious, I feel changes in the way my heart beats (e.g., faster or stronger)",
+        "When I am anxious, I often feel changes in the way my heart beats (e.g., faster or stronger)",
     Anxious_Respiratory_Q1:
-        "When I am anxious, I feel changes in my breathing (e.g., faster, shallower, or less regular)",
+        "When I am anxious, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
     Anxious_Gastric_Q1:
-        "When I am anxious, I feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
+        "When I am anxious, I often feel changes in my stomach (e.g., bloating, rumbling, discomfort)",
     Anxious_Genital_Q1:
-        "When I am anxious, I notice specific sensations in my genital area (e.g., contractions, dryness)",
+        "When I am anxious, I often notice specific sensations in my genital area (e.g., contractions, dryness)",
     Anxious_SkinThermo_Q1:
-        "When I am anxious, I feel changes in my temperature (e.g., feeling warm or cold)",
+        "When I am anxious, I often feel changes in my temperature (e.g., feeling warm or cold)",
     Anxious_SkinThermo_Q2:
-        "When I am anxious, I feel like some areas of my skin become sweaty (e.g., palms, back)",
-    Anxious_SkinThermo_Q3: "When I am anxious, I feel my mouth becoming dry",
-    Anxious_SkinThermo_Q4: "When I am anxious, I have difficulty swallowing",
+        "When I am anxious, I often feel like some areas of my skin become sweaty (e.g., palms, back)",
+    Anxious_SkinThermo_Q3: "When I am anxious, I often feel my mouth becoming dry",
+    Anxious_SkinThermo_Q4: "When I am anxious, I often have difficulty swallowing",
     Anxious_SkinThermo_A: "Even if I am anxious, I should now answer all the way to the left",
     Anxious_ColonBladder_Q1:
-        "When I am anxious, I feel like I need to relieve myself by urinating or defecating",
+        "When I am anxious, I often feel like I need to relieve myself by urinating or defecating",
     Nociception_State_Q1: "I always feel in my body if I am ill",
     Nociception_State_Q2: "I can easily tell when I am feeling ill (e.g., nauseous or sick)",
     Nociception_Cardiac_Q1: "I often feel painful sensations coming from my heart",
+    Nociception_Cardiac_Q2: "I often experience painful sensations coming from my chest",
     Nociception_Respiratory_Q1: "I often feel like I have difficulties breathing normally",
+    Nociception_Respiratory_Q2: "I often feel like I can't get enough oxygen by breathing normally",
     Nociception_Gastric_Q1: "I often feel pain in my stomach",
     Nociception_Genital_Q1: "My genital organs are very sensitive to pleasant stimulations",
     Nociception_Genital_Q2: "My genital organs are very sensitive to painful stimulations",
@@ -104,8 +109,8 @@ const intero_items = {
     Sensitivity_State_Q2: "I always feel in my body if I am relaxed",
     Sensitivity_State_Q3: "My body is always in the same specific state when I am relaxed",
     Sensitivity_State_Q4:
-        "Being relaxed corresponds to a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after physical exercise)",
-    Sensitivity_State_Q5: "When something important is happening, I can feel it in my body",
+        "Being relaxed is a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after exercise)",
+    Sensitivity_State_Q5: "When something important in my life is happening, I can feel it in my body",
     Sensitivity_Cardiac_Q1: "In general, I am very sensitive to changes in my heart rate",
     Sensitivity_Cardiac_Q2: "I often notice changes in my heart rate",
     Sensitivity_Cardiac_Q3: "I can notice even very subtle changes in the way my heart beats",
@@ -114,7 +119,7 @@ const intero_items = {
     Sensitivity_Cardiac_Q6:
         "I often try to feel my heart with my hands (e.g., by putting my hand on my chest)",
     Sensitivity_Cardiac_Q7:
-        "When something important is happening, I can feel immediately feel changes in my heart rate",
+        "When something important is happening in my life, I can feel immediately feel changes in my heart rate",
     Sensitivity_Cardiac_A:
         "In general, I am very sensitive and attentive to the questions I am currently answering",
     Sensitivity_Respiratory_Q1: "In general, I am very sensitive to changes in my breathing",
@@ -125,7 +130,7 @@ const intero_items = {
     Sensitivity_Respiratory_Q6:
         "I often only notice how I am breathing when my breathing becomes shallow or irregular",
     Sensitivity_Respiratory_Q7:
-        "When something important is happening, I can immediately feel changes in my breathing",
+        "When something important is happening in my life, I can immediately feel changes in my breathing",
     Sensitivity_Gastric_Q1: "In general, I am very sensitive to what my stomach is doing",
     Sensitivity_Gastric_Q2: "I can notice even very subtle changes in what my stomach is doing",
     Sensitivity_Gastric_Q3:
@@ -162,6 +167,7 @@ const intero_items = {
     Accuracy_State_Q4: "I can always accurately feel when I am starting to be hungry",
     Accuracy_State_Q5: "I can always accurately feel when I am starting to be thirsty",
     Accuracy_Cardiac_Q1: "I can always accurately feel if my heart rate is slow or fast",
+    Accuracy_Cardiac_Q2: "I sometimes feel like my heart is racing or beating faster than usual, but when I check my pulse, it is not as intense as I thought",
     Accuracy_Respiratory_Q1:
         "I can always accurately feel how I am breathing (e.g., fast or slow, deep or shallow)",
     Accuracy_Respiratory_A:
@@ -172,15 +178,18 @@ const intero_items = {
     Accuracy_Gastric_Q4: "I don't always feel the need to drink until I am really thirsty",
     Accuracy_Gastric_Q5: "I often feel hungry even if I ate recently",
     Accuracy_Gastric_Q6: "I don't always feel the need to eat until I am really hungry",
-    Accuracy_Gastric_Q7: "I often sneeze suddenly without expecting it to happen",
+    Accuracy_Gastric_Q7: "I often sneeze suddenly without feeling the need building up",
+    Accuracy_Gastric_Q8: "I sometimes feel that burping will produce some relieve but then it doesn't",
     Accuracy_Genital_Q1:
         "I can always accurately perceive if my genital organs are in a state of arousal (e.g., hard, wet, pulsating)",
+    Accuracy_Genital_Q2: "I sometimes feel like I am sexually aroused, but when I try to satisfy the feeling, I realise that I am not as sexually aroused as I initially thought",
     Accuracy_Genital_A:
         "I can always accurately perceive that to this question I should answer the lowest option",
     Accuracy_SkinThermo_Q1: "I can always accurately feel when something is going to be itchy",
     Accuracy_SkinThermo_Q2: "I can always accurately feel when I start to have a fever",
     Accuracy_SkinThermo_Q3:
         "When something touches my skin, I can always accurately feel if it's hot or cold",
+    Accuracy_SkinThermo_Q4: "I sometimes feel my skin itching, but when I scratch it, it doesn't produce the relief I expected",
     Accuracy_ColonBladder_Q1: "I often feel the need to urinate even when my bladder is not full",
     Accuracy_ColonBladder_Q2:
         "I don't always feel the need to urinate until my bladder is very full",
@@ -189,7 +198,7 @@ const intero_items = {
     Accuracy_ColonBladder_Q4:
         "I don't always feel the need to defecate until my intestine is very full",
     Accuracy_ColonBladder_Q5:
-        "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I relieve myself less than I expected",
+        "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I produce less than I expected",
     Confusion_State_Q1: "Sometimes I can't tell if the sensations in my body are good or bad",
     Confusion_State_Q2: "Sometimes I am confused about what sensations in my body mean",
     Confusion_Cardiac_Q1: "Sometimes my heart starts racing and I often don't know why",
@@ -259,9 +268,9 @@ function intero_makegroups(items, condition = "Domains") {
             Page6: [],
         }
 
-        // Max 53 items per page (TODO: Make sure we get all the items)
+        // Max 60 items per page (TODO: Make sure we get all the items)
         for (const [index, k] of Object.keys(items).entries()) {
-            groups[`Page${Math.floor(index / 53) + 1}`].push({ [k]: items[k] })
+            groups[`Page${Math.floor(index / 60) + 1}`].push({ [k]: items[k] })
         }
     }
     return shuffleObject(groups)
