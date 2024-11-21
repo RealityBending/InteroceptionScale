@@ -4,6 +4,7 @@ library(jsonlite)
 # path for data
 # path <- "C:/Users/asf25/Box/InteroceptionScale/"
 path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
 
 # JsPsych experiment ------------------------------------------------------
 
@@ -11,10 +12,12 @@ files <- list.files(path, pattern = "*.csv")
 
 alldata <- data.frame()
 for (file in files) {
+  cat(".")
   rawdata <- read.csv(paste0(path, "/", file))
 
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info", ]
+
 
   data_ppt <- data.frame(
     Participant = dat$participantID,
@@ -44,6 +47,7 @@ for (file in files) {
   demog$`Discipline-Comment` <- NULL
   demog$Discipline <- ifelse(!is.null(demog$Discipline), demog$Discipline, NA)
   demog$Student <- ifelse(!is.null(demog$Student), demog$Student, NA)
+  demog$Country <- ifelse(!is.null(demog$Country), demog$Country, NA)
   demog$Ethnicity <- ifelse(demog$Ethnicity == "other", demog$`Ethnicity-Comment`, demog$Ethnicity)
   demog$`Ethnicity-Comment` <- NULL
 
@@ -77,10 +81,9 @@ checks <- data.frame(
 )
 checks$Score <- rowMeans(checks)
 checks$Prolific_ID <- alldata$Prolific_ID
-checks$Comments <- alldata$Experiment_Feedback
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
-checks[, c("Prolific_ID", "Experiment_Duration", "Score", "Comments", "Reward")]
+checks[checks$Prolific_ID=="673cd254388deb8c41028474", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
 median(alldata$Experiment_Duration)
 plot(bayestestR::estimate_density(alldata$Experiment_Duration))

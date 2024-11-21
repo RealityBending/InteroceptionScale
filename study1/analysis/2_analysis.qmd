@@ -1,0 +1,385 @@
+---
+title: "InteroceptionScale - Data Analysis"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+---
+
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(EGAnet)
+```
+
+
+```{r}
+#| code-fold: false
+
+df <- read.csv("../data/rawdata_participants.csv")
+
+items <- select(df, contains("_Q")) 
+byfacet <- items[df$Condition=="Dimensions",]
+bymodality <- items[df$Condition=="Domains",]
+byrandom <- items[df$Condition=="Random",]
+
+# labels <- list(
+#   Anxious_State_Q4 = "Blablagl re'f sdf",
+#   sref
+# )
+# 
+# Make 
+```
+
+## Item Correlation
+
+::: {.panel-tabset}
+
+### Full Sample
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+
+make_heatmap <- function(items, interactive=TRUE, title="Correlation Matrix") {
+  fn <- if(interactive) heatmaply::heatmaply else heatmaply::ggheatmap
+  
+  fn(
+    cor(items),
+    symm = TRUE,
+    colors=heatmaply::cool_warm,
+    show_dendrogram =c(FALSE, TRUE),
+    main=title,
+    showticklabels = FALSE,
+    hide_colorbar = TRUE,
+    k_col = 4,
+    # k_row = 4,
+    limits = c(-1, 1)
+    )
+}
+
+# p1 <- make_heatmap(items, title="Full Sample")
+# p1
+```
+
+### By Facet
+
+Also "Dimension" / "Domains" / "Context"
+
+```{r}
+# p2 <- make_heatmap(byfacet, title="By Facet")
+# p2
+```
+
+### By Modality
+
+```{r}
+# p3 <- make_heatmap(bymodality, title="By Modality")
+# p3
+```
+
+### Random Grouping
+
+```{r}
+# p4 <- make_heatmap(byrandom, title="Random Grouping")
+# p4
+```
+
+
+### Figures
+
+```{r}
+#| output: false
+
+# p1 <- make_heatmap(items, interactive=FALSE) |>
+#   gridExtra::arrangeGrob(top = 'Full Sample')
+# p2 <- make_heatmap(byfacet, interactive=FALSE, title="By Facet") |>
+#   gridExtra::arrangeGrob(top = 'By Facet')
+# p3 <- make_heatmap(bymodality, interactive=FALSE, title="By Modality") |>
+#   gridExtra::arrangeGrob(top = 'By Modality')
+# p4 <- make_heatmap(byrandom, interactive=FALSE, title="Random Grouping") |>
+#   gridExtra::arrangeGrob(top = 'Random Grouping')
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+
+# gridExtra::grid.arrange(
+#   p1, p2, p3, p4,
+#   layout_matrix=rbind(
+#     c(1,1,1),
+#     c(1,1,1),
+#     c(2,3, 4)))
+```
+
+:::
+
+
+### Similarity
+
+```{r}
+# bootstrap_similarity <- function(df) {
+#   rez <- data.frame()
+#   for(i in 1:200) {
+#     idx <- sample(1:nrow(df), nrow(df), replace=TRUE)
+#     newdata <- df[idx,]
+#     items <- select(df, contains("_Q"))
+#     byfacet <- items[newdata$Condition=="Dimensions",]
+#     bymodality <- items[newdata$Condition=="Domains",]
+#     byrandom <- items[newdata$Condition=="Random",]
+#     
+#     rez <- rbind(
+#       MatrixCorrelation::allCorrelations(cor(byrandom), cor(byfacet), 
+#                                          ncomp1=10, ncomp2=10, plot=FALSE),
+#       MatrixCorrelation::allCorrelations(cor(byrandom), cor(bymodality), 
+#                                          ncomp1=10, ncomp2=10, plot=FALSE),
+#       MatrixCorrelation::allCorrelations(cor(items), cor(byfacet),
+#                                          ncomp1=10, ncomp2=10, plot=FALSE),
+#       MatrixCorrelation::allCorrelations(cor(items), cor(bymodality), 
+#                                          ncomp1=10, ncomp2=10, plot=FALSE)) |>
+#       as.data.frame() |> 
+#       mutate(
+#         Comparison = c("Random vs. Facet", "Random vs. Modality", "Full vs. Facet", "Full vs. Modality"),
+#         Sample = c("Random", "Random", "Full", "Full"),
+#         Iteration = i) |> 
+#       mutate(d_PSI = diff(PSI), d_RV = diff(RV), d_RVadj = diff(RVadj), d_SMI = diff(SMI), .by="Sample") |> 
+#       rbind(rez)
+#   }
+#   rez
+# }
+# 
+# 
+# rez <- bootstrap_similarity(df)
+# 
+# rez |> 
+#   pivot_longer(-c("Comparison", "Sample", "Iteration")) |> 
+#   filter(name %in% c("PSI", "RV", "RVadj", "SMI")) |> 
+#   mutate(side = ifelse(str_detect(Comparison, "Facet"), "left", "right")) |> 
+#   ggplot(aes(x=name, y=value, fill=Comparison, color=Comparison)) +
+#   ggdist::stat_halfeye(aes(side=side), position=position_dodge(width=0.3), alpha=0.7) +
+#   facet_wrap(~Sample) +
+#   scale_fill_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
+#   scale_color_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
+#   labs(x="Indices of Correlation Matrix Difference", y="Similarity") +
+#   theme_minimal()
+# 
+# rez |> 
+#   pivot_longer(-c("Comparison", "Sample", "Iteration")) |> 
+#   filter(str_detect(name, "d_") & str_detect(Comparison, "Facet")) |> 
+#   ggplot(aes(x=name, y=value)) +
+#   ggdist::stat_eye(aes(fill = after_stat(y < 0))) +
+#   facet_wrap(~Sample) +
+#   geom_hline(yintercept=0, linetype="dashed") +
+#   labs(x="Indices of Correlation Matrix Difference", y="Similarity Difference") +
+#   theme_minimal() +
+#   scale_fill_manual(values=c("TRUE"="#F44336", "FALSE"="#2196F3"), guide="none")
+```
+
+## Item Selection
+
+### Unique Variable Analysis (UVA)
+
+```{r}
+uva <- EGAnet::UVA(items, cut.off = 0.2)
+# uva
+
+toremove_table <- rbind(
+  data.frame(
+  Condition = "Full Sample",
+  Remove = uva$keep_remove$remove),
+  data.frame(
+  Condition = "By Facet",
+  Remove = EGAnet::UVA(byfacet, cut.off = 0.2)$keep_remove$remove),
+  data.frame(
+  Condition = "By Modality",
+  Remove = EGAnet::UVA(bymodality, cut.off = 0.2)$keep_remove$remove),
+  data.frame(
+  Condition = "Random Grouping",
+  Remove = EGAnet::UVA(byrandom, cut.off = 0.2)$keep_remove$remove)
+) |>
+  mutate(n = n(), .by=c("Remove")) |>
+  mutate(Condition = fct_relevel(Condition, "Full Sample", "By Facet", "By Modality", "Random Grouping")) |>
+  arrange(desc(n), Remove, Condition)
+
+toremove <- filter(toremove_table, Condition=="Full Sample" & n > 1)$Remove
+
+toremove_table |>
+  select(-n) |>
+  gt::gt() |>
+  gt::data_color(columns=Remove, fn=\(x) ifelse(x %in% toremove, "#FFEBEE", "white"))
+```
+
+```{r}
+items <- select(items, -all_of(toremove))
+byfacet <- select(byfacet, -all_of(toremove))
+bymodality <- select(bymodality, -all_of(toremove))
+byrandom <- select(byrandom, -all_of(toremove))
+```
+
+### Cluster Stability
+
+```{r}
+ega <- bootEGA(
+  items,
+  model = "glasso",  # BGGM
+  algorithm = "louvain",  # walktrap
+  EGA.type = "hierEGA",
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=TRUE,
+  iter=100,
+  seed=3, ncores = 4)
+
+# EGAnet::dimensionStability(ega)
+itemstability <- EGAnet::itemStability(ega, IS.plot=FALSE)
+plot(itemstability)
+
+
+itemstability_table <- itemstability$lower_order$item.stability$all.dimensions |>
+  as.data.frame() |>
+  datawizard::data_addprefix("C")
+itemstability_table$Cluster <- colnames(itemstability_table)[max.col(itemstability_table, ties.method='first')]
+
+itemstability_table <- itemstability_table |>
+  rownames_to_column(var="Item") |>
+  rowwise() |>
+  mutate(Stability = max(c_across(-c(Item, Cluster)))) |>
+  arrange(Cluster, desc(Stability))
+
+toremove <- filter(itemstability_table, Stability < 0.5)$Item
+
+itemstability_table |>
+  select(-Cluster, -Stability) |>
+  gt::gt() |>
+  gt::data_color(columns=-Item,
+                 method = "numeric",
+                 palette = c("white", "orange", "green"),
+                 domain = c(0, 1)) |>
+  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove, "#FFEBEE", "white")) |>
+  gt::tab_header(
+    title = gt::md("**Item Stability**"),
+    subtitle = "Proportion of times an item is assigned to the same cluster"
+  )
+```
+
+```{r}
+items <- select(items, -all_of(toremove))
+byfacet <- select(byfacet, -all_of(toremove))
+bymodality <- select(bymodality, -all_of(toremove))
+byrandom <- select(byrandom, -all_of(toremove))
+```
+
+## Exploratory Graph Analysis (EGA)
+
+::: {.panel-tabset}
+
+### Full Sample
+
+```{r}
+ega <- bootEGA(
+  items,
+  model = "glasso",  # BGGM
+  algorithm = "louvain",  # walktrap
+  EGA.type = "hierEGA",
+  # plot.EGA = FALSE,
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=TRUE,
+  seed=3, ncores = 4)
+
+plot(ega)
+summary(ega)
+
+# EGAnet::dimensionStability(ega)
+itemstability <- EGAnet::itemStability(ega)
+itemstability
+plot(itemstability)
+
+
+# Loadings
+loadings <- ega$typicalGraph
+loadings$parameters$lower_loadings
+loadings$parameters$lower_scores
+```
+
+<!-- ```{r} -->
+<!-- library(ggraph) -->
+
+<!-- EGAnet::convert2tidygraph(ega$EGA) -->
+
+<!-- graph <- ega$typicalGraph -->
+
+<!-- edges_lower <- graph$lower_order$graph |>  -->
+<!--   as.data.frame() |>  -->
+<!--   rownames_to_column(var="from") |>  -->
+<!--   pivot_longer(-from, names_to="to", values_to="weight") |>  -->
+<!--   filter(weight > 0)  -->
+<!-- nodes_lower <- graph$lower_order$typical.dim.variables -->
+
+<!-- tidygraph::as_tbl_graph(edges_lower, nodes=nodes_lower, directed=FALSE) |>  -->
+<!--   ggraph::ggraph(layout = 'circle') + -->
+<!--   ggraph::geom_node_point() + -->
+<!--   ggraph::geom_edge_bend(aes(edge_width = weight), alpha=0.5) + -->
+<!--   # ggraph::geom_node_text(aes(label=item), repel=TRUE) + -->
+<!--   theme_void() -->
+<!-- ``` -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ### By Dimension / Domains / Context -->
+
+<!-- ```{r} -->
+<!-- bydimension <- items[df$Condition=="Dimensions",] -->
+
+<!-- ega_bydimension <- EGA(bydimension[, 1:20], plot.EGA = FALSE) -->
+
+<!-- plot(ega_bydimension) -->
+<!-- ``` -->
+
+<!-- ### By Modalities -->
+
+<!-- ```{r} -->
+<!-- bymodality <- items[df$Condition=="Domains",] -->
+
+<!-- ega_bymodality <- EGA(bymodality[, 1:20], plot.EGA = FALSE) -->
+
+<!-- plot(ega_bymodality) -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ## Model Comparison -->
+
+
+<!-- ```{r} -->
+<!-- EGAnet::EGM(items[, 1:60]) -->
+
+<!-- # EGAnet::EGM.compare(items[, 1:20]) -->
+
+<!-- rez <- EGAnet::network.compare(byfacet[, 1:20], bymodality[, 1:20], seed=3) -->
+<!-- plot(rez) -->
+<!-- ``` -->
