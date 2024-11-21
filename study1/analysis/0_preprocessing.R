@@ -48,6 +48,7 @@ for (file in files) {
   demog$Discipline <- ifelse(!is.null(demog$Discipline), demog$Discipline, NA)
   demog$Student <- ifelse(!is.null(demog$Student), demog$Student, NA)
   demog$Country <- ifelse(!is.null(demog$Country), demog$Country, NA)
+  demog$Ethnicity <- ifelse(!is.null(demog$Ethnicity), demog$Ethnicity, NA)
   demog$Ethnicity <- ifelse(demog$Ethnicity == "other", demog$`Ethnicity-Comment`, demog$Ethnicity)
   demog$`Ethnicity-Comment` <- NULL
 
@@ -68,6 +69,7 @@ for (file in files) {
 }
 
 
+alldata[is.na(alldata$Prolific_ID), ]
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
   Sexual_State_A = alldata$Sexual_State_A / 6,
@@ -83,10 +85,12 @@ checks$Score <- rowMeans(checks)
 checks$Prolific_ID <- alldata$Prolific_ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
-checks[checks$Prolific_ID=="673cd254388deb8c41028474", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
+checks <- checks[!is.na(checks$Prolific_ID), ]
+checks[checks$Prolific_ID=="672b6ad098ad5f2f5867fb6b", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
-median(alldata$Experiment_Duration)
-plot(bayestestR::estimate_density(alldata$Experiment_Duration))
+# Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
+
+
 
 # Anonymize ---------------------------------------------------------------
 alldata$Prolific_ID <- NULL

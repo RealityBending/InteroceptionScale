@@ -22,6 +22,8 @@ library(easystats)
 library(patchwork)
 library(ggside)
 library(EGAnet)
+library(tidygraph)
+library(ggraph)
 ```
 
 
@@ -232,121 +234,200 @@ byrandom <- select(byrandom, -all_of(toremove))
 ### Cluster Stability
 
 ```{r}
-ega <- bootEGA(
+#| eval: false
+
+ega1 <- bootEGA(
   items,
+  EGA.type = "EGA",
   model = "glasso",  # BGGM
   algorithm = "louvain",  # walktrap
-  EGA.type = "hierEGA",
+  type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
   plot.typicalGraph=TRUE,
-  iter=100,
+  iter=500,
   seed=3, ncores = 4)
 
+save(ega1, file="models/ega1.RData")
+```
+
+```{r}
+load("models/ega1.RData")
+
 # EGAnet::dimensionStability(ega)
-itemstability <- EGAnet::itemStability(ega, IS.plot=FALSE)
+itemstability <- EGAnet::itemStability(ega1, IS.plot=FALSE)
 plot(itemstability)
 
+make_loadingtable <- function(x) {
+  t <- as.data.frame(x) |>
+    datawizard::data_addprefix("C")
+  t$Cluster <- colnames(t)[max.col(t, ties.method='first')]
+  
+  t |>
+    rownames_to_column(var="Item") |>
+    rowwise() |>
+    mutate(Max = max(c_across(-c(Item, Cluster)))) |>
+    arrange(Cluster, desc(Max)) |> 
+    as.data.frame()
+}
 
-itemstability_table <- itemstability$lower_order$item.stability$all.dimensions |>
-  as.data.frame() |>
-  datawizard::data_addprefix("C")
-itemstability_table$Cluster <- colnames(itemstability_table)[max.col(itemstability_table, ties.method='first')]
 
-itemstability_table <- itemstability_table |>
-  rownames_to_column(var="Item") |>
-  rowwise() |>
-  mutate(Stability = max(c_across(-c(Item, Cluster)))) |>
-  arrange(Cluster, desc(Stability))
+itemstability_table <- make_loadingtable(itemstability$item.stability$all.dimensions) 
 
-toremove <- filter(itemstability_table, Stability < 0.5)$Item
+toremove2 <- filter(itemstability_table, Max < 0.7)$Item
 
 itemstability_table |>
-  select(-Cluster, -Stability) |>
+  select(-Cluster, -Max) |>
   gt::gt() |>
   gt::data_color(columns=-Item,
                  method = "numeric",
                  palette = c("white", "orange", "green"),
                  domain = c(0, 1)) |>
-  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove, "#FFEBEE", "white")) |>
+  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove2, "#FFEBEE", "white")) |>
   gt::tab_header(
     title = gt::md("**Item Stability**"),
     subtitle = "Proportion of times an item is assigned to the same cluster"
   )
 ```
 
+
 ```{r}
-items <- select(items, -all_of(toremove))
-byfacet <- select(byfacet, -all_of(toremove))
-bymodality <- select(bymodality, -all_of(toremove))
-byrandom <- select(byrandom, -all_of(toremove))
+items <- select(items, -all_of(toremove2))
+byfacet <- select(byfacet, -all_of(toremove2))
+bymodality <- select(bymodality, -all_of(toremove2))
+byrandom <- select(byrandom, -all_of(toremove2))
 ```
 
-## Exploratory Graph Analysis (EGA)
+### Item Loadings
 
-::: {.panel-tabset}
 
-### Full Sample
 
 ```{r}
-ega <- bootEGA(
+#| eval: false
+
+ega2 <- bootEGA(
   items,
+  EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "louvain",  # walktrap
-  EGA.type = "hierEGA",
-  # plot.EGA = FALSE,
+  type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
   plot.typicalGraph=TRUE,
+  iter=500,
   seed=3, ncores = 4)
 
-plot(ega)
-summary(ega)
-
-# EGAnet::dimensionStability(ega)
-itemstability <- EGAnet::itemStability(ega)
-itemstability
-plot(itemstability)
-
-
-# Loadings
-loadings <- ega$typicalGraph
-loadings$parameters$lower_loadings
-loadings$parameters$lower_scores
+save(ega2, file="models/ega2.RData")
 ```
 
-<!-- ```{r} -->
-<!-- library(ggraph) -->
+```{r}
+load("models/ega2.RData")
 
-<!-- EGAnet::convert2tidygraph(ega$EGA) -->
+# itemStability(ega2)
 
-<!-- graph <- ega$typicalGraph -->
+lower <- make_loadingtable(net.loads(ega2$EGA$lower_order)$std) 
 
-<!-- edges_lower <- graph$lower_order$graph |>  -->
-<!--   as.data.frame() |>  -->
-<!--   rownames_to_column(var="from") |>  -->
-<!--   pivot_longer(-from, names_to="to", values_to="weight") |>  -->
-<!--   filter(weight > 0)  -->
-<!-- nodes_lower <- graph$lower_order$typical.dim.variables -->
+toremove3 <- lower$Item[!lower$Item %in% slice_max(lower, Max, n=3, by="Cluster")$Item]
 
-<!-- tidygraph::as_tbl_graph(edges_lower, nodes=nodes_lower, directed=FALSE) |>  -->
-<!--   ggraph::ggraph(layout = 'circle') + -->
-<!--   ggraph::geom_node_point() + -->
-<!--   ggraph::geom_edge_bend(aes(edge_width = weight), alpha=0.5) + -->
-<!--   # ggraph::geom_node_text(aes(label=item), repel=TRUE) + -->
-<!--   theme_void() -->
-<!-- ``` -->
+lower |>
+  select(-Cluster, -Max) |>
+  gt::gt() |>
+  gt::data_color(columns=-Item,
+                 method = "numeric",
+                 palette = c("red", "white", "green"),
+                 domain = c(-1, 1)) |>
+  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove3, "#FFEBEE", "white")) |>
+  gt::tab_header(
+    title = gt::md("**Item Loadings**"),
+    subtitle = "Node centrality"
+  )
+```
+
+```{r}
+items <- select(items, -all_of(toremove3))
+byfacet <- select(byfacet, -all_of(toremove3))
+bymodality <- select(bymodality, -all_of(toremove3))
+byrandom <- select(byrandom, -all_of(toremove3))
+```
+
+
+
+
+## Structure Analysis
+
+
+```{r}
+#| eval: false
+
+ega3 <- bootEGA(
+  items,
+  EGA.type = "hierEGA",
+  model = "glasso",  # BGGM
+  algorithm = "louvain",  # walktrap
+  type="resampling",
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=TRUE,
+  iter=500,
+  seed=3, ncores = 4)
+
+save(ega3, file="models/ega3.RData")
+```
+
+```{r}
+load("models/ega3.RData")
+
+# itemStability(ega2)
+
+lower <- make_loadingtable(net.loads(ega3$EGA$lower_order)$std) 
+higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order)$std)) |> 
+  select(names(lower)) |> 
+  arrange(Item)
+higher$Item <- paste0("H", higher$Item) 
+
+rbind(higher, lower) |>
+  select(-Cluster, -Max) |>
+  gt::gt() |>
+  gt::tab_row_group(
+    label = "Item",
+    rows = 1:(nrow(lower) + nrow(higher))
+  ) |>
+  gt::tab_row_group(
+    label = "Higher Order",
+    rows = 1:nrow(higher)
+  ) |> 
+  gt::data_color(columns=-Item,
+                 method = "numeric",
+                 palette = c("red", "white", "green"),
+                 domain = c(-1, 1)) |>
+  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove3, "#FFEBEE", "white")) |>
+  gt::tab_header(
+    title = gt::md("**Item Loadings**"),
+    subtitle = "Node centrality"
+  )
+```
+
+```{r}
+graph <- convert2tidygraph(ega3) 
+
+tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |>
+  ggraph::ggraph(layout = 'graphopt') +
+  ggraph::geom_edge_arc(aes(edge_color = link, edge_width = abs(link), edge_alpha=as.numeric(type == "real")), strength=0.1) +
+  ggraph::geom_edge_arc(aes(edge_alpha=as.numeric(type == "virtual")), edge_width=0.1, strength=0) +
+  ggraph::geom_node_point(aes(color=dimension, shape=level), size=10, alpha=0.7) +
+  ggraph::geom_node_text(aes(label=name), repel=TRUE) +
+  scale_edge_alpha(range = c(0, 0.9), guide="none") +
+  scale_shape_manual(values=c("Higher"="square", "Lower"="circle")) +
+  theme_void()
+```
 
 
 
 
 
+<!-- ::: {.panel-tabset} -->
 
-
-
-
-
-
+<!-- ### Full Sample -->
 
 
 
@@ -383,3 +464,10 @@ loadings$parameters$lower_scores
 <!-- rez <- EGAnet::network.compare(byfacet[, 1:20], bymodality[, 1:20], seed=3) -->
 <!-- plot(rez) -->
 <!-- ``` -->
+
+### Empirical vs. Model Scores
+
+
+```{r}
+EGAnet::net.scores()
+```
