@@ -8,6 +8,8 @@ format:
     code-fold: true
     self-contained: false
     toc: true
+execute: 
+  cache: true
 ---
 
 
@@ -36,7 +38,9 @@ items <- select(df, contains("_Q"))
 byfacet <- items[df$Condition=="Dimensions",]
 bymodality <- items[df$Condition=="Domains",]
 byrandom <- items[df$Condition=="Random",]
+```
 
+```{r}
 labels <- list(
   Sexual_State_Q1 = "I always know when I am sexually aroused",
   Sexual_State_Q2 = "I always feel in my body if I am sexually aroused",
@@ -79,7 +83,7 @@ labels <- list(
   Nociception_Gastric_Q1 = "I often feel pain in my stomach",
   Nociception_Genital_Q1 = "My genital organs are very sensitive to pleasant stimulations",
   Nociception_Genital_Q2 = "My genital organs are very sensitive to painful stimulations",
-  Nociception_SkinThermo_Q = "My skin is very sensitive to painful stimulations (e.g., pinching)",
+  Nociception_SkinThermo_Q1 = "My skin is very sensitive to painful stimulations (e.g., pinching)",
   Nociception_SkinThermo_Q2 = "My skin is very sensitive to pleasant stimulations (e.g., caressing)",
   Nociception_SkinThermo_Q3 = "Changes in temperature (e.g., feeling feverish or cold) are the first things I notice when I am becoming ill",
   Nociception_ColonBladder_Q1 = "I often experience a pleasant sensation when relieving myself when urinating or defecating)",
@@ -167,13 +171,9 @@ labels <- list(
   Confusion_ColonBladder_Q1 = "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
   Confusion_ColonBladder_A = "Sometimes I notice that I need to answer all the way to the right"
 )
-
-# Make 
 ```
 
 ## Item Correlation
-
-::: {.panel-tabset}
 
 ### Full Sample
 
@@ -198,122 +198,103 @@ make_heatmap <- function(items, interactive=TRUE, title="Correlation Matrix") {
     )
 }
 
-# p1 <- make_heatmap(items, title="Full Sample")
-# p1
+make_heatmap(items, title="Full Sample")
 ```
-
-### By Facet
-
-Also "Dimension" / "Domains" / "Context"
-
-```{r}
-# p2 <- make_heatmap(byfacet, title="By Facet")
-# p2
-```
-
-### By Modality
-
-```{r}
-# p3 <- make_heatmap(bymodality, title="By Modality")
-# p3
-```
-
-### Random Grouping
-
-```{r}
-# p4 <- make_heatmap(byrandom, title="Random Grouping")
-# p4
-```
-
-
-### Figures
-
-```{r}
-#| output: false
-
-# p1 <- make_heatmap(items, interactive=FALSE) |>
-#   gridExtra::arrangeGrob(top = 'Full Sample')
-# p2 <- make_heatmap(byfacet, interactive=FALSE, title="By Facet") |>
-#   gridExtra::arrangeGrob(top = 'By Facet')
-# p3 <- make_heatmap(bymodality, interactive=FALSE, title="By Modality") |>
-#   gridExtra::arrangeGrob(top = 'By Modality')
-# p4 <- make_heatmap(byrandom, interactive=FALSE, title="Random Grouping") |>
-#   gridExtra::arrangeGrob(top = 'Random Grouping')
-```
-
-```{r}
-#| fig-width: 12
-#| fig-height: 12
-
-# gridExtra::grid.arrange(
-#   p1, p2, p3, p4,
-#   layout_matrix=rbind(
-#     c(1,1,1),
-#     c(1,1,1),
-#     c(2,3, 4)))
-```
-
-:::
 
 
 ### Similarity
 
 ```{r}
-# bootstrap_similarity <- function(df) {
-#   rez <- data.frame()
-#   for(i in 1:200) {
-#     idx <- sample(1:nrow(df), nrow(df), replace=TRUE)
-#     newdata <- df[idx,]
-#     items <- select(df, contains("_Q"))
-#     byfacet <- items[newdata$Condition=="Dimensions",]
-#     bymodality <- items[newdata$Condition=="Domains",]
-#     byrandom <- items[newdata$Condition=="Random",]
-#     
-#     rez <- rbind(
-#       MatrixCorrelation::allCorrelations(cor(byrandom), cor(byfacet), 
-#                                          ncomp1=10, ncomp2=10, plot=FALSE),
-#       MatrixCorrelation::allCorrelations(cor(byrandom), cor(bymodality), 
-#                                          ncomp1=10, ncomp2=10, plot=FALSE),
-#       MatrixCorrelation::allCorrelations(cor(items), cor(byfacet),
-#                                          ncomp1=10, ncomp2=10, plot=FALSE),
-#       MatrixCorrelation::allCorrelations(cor(items), cor(bymodality), 
-#                                          ncomp1=10, ncomp2=10, plot=FALSE)) |>
-#       as.data.frame() |> 
-#       mutate(
-#         Comparison = c("Random vs. Facet", "Random vs. Modality", "Full vs. Facet", "Full vs. Modality"),
-#         Sample = c("Random", "Random", "Full", "Full"),
-#         Iteration = i) |> 
-#       mutate(d_PSI = diff(PSI), d_RV = diff(RV), d_RVadj = diff(RVadj), d_SMI = diff(SMI), .by="Sample") |> 
-#       rbind(rez)
-#   }
-#   rez
-# }
-# 
-# 
-# rez <- bootstrap_similarity(df)
-# 
-# rez |> 
-#   pivot_longer(-c("Comparison", "Sample", "Iteration")) |> 
-#   filter(name %in% c("PSI", "RV", "RVadj", "SMI")) |> 
-#   mutate(side = ifelse(str_detect(Comparison, "Facet"), "left", "right")) |> 
-#   ggplot(aes(x=name, y=value, fill=Comparison, color=Comparison)) +
-#   ggdist::stat_halfeye(aes(side=side), position=position_dodge(width=0.3), alpha=0.7) +
-#   facet_wrap(~Sample) +
-#   scale_fill_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
-#   scale_color_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
-#   labs(x="Indices of Correlation Matrix Difference", y="Similarity") +
-#   theme_minimal()
-# 
-# rez |> 
-#   pivot_longer(-c("Comparison", "Sample", "Iteration")) |> 
-#   filter(str_detect(name, "d_") & str_detect(Comparison, "Facet")) |> 
-#   ggplot(aes(x=name, y=value)) +
-#   ggdist::stat_eye(aes(fill = after_stat(y < 0))) +
-#   facet_wrap(~Sample) +
-#   geom_hline(yintercept=0, linetype="dashed") +
-#   labs(x="Indices of Correlation Matrix Difference", y="Similarity Difference") +
-#   theme_minimal() +
-#   scale_fill_manual(values=c("TRUE"="#F44336", "FALSE"="#2196F3"), guide="none")
+bootstrap_similarity <- function(df) {
+  rez <- data.frame()
+  for(i in 1:200) {
+    idx <- sample(1:nrow(df), nrow(df), replace=TRUE)
+    newdata <- df[idx,]
+    items <- select(df, contains("_Q"))
+    byfacet <- items[newdata$Condition=="Dimensions",]
+    bymodality <- items[newdata$Condition=="Domains",]
+    byrandom <- items[newdata$Condition=="Random",]
+
+    rez <- rbind(
+      MatrixCorrelation::allCorrelations(cor(byrandom), cor(byfacet),
+                                         ncomp1=10, ncomp2=10, plot=FALSE),
+      MatrixCorrelation::allCorrelations(cor(byrandom), cor(bymodality),
+                                         ncomp1=10, ncomp2=10, plot=FALSE),
+      MatrixCorrelation::allCorrelations(cor(items), cor(byfacet),
+                                         ncomp1=10, ncomp2=10, plot=FALSE),
+      MatrixCorrelation::allCorrelations(cor(items), cor(bymodality),
+                                         ncomp1=10, ncomp2=10, plot=FALSE)) |>
+      as.data.frame() |>
+      mutate(
+        Comparison = c("Random vs. Facet", "Random vs. Modality", "Full vs. Facet", "Full vs. Modality"),
+        Sample = c("Random", "Random", "Full", "Full"),
+        Iteration = i) |>
+      mutate(d_PSI = diff(PSI), d_RV = diff(RV), d_RVadj = diff(RVadj), d_SMI = diff(SMI), .by="Sample") |>
+      rbind(rez)
+  }
+  rez
+}
+
+
+rez <- bootstrap_similarity(df)
+
+rez |>
+  pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
+  filter(name %in% c("PSI", "RV", "RVadj", "SMI")) |>
+  mutate(side = ifelse(str_detect(Comparison, "Facet"), "left", "right")) |>
+  ggplot(aes(x=name, y=value, fill=Comparison, color=Comparison)) +
+  ggdist::stat_halfeye(aes(side=side), position=position_dodge(width=0.3), alpha=0.7) +
+  facet_wrap(~Sample) +
+  scale_fill_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
+  scale_color_manual(values=c("Random vs. Facet"="#F44336", "Random vs. Modality"="#2196F3", "Full vs. Facet"="#FF5722", "Full vs. Modality"="#00BCD4")) +
+  labs(x="Indices of Correlation Matrix Difference", y="Similarity") +
+  theme_minimal()
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+
+p_sim <- rez |>
+  pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
+  filter(str_detect(name, "d_") & str_detect(Comparison, "Facet")) |>
+  filter(Sample == "Random") |> 
+  ggplot(aes(x=value, y=name)) +
+  ggdist::stat_eye(aes(fill = after_stat(x < 0))) +
+  geom_vline(xintercept=0, linetype="dashed") +
+  labs(x="Similarity Difference", y="Indices of pattern difference",
+       title="To which matrix is the random one more similar?",
+       fill="More similar to") +
+  theme_minimal() +
+  scale_fill_manual(values=c("TRUE"="#F44336", "FALSE"="#2196F3"), labels = c("By modality", "By facet"))
+
+
+r <- correlation::cor_sort(cor(byrandom))
+order <- colnames(r)
+
+make_corplot <- function(data, order) {
+  rownames_to_column(as.data.frame(cor(data)), "item") |> 
+    pivot_longer(-item) |> 
+    mutate(item = fct_relevel(item, order),
+           name = fct_relevel(name, order)) |>
+    ggplot(aes(x=name, y=item, fill=value)) +
+    geom_tile() +
+    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    theme_minimal() +
+    theme(axis.text = element_blank(),
+          axis.title = element_blank(),
+          legend.position = "none")
+}
+
+
+p1 <- make_corplot(byrandom, order) +
+  ggtitle("Grouped randomly")
+p2 <- make_corplot(byfacet, order) +
+  ggtitle("Grouped by facet")
+p3 <- make_corplot(bymodality, order) +
+  ggtitle("Grouped by modality")
+
+p1 / (p2 | p_sim | p3) + patchwork::plot_layout(heights=c(3, 1)) + patchwork::plot_annotation(title="Effect of Item-presentation Grouping", theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
 ```
 
 ## Item Selection
@@ -321,40 +302,32 @@ Also "Dimension" / "Domains" / "Context"
 ### Unique Variable Analysis (UVA)
 
 ```{r}
+#| fig-width: 10
+#| fig-height: 8
+
 uva <- EGAnet::UVA(items, cut.off = 0.2)
-# uva
 
-toremove_table <- rbind(
-  data.frame(
-  Condition = "Full Sample",
-  Remove = uva$keep_remove$remove),
-  data.frame(
-  Condition = "By Facet",
-  Remove = EGAnet::UVA(byfacet, cut.off = 0.2)$keep_remove$remove),
-  data.frame(
-  Condition = "By Modality",
-  Remove = EGAnet::UVA(bymodality, cut.off = 0.2)$keep_remove$remove),
-  data.frame(
-  Condition = "Random Grouping",
-  Remove = EGAnet::UVA(byrandom, cut.off = 0.2)$keep_remove$remove)
-) |>
-  mutate(n = n(), .by=c("Remove")) |>
-  mutate(Condition = fct_relevel(Condition, "Full Sample", "By Facet", "By Modality", "Random Grouping")) |>
-  arrange(desc(n), Remove, Condition)
 
-toremove <- filter(toremove_table, Condition=="Full Sample" & n > 1)$Remove
+correlation::correlation(items[unlist(uva$redundant)],
+                         items[names(uva$redundant)]) |>
+  mutate(Parameter1 = fct_relevel(Parameter1, unlist(uva$redundant)),
+         Parameter2 = fct_relevel(Parameter2, names(uva$redundant))) |>
+  ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+  geom_tile() +
+  geom_text(aes(label=insight::format_value(r)), color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x="Removed Items", y="Kept Items", fill="Correlation")
 
-toremove_table |>
-  select(-n) |>
-  gt::gt() |>
-  gt::data_color(columns=Remove, fn=\(x) ifelse(x %in% toremove, "#FFEBEE", "white"))
+toremove1 <- uva$keep_remove$remove
 ```
 
 ```{r}
-items <- select(items, -all_of(toremove))
-byfacet <- select(byfacet, -all_of(toremove))
-bymodality <- select(bymodality, -all_of(toremove))
-byrandom <- select(byrandom, -all_of(toremove))
+items <- select(items, -all_of(toremove1))
+byfacet <- select(byfacet, -all_of(toremove1))
+bymodality <- select(bymodality, -all_of(toremove1))
+byrandom <- select(byrandom, -all_of(toremove1))
 ```
 
 ### Cluster Stability
@@ -364,13 +337,13 @@ byrandom <- select(byrandom, -all_of(toremove))
 
 ega1 <- bootEGA(
   items,
-  EGA.type = "EGA",
+  EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "louvain",  # walktrap
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
-  plot.typicalGraph=TRUE,
+  plot.typicalGraph=FALSE,
   iter=500,
   seed=3, ncores = 4)
 
@@ -378,6 +351,9 @@ save(ega1, file="models/ega1.RData")
 ```
 
 ```{r}
+#| fig-width: 10
+#| fig-height: 12
+
 load("models/ega1.RData")
 
 # EGAnet::dimensionStability(ega)
@@ -388,19 +364,19 @@ make_loadingtable <- function(x) {
   t <- as.data.frame(x) |>
     datawizard::data_addprefix("C")
   t$Cluster <- colnames(t)[max.col(t, ties.method='first')]
-  
+
   t |>
     rownames_to_column(var="Item") |>
     rowwise() |>
     mutate(Max = max(c_across(-c(Item, Cluster)))) |>
-    arrange(Cluster, desc(Max)) |> 
+    arrange(Cluster, desc(Max)) |>
     as.data.frame()
 }
 
 
-itemstability_table <- make_loadingtable(itemstability$item.stability$all.dimensions) 
+itemstability_table <- make_loadingtable(itemstability$lower_order$item.stability$all.dimensions)
 
-toremove2 <- filter(itemstability_table, Max < 0.7)$Item
+toremove2 <- filter(itemstability_table, Max < 0.8)$Item
 
 itemstability_table |>
   select(-Cluster, -Max) |>
@@ -413,7 +389,8 @@ itemstability_table |>
   gt::tab_header(
     title = gt::md("**Item Stability**"),
     subtitle = "Proportion of times an item is assigned to the same cluster"
-  )
+  ) |>
+  gt::fmt_number(columns=-Item, decimals=3)
 ```
 
 
@@ -439,7 +416,7 @@ ega2 <- bootEGA(
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
-  plot.typicalGraph=TRUE,
+  plot.typicalGraph=FALSE,
   iter=500,
   seed=3, ncores = 4)
 
@@ -447,11 +424,16 @@ save(ega2, file="models/ega2.RData")
 ```
 
 ```{r}
+#| fig-width: 10
+#| fig-height: 12
+
 load("models/ega2.RData")
 
-# itemStability(ega2)
+plot(itemStability(ega2, IS.plot=FALSE))
+```
 
-lower <- make_loadingtable(net.loads(ega2$EGA$lower_order)$std) 
+```{r}
+lower <- make_loadingtable(net.loads(ega2$EGA$lower_order)$std)
 
 toremove3 <- lower$Item[!lower$Item %in% slice_max(lower, Max, n=3, by="Cluster")$Item]
 
@@ -466,7 +448,8 @@ lower |>
   gt::tab_header(
     title = gt::md("**Item Loadings**"),
     subtitle = "Node centrality"
-  )
+  ) |>
+  gt::fmt_number(columns=-Item, decimals=3)
 ```
 
 ```{r}
@@ -505,13 +488,22 @@ load("models/ega3.RData")
 
 # itemStability(ega2)
 
-lower <- make_loadingtable(net.loads(ega3$EGA$lower_order)$std) 
-higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order)$std)) |> 
-  select(names(lower)) |> 
-  arrange(Item)
-higher$Item <- paste0("H", higher$Item) 
+higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order)$std))
+cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
+
+
+lower <- make_loadingtable(net.loads(ega3$EGA$lower_order)$std) |>
+  select(names(higher)) |>
+  mutate(Cluster = fct_relevel(Cluster, cluster_order)) |>
+  arrange(Cluster, desc(Max))
+
+higher$Item <- paste0("H", higher$Item)
+higher$Label <- paste("TODO", 1:nrow(higher))
+lower <- mutate(lower, Label = labels[Item], Item = 1:n())
+
 
 rbind(higher, lower) |>
+  datawizard::data_relocate("Label", after = "Item") |>
   select(-Cluster, -Max) |>
   gt::gt() |>
   gt::tab_row_group(
@@ -521,12 +513,45 @@ rbind(higher, lower) |>
   gt::tab_row_group(
     label = "Higher Order",
     rows = 1:nrow(higher)
-  ) |> 
+  ) |>
   gt::data_color(columns=-Item,
                  method = "numeric",
                  palette = c("red", "white", "green"),
                  domain = c(-1, 1)) |>
-  gt::data_color(columns=Item, fn=\(x) ifelse(x %in% toremove3, "#FFEBEE", "white")) |>
+  gt::tab_style(
+    style = gt::cell_text(size="small", style="italic"),
+    locations = gt::cells_body(columns="Label")
+  ) |>
+  gt::tab_style(
+    style = list(gt::cell_text(weight="bold"),
+                 gt::cell_fill(color = "#F5F5F5")),
+    locations = list(
+      gt::cells_row_groups(groups = "Item"),
+      gt::cells_row_groups(groups = "Higher Order")
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFCDD2"),
+    locations = list(
+      gt::cells_column_labels(columns = 3),
+      gt::cells_body(columns="Item", rows=c(1, 6:8))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFCCBC"),
+    locations = list(
+      gt::cells_column_labels(columns = 4),
+      gt::cells_body(columns="Item", rows=c(9:11))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFE0B2"),
+    locations = list(
+      gt::cells_column_labels(columns = 5),
+      gt::cells_body(columns="Item", rows=c(12:14))
+    )
+  ) |>
+  gt::fmt_number(columns=-Item, decimals=2) |>
   gt::tab_header(
     title = gt::md("**Item Loadings**"),
     subtitle = "Node centrality"
@@ -534,15 +559,94 @@ rbind(higher, lower) |>
 ```
 
 ```{r}
-graph <- convert2tidygraph(ega3) 
+# REMOVE ONCE https://github.com/hfgolino/EGAnet/pull/167 is merged
+convert2tidygraph <- function(EGA.object)
+{
+
+  if("bootEGA" %in% class(EGA.object)) {
+    # Bootstrapped EGA ---
+    if(!"typicalGraph" %in% names(EGA.object)) {
+      stop("The bootEGA object must contain a typicalGraph object. Set `typicalStructure=TRUE`.")
+    }
+
+    if("lower_order" %in% names(EGA.object$typicalGraph)) {
+      # Hierarchical EGA ---
+      lower_nodes <- .convert2tidygraph_nodes(EGA.object$typicalGraph$lower_order$wc)
+      lower_nodes$dimension <- paste0("L", lower_nodes$dimension)  # Discriminate from higher
+      lower_nodes$level <- "Lower"
+      higher_nodes <- .convert2tidygraph_nodes(EGA.object$typicalGraph$higher_order$wc)
+      higher_nodes$name <- paste0("L", as.numeric(higher_nodes$name))
+      higher_nodes$dimension <- paste0("H", higher_nodes$dimension)  # Discriminate from lower
+      higher_nodes$level <- "Higher"
+      nodes <- rbind(lower_nodes, higher_nodes)
+
+      lower_edges <- .convert2tidygraph_edges(EGA.object$typicalGraph$lower_order$graph)
+      higher_edges <- .convert2tidygraph_edges(EGA.object$typicalGraph$higher_order$graph)
+      higher_edges$from <- paste0("L", as.numeric(higher_edges$from))
+      higher_edges$to <- paste0("L", as.numeric(higher_edges$to))
+      edges <- rbind(lower_edges, higher_edges)
+      edges$type <- "real"
+
+      # Make edges from lower to higher order
+      for(i in 1:nrow(lower_nodes)) {
+        edges <- rbind(
+          edges,
+          data.frame(from = lower_nodes$name[i], to = lower_nodes$dimension[i], link = 1, type = "virtual")
+          )
+      }
+    } else {
+      # Non-hierarchical EGA ---
+      nodes <- .convert2tidygraph_nodes(EGA.object$typicalGraph$wc)
+      edges <- .convert2tidygraph_edges(EGA.object$typicalGraph$graph)
+    }
+
+  } else {
+    # Normal EGA ---
+    nodes <- .convert2tidygraph_nodes(EGA.object$wc)
+    edges <- .convert2tidygraph_edges(EGA.object$network)
+  }
+
+  # Return result
+  return(
+    list(
+      nodes = nodes,
+      edges = edges[edges$link != 0,]
+    )
+  )
+}
+
+
+#' @keywords internal
+#' @noRd
+.convert2tidygraph_nodes <- function(wc){
+  data.frame(
+    name = names(wc),
+    dimension = as.character(wc)
+  )
+}
+
+#' @keywords internal
+#' @noRd
+.convert2tidygraph_edges <- function(network){
+  data.frame(
+    from = rep(rownames(network), times = ncol(network)),
+    to = rep(colnames(network), each = nrow(network)),
+    link = as.vector(network)
+  )
+}
+```
+
+```{r}
+graph <- convert2tidygraph(ega3)
 
 tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |>
-  ggraph::ggraph(layout = 'graphopt') +
+  ggraph::ggraph(layout = 'mds') +
+  ggraph::geom_edge_arc(aes(edge_alpha=as.numeric(type == "virtual")), edge_width=0.2, strength=0, color="grey") +
   ggraph::geom_edge_arc(aes(edge_color = link, edge_width = abs(link), edge_alpha=as.numeric(type == "real")), strength=0.1) +
-  ggraph::geom_edge_arc(aes(edge_alpha=as.numeric(type == "virtual")), edge_width=0.1, strength=0) +
   ggraph::geom_node_point(aes(color=dimension, shape=level), size=10, alpha=0.7) +
   ggraph::geom_node_text(aes(label=name), repel=TRUE) +
   scale_edge_alpha(range = c(0, 0.9), guide="none") +
+  scale_edge_width(range = c(0.2, 3), guide="none") +
   scale_shape_manual(values=c("Higher"="square", "Lower"="circle")) +
   theme_void()
 ```
@@ -583,17 +687,43 @@ tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |>
 
 
 <!-- ```{r} -->
-<!-- EGAnet::EGM(items[, 1:60]) -->
+<!-- # EGAnet::EGM(items[, 1:60]) -->
 
 <!-- # EGAnet::EGM.compare(items[, 1:20]) -->
 
-<!-- rez <- EGAnet::network.compare(byfacet[, 1:20], bymodality[, 1:20], seed=3) -->
-<!-- plot(rez) -->
+<!-- # rez <- EGAnet::network.compare(byfacet, bymodality, seed=3) -->
+<!-- # plot(rez) -->
 <!-- ``` -->
 
-### Empirical vs. Model Scores
+
+## Empirical vs. Model Scores
 
 
 ```{r}
-EGAnet::net.scores()
+# Modelbased scores
+scores <- EGAnet::net.scores(
+  items[names(ega3$typicalGraph$lower_order$wc)],
+  A=ega3$typicalGraph$lower_order$graph,
+  wc=ega3$typicalGraph$lower_order$wc)$scores$std.scores |>
+  as.data.frame()
+names(scores) <- paste0("C", names(scores))
+
+# Empirical scores
+clusters <- data.frame(Item = names(ega3$typicalGraph$lower_order$wc),
+                       Cluster = ega3$typicalGraph$lower_order$wc) |>
+  mutate(Cluster = paste0("E", sprintf("%02d", Cluster)))
+
+empirical <- data.frame(Participant=df$Participant)
+for(c in unique(clusters$Cluster)) {
+  s <- rowMeans(items[clusters[clusters$Cluster==c, "Item"]])
+  empirical <- cbind(empirical, setNames(data.frame(x = s), c))
+}
+
+correlation::correlation(empirical, scores) |>
+  ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+  geom_tile() +
+  geom_text(aes(label=sprintf("%.2f", r)), size=3) +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+  labs(x="Empirical Scores", y="Model Scores") +
+  theme_minimal()
 ```
