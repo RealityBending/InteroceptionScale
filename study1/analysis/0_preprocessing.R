@@ -4,7 +4,7 @@ library(jsonlite)
 # path for data
 # path <- "C:/Users/asf25/Box/InteroceptionScale/"
 path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
-path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
+# path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
 
 # JsPsych experiment ------------------------------------------------------
 
@@ -86,7 +86,7 @@ checks$Prolific_ID <- alldata$Prolific_ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
-checks[checks$Prolific_ID=="672b6ad098ad5f2f5867fb6b", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
+# checks[checks$Prolific_ID=="670e851632b444a56d13cfb8", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
 
