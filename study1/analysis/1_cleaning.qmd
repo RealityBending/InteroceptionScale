@@ -1,0 +1,73 @@
+---
+title: "1_cleaning"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(easystats)
+library(ggplot2)
+library(readr)
+library(jsonlite)
+
+df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
+
+# Age demographics
+p_age <- estimate_density(df$Age) |>
+  normalize(select = y) |>
+  mutate(y = y * 86) |>  # To match the binwidth
+  ggplot(aes(x = x)) +
+  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=20) +
+  # geom_line(aes(y = y), color = "orange", linewidth=2) +
+  geom_vline(xintercept = mean(df$Age), color = "red", linewidth=1.5) +
+  # geom_label(data = data.frame(x = mean(df$Age) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Age)))) +
+  scale_fill_manual(values = c("Male"= "#64B5F6", "Female"= "#F06292", "Other"="orange")) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(title = "Age", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age") +
+  theme_modern(axis.title.space = 10) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
+p_age
+
+# Education demographics
+p_edu <- df |>
+  mutate(Education = fct_relevel(Education, "Other", "Elementary school", "High school", "Bachelor", "Master", "Doctorate")) |>
+  ggplot(aes(x = Education)) +
+  geom_bar(aes(fill = Education)) +
+  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
+
+# Discipline demographics
+p_dis <- df |>
+  ggplot(aes(x = Discipline)) +
+  geom_bar(aes(fill = Discipline)) +
+  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Discipline", y = "Number of Participants", subtitle = "Participants per discipline") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
+
+#
+```

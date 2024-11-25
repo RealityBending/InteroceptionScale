@@ -6,6 +6,7 @@ library(jsonlite)
 path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
 
+
 # JsPsych experiment ------------------------------------------------------
 
 files <- list.files(path, pattern = "*.csv")
@@ -106,3 +107,4 @@ alldata$Participant <- ids[alldata$Participant]
 # Save --------------------------------------------------------------------
 
 write.csv(alldata, "../data/rawdata_participants.csv", row.names = FALSE)
+
