@@ -1,31 +1,41 @@
 ---
-title: "1_cleaning"
-format: html
+title: "Data Cleaning"
+format: 
+  html:
+      code-fold: true
 editor: visual
 ---
 
 ```{r}
+#/ output
+
 library(tidyverse)
 library(easystats)
-library(ggplot2)
-library(readr)
-library(jsonlite)
+library(patchwork)
+library(ggside)
 
-df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
+df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
 
-# Age demographics
+```
+
+## Age and Gender
+
+```{r}
+#/ code-fold: TRUE
+
+
 p_age <- estimate_density(df$Age) |>
   normalize(select = y) |>
   mutate(y = y * 86) |>  # To match the binwidth
   ggplot(aes(x = x)) +
-  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=20) +
+  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28) +
   # geom_line(aes(y = y), color = "orange", linewidth=2) +
   geom_vline(xintercept = mean(df$Age), color = "red", linewidth=1.5) +
   # geom_label(data = data.frame(x = mean(df$Age) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Age)))) +
   scale_fill_manual(values = c("Male"= "#64B5F6", "Female"= "#F06292", "Other"="orange")) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
-  labs(title = "Age", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age") +
+  labs(title = "Age and Gender", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age and gender") +
   theme_modern(axis.title.space = 10) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
@@ -35,10 +45,18 @@ p_age <- estimate_density(df$Age) |>
     axis.title.x = element_blank()
   )
 p_age
+```
 
-# Education demographics
+## Education
+
+```{r}
+#/ code-fold: TRUE
+
+# Education 
+# did not do education disiplines 
+
 p_edu <- df |>
-  mutate(Education = fct_relevel(Education, "Other", "Elementary school", "High school", "Bachelor", "Master", "Doctorate")) |>
+  mutate(Education = fct_relevel(Education, "Secondary (technical) School", "Elementary School", "High School", "Bachelor", "Master", "Doctorate")) |>
   ggplot(aes(x = Education)) +
   geom_bar(aes(fill = Education)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
@@ -49,25 +67,63 @@ p_edu <- df |>
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(0.7)),
     axis.title.x = element_blank()
   )
 
-# Discipline demographics
-p_dis <- df |>
-  ggplot(aes(x = Discipline)) +
-  geom_bar(aes(fill = Discipline)) +
+p_edu
+
+
+# Student
+
+table(df$Student)
+```
+
+## Ethinicity
+
+```{r}
+#/ code-fold: TRUE
+# Ethnicity 
+
+p_eth <- df |>
+  mutate(Ethnicity = fct_relevel(Ethnicity,"East Asian", "Mixed", "White", "Black", "persian", "South Asian", "Hispanic/Latino")) |>
+  ggplot(aes(x = Ethnicity)) +
+  geom_bar(aes(fill = Ethnicity)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
   scale_fill_viridis_d(guide = "none") +
-  labs(title = "Discipline", y = "Number of Participants", subtitle = "Participants per discipline") +
+  labs(title = "Ethnicity", y = "Number of Participants", subtitle = "Participants per Ethnicity") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(0.8)),
+    axis.title.x = element_blank())
+    
+p_eth
+```
+
+## Residence
+
+```{r}
+
+
+# Country participants are currently living
+
+p_cou <- df |>
+  mutate(Country = fct_relevel(Country,"United Kingdom", "Ireland", "United States", "Australia")) |>
+  ggplot(aes(x = Country)) +
+  geom_bar(aes(fill = Country)) +
+  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Country of Residence", y = "Number of Participants", subtitle = "Participants per Country they are currently living") +
   theme_modern(axis.title.space = 15) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
     axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()
-  )
-
-#
+    axis.title.x = element_blank())
+    
+p_cou
 ```
