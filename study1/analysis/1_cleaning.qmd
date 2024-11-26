@@ -14,7 +14,9 @@ library(easystats)
 library(patchwork)
 library(ggside)
 
-df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
+# df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
+
+df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
 
 ```
 
@@ -30,9 +32,9 @@ p_age <- estimate_density(df$Age) |>
   ggplot(aes(x = x)) +
   geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28) +
   # geom_line(aes(y = y), color = "orange", linewidth=2) +
-  geom_vline(xintercept = mean(df$Age), color = "red", linewidth=1.5) +
+  geom_vline(xintercept = mean(df$Age), color = "pink", linewidth=1.5) +
   # geom_label(data = data.frame(x = mean(df$Age) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Age)))) +
-  scale_fill_manual(values = c("Male"= "#64B5F6", "Female"= "#F06292", "Other"="orange")) +
+  scale_fill_manual(values = c("Male"= "#64B", "Female"= "#8EB69B", "Other"="orange")) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   labs(title = "Age and Gender", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age and gender") +
@@ -126,4 +128,20 @@ p_cou <- df |>
     axis.title.x = element_blank())
     
 p_cou
+
+p_country <- dplyr::select(df, region = Country) |>
+  group_by(region) |>
+  summarize(n = n()) |>
+  right_join(map_data("world"), by = "region") |>
+  ggplot(aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = n)) +
+  scale_fill_gradientn(colors = c("#FFEB3B", "red", "purple")) +
+  labs(fill = "N") +
+  theme_void() +
+  labs(title = "Country of Residence", subtitle = "Number of participants by country")  +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2))
+  )
+p_country
 ```
