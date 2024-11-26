@@ -12,7 +12,6 @@ execute:
   cache: true
 ---
 
-
 ## Data Preparation
 
 ```{r}
@@ -27,7 +26,6 @@ library(EGAnet)
 library(tidygraph)
 library(ggraph)
 ```
-
 
 ```{r}
 #| code-fold: false
@@ -200,7 +198,6 @@ make_heatmap <- function(items, interactive=TRUE, title="Correlation Matrix") {
 
 make_heatmap(items, title="Full Sample")
 ```
-
 
 ### Similarity
 
@@ -393,7 +390,6 @@ itemstability_table |>
   gt::fmt_number(columns=-Item, decimals=3)
 ```
 
-
 ```{r}
 items <- select(items, -all_of(toremove2))
 byfacet <- select(byfacet, -all_of(toremove2))
@@ -402,8 +398,6 @@ byrandom <- select(byrandom, -all_of(toremove2))
 ```
 
 ### Item Loadings
-
-
 
 ```{r}
 #| eval: false
@@ -459,11 +453,7 @@ bymodality <- select(bymodality, -all_of(toremove3))
 byrandom <- select(byrandom, -all_of(toremove3))
 ```
 
-
-
-
 ## Structure Analysis
-
 
 ```{r}
 #| eval: false
@@ -651,53 +641,51 @@ tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |>
   theme_void()
 ```
 
-
-
-
-
 <!-- ::: {.panel-tabset} -->
 
 <!-- ### Full Sample -->
 
-
-
 <!-- ### By Dimension / Domains / Context -->
 
 <!-- ```{r} -->
+
 <!-- bydimension <- items[df$Condition=="Dimensions",] -->
 
 <!-- ega_bydimension <- EGA(bydimension[, 1:20], plot.EGA = FALSE) -->
 
 <!-- plot(ega_bydimension) -->
+
 <!-- ``` -->
 
 <!-- ### By Modalities -->
 
 <!-- ```{r} -->
+
 <!-- bymodality <- items[df$Condition=="Domains",] -->
 
 <!-- ega_bymodality <- EGA(bymodality[, 1:20], plot.EGA = FALSE) -->
 
 <!-- plot(ega_bymodality) -->
+
 <!-- ``` -->
 
 <!-- ::: -->
 
 <!-- ## Model Comparison -->
 
-
 <!-- ```{r} -->
+
 <!-- # EGAnet::EGM(items[, 1:60]) -->
 
 <!-- # EGAnet::EGM.compare(items[, 1:20]) -->
 
 <!-- # rez <- EGAnet::network.compare(byfacet, bymodality, seed=3) -->
+
 <!-- # plot(rez) -->
+
 <!-- ``` -->
 
-
 ## Empirical vs. Model Scores
-
 
 ```{r}
 # Modelbased scores

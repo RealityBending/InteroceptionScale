@@ -14,9 +14,9 @@ library(easystats)
 library(patchwork)
 library(ggside)
 
-# df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
+df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
 
-df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
+# df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
 
 ```
 
@@ -32,7 +32,7 @@ p_age <- estimate_density(df$Age) |>
   ggplot(aes(x = x)) +
   geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28) +
   # geom_line(aes(y = y), color = "orange", linewidth=2) +
-  geom_vline(xintercept = mean(df$Age), color = "pink", linewidth=1.5) +
+  geom_vline(xintercept = mean(df$Age), color = "#ca0020", linewidth=1.5) +
   # geom_label(data = data.frame(x = mean(df$Age) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Age)))) +
   scale_fill_manual(values = c("Male"= "#64B", "Female"= "#8EB69B", "Other"="orange")) +
   scale_x_continuous(expand = c(0, 0)) +
@@ -55,21 +55,22 @@ p_age
 #/ code-fold: TRUE
 
 # Education 
-# did not do education disiplines 
+# did not add education disiplines 
 
 p_edu <- df |>
   mutate(Education = fct_relevel(Education, "Secondary (technical) School", "Elementary School", "High School", "Bachelor", "Master", "Doctorate")) |>
   ggplot(aes(x = Education)) +
   geom_bar(aes(fill = Education)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
+  # scale_fill_viridis_d(guide = "none") +
   labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level") +
   theme_modern(axis.title.space = 15) +
+   scale_fill_manual(values = c("Secondary (technical) school"="#0571B0","High school"= "#d01c8b", "Bachelor"="#FDB863", "Master"="#E66101", "Doctorate" =  "#ca0020")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(0.7)),
+    axis.text.x = element_text(size = rel(0.5)),
     axis.title.x = element_blank()
   )
 
@@ -95,39 +96,47 @@ p_eth <- df |>
   scale_fill_viridis_d(guide = "none") +
   labs(title = "Ethnicity", y = "Number of Participants", subtitle = "Participants per Ethnicity") +
   theme_modern(axis.title.space = 15) +
+  scale_fill_manual(values = c("East Asian"="#0571B0","Mixed"= "#d01c8b", "White"="#FDB863", "Black"="#E66101", "persian" =  "#ca0020", "South Asian"="#5E3C99", "Hispanic/Latino"="#92C5DE")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(0.8)),
+    axis.text.x = element_text(size = rel(0.6)),
     axis.title.x = element_blank())
     
 p_eth
+
 ```
 
 ## Residence
 
 ```{r}
 
-
 # Country participants are currently living
 
 p_cou <- df |>
-  mutate(Country = fct_relevel(Country,"United Kingdom", "Ireland", "United States", "Australia")) |>
+  mutate(Country = fct_relevel(Country,"United Kingdom", "Ireland", "USA", "Australia")) |>
   ggplot(aes(x = Country)) +
   geom_bar(aes(fill = Country)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
   scale_fill_viridis_d(guide = "none") +
   labs(title = "Country of Residence", y = "Number of Participants", subtitle = "Participants per Country they are currently living") +
   theme_modern(axis.title.space = 15) +
+  scale_fill_manual(values = c("United Kingdom"="#ca0020","Ireland"= "#d01c8b", "United States"="#FDB863", "Australia"="#E66101"))+
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(0.7)),
     axis.title.x = element_blank())
     
 p_cou
+
+```
+
+```{r}
+
+# <!--Do it-->
 
 p_country <- dplyr::select(df, region = Country) |>
   group_by(region) |>
@@ -135,7 +144,7 @@ p_country <- dplyr::select(df, region = Country) |>
   right_join(map_data("world"), by = "region") |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = n)) +
-  scale_fill_gradientn(colors = c("#FFEB3B", "red", "purple")) +
+  scale_fill_gradientn(colors = c("#E66101", "#ca0020", "#d01c8b")) +
   labs(fill = "N") +
   theme_void() +
   labs(title = "Country of Residence", subtitle = "Number of participants by country")  +
@@ -144,4 +153,46 @@ p_country <- dplyr::select(df, region = Country) |>
     plot.subtitle = element_text(size = rel(1.2))
   )
 p_country
+```
+
+```{r}
+
+table(df$Country)
+```
+
+```{r}
+
+dplyr::select(df, region = Country) |>
+  group_by(region) |>
+  summarize(n = n()) |>
+  right_join(map_data("world"), by = "region") |>
+  ggplot(aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = n))
+
+```
+
+```{r}
+
+p_feed <- estimate_density(df$Experiment_Enjoyment) |>
+  normalize(select = y) |>
+  mutate(y = y * 86) |>  # To match the binwidth
+  ggplot(aes(x = x)) +
+  geom_bar(data=df, aes(x = Experiment_Enjoyment, fill = Condition), bins=28) +
+  scale_fill_manual(values = c("Dimensions"= "#E66101","Domains" = "#ca0020", "Random"="#d01c8b")) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(title = "Experiment Enjoyment and Condition", y = "Number of Participants", color = NULL, x = "Ratings of enjoyment on a scale 1-5", subtitle = "Distribution of Participants' Experiment Enjoyment and Condition") +
+  # geom_label(data = data.frame(x = mean(df$Experiment_Enjoyment) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Experiment_Enjoyment)))) +
+  theme_modern(axis.title.space = 10) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
+p_feed
+
+  #geom_line(aes(y = y), color = "orange", linewidth=2) +
+#geom_vline(xintercept = mean(df$Experiment_Enjoyment), color = "#ca0020", linewidth=1.5) +
 ```
