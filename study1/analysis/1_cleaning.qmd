@@ -96,7 +96,7 @@ p_eth <- df |>
   scale_fill_viridis_d(guide = "none") +
   labs(title = "Ethnicity", y = "Number of Participants", subtitle = "Participants per Ethnicity") +
   theme_modern(axis.title.space = 15) +
-  scale_fill_manual(values = c("East Asian"="#0571B0","Mixed"= "#d01c8b", "White"="#FDB863", "Black"="#E66101", "persian" =  "#ca0020", "South Asian"="#5E3C99", "Hispanic/Latino"="#92C5DE")) +
+  scale_fill_manual(values = c("East Asian"="#0571B0","Mixed"= "#d01c8b", "White"="#cc66cc", "Black"="#E66101", "persian" =  "#ca0020", "South Asian"="#5E3C99", "Hispanic/Latino"="#92C5DE")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
@@ -138,13 +138,20 @@ p_cou
 
 # <!--Do it-->
 
-p_country <- dplyr::select(df, region = Country) |>
+p_country <- df |>
+  mutate(Country = case_when(
+    Country=="United States"~ "USA",
+    Country=="United Kingdom" ~ "UK",
+    TRUE ~ Country
+  ))|>
+  dplyr::select(region = Country) |>
   group_by(region) |>
   summarize(n = n()) |>
   right_join(map_data("world"), by = "region") |>
+  # mutate(n = replace_na(n, 0)) |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = n)) +
-  scale_fill_gradientn(colors = c("#E66101", "#ca0020", "#d01c8b")) +
+  scale_fill_gradientn(colors = c("#E66101", "#ca0020", "#cc66cc")) +
   labs(fill = "N") +
   theme_void() +
   labs(title = "Country of Residence", subtitle = "Number of participants by country")  +
@@ -152,23 +159,26 @@ p_country <- dplyr::select(df, region = Country) |>
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2))
   )
+
 p_country
+
+```
+
+```{r}
+# Create mapping from df's country names to world_map's country names. I think the map is not working because the names do not match. 
+
+country_mapping <- data.frame(
+  df_name = c("United States", "United Kingdom"),
+  world_map = c("USA", "UK") 
+)
+
+country_mapping
+
 ```
 
 ```{r}
 
 table(df$Country)
-```
-
-```{r}
-
-dplyr::select(df, region = Country) |>
-  group_by(region) |>
-  summarize(n = n()) |>
-  right_join(map_data("world"), by = "region") |>
-  ggplot(aes(long, lat, group = group)) +
-  geom_polygon(aes(fill = n))
-
 ```
 
 ```{r}
@@ -181,15 +191,16 @@ p_feed <- estimate_density(df$Experiment_Enjoyment) |>
   scale_fill_manual(values = c("Dimensions"= "#E66101","Domains" = "#ca0020", "Random"="#d01c8b")) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
-  labs(title = "Experiment Enjoyment and Condition", y = "Number of Participants", color = NULL, x = "Ratings of enjoyment on a scale 1-5", subtitle = "Distribution of Participants' Experiment Enjoyment and Condition") +
+  labs(title = "Experiment Enjoyment and Condition", y = "Number of Participants", fill = " ", x = "Ratings of enjoyment on a scale 1-5", subtitle = "Distribution of Participants' Experiment Enjoyment and Condition") +
   # geom_label(data = data.frame(x = mean(df$Experiment_Enjoyment) * 1.15, y = 0.95 * 75), aes(y = y), color = "red", label = paste0("Mean = ", format_value(mean(df$Experiment_Enjoyment)))) +
+  facet_wrap(~Condition) +
   theme_modern(axis.title.space = 10) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
     axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()
+    #axis.title.x = element_blank()
   )
 p_feed
 
