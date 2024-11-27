@@ -1,5 +1,5 @@
 library(jsonlite)
-
+library(progress)
 
 # path for data
 # path <- "C:/Users/asf25/Box/InteroceptionScale/"
@@ -11,9 +11,12 @@ path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 
 files <- list.files(path, pattern = "*.csv")
 
+# Progress bar
+progbar <- progress_bar$new(total = length(files))
+
 alldata <- data.frame()
 for (file in files) {
-  cat(".")
+  progbar$tick()
   rawdata <- read.csv(paste0(path, "/", file))
 
   # Initialize participant-level data
