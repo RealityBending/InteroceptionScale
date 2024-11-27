@@ -204,3 +204,45 @@ p_feed
   #geom_line(aes(y = y), color = "orange", linewidth=2) +
 #geom_vline(xintercept = mean(df$Experiment_Enjoyment), color = "#ca0020", linewidth=1.5) +
 ```
+
+## Attention Checks
+
+```{r}
+df <- df |>
+  dplyr::mutate(
+    A1 = dplyr::case_when(
+      Sexual_State_A == 6 | Sexual_State_A == 5 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A2 = dplyr::case_when(
+      Anxious_SkinThermo_A == 0 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A3 = dplyr::case_when(
+      Nociception_ColonBladder_A == 0 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A4 = dplyr::case_when(
+      Sensitivity_Cardiac_A == 6 | Sensitivity_Cardiac_A == 5 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A5 = dplyr::case_when(
+      Sensitivity_Gastric_A == 6 | Sensitivity_Gastric_A == 5 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A6 = dplyr::case_when(
+      Accuracy_Respiratory_A == 0 | Accuracy_Respiratory_A == 1 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A7 = dplyr::case_when(
+      Accuracy_Genital_A == 0 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+    A8 = dplyr::case_when(
+      Confusion_ColonBladder_A == 6 ~ "Pass",
+      TRUE ~ "Fail"
+    ),
+  )
+
+df
+```
