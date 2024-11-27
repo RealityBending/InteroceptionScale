@@ -176,10 +176,14 @@ country_mapping
 
 ```
 
+<<<<<<< Updated upstream
 ```{r}
 
 table(df$Country)
 ```
+=======
+## Experiment Enjoyment
+>>>>>>> Stashed changes
 
 ```{r}
 
@@ -187,7 +191,7 @@ p_feed <- estimate_density(df$Experiment_Enjoyment) |>
   normalize(select = y) |>
   mutate(y = y * 86) |>  # To match the binwidth
   ggplot(aes(x = x)) +
-  geom_bar(data=df, aes(x = Experiment_Enjoyment, fill = Condition), bins=28) +
+  geom_bar(data=df, aes(x = Experiment_Enjoyment, fill = Condition), position = position_dodge(0.9), size = 3.5, bins=28) +
   scale_fill_manual(values = c("Dimensions"= "#E66101","Domains" = "#ca0020", "Random"="#d01c8b")) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
