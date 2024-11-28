@@ -17,24 +17,18 @@ format:
 #| code-fold: true
 #| error: false
 
-
 library(tidyverse)
 library(easystats)
 library(patchwork)
 library(ggside)
-```
-```{r}
-#| warning: false
-#| code-fold: true
-#| error: false
-
-# Load the data
 
 # df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
 
-df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
-```
+# df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
 
+df <- read.csv("https://raw.githubusercontent.com/RealityBending/InteroceptionScale/refs/heads/main/study1/data/rawdata_participants.csv")
+
+```
 
 ## Attention Checks
 
@@ -46,49 +40,48 @@ df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/
 df <- df |>
   dplyr::mutate(
     A1 = dplyr::case_when(
+      # "I always know that I am attentively doing a study"
       Sexual_State_A == 6 | Sexual_State_A == 5 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A2 = dplyr::case_when(
+      # "Even if I am anxious, I should now answer all the way to the left"
       Anxious_SkinThermo_A == 0 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A3 = dplyr::case_when(
+      # "I often experience sensations, and I will answer zero to this question"
       Nociception_ColonBladder_A == 0 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A4 = dplyr::case_when(
+      # "In general, I am very sensitive and attentive to the questions I am       currently answering"
       Sensitivity_Cardiac_A == 6 | Sensitivity_Cardiac_A == 5 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A5 = dplyr::case_when(
+      # "I often pay attention to the answers I am giving"
       Sensitivity_Gastric_A == 6 | Sensitivity_Gastric_A == 5 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A6 = dplyr::case_when(
+      # "I can always accurately answer to the left on this question to show that I am reading it" 
       Accuracy_Respiratory_A == 0 | Accuracy_Respiratory_A == 1 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A7 = dplyr::case_when(
+      # "I can always accurately perceive that to this question I should answer the lowest option"
       Accuracy_Genital_A == 0 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
     A8 = dplyr::case_when(
+      #  "Sometimes I notice that I need to answer all the way to the right"
       Confusion_ColonBladder_A == 6 ~ "Pass",
-      TRUE ~ "Fail"
-    ),
+      TRUE ~ "Fail"),
   )
 
-df$count.Fail <- apply(df[, c("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")], 1, function(x) length(which(x == "Fail")))
+# Create colum with the total number of Failed attention checks 
+df$Total_Attention_Failed <- apply(df[, c("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")], 1, function(x) sum((x == "Fail")))
 
 p_fail <- df |>
-  ggplot(aes(x = count.Fail)) +
-  geom_bar(aes(fill = count.Fail)) +
-  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  # scale_fill_viridis_d(guide = "none") +
+  ggplot(aes(x = Total_Attention_Failed)) +
+  geom_bar(aes(fill = factor(Total_Attention_Failed))) +
+  scale_fill_viridis_d(guide = "none") +
   labs(title = "Failed Attention Checks", y = "Number of Participants", subtitle = "Number of failed attention checks per participant") +
   theme_modern(axis.title.space = 15) +
-   scale_fill_manual(values = c("0"="#0571B0","1"= "#d01c8b", "2"="#cc66cc", "3"="#E66101", "4" =  "#ca0020", "5"="#5E3C99", "6"="#92C5DE")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
@@ -99,9 +92,18 @@ p_fail <- df |>
 
 p_fail
 
-df <- df |> filter(count.Fail == 0)
 ```
 
+
+```{r}
+
+removed_participants <- nrow(df |> filter(Total_Attention_Failed >= 1))
+
+df <- df |>
+  filter(Total_Attention_Failed == 0)
+```
+
+`r removed_participants` participants were removed for having failed at least 1 attention check. 
 
 ## Experiment Enjoyment
 
@@ -115,7 +117,7 @@ p_feed <- estimate_density(df$Experiment_Enjoyment) |>
   mutate(y = y * 86) |>  # To match the binwidth
   ggplot(aes(x = x)) +
   geom_bar(data=df, aes(x = Experiment_Enjoyment, fill = Condition), bins=28) +
-  scale_fill_manual(values = c("Dimensions"= "#E66101","Domains" = "#ca0020", "Random"="#d01c8b")) +
+  scale_fill_manual(values = c("Dimensions"= "#ff944d","Domains" = "#ca0020", "Random"="#ff80d5")) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   labs(title = "Experiment Enjoyment and Condition", y = "Number of Participants", fill = " ", x = "Ratings of enjoyment on a scale 1-5", subtitle = "Distribution of Participants' Experiment Enjoyment and Condition") +
@@ -131,15 +133,21 @@ p_feed
 
 ```
 
-
 ## Final Sample
 
+::: panel-tabset
 
-::: {.panel-tabset}
+## Summary 
+
+-The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
 ## Age and Gender
 
 ```{r p_demographics_age_gender}
+#| warning: false
+#| code-fold: true
+#| error: false
+
 p_age <- estimate_density(df$Age) |>
   normalize(select = y) |>
   mutate(y = y * 86) |>  # To match the binwidth
@@ -155,23 +163,26 @@ p_age <- estimate_density(df$Age) |>
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),)
-```
 
+p_age
+```
 
 ## Education
 
 ```{r p_demographics_education}
+#| warning: false
+#| code-fold: true
+#| error: false
+
 # Did not add education disciplines 
 
 p_edu <- df |>
-  mutate(Education = fct_relevel(Education, "Secondary (technical) School", "Elementary School", "High School", "Bachelor", "Master", "Doctorate")) |>
   ggplot(aes(x = Education)) +
   geom_bar(aes(fill = Education)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
   scale_fill_viridis_d(guide = "none") +
   labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level") +
   theme_modern(axis.title.space = 15) +
-  # scale_fill_manual(values = c("Secondary (technical) school"="#0571B0","High school"= "#d01c8b", "Bachelor"="#FDB863", "Master"="#E66101", "Doctorate" =  "#ca0020")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
@@ -184,23 +195,27 @@ p_edu
 
 
 # Student
-
-table(df$Student)
+table(df$Student) |>
+  as.data.frame() |>
+  rename(Student = Var1, Frequency = Freq) |>
+  knitr::kable()
 ```
-
 
 ## Ethinicity
 
 ```{r p_demographics_ethnicity}
+#| warning: false
+#| code-fold: true
+#| error: false
+
+
 p_eth <- df |>
-  mutate(Ethnicity = fct_relevel(Ethnicity,"East Asian", "Mixed", "White", "Black", "persian", "South Asian", "Hispanic/Latino")) |>
   ggplot(aes(x = Ethnicity)) +
   geom_bar(aes(fill = Ethnicity)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
   scale_fill_viridis_d(guide = "none") +
   labs(title = "Ethnicity", y = "Number of Participants", subtitle = "Participants per Ethnicity") +
   theme_modern(axis.title.space = 15) +
-  scale_fill_manual(values = c("East Asian"="#0571B0","Mixed"= "#d01c8b", "White"="#cc66cc", "Black"="#E66101", "persian" =  "#ca0020", "South Asian"="#5E3C99", "Hispanic/Latino"="#92C5DE")) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
@@ -215,26 +230,32 @@ p_eth
 ## Country of Residence
 
 ```{r p_demographics_country}
+#| warning: false
+#| code-fold: true
+#| error: false
+
 p_cou <- df |>
- mutate(Country = fct_relevel(Country,"United Kingdom", "Ireland", "USA", "Australia")) |>
  ggplot(aes(x = Country)) +
  geom_bar(aes(fill = Country)) +
  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
  scale_fill_viridis_d(guide = "none") +
  labs(title = "Country of Residence", y = "Number of Participants", subtitle = "Participants per Country they are currently living") +
  theme_modern(axis.title.space = 15) +
- scale_fill_manual(values = c("United Kingdom"="#ca0020","Ireland"= "#d01c8b", "United States"="#FDB863", "Australia"="#E66101"))+
  theme(
    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
    axis.text.y = element_text(size = rel(1.1)),
-   axis.text.x = element_text(size = rel(0.7)),
+   axis.text.x = element_text(size = rel(0.7), angle = 45, hjust = 1),
    axis.title.x = element_blank())
 
 p_cou
 ```
 
 ```{r p_demographics_map}
+#| warning: false
+#| code-fold: true
+#| error: false
+
 p_map <- df |>
   mutate(Country = case_when(
     Country=="United States"~ "USA",
@@ -259,32 +280,18 @@ p_map <- df |>
 
 p_map
 ```
+:::
 
-```{r}
+```{r p_summary}
 #| warning: false
 #| code-fold: true
 #| error: false
 
-# Create mapping from df's country names to world_map's country names. I think the map is not working because the names do not match. 
 
-country_mapping <- data.frame(
-  df_name = c("United States", "United Kingdom"),
-  world_map = c("USA", "UK") 
-)
-
-country_mapping
-
+p_map 
+p_age 
+p_edu
 ```
-:::
-
-```{r p_summary}
-#| fig-width: 15
-#| fig-height: 15
-
-p_map / 
-  (p_age + p_edu)
-```
-
 
 ## Save
 
