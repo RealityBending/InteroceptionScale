@@ -14,7 +14,7 @@ format:
 
 ```{r}
 #| warning: false
-#| code-fold: true
+#| code-fold: false
 #| error: false
 
 library(tidyverse)
@@ -22,94 +22,17 @@ library(easystats)
 library(patchwork)
 library(ggside)
 
-# df <- read_csv("C:/Users/maisi/OneDrive/Placement/InteroceptionScale/study1/data/rawdata_participants.csv") 
-
-# df <- read_csv("C:/Users/emmal/OneDrive - University of Sussex/GitHub/Placement/InteroceptionScale/study1/data/rawdata_participants.csv")
-
-df <- read.csv("https://raw.githubusercontent.com/RealityBending/InteroceptionScale/refs/heads/main/study1/data/rawdata_participants.csv")
-
+df <- read.csv("../data/rawdata_participants.csv")
 ```
 
-## Attention Checks
+## Feedback
+
+
+### Experiment Enjoyment
 
 ```{r}
 #| warning: false
-#| code-fold: true
-#| error: false
 
-df <- df |>
-  dplyr::mutate(
-    A1 = dplyr::case_when(
-      # "I always know that I am attentively doing a study"
-      Sexual_State_A == 6 | Sexual_State_A == 5 ~ "Pass",
-      TRUE ~ "Fail"),
-    A2 = dplyr::case_when(
-      # "Even if I am anxious, I should now answer all the way to the left"
-      Anxious_SkinThermo_A == 0 ~ "Pass",
-      TRUE ~ "Fail"),
-    A3 = dplyr::case_when(
-      # "I often experience sensations, and I will answer zero to this question"
-      Nociception_ColonBladder_A == 0 ~ "Pass",
-      TRUE ~ "Fail"),
-    A4 = dplyr::case_when(
-      # "In general, I am very sensitive and attentive to the questions I am       currently answering"
-      Sensitivity_Cardiac_A == 6 | Sensitivity_Cardiac_A == 5 ~ "Pass",
-      TRUE ~ "Fail"),
-    A5 = dplyr::case_when(
-      # "I often pay attention to the answers I am giving"
-      Sensitivity_Gastric_A == 6 | Sensitivity_Gastric_A == 5 ~ "Pass",
-      TRUE ~ "Fail"),
-    A6 = dplyr::case_when(
-      # "I can always accurately answer to the left on this question to show that I am reading it" 
-      Accuracy_Respiratory_A == 0 | Accuracy_Respiratory_A == 1 ~ "Pass",
-      TRUE ~ "Fail"),
-    A7 = dplyr::case_when(
-      # "I can always accurately perceive that to this question I should answer the lowest option"
-      Accuracy_Genital_A == 0 ~ "Pass",
-      TRUE ~ "Fail"),
-    A8 = dplyr::case_when(
-      #  "Sometimes I notice that I need to answer all the way to the right"
-      Confusion_ColonBladder_A == 6 ~ "Pass",
-      TRUE ~ "Fail"),
-  )
-
-# Create colum with the total number of Failed attention checks 
-df$Total_Attention_Failed <- apply(df[, c("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")], 1, function(x) sum((x == "Fail")))
-
-p_fail <- df |>
-  ggplot(aes(x = Total_Attention_Failed)) +
-  geom_bar(aes(fill = factor(Total_Attention_Failed))) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Failed Attention Checks", y = "Number of Participants", subtitle = "Number of failed attention checks per participant") +
-  theme_modern(axis.title.space = 15) +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(0.5)),
-    axis.title.x = element_blank()
-  )
-
-p_fail
-
-```
-
-
-```{r}
-
-removed_participants <- nrow(df |> filter(Total_Attention_Failed >= 1))
-
-df <- df |>
-  filter(Total_Attention_Failed == 0)
-```
-
-`r removed_participants` participants were removed for having failed at least 1 attention check. 
-
-## Experiment Enjoyment
-
-```{r}
-#| warning: false
-#| code-fold: true
 #| error: false
 
 p_feed <- estimate_density(df$Experiment_Enjoyment) |>
@@ -133,6 +56,100 @@ p_feed
 
 ```
 
+**TODO: Add feedback comments table**
+
+## Exclusions
+
+```{r}
+outliers <- list()
+```
+
+### Attention Checks
+
+```{r}
+#| warning: false
+#| error: false
+
+dfchecks <- df |>
+  dplyr::mutate(
+    # "I always know that I am attentively doing a study"
+    A1 = ifelse(Sexual_State_A == 6 | Sexual_State_A == 5, 0, 1),
+    # "Even if I am anxious, I should now answer all the way to the left"
+    A2 = ifelse(Anxious_SkinThermo_A == 0, 0, 1),
+    # "I often experience sensations, and I will answer zero to this question"
+    A3 = ifelse(Nociception_ColonBladder_A == 0, 0, 1),
+    # "In general, I am very sensitive and attentive to the questions I am currently answering"
+    A4 = ifelse(Sensitivity_Cardiac_A == 6 | Sensitivity_Cardiac_A == 5, 0, 1),
+    # "I often pay attention to the answers I am giving"
+    A5 = ifelse(Sensitivity_Gastric_A == 6 | Sensitivity_Gastric_A == 5, 0, 1),
+    # "I can always accurately answer to the left on this question to show that I am reading it"
+    A6 = ifelse(Accuracy_Respiratory_A == 0 | Accuracy_Respiratory_A == 1, 0, 1),
+    # "I can always accurately perceive that to this question I should answer the lowest option"
+    A7 = ifelse(Accuracy_Genital_A == 0, 0, 1),
+    # "Sometimes I notice that I need to answer all the way to the right"
+    A8 = ifelse(Confusion_ColonBladder_A == 6, 0, 1),
+    .keep = "none"
+  ) 
+dfchecks$Total <- rowSums(dfchecks)
+
+
+dfchecks |>
+  mutate(Total = as.factor(paste0(Total, "/8"))) |> 
+  ggplot(aes(x = Total)) +
+  geom_bar(aes(fill = Total)) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Failed Attention Checks", y = "Number of Participants", subtitle = "Number of failed attention checks per participant") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.title.x = element_blank(),
+  )
+```
+
+
+```{r}
+outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
+```
+
+We removed `r length(outliers$attentionchecks)` (`insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8). 
+
+### Mahalanobis Distance
+
+```{r}
+# Compute distance
+dfoutlier <- performance::check_outliers(select(df, contains("_Q")), 
+                                         method=c("lof"),
+                                         threshold=list(lof = 0.0001)) |> 
+  as.data.frame() |> 
+  mutate(Participant = fct_reorder(df$Participant, Distance_LOF),
+         Outlier_AttentionCheck = ifelse(Participant %in% outliers$attentionchecks, 1, 0),
+         Outlier = ifelse(Outlier_LOF == 1, "Distance Outlier", "Valid"),
+         Outlier = ifelse(Outlier_AttentionCheck == 1, "Failed Attention Check", Outlier))
+
+# parameters::parameters(glm(Outlier_AttentionCheck ~ Distance_LOF, data = dfoutlier, family = "binomial"))
+
+outliers$distance <- as.character(dfoutlier[dfoutlier$Outlier_LOF == 1, "Participant"])
+outliers$distance <- outliers$distance[!outliers$distance %in% outliers$attentionchecks]
+
+dfoutlier |> 
+  ggplot(aes(x=Participant, y=Distance_LOF)) +
+  geom_bar(aes(fill=Outlier), stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+```
+
+**TODO: Add a little paragraph explaining what it is etc.**
+We removed `r length(outliers$distance)` (`insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance. 
+
+
+```{r}
+df <- filter(df, !Participant %in% outliers$attentionchecks)
+df <- filter(df, !Participant %in% outliers$distance)
+```
+
+
+
 ## Final Sample
 
 ::: panel-tabset
@@ -145,7 +162,7 @@ p_feed
 
 ```{r p_demographics_age_gender}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 p_age <- estimate_density(df$Age) |>
@@ -171,7 +188,7 @@ p_age
 
 ```{r p_demographics_education}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 # Did not add education disciplines 
@@ -205,7 +222,7 @@ table(df$Student) |>
 
 ```{r p_demographics_ethnicity}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 
@@ -231,7 +248,7 @@ p_eth
 
 ```{r p_demographics_country}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 p_cou <- df |>
@@ -253,7 +270,7 @@ p_cou
 
 ```{r p_demographics_map}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 p_map <- df |>
@@ -284,7 +301,7 @@ p_map
 
 ```{r p_summary}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 
@@ -297,7 +314,7 @@ p_edu
 
 ```{r}
 #| warning: false
-#| code-fold: true
+
 #| error: false
 
 write.csv(df, "../data/data_participants.csv", row.names = FALSE)
