@@ -8,6 +8,7 @@ format:
     code-fold: true
     self-contained: false
     toc: true
+bibliography: references.bib
 ---
 
 ## Data Preparation
@@ -26,7 +27,6 @@ df <- read.csv("../data/rawdata_participants.csv")
 ```
 
 ## Feedback
-
 
 ### Experiment Enjoyment
 
@@ -56,7 +56,16 @@ p_feed
 
 ```
 
-**TODO: Add feedback comments table**
+### Comments
+
+```{r}
+data.frame(Condition = df$Condition,
+          Comments = df$Experiment_Feedback) |> 
+  filter(!tolower(Comments) %in% c(NA, "None", "no", "none", "No thank you", "no thank you", "no not at all", "no thanks", "No comment", "No", "nil", "N.A", "n/a", "N/A", "na", "Not Really")) |> 
+  gt::gt() |> 
+  gt::opt_stylize() |> 
+  gt::opt_interactive(use_compact_mode = TRUE) 
+```
 
 ## Exclusions
 
@@ -107,12 +116,11 @@ dfchecks |>
   )
 ```
 
-
 ```{r}
 outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
 ```
 
-We removed `r length(outliers$attentionchecks)` (`insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8). 
+We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8).
 
 ### Mahalanobis Distance
 
@@ -139,22 +147,21 @@ dfoutlier |>
   theme(axis.text.x = element_blank())
 ```
 
-**TODO: Add a little paragraph explaining what it is etc.**
-We removed `r length(outliers$distance)` (`insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance. 
+Mahalanobis distance [@demaesschalck2000] is commonly used to detect multivariate outliers, which are data points with unusual combinations of scores on two or more variables [@filzmoser2016]. This distance is calculated relative to the centroid—a central point where the means of all variables intersect—with larger distances indicating greater deviation from the center.
 
+This measure takes into account correlations within the dataset, which is especially useful when trying to refine and validate a questionnaire with overlapping itmes.
+
+We removed `r length(outliers$distance)` (`r insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance.
 
 ```{r}
 df <- filter(df, !Participant %in% outliers$attentionchecks)
 df <- filter(df, !Participant %in% outliers$distance)
 ```
 
-
-
 ## Final Sample
 
 ::: panel-tabset
-
-## Summary 
+## Summary
 
 -The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
