@@ -73,7 +73,6 @@ for (file in files) {
 }
 
 
-alldata[is.na(alldata$Prolific_ID), ]
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
   Sexual_State_A = alldata$Sexual_State_A / 6,
@@ -90,7 +89,7 @@ checks$Prolific_ID <- alldata$Prolific_ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
-# checks[checks$Prolific_ID=="670e851632b444a56d13cfb8", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
+# checks[checks$Prolific_ID=="60f059aff7f931e2d83bacb5", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
 

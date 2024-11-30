@@ -22,6 +22,7 @@ library(tidyverse)
 library(easystats)
 library(patchwork)
 library(ggside)
+library(ggdist)
 
 df <- read.csv("../data/rawdata_participants.csv")
 ```
@@ -31,37 +32,35 @@ df <- read.csv("../data/rawdata_participants.csv")
 ### Experiment Enjoyment
 
 ```{r}
-#| warning: false
+df |> 
+  summarise(n = n(), .by=c("Condition", "Experiment_Enjoyment")) |>
+  filter(!is.na(Experiment_Enjoyment)) |> 
+  mutate(n = n / sum(n),
+         Experiment_Enjoyment = fct_rev(as.factor(Experiment_Enjoyment)),
+         .by="Condition") |>
+  ggplot(aes(y = Condition, x = n, fill = Experiment_Enjoyment)) +
+  geom_bar(stat="identity", position="stack") +
+  scale_fill_manual(values=c("green", "yellowgreen",  "yellow", "orange", "red")) +
+  scale_x_continuous(expand=c(0, 0))  +
+  labs(title="Experiment Enjoyment",
+       subtitle="Proportion of participants by condition") + 
+  guides(fill = guide_legend(reverse=TRUE)) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "top",
+        legend.title = element_blank())
 
-#| error: false
-
-p_feed <- estimate_density(df$Experiment_Enjoyment) |>
-  normalize(select = y) |>
-  mutate(y = y * 86) |>  # To match the binwidth
-  ggplot(aes(x = x)) +
-  geom_bar(data=df, aes(x = Experiment_Enjoyment, fill = Condition), bins=28) +
-  scale_fill_manual(values = c("Dimensions"= "#ff944d","Domains" = "#ca0020", "Random"="#ff80d5")) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0)) +
-  labs(title = "Experiment Enjoyment and Condition", y = "Number of Participants", fill = " ", x = "Ratings of enjoyment on a scale 1-5", subtitle = "Distribution of Participants' Experiment Enjoyment and Condition") +
-  facet_wrap(~Condition) +
-  theme_modern(axis.title.space = 10) +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
-  )
-p_feed
-
+lm(Experiment_Enjoyment ~ Condition, data = df) |> 
+  modelbased::estimate_contrasts(p_adjust="none", contrast = "Condition") |> 
+  display()
 ```
 
 ### Comments
 
 ```{r}
-data.frame(Condition = df$Condition,
-          Comments = df$Experiment_Feedback) |> 
-  filter(!tolower(Comments) %in% c(NA, "None", "no", "none", "No thank you", "no thank you", "no not at all", "no thanks", "No comment", "No", "nil", "N.A", "n/a", "N/A", "na", "Not Really")) |> 
+data.frame(Comments = df$Experiment_Feedback) |> 
+  filter(!tolower(Comments) %in% c(NA, "no", "none", "no thank you", "no not at all", "no thanks", "no comment", "nil", "n.a", "n/a", "na", "not really", "thank you", "nothing", "no not at the moment", "none for now", "thank you!", "thanks", "not really.")) |> 
   gt::gt() |> 
   gt::opt_stylize() |> 
   gt::opt_interactive(use_compact_mode = TRUE) 
@@ -76,9 +75,6 @@ outliers <- list()
 ### Attention Checks
 
 ```{r}
-#| warning: false
-#| error: false
-
 dfchecks <- df |>
   dplyr::mutate(
     # "I always know that I am attentively doing a study"
@@ -122,7 +118,7 @@ outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
 
 We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8).
 
-### Mahalanobis Distance
+### Multivariate Distance
 
 ```{r}
 # Compute distance
@@ -135,7 +131,6 @@ dfoutlier <- performance::check_outliers(select(df, contains("_Q")),
          Outlier = ifelse(Outlier_LOF == 1, "Distance Outlier", "Valid"),
          Outlier = ifelse(Outlier_AttentionCheck == 1, "Failed Attention Check", Outlier))
 
-# parameters::parameters(glm(Outlier_AttentionCheck ~ Distance_LOF, data = dfoutlier, family = "binomial"))
 
 outliers$distance <- as.character(dfoutlier[dfoutlier$Outlier_LOF == 1, "Participant"])
 outliers$distance <- outliers$distance[!outliers$distance %in% outliers$attentionchecks]
@@ -149,13 +144,37 @@ dfoutlier |>
 
 Mahalanobis distance [@demaesschalck2000] is commonly used to detect multivariate outliers, which are data points with unusual combinations of scores on two or more variables [@filzmoser2016]. This distance is calculated relative to the centroid—a central point where the means of all variables intersect—with larger distances indicating greater deviation from the center.
 
-This measure takes into account correlations within the dataset, which is especially useful when trying to refine and validate a questionnaire with overlapping itmes.
+This measure takes into account correlations within the dataset, which is especially useful when trying to refine and validate a questionnaire with overlapping items.
 
 We removed `r length(outliers$distance)` (`r insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance.
 
+### Predictors
+
 ```{r}
-df <- filter(df, !Participant %in% outliers$attentionchecks)
-df <- filter(df, !Participant %in% outliers$distance)
+dfoutlier <- full_join(dfoutlier, select(df, Participant, Experiment_Duration), by = join_by(Participant))
+
+parameters::parameters(glm(Outlier_AttentionCheck ~ Distance_LOF, data = dfoutlier, family = "binomial"))
+parameters::parameters(glm(Outlier_AttentionCheck ~ poly(Experiment_Duration, 2), data = dfoutlier, family = "binomial"))
+parameters::parameters(glm(Distance_LOF ~ poly(Experiment_Duration, 2), data = dfoutlier))
+```
+
+```{r}
+r_full <- cor(select(df, contains("_Q")))
+r_cleaned <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance)) |> 
+  select(contains("_Q")) |> 
+  cor()
+
+data.frame(Full=r_full[lower.tri(r_full)], Clean=r_cleaned[lower.tri(r_cleaned)]) |> 
+  pivot_longer(everything()) |> 
+  ggplot(aes(x=value)) +
+  geom_histogram(aes(fill=name, color=name), bins=60, alpha=0.3, position="identity") +
+  theme_minimal()
+```
+
+```{r}
+#| code-fold: false
+
+df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance))
 ```
 
 ## Final Sample
