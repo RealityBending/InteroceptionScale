@@ -180,22 +180,28 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance
 ## Final Sample
 
 ::: panel-tabset
-## Summary
 
--The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
-## Age and Gender
+### Summary
+
+- The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
+
+**TODO**
+- The age plot code should be streamlined (there is no need to compute estimate_density)
+- Education: add in the preprocessing a manual reassignment of some of the "Other" manual inputs to our categories (and put Other if not in the categories)
+- We can merge the edu and student plot by having student be a "color" aesthethic 
+- Make Pie chart for ethnicity (see doggonogo for example). 
+- Ethnicity: manually check the others and either assign them to the correct category or put them in "Other"
+
+
+### Age and Gender
 
 ```{r p_demographics_age_gender}
-#| warning: false
-
-#| error: false
-
 p_age <- estimate_density(df$Age) |>
   normalize(select = y) |>
   mutate(y = y * 86) |>  # To match the binwidth
   ggplot(aes(x = x)) +
-  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28) +
+  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28, position="identity", alpha=0.5) +
   geom_vline(xintercept = mean(df$Age), color = "#ca0020", linewidth=1.5) +
   scale_fill_manual(values = c("Male"= "#64B", "Female"= "#8EB69B", "Other"="orange")) +
   scale_x_continuous(expand = c(0, 0)) +
@@ -210,7 +216,7 @@ p_age <- estimate_density(df$Age) |>
 p_age
 ```
 
-## Education
+### Education
 
 ```{r p_demographics_education}
 #| warning: false
@@ -244,7 +250,7 @@ table(df$Student) |>
   knitr::kable()
 ```
 
-## Ethinicity
+### Ethinicity
 
 ```{r p_demographics_ethnicity}
 #| warning: false
@@ -270,35 +276,11 @@ p_eth
 
 ```
 
-## Country of Residence
+### Country of Residence
 
-```{r p_demographics_country}
-#| warning: false
 
-#| error: false
-
-p_cou <- df |>
- ggplot(aes(x = Country)) +
- geom_bar(aes(fill = Country)) +
- scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
- scale_fill_viridis_d(guide = "none") +
- labs(title = "Country of Residence", y = "Number of Participants", subtitle = "Participants per Country they are currently living") +
- theme_modern(axis.title.space = 15) +
- theme(
-   plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-   plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-   axis.text.y = element_text(size = rel(1.1)),
-   axis.text.x = element_text(size = rel(0.7), angle = 45, hjust = 1),
-   axis.title.x = element_blank())
-
-p_cou
-```
 
 ```{r p_demographics_map}
-#| warning: false
-
-#| error: false
-
 p_map <- df |>
   mutate(Country = case_when(
     Country=="United States"~ "USA",
@@ -323,14 +305,16 @@ p_map <- df |>
 
 p_map
 ```
+
+```{r}
+sort(table(df$Country)) |> 
+  as.data.frame() |> 
+  gt::gt()
+```
+
 :::
 
 ```{r p_summary}
-#| warning: false
-
-#| error: false
-
-
 p_map 
 p_age 
 p_edu
@@ -339,9 +323,5 @@ p_edu
 ## Save
 
 ```{r}
-#| warning: false
-
-#| error: false
-
 write.csv(df, "../data/data_participants.csv", row.names = FALSE)
 ```
