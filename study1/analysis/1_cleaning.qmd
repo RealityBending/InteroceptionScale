@@ -118,29 +118,78 @@ outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
 
 We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8).
 
+### Experiment Duration
+
+```{r}
+dfchecks$Duration <- df$Experiment_Duration
+dfchecks$Outlier <- ifelse(dfchecks$Total >= 1, 1, 0)
+dfchecks <- filter(dfchecks, Duration < 45)
+
+m <- mgcv::gam(Outlier ~ s(Duration), data = dfchecks, family = "binomial")
+
+estimate_relation(m, length=50) |> 
+  ggplot(aes(x = Duration, y = Predicted)) +
+  geom_ribbon(aes(ymin = CI_low, ymax = CI_high), alpha = 0.2) +
+  geom_line() +
+  geom_vline(xintercept=5, linetype="dashed", color="red") +
+  theme_minimal() +
+  ggside::geom_xsidedensity(data=mutate(dfchecks, 
+                                        Outlier=ifelse(Outlier==1, "Failed attention check", "Valid")), 
+                            aes(fill=Outlier), alpha=0.3) +
+  ggside::theme_ggside_void() +
+  labs(title = "Experiment Duration",
+       subtitle = "Predicted probability of failing attention checks by duration",
+       x = "Experiment Duration (minutes)",
+       y = "Probability of failing attention checks") 
+```
+
+```{r}
+outliers$duration <- as.character(df[df$Experiment_Duration < 5, "Participant"])
+outliers$duration <- outliers$duration[!outliers$duration %in% outliers$attentionchecks]
+```
+
 ### Multivariate Distance
 
 ```{r}
 # Compute distance
 dfoutlier <- performance::check_outliers(select(df, contains("_Q")), 
-                                         method=c("lof"),
-                                         threshold=list(lof = 0.0001)) |> 
+                                         method=c("optics"),
+                                         threshold=list(optics=2.5, optics_xi=0.03)) |> 
   as.data.frame() |> 
-  mutate(Participant = fct_reorder(df$Participant, Distance_LOF),
+  mutate(Participant = fct_reorder(df$Participant, Distance_OPTICS),
          Outlier_AttentionCheck = ifelse(Participant %in% outliers$attentionchecks, 1, 0),
-         Outlier = ifelse(Outlier_LOF == 1, "Distance Outlier", "Valid"),
-         Outlier = ifelse(Outlier_AttentionCheck == 1, "Failed Attention Check", Outlier))
+         Outlier_Duration = ifelse(Participant %in% outliers$duration, 1, 0),
+         Outlier = ifelse(Outlier_AttentionCheck == 1, "Failed Attention Checks", "Passed"),
+         Outlier = ifelse(Outlier == "Passed" & Outlier_Duration == 1, "Duration", Outlier))
 
 
-outliers$distance <- as.character(dfoutlier[dfoutlier$Outlier_LOF == 1, "Participant"])
-outliers$distance <- outliers$distance[!outliers$distance %in% outliers$attentionchecks]
+outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 12, "Participant"])
+outliers$distance <- outliers$distance[!outliers$distance %in% c(outliers$attentionchecks, outliers$duration)]
 
-dfoutlier |> 
-  ggplot(aes(x=Participant, y=Distance_LOF)) +
+
+p1 <- dfoutlier |> 
+  ggplot(aes(x=Participant, y=Distance_OPTICS)) +
   geom_bar(aes(fill=Outlier), stat="identity") +
+  geom_hline(yintercept = 12.5, linetype="dashed", color="red") +
+  labs(fill = "Status") +
   theme_minimal() +
-  theme(axis.text.x = element_blank())
+  theme(axis.text.x = element_blank(),
+        panel.grid.major.x = element_blank())
+
+m <- mgcv::gam(Outlier_AttentionCheck ~ s(Distance_OPTICS), data = dfoutlier, family = "binomial")
+# parameters::parameters(m)
+
+p2 <- estimate_relation(m, length=30) |> 
+  ggplot(aes(x=Distance_OPTICS, y=Predicted)) +
+  geom_ribbon(aes(ymin=CI_low, ymax=CI_high), alpha=0.2) +
+  geom_line() +
+  geom_vline(xintercept=12.5, linetype="dashed", color="red") +
+  theme_minimal() 
+
+p1 | p2
 ```
+
+**TODO: describe OPTICS**.
 
 Mahalanobis distance [@demaesschalck2000] is commonly used to detect multivariate outliers, which are data points with unusual combinations of scores on two or more variables [@filzmoser2016]. This distance is calculated relative to the centroid—a central point where the means of all variables intersect—with larger distances indicating greater deviation from the center.
 
@@ -148,19 +197,12 @@ This measure takes into account correlations within the dataset, which is especi
 
 We removed `r length(outliers$distance)` (`r insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance.
 
-### Predictors
 
 ```{r}
-dfoutlier <- full_join(dfoutlier, select(df, Participant, Experiment_Duration), by = join_by(Participant))
+#| eval: false
 
-parameters::parameters(glm(Outlier_AttentionCheck ~ Distance_LOF, data = dfoutlier, family = "binomial"))
-parameters::parameters(glm(Outlier_AttentionCheck ~ poly(Experiment_Duration, 2), data = dfoutlier, family = "binomial"))
-parameters::parameters(glm(Distance_LOF ~ poly(Experiment_Duration, 2), data = dfoutlier))
-```
-
-```{r}
 r_full <- cor(select(df, contains("_Q")))
-r_cleaned <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance)) |> 
+r_cleaned <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration, outliers$distance)) |> 
   select(contains("_Q")) |> 
   cor()
 
@@ -174,15 +216,16 @@ data.frame(Full=r_full[lower.tri(r_full)], Clean=r_cleaned[lower.tri(r_cleaned)]
 ```{r}
 #| code-fold: false
 
-df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance))
+df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration, outliers$distance))
 ```
 
 ## Final Sample
 
 ::: panel-tabset
+
 ### Summary
 
--   The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
+The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
 ### Age and Gender
 
