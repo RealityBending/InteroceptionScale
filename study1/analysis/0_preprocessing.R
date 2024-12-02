@@ -2,8 +2,8 @@ library(jsonlite)
 library(progress)
 
 # path for data
-path <- "C:/Users/asf25/Box/InteroceptionScale/"
-#path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+# path <- "C:/Users/asf25/Box/InteroceptionScale/"
+path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
 
 
@@ -44,18 +44,20 @@ for (file in files) {
 
   # Demographics
   demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
-  
-  category_map_edu <- c("Doctorate", "Master", "Bachelor", "High school", "Elementary school")
 
-  demog$Education <- ifelse(demog$Education == "other", 
-                            ifelse(demog$`Education-Comment` %in% category_map_edu, category_map[demog$`Education-Comment`], "Other"),
-                            demog$Education)
+  demog$Education <- ifelse(demog$Education == "other", demog$`Education-Comment`, demog$Education)
   demog$`Education-Comment` <- NULL
+  # TODO: manually check (`unique(alldata$Education` and replace with closer)
+  demog$Education <- ifelse(demog$Education %in% c("Less than high school"), "Elementary school", demog$Education)
+
+  # TODO: same with `unique(alldata$Discipline)`, depending on the number either put in Other or make a category
   demog$Discipline <- ifelse(demog$Discipline == "other", demog$`Discipline-Comment`, demog$Discipline)
   demog$`Discipline-Comment` <- NULL
   demog$Discipline <- ifelse(!is.null(demog$Discipline), demog$Discipline, NA)
   demog$Student <- ifelse(!is.null(demog$Student), demog$Student, NA)
   demog$Country <- ifelse(!is.null(demog$Country), demog$Country, NA)
+
+  # TODO: same here
   demog$Ethnicity <- ifelse(!is.null(demog$Ethnicity), demog$Ethnicity, NA)
   demog$Ethnicity <- ifelse(demog$Ethnicity == "other", demog$`Ethnicity-Comment`, demog$Ethnicity)
   demog$`Ethnicity-Comment` <- NULL
@@ -93,7 +95,7 @@ checks$Prolific_ID <- alldata$Prolific_ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
-# checks[checks$Prolific_ID=="60f059aff7f931e2d83bacb5", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
+# checks[checks$Prolific_ID=="66736dd26745b3fe0afb8993", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
 
