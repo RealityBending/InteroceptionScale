@@ -180,38 +180,29 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$distance
 ## Final Sample
 
 ::: panel-tabset
-
-
 ### Summary
 
-- The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
-
-**TODO**
-- The age plot code should be streamlined (there is no need to compute estimate_density)
-- Education: add in the preprocessing a manual reassignment of some of the "Other" manual inputs to our categories (and put Other if not in the categories)
-- We can merge the edu and student plot by having student be a "color" aesthethic 
-- Make Pie chart for ethnicity (see doggonogo for example). 
-- Ethnicity: manually check the others and either assign them to the correct category or put them in "Other"
-
+-   The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
 ### Age and Gender
 
 ```{r p_demographics_age_gender}
-p_age <- estimate_density(df$Age) |>
-  normalize(select = y) |>
-  mutate(y = y * 86) |>  # To match the binwidth
-  ggplot(aes(x = x)) +
-  geom_histogram(data=df, aes(x = Age, fill=Gender), bins=28, position="identity", alpha=0.5) +
-  geom_vline(xintercept = mean(df$Age), color = "#ca0020", linewidth=1.5) +
-  scale_fill_manual(values = c("Male"= "#64B", "Female"= "#8EB69B", "Other"="orange")) +
-  scale_x_continuous(expand = c(0, 0)) +
+p_age <- df |>
+  ggplot(aes(x = Age, fill = Gender)) + 
+  geom_histogram(data=df, aes(x = Age, fill=Gender), binwidth = 2) +
+  geom_vline(xintercept = mean(df$Age), color = "red", linewidth=1.5, linetype="dashed") +
+  scale_fill_viridis_d() +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(20, max(df$Age), by = 10 )) +
   scale_y_continuous(expand = c(0, 0)) +
-  labs(title = "Age and Gender", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age and gender") +
+  labs(title = "Age", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age") +
   theme_modern(axis.title.space = 10) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),)
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
 
 p_age
 ```
@@ -220,17 +211,16 @@ p_age
 
 ```{r p_demographics_education}
 #| warning: false
-
 #| error: false
 
 # Did not add education disciplines 
 
 p_edu <- df |>
+  mutate (Student = ifelse(is.na(Student), FALSE, Student)) |>
   ggplot(aes(x = Education)) +
-  geom_bar(aes(fill = Education)) +
+  geom_bar(aes(fill = Student)) +
   scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level") +
+  labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level", fill = "Is currently a student") +
   theme_modern(axis.title.space = 15) +
   theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
@@ -241,44 +231,40 @@ p_edu <- df |>
   )
 
 p_edu
-
-
-# Student
-table(df$Student) |>
-  as.data.frame() |>
-  rename(Student = Var1, Frequency = Freq) |>
-  knitr::kable()
 ```
 
 ### Ethinicity
 
 ```{r p_demographics_ethnicity}
 #| warning: false
-
 #| error: false
 
-
-p_eth <- df |>
-  ggplot(aes(x = Ethnicity)) +
-  geom_bar(aes(fill = Ethnicity)) +
-  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Ethnicity", y = "Number of Participants", subtitle = "Participants per Ethnicity") +
-  theme_modern(axis.title.space = 15) +
+p_eth <- df |> 
+  mutate(Ethnicity = case_when(
+    Ethnicity == "central Asia" ~ "Central Asian",
+    Ethnicity == "American of African descent, Native American and European" ~ "Mixed",
+    Ethnicity == "southern european" ~ "White",
+    Ethnicity == "persian" ~ "Middle Eastern/North African",
+    Ethnicity %in% c("Berber","Native American","Turkish","turkish") ~ "Other",
+    TRUE ~ Ethnicity, 
+    )) |>
+  filter(!is.na(Ethnicity)) |> 
+  ggplot(aes(x = "", fill = Ethnicity)) +
+  geom_bar() +
+  coord_polar("y") +
+  theme_minimal() +
   theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(0.6), angle = 45, hjust = 1),
-    axis.title.x = element_blank())
+    axis.text.x = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank()
+  )
     
 p_eth
 
 ```
 
 ### Country of Residence
-
-
 
 ```{r p_demographics_map}
 p_map <- df |>
@@ -311,12 +297,12 @@ sort(table(df$Country)) |>
   as.data.frame() |> 
   gt::gt()
 ```
-
 :::
 
 ```{r p_summary}
-p_map 
-p_age 
+
+p_map
+p_age
 p_edu
 ```
 

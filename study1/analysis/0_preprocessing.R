@@ -2,8 +2,8 @@ library(jsonlite)
 library(progress)
 
 # path for data
-# path <- "C:/Users/asf25/Box/InteroceptionScale/"
-path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+path <- "C:/Users/asf25/Box/InteroceptionScale/"
+#path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
 
 
@@ -44,8 +44,12 @@ for (file in files) {
 
   # Demographics
   demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
+  
+  category_map_edu <- c("Doctorate", "Master", "Bachelor", "High school", "Elementary school")
 
-  demog$Education <- ifelse(demog$Education == "other", demog$`Education-Comment`, demog$Education)
+  demog$Education <- ifelse(demog$Education == "other", 
+                            ifelse(demog$`Education-Comment` %in% category_map_edu, category_map[demog$`Education-Comment`], "Other"),
+                            demog$Education)
   demog$`Education-Comment` <- NULL
   demog$Discipline <- ifelse(demog$Discipline == "other", demog$`Discipline-Comment`, demog$Discipline)
   demog$`Discipline-Comment` <- NULL
