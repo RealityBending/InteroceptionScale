@@ -2,9 +2,10 @@ library(jsonlite)
 library(progress)
 
 # path for data
-# path <- "C:/Users/asf25/Box/InteroceptionScale/"
-path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+#path <- "C:/Users/asf25/Box/InteroceptionScale/"
+#path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
+path <- "C:/Users/asf25/OneDrive - University of Sussex/Desktop/data/InteroceptionScale/"
 
 
 # JsPsych experiment ------------------------------------------------------
@@ -44,23 +45,47 @@ for (file in files) {
 
   # Demographics
   demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
-
+  
+  #Education
   demog$Education <- ifelse(demog$Education == "other", demog$`Education-Comment`, demog$Education)
   demog$`Education-Comment` <- NULL
-  # TODO: manually check (`unique(alldata$Education` and replace with closer)
   demog$Education <- ifelse(demog$Education %in% c("Less than high school"), "Elementary school", demog$Education)
-
-  # TODO: same with `unique(alldata$Discipline)`, depending on the number either put in Other or make a category
+  demog$Education <- ifelse(demog$Education %in% c("Diploma", "nvq", "Vocational Diploma", "Secondary (technical) school"), "Other", demog$Education)
+  demog$Education <- ifelse(demog$Education %in% c("Level A (Maturity Diploma abroad)", "Vocational School/ High school", "College (NVQ level 3)", "College graduate", "College", "3 years at collage", "College Certicificate 3"), "High school", demog$Education)
+  demog$Education <- ifelse(demog$Education %in% c("2 year", "Associates degree (2 yr academic program)", "Associate's Degree", "Some college", "Associates", 
+                                                   "Some community college", "A.S. Degree", "Associates Degree", "Associate's degree", "Associates degree", 
+                                                   "BTEC HND"), "Associates degree", demog$Education)
+  demog$Education <- ifelse(demog$Education %in% c("Post graduate qualification"), "Master", demog$Education)
+  
+  #Discipline 
   demog$Discipline <- ifelse(demog$Discipline == "other", demog$`Discipline-Comment`, demog$Discipline)
   demog$`Discipline-Comment` <- NULL
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Geography", "architecture","Geology","Chiropractic","animal management & welfare", "Transportation","Design", "Culinary Arts", "earth and mineral science", "conservation", "sport", "Various"), "Other", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Fine Art"), "Arts and Humanities", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("pharmacy", "Nursing", "Medicine"), "Medicine, Pharmacy and Nursing", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("languages"), "Literature, Languages", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Communication and Media", "Communication Studies", "Communications", "Journalism"), "Media and Communication", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("IT", "information technology", "Computing"), "Engineering, Computer Science", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Zoology"), "Biology, Chemistry, Physics", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Criminology (social sciences) wasn't sure what that would come under", "Geography and Sociology"), "Sociology, Anthropology", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("accounting", "Real Estate Management", "financial services", "marketing", "Organisation Studies with HRM", "Marketing"), "Business, Economics", demog$Discipline)
+  demog$Discipline <- ifelse(demog$Discipline %in% c("Counselling", "Health","Health education", "health and social care", "education service", "Education/Teaching", "Public Health", 
+                                                     "Bachelors in Biochemistry\nMasters of Public Health", "public health", "Education", "education"), "Health, Social Care, and Education", demog$Discipline)
   demog$Discipline <- ifelse(!is.null(demog$Discipline), demog$Discipline, NA)
   demog$Student <- ifelse(!is.null(demog$Student), demog$Student, NA)
   demog$Country <- ifelse(!is.null(demog$Country), demog$Country, NA)
 
-  # TODO: same here
+  #ethnicity
   demog$Ethnicity <- ifelse(!is.null(demog$Ethnicity), demog$Ethnicity, NA)
   demog$Ethnicity <- ifelse(demog$Ethnicity == "other", demog$`Ethnicity-Comment`, demog$Ethnicity)
   demog$`Ethnicity-Comment` <- NULL
+  demog$Ethnicity <- ifelse(demog$Ethnicity %in% c("central Asia"), "Central Asian", demog$Ethnicity)
+  demog$Ethnicity <- ifelse(demog$Ethnicity %in% c("American of African descent, Native American and European"), "Mixed", demog$Ethnicity)
+  demog$Ethnicity <- ifelse(demog$Ethnicity %in% c("southern european"), "White", demog$Ethnicity)
+  demog$Ethnicity <- ifelse(demog$Ethnicity %in% c("persian"), "Middle Eastern/North African", demog$Ethnicity)
+  demog$Ethnicity <- ifelse(demog$Ethnicity %in% c("Berber","Native American","Turkish","turkish"), "Other", demog$Ethnicity)
+  
+  
 
   demog <- as.data.frame(demog)
   data_ppt <- cbind(data_ppt, demog)

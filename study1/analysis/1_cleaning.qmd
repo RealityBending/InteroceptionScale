@@ -282,15 +282,7 @@ p_edu
 #| warning: false
 #| error: false
 
-p_eth <- df |> 
-  mutate(Ethnicity = case_when(
-    Ethnicity == "central Asia" ~ "Central Asian",
-    Ethnicity == "American of African descent, Native American and European" ~ "Mixed",
-    Ethnicity == "southern european" ~ "White",
-    Ethnicity == "persian" ~ "Middle Eastern/North African",
-    Ethnicity %in% c("Berber","Native American","Turkish","turkish") ~ "Other",
-    TRUE ~ Ethnicity, 
-    )) |>
+p_eth <- df |>
   filter(!is.na(Ethnicity)) |> 
   ggplot(aes(x = "", fill = Ethnicity)) +
   geom_bar() +
