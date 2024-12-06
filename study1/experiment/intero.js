@@ -142,7 +142,7 @@ const intero_items = {
     Sensitivity_Cardiac_Q6:
         "I often try to feel my heart with my hands (e.g., by putting my hand on my chest)",
     Sensitivity_Cardiac_Q7:
-        "When something important is happening in my life, I can feel immediately feel changes in my heart rate",
+        "When something important is happening in my life, I can immediately feel changes in my heart rate",
     Sensitivity_Cardiac_A:
         "In general, I am very sensitive and attentive to the questions I am currently answering",
     Sensitivity_Respiratory_Q1:
