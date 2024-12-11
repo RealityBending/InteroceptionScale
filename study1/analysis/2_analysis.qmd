@@ -870,7 +870,7 @@ ggraph(layout) +
   scale_shape_manual(values=c("Higher"="square", "Lower"="circle"), guide="none") +
   scale_color_manual(values=c(
     "H1"="#90CAF9", "H2"="#C5E1A5", "H3"="#EF9A9A", 
-    "L1"="#CE93D8", "L9"="#9FA8DA", "L13"="#90CAF9", "L18"="#81D4FA", "L3"="#80DEEA",
+    "L1"="#B39DDB", "L9"="#9FA8DA", "L13"="#90CAF9", "L18"="#81D4FA", "L3"="#80DEEA",
     "L4"="#F3F29D", "L6"="#E6EE9C", "L15"="#D6E8A1", "L8"="#C5E1A5", "L10"="#B5DCA6", "L5"="#A5D6A7", "L2"="#93D1B6",
     "L17"="#CE93D8", "L14"="#F48FB1", "L12"="#EF9A9A", "L16"="#FFAB91", "L11"="#FFCC80", "L7"="#FFE082"),
                      breaks=c("H1", "H2", "H3")) +
