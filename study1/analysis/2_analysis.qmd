@@ -25,12 +25,14 @@ library(ggside)
 library(EGAnet)
 library(tidygraph)
 library(ggraph)
+
+set.seed(42)
 ```
 
 ```{r}
 #| code-fold: false
 
-df <- read.csv("../data/rawdata_participants.csv")
+df <- read.csv("../data/data_participants.csv")
 
 items <- select(df, contains("_Q")) 
 byfacet <- items[df$Condition=="Dimensions",]
@@ -202,6 +204,8 @@ make_heatmap(items, title="Full Sample")
 ### Similarity
 
 ```{r}
+#| eval: true
+
 bootstrap_similarity <- function(df) {
   rez <- data.frame()
   for(i in 1:200) {
@@ -234,10 +238,15 @@ bootstrap_similarity <- function(df) {
 
 
 rez <- bootstrap_similarity(df)
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
 
 rez |>
   pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
-  filter(name %in% c("PSI", "RV", "RVadj", "SMI")) |>
+  filter(name %in% c("PSI", "RVadj", "SMI")) |>
   mutate(side = ifelse(str_detect(Comparison, "Facet"), "left", "right")) |>
   ggplot(aes(x=name, y=value, fill=Comparison, color=Comparison)) +
   ggdist::stat_halfeye(aes(side=side), position=position_dodge(width=0.3), alpha=0.7) +
@@ -251,6 +260,7 @@ rez |>
 ```{r}
 #| fig-width: 10
 #| fig-height: 10
+#| eval: true
 
 p_sim <- rez |>
   pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
@@ -263,7 +273,7 @@ p_sim <- rez |>
        title="To which matrix is the random one more similar?",
        fill="More similar to") +
   theme_minimal() +
-  scale_fill_manual(values=c("TRUE"="#F44336", "FALSE"="#2196F3"), labels = c("By modality", "By facet"))
+  scale_fill_manual(values=c("TRUE"="#2196F3", "FALSE"="#4CAF50"), labels = c("By modality", "By facet"))
 
 
 r <- correlation::cor_sort(cor(byrandom))
@@ -276,7 +286,11 @@ make_corplot <- function(data, order) {
            name = fct_relevel(name, order)) |>
     ggplot(aes(x=name, y=item, fill=value)) +
     geom_tile() +
-    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    # scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0, values=c(-1, 0, 1)) +
+    scale_fill_gradientn(
+      colors=c("blue", "white", "#FFEE58", "#FFC107", "#FF9800", "#FF5722", 
+               "#F44336", "#E91E63", "#9C27B0", "#8231B4", "#673AB7", "white"), 
+      values=c(-1, seq(0, 1, 0.1))) +
     theme_minimal() +
     theme(axis.text = element_blank(),
           axis.title = element_blank(),
@@ -291,7 +305,11 @@ p2 <- make_corplot(byfacet, order) +
 p3 <- make_corplot(bymodality, order) +
   ggtitle("Grouped by modality")
 
-p1 / (p2 | p_sim | p3) + patchwork::plot_layout(heights=c(3, 1)) + patchwork::plot_annotation(title="Effect of Item-presentation Grouping", theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
+p1 / (p2 | p_sim | p3) + 
+  patchwork::plot_layout(heights=c(3, 1)) + 
+  patchwork::plot_annotation(
+    title="Effect of Item-presentation Grouping", 
+    theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
 ```
 
 ## Item Selection
@@ -302,22 +320,23 @@ p1 / (p2 | p_sim | p3) + patchwork::plot_layout(heights=c(3, 1)) + patchwork::pl
 #| fig-width: 10
 #| fig-height: 8
 
-uva <- EGAnet::UVA(items, cut.off = 0.2)
+uva <- EGAnet::UVA(items, cut.off = 0.25, reduce.method="remove", verbose=FALSE)
 
+toremove1 <- unique(uva$keep_remove$remove)
+keep <- uva$keep_remove$keep[!uva$keep_remove$keep %in% toremove1]
 
-correlation::correlation(items[unlist(uva$redundant)],
-                         items[names(uva$redundant)]) |>
-  mutate(Parameter1 = fct_relevel(Parameter1, unlist(uva$redundant)),
-         Parameter2 = fct_relevel(Parameter2, names(uva$redundant))) |>
+sorted <- correlation::cor_sort(cor(items[toremove1],items[keep]))
+
+correlation::correlation(items[toremove1], items[keep]) |>
+  mutate(Parameter1 = fct_relevel(Parameter1, rownames(sorted)),
+         Parameter2 = fct_relevel(Parameter2, colnames(sorted))) |>
   ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
   geom_tile() +
   geom_text(aes(label=insight::format_value(r)), color="white") +
-  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0, guide="none") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(x="Removed Items", y="Kept Items", fill="Correlation")
-
-toremove1 <- uva$keep_remove$remove
 ```
 
 ```{r}
@@ -336,7 +355,7 @@ ega1 <- bootEGA(
   items,
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
-  algorithm = "louvain",  # walktrap
+  algorithm = "leiden",
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
@@ -348,8 +367,9 @@ save(ega1, file="models/ega1.RData")
 ```
 
 ```{r}
-#| fig-width: 10
-#| fig-height: 12
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
 
 load("models/ega1.RData")
 
@@ -370,11 +390,29 @@ make_loadingtable <- function(x) {
     as.data.frame()
 }
 
-
 itemstability_table <- make_loadingtable(itemstability$lower_order$item.stability$all.dimensions)
 
+# Remove items
 toremove2 <- filter(itemstability_table, Max < 0.8)$Item
+toremove2 <- itemstability_table |> 
+  filter(!Item %in% toremove2) |>
+  mutate(Item, n=n(), .by="Cluster", .keep="used") |> 
+  filter(n < 3) |>  # Remove small clusters
+  pull(Item) |> 
+  c(toremove2)
+```
 
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
+# plot(itemstability)
+```
+
+
+```{r}
 itemstability_table |>
   select(-Cluster, -Max) |>
   gt::gt() |>
@@ -406,7 +444,7 @@ ega2 <- bootEGA(
   items,
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
-  algorithm = "louvain",  # walktrap
+  algorithm = "leiden",  # walktrap
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
@@ -418,15 +456,21 @@ save(ega2, file="models/ega2.RData")
 ```
 
 ```{r}
-#| fig-width: 10
-#| fig-height: 12
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
 
 load("models/ega2.RData")
 
 plot(itemStability(ega2, IS.plot=FALSE))
+
+# itemstability_table <- make_loadingtable(itemstability$lower_order$item.stability$all.dimensions)
+# toremove2 <- filter(itemstability_table, Max < 0.7)$Item
 ```
 
 ```{r}
+#| message: false
+
 lower <- make_loadingtable(net.loads(ega2$EGA$lower_order)$std)
 
 toremove3 <- lower$Item[!lower$Item %in% slice_max(lower, Max, n=3, by="Cluster")$Item]
@@ -462,7 +506,7 @@ ega3 <- bootEGA(
   items,
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
-  algorithm = "louvain",  # walktrap
+  algorithm = "leiden",  # walktrap
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
@@ -474,9 +518,17 @@ save(ega3, file="models/ega3.RData")
 ```
 
 ```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
 load("models/ega3.RData")
 
-# itemStability(ega2)
+plot(itemStability(ega3))
+```
+
+```{r}
+#| message: false
 
 higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order)$std))
 cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
@@ -489,19 +541,20 @@ lower <- make_loadingtable(net.loads(ega3$EGA$lower_order)$std) |>
 
 higher$Item <- paste0("H", higher$Item)
 higher$Label <- paste("TODO", 1:nrow(higher))
-lower <- mutate(lower, Label = labels[Item], Item = 1:n())
+lower <- mutate(lower, Label = labels[Item], ID= Item, Item = 1:n())
 
 
-rbind(higher, lower) |>
+rbind(higher, select(lower, -ID)) |>
   datawizard::data_relocate("Label", after = "Item") |>
   select(-Cluster, -Max) |>
+  # datawizard::data_rename(c(XC1 = "C01", XC2 = "C02")) |> 
   gt::gt() |>
   gt::tab_row_group(
-    label = "Item",
+    label = "Items",
     rows = 1:(nrow(lower) + nrow(higher))
   ) |>
   gt::tab_row_group(
-    label = "Higher Order",
+    label = "Metaclusters",
     rows = 1:nrow(higher)
   ) |>
   gt::data_color(columns=-Item,
@@ -516,37 +569,152 @@ rbind(higher, lower) |>
     style = list(gt::cell_text(weight="bold"),
                  gt::cell_fill(color = "#F5F5F5")),
     locations = list(
-      gt::cells_row_groups(groups = "Item"),
-      gt::cells_row_groups(groups = "Higher Order")
+      gt::cells_row_groups(groups = "Items"),
+      gt::cells_row_groups(groups = "Metaclusters")
     )
   ) |>
+  # Metacluster 1
   gt::tab_style(
-    style = gt::cell_fill(color = "#FFCDD2"),
+    style = gt::cell_fill(color = "#B39DDB"),
     locations = list(
       gt::cells_column_labels(columns = 3),
-      gt::cells_body(columns="Item", rows=c(1, 6:8))
+      gt::cells_body(columns="Item", rows=c(4:6))
     )
   ) |>
   gt::tab_style(
-    style = gt::cell_fill(color = "#FFCCBC"),
+    style = gt::cell_fill(color = "#9FA8DA"),
     locations = list(
       gt::cells_column_labels(columns = 4),
-      gt::cells_body(columns="Item", rows=c(9:11))
+      gt::cells_body(columns="Item", rows=c(7:9))
     )
   ) |>
   gt::tab_style(
-    style = gt::cell_fill(color = "#FFE0B2"),
+    style = gt::cell_fill(color = "#90CAF9"),
     locations = list(
       gt::cells_column_labels(columns = 5),
-      gt::cells_body(columns="Item", rows=c(12:14))
+      gt::cells_body(columns="Item", rows=c(1, 10:12))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81D4FA"),
+    locations = list(
+      gt::cells_column_labels(columns = 6),
+      gt::cells_body(columns="Item", rows=c(13:15))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#80DEEA"),
+    locations = list(
+      gt::cells_column_labels(columns = 7),
+      gt::cells_body(columns="Item", rows=c(16:18))
+    )
+  ) |>
+  # Metacluster 2
+  gt::tab_style(
+    style = gt::cell_fill(color = "#F3F29D"),
+    locations = list(
+      gt::cells_column_labels(columns = 8),
+      gt::cells_body(columns="Item", rows=c(19:21))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#E6EE9C"),
+    locations = list(
+      gt::cells_column_labels(columns = 9),
+      gt::cells_body(columns="Item", rows=c(22:24))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#D6E8A1"),
+    locations = list(
+      gt::cells_column_labels(columns = 10),
+      gt::cells_body(columns="Item", rows=c(25:27))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#C5E1A5"),
+    locations = list(
+      gt::cells_column_labels(columns = 11),
+      gt::cells_body(columns="Item", rows=c(2, 28:30))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#B5DCA6"),
+    locations = list(
+      gt::cells_column_labels(columns = 12),
+      gt::cells_body(columns="Item", rows=c(31:33))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#A5D6A7"),
+    locations = list(
+      gt::cells_column_labels(columns = 13),
+      gt::cells_body(columns="Item", rows=c(34:36))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#93D1B6"),
+    locations = list(
+      gt::cells_column_labels(columns = 14),
+      gt::cells_body(columns="Item", rows=c(37:39))
+    )
+  ) |>
+  # Metacluster 3
+  gt::tab_style(
+    style = gt::cell_fill(color = "#CE93D8"),
+    locations = list(
+      gt::cells_column_labels(columns = 15),
+      gt::cells_body(columns="Item", rows=c(40:42))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#F48FB1"),
+    locations = list(
+      gt::cells_column_labels(columns = 16),
+      gt::cells_body(columns="Item", rows=c(43:45))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#EF9A9A"),
+    locations = list(
+      gt::cells_column_labels(columns = 17),
+      gt::cells_body(columns="Item", rows=c(3, 46:48))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFAB91"),
+    locations = list(
+      gt::cells_column_labels(columns = 18),
+      gt::cells_body(columns="Item", rows=c(49:51))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFCC80"),
+    locations = list(
+      gt::cells_column_labels(columns = 19),
+      gt::cells_body(columns="Item", rows=c(52:54))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFE082"),
+    locations = list(
+      gt::cells_column_labels(columns = 20),
+      gt::cells_body(columns="Item", rows=c(55:57))
     )
   ) |>
   gt::fmt_number(columns=-Item, decimals=2) |>
   gt::tab_header(
     title = gt::md("**Item Loadings**"),
     subtitle = "Node centrality"
-  )
+  ) |> 
+  gt::opt_vertical_padding(scale = 0.7) |>
+  gt::opt_horizontal_padding(scale = 0.5) |>
+  # gt::tab_options(table.width = gt::pct(100)) |> 
+  gt::cols_width(Label ~ gt::pct(30)) |>
+  gt::gtsave("table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
 ```
+
+<object type="text/html" data="table1.html" width="120%" height="1000"></object>
 
 ```{r}
 # REMOVE ONCE https://github.com/hfgolino/EGAnet/pull/167 is merged
@@ -626,68 +794,105 @@ convert2tidygraph <- function(EGA.object)
 }
 ```
 
+### Graph
+
 ```{r}
+#| fig-width: 9
+#| fig-height: 8
+#| warning: false
+
 graph <- convert2tidygraph(ega3)
 
-tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |>
-  ggraph::ggraph(layout = 'mds') +
-  ggraph::geom_edge_arc(aes(edge_alpha=as.numeric(type == "virtual")), edge_width=0.2, strength=0, color="grey") +
-  ggraph::geom_edge_arc(aes(edge_color = link, edge_width = abs(link), edge_alpha=as.numeric(type == "real")), strength=0.1) +
-  ggraph::geom_node_point(aes(color=dimension, shape=level), size=10, alpha=0.7) +
-  ggraph::geom_node_text(aes(label=name), repel=TRUE) +
+replace_lowernames <- function(names, lower) {
+  rownames(lower) <- lower$ID
+  sprintf("%02d", as.numeric(lower[names, "Item"]))
+}
+replace_highernames <- function(names) {
+  x <- as.numeric(str_remove(names, "L"))  
+  paste0("C", sprintf("%02d", x))
+}
+
+
+# Arrange lower nodes in circle
+lower_nodes <- graph$nodes |> 
+  filter(level == "Lower") |> 
+  mutate(name = fct_relevel(name, as.character(lower$ID)),
+         ID = name) |> 
+  arrange(name)  
+lower_edges <- graph$edges |> 
+  filter(from %in% lower_nodes$name & to %in% lower_nodes$name)
+lower_layout <- tidygraph::tbl_graph(lower_nodes, edges=lower_edges, directed=FALSE) |> 
+  ggraph::create_layout(layout = 'circle')
+rownames(lower_layout) <- lower_nodes$name
+
+# Arrange higher nodes in circle
+higher_nodes <- graph$nodes |> 
+  filter(level == "Higher") |> 
+  mutate(ID = name,
+         name = replace_highernames(name),
+         name = fct_relevel(name, names(select(higher, -Item, -Cluster,-Max,-Label)))) |>
+  arrange(name)
+higher_edges <- graph$edges |> 
+  filter(from %in% higher_nodes$name & to %in% higher_nodes$name)
+higher_layout <- tidygraph::tbl_graph(higher_nodes, edges=higher_edges, directed=FALSE) |> 
+  ggraph::create_layout(layout = 'circle')
+rownames(higher_layout) <- higher_nodes$ID
+
+
+# Put circles together
+layout <- tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |> 
+  ggraph::create_layout(layout = 'linear', circular = TRUE)
+layout[layout$level == "Lower", "x"] <- lower_layout[layout[layout$level == "Lower", "name"], "x"]
+layout[layout$level == "Lower", "y"] <- lower_layout[layout[layout$level == "Lower", "name"], "y"]
+layout[layout$level == "Higher", "x"] <- higher_layout[layout[layout$level == "Higher", "name"], "x"] * 0.5
+layout[layout$level == "Higher", "y"] <- higher_layout[layout[layout$level == "Higher", "name"], "y"] * 0.5
+layout[layout$level == "Lower", "name"] <- replace_lowernames(layout[layout$level == "Lower", "name"], lower)
+layout[layout$level == "Higher", "name"] <- replace_highernames(layout[layout$level == "Higher", "name"])
+
+# layout$dimmension_label <- layout$dimension
+# layout[layout$level == "Higher", "dimmension_label"] <- NA
+
+# layout[layout$level == "Higher", "dimension"] <- layout[layout$level == "Higher", "dimension"]
+
+ggraph(layout) +
+  geom_edge_link(aes(edge_alpha=as.numeric(type == "virtual"), edge_width = abs(link)), edge_width=0.2, color="grey") +
+  geom_edge_arc(aes(edge_color = link, edge_width = abs(link), edge_alpha=as.numeric(type == "real"))) +
+  geom_node_point(aes(color=dimension, shape=level), size=12) +
+  geom_node_text(aes(label=name), fontface="bold") +
+  # geom_node_text(aes(label = dimmension_label, angle = node_angle(x, y), hjust = 'outward')) +
   scale_edge_alpha(range = c(0, 0.9), guide="none") +
   scale_edge_width(range = c(0.2, 3), guide="none") +
-  scale_shape_manual(values=c("Higher"="square", "Lower"="circle")) +
-  theme_void()
+  scale_edge_colour_gradientn(colors=c("#E53935", "#E53935", "white", "#43A047", "#43A047"), 
+                              values=c(-1, -0.5, 0, 0.5, 1), guide="none") +
+  scale_shape_manual(values=c("Higher"="square", "Lower"="circle"), guide="none") +
+  scale_color_manual(values=c(
+    "H1"="#90CAF9", "H2"="#C5E1A5", "H3"="#EF9A9A", 
+    "L1"="#CE93D8", "L9"="#9FA8DA", "L13"="#90CAF9", "L18"="#81D4FA", "L3"="#80DEEA",
+    "L4"="#F3F29D", "L6"="#E6EE9C", "L15"="#D6E8A1", "L8"="#C5E1A5", "L10"="#B5DCA6", "L5"="#A5D6A7", "L2"="#93D1B6",
+    "L17"="#CE93D8", "L14"="#F48FB1", "L12"="#EF9A9A", "L16"="#FFAB91", "L11"="#FFCC80", "L7"="#FFE082"),
+                     breaks=c("H1", "H2", "H3")) +
+  theme_void() +
+  labs(color="Metaclusters")
 ```
 
-<!-- ::: {.panel-tabset} -->
 
-<!-- ### Full Sample -->
+### Model Comparison
 
-<!-- ### By Dimension / Domains / Context -->
+```{r}
+#| eval: false
 
-<!-- ```{r} -->
+# EGAnet::EGM(items[, 1:60])
+EGAnet::EGM.compare(items, model = "glasso", algorithm = "leiden")
+rez <- EGAnet::network.compare(byfacet, bymodality, model = "glasso", seed=3)
 
-<!-- bydimension <- items[df$Condition=="Dimensions",] -->
-
-<!-- ega_bydimension <- EGA(bydimension[, 1:20], plot.EGA = FALSE) -->
-
-<!-- plot(ega_bydimension) -->
-
-<!-- ``` -->
-
-<!-- ### By Modalities -->
-
-<!-- ```{r} -->
-
-<!-- bymodality <- items[df$Condition=="Domains",] -->
-
-<!-- ega_bymodality <- EGA(bymodality[, 1:20], plot.EGA = FALSE) -->
-
-<!-- plot(ega_bymodality) -->
-
-<!-- ``` -->
-
-<!-- ::: -->
-
-<!-- ## Model Comparison -->
-
-<!-- ```{r} -->
-
-<!-- # EGAnet::EGM(items[, 1:60]) -->
-
-<!-- # EGAnet::EGM.compare(items[, 1:20]) -->
-
-<!-- # rez <- EGAnet::network.compare(byfacet, bymodality, seed=3) -->
-
-<!-- # plot(rez) -->
-
-<!-- ``` -->
+plot(rez)
+```
 
 ## Empirical vs. Model Scores
 
 ```{r}
+#| message: false
+
 # Modelbased scores
 scores <- EGAnet::net.scores(
   items[names(ega3$typicalGraph$lower_order$wc)],
