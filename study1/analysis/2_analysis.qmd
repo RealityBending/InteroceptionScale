@@ -230,7 +230,7 @@ bootstrap_similarity <- function(df) {
         Comparison = c("Random vs. Facet", "Random vs. Modality", "Full vs. Facet", "Full vs. Modality"),
         Sample = c("Random", "Random", "Full", "Full"),
         Iteration = i) |>
-      mutate(d_PSI = diff(PSI), d_RV = diff(RV), d_RVadj = diff(RVadj), d_SMI = diff(SMI), .by="Sample") |>
+      mutate(d_PSI = diff(PSI), d_RVadj = diff(RVadj), d_SMI = diff(SMI), .by="Sample") |>
       rbind(rez)
   }
   rez
@@ -527,6 +527,8 @@ load("models/ega3.RData")
 plot(itemStability(ega3))
 ```
 
+### Item Table 
+
 ```{r}
 #| message: false
 
@@ -713,6 +715,7 @@ rbind(higher, select(lower, -ID)) |>
   gt::cols_width(Label ~ gt::pct(30)) |>
   gt::gtsave("table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
 ```
+
 
 <object type="text/html" data="table1.html" width="120%" height="1000"></object>
 
