@@ -148,6 +148,8 @@ outliers$duration <- as.character(df[df$Experiment_Duration < 5, "Participant"])
 outliers$duration <- outliers$duration[!outliers$duration %in% outliers$attentionchecks]
 ```
 
+We removed `r length(outliers$duration)` (`r insight::format_percent(length(outliers$duration) / nrow(df))`) participants for having completed the experiment in less than 5 minutes.
+
 ### Multivariate Distance
 
 ```{r}
@@ -163,7 +165,7 @@ dfoutlier <- performance::check_outliers(select(df, contains("_Q")),
          Outlier = ifelse(Outlier == "Passed" & Outlier_Duration == 1, "Duration", Outlier))
 
 
-outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 12, "Participant"])
+outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 12.5, "Participant"])
 outliers$distance <- outliers$distance[!outliers$distance %in% c(outliers$attentionchecks, outliers$duration)]
 
 
@@ -276,7 +278,7 @@ p_edu <- df |>
 p_edu
 ```
 
-### Ethinicity
+### Ethnicity
 
 ```{r p_demographics_ethnicity}
 #| warning: false
@@ -332,13 +334,14 @@ sort(table(df$Country)) |>
   as.data.frame() |> 
   gt::gt()
 ```
+
 :::
 
 ```{r p_summary}
+#| fig-width: 14
+#| fig-height: 14
 
-p_map
-p_age
-p_edu
+(p_age | p_edu) / p_map
 ```
 
 ## Save
