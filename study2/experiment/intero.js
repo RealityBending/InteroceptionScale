@@ -33,8 +33,9 @@ const intero_instructions = {
     },
 }
 
+// Questionnaires
 // MAIA-2 questionnaire
-var MAIA_items = [
+const MAIA_items = [
     "When I am tense I notice where the tension is located in my body",
     "I notice when I am uncomfortable in my body",
     "I notice where in my body I am comfortable",
@@ -73,7 +74,8 @@ var MAIA_items = [
     "I feel my body is a safe place",
     "I trust my body sensations",
 ]
-var MAIA_dimensions = [
+
+const MAIA_dimensions = [
     "Noticing_1",
     "Noticing_2",
     "Noticing_3",
@@ -113,8 +115,63 @@ var MAIA_dimensions = [
     "Trusting_3",
 ]
 
+
+function maia_questions(
+    required = true,
+    ticks = ["Never", "Always"],
+    items = MAIA_items,
+    dimensions = MAIA_dimensions
+) {
+    // Make questions
+    var questions = []
+    for (const [index, element] of items.entries()) {
+        q = {
+            title: element,
+            name: dimensions[index],
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4, 5], // 6-point likert-scale 
+        }
+        questions.push(q)
+    }
+
+    // Randomize order
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+            ;[questions[i], questions[j]] = [questions[j], questions[i]]
+    }
+
+    return [
+        { elements: questions },
+    ]
+}
+
+const maia_questionnaire = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your body sensations...",
+            description:
+                "Please indicate how often each statement applies to you generally in daily life.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pageNextText: "Next",
+            pagePrevText: "Previous",
+            showProgressBar: "aboveHeader",
+            pages: maia_questions(),
+        }
+    },
+    data: {
+        screen: "MAIA_questionnaire",
+    },
+}
+
 // MINT Items ================================================
-var MINT_items = [
+const MINT_items = [
     "Sometimes my breathing becomes erratic or shallow and I often don't know why",
     "I often feel like I can't get enough oxygen by breathing normally",
     "Sometimes my heart starts racing and I often don't know why",
@@ -157,7 +214,7 @@ var MINT_items = [
 
 ]
 
-var MINT_dimensions = [
+const MINT_dimensions = [
     "DysregulatedPerception_1",
     "DysregulatedPerception_2",
     "DysregulatedPerception_3",
@@ -200,8 +257,92 @@ var MINT_dimensions = [
 
 ]
 
+function mint_questions(
+    required = true,
+    ticks = ["Disagree Strongly", "Strongly Agree"], //based on their validation paper
+    items = IAS_items,
+    dimensions = IAS_dimensions
+) {
+    // Make questions
+    var questions = []
+    for (const [index, element] of items.entries()) {
+        q = {
+            title: element,
+            name: dimensions[index],
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4], // 5-point likert-scale 
+        }
+        questions.push(q)
+    }
+
+    // Randomize order
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+            ;[questions[i], questions[j]] = [questions[j], questions[i]]
+    }
+
+    return [
+        { elements: questions },
+    ]
+}
+
+// function intero_makequestions(
+//     groups,
+//     required = true,
+//     ticks = ["Disagree", "Agree"]
+// ) {
+//     pages = []
+
+//     // Make questions
+//     for (const g in groups) {
+//         for (const [index, element] of groups[g].entries()) {
+//             key = Object.keys(element)[0]
+//             q = {
+//                 title: element[key],
+//                 name: key,
+//                 type: "rating",
+//                 displayMode: "buttons",
+//                 // scaleColorMode: "colored",
+//                 isRequired: required,
+//                 minRateDescription: ticks[0],
+//                 maxRateDescription: ticks[1],
+//                 rateValues: [0, 1, 2, 3, 4, 5, 6],
+//             }
+//             groups[g][index] = q
+//         }
+//         pages.push({ elements: groups[g] })
+//     }
+
+//     return pages
+// }
+
+const ias_questionnaire = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About you and your body",
+            description:
+                "Please answer the following questions based on how accurately each statement describes you in general.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pageNextText: "Next",
+            pagePrevText: "Previous",
+            showProgressBar: "aboveHeader",
+            pages: intero_makequestions(),
+        }
+    },
+    data: {
+        screen: "intero_questionnaire",
+    },
+}
+
 // IAS questionnaire
-var IAS_items = [
+const IAS_items = [
     "I can always accurately perceive when my heart is beating fast",
     "I can always accurately perceive when I am hungry",
     "I can always accurately perceive when I am breathing fast",
@@ -224,7 +365,7 @@ var IAS_items = [
     "I can always accurately perceive when something is going to be ticklish",
     "I can always accurately perceive when something is going to be itchy",
 ]
-var IAS_dimensions = [
+const IAS_dimensions = [
     "IAS_1",
     "IAS_2",
     "IAS_3",
@@ -248,8 +389,60 @@ var IAS_dimensions = [
     "IAS_21",
 ]
 
+function intero_makequestions(
+    groups,
+    required = true,
+    ticks = ["Disagree", "Agree"]
+) {
+    pages = []
+
+    // Make questions
+    for (const g in groups) {
+        for (const [index, element] of groups[g].entries()) {
+            key = Object.keys(element)[0]
+            q = {
+                title: element[key],
+                name: key,
+                type: "rating",
+                displayMode: "buttons",
+                // scaleColorMode: "colored",
+                isRequired: required,
+                minRateDescription: ticks[0],
+                maxRateDescription: ticks[1],
+                rateValues: [0, 1, 2, 3, 4, 5, 6],
+            }
+            groups[g][index] = q
+        }
+        pages.push({ elements: groups[g] })
+    }
+
+    return pages
+}
+
+const intero_questionnaire = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About you and your body",
+            description:
+                "Please answer the following questions based on how accurately each statement describes you in general.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pageNextText: "Next",
+            pagePrevText: "Previous",
+            showProgressBar: "aboveHeader",
+            pages: intero_makequestions(),
+        }
+    },
+    data: {
+        screen: "intero_questionnaire",
+    },
+}
+
+
 // BPQ questionnaire
-var BPQ_items = [
+// 46 items 
+const BPQ_items = [
     "Swallowing frequently.",
     "An urge to cough or clear my throat.",
     "My mouth being dry.",
@@ -276,7 +469,7 @@ var BPQ_items = [
     "How hard my heart is beating.",
     "Feeling constipated.",
     "I have difficulty coordinating breathing and eating.",
-    "When I am eating, I have difficulty talking.", 
+    "When I am eating, I have difficulty talking.",
     "My heart often beats irregularly.",
     "When I eat, food feels dry and sticks to my mouth and throat.",
     "I feel shortness of breath.",
@@ -294,10 +487,10 @@ var BPQ_items = [
     "I am constipated.",
     "I have indigestion.",
     "After eating I have digestive problems.",
-    "I have diarrhea.", 
+    "I have diarrhea.",
 ]
 
-var BPQ_dimensions = [
+const BPQ_dimensions = [
     "BodyAwareness_1",
     "BodyAwareness_2",
     "BodyAwareness_3",
@@ -347,136 +540,3 @@ var BPQ_dimensions = [
 
 ]
 
-// MAIA-2 Questions
-var maia2_questions = []
-for (const [index, element] of MAIA_items.entries()) {
-    maia2_questions.push({
-        prompt: "<b>" + element + "</b>",
-        name: MAIA_dimensions[index],
-        ticks: ["Never", "Always"],
-        required: false,
-        min: 0,
-        max: 1,
-        step: 0.01,
-        slider_start: 0.5,
-    })
-}
-
-var maia = {
-    type: jsPsychMultipleSlider,
-    questions: maia2_questions,
-    randomize_question_order: true,
-    preamble:
-        "<h2>About your body sensations...</h2>" +
-        "<p>Please indicate how often each statement applies to you generally in daily life.</p><br /><br/> ",
-    require_movement: false,
-    slider_width: null,
-    data: {
-        screen: "MAIA",
-    },
-}
-
-// MINT Questions
-// This function formats each question into a jsPsych-survey question that contains information about the question format
-function mint_makequestions(
-    groups,
-    required = true,
-    ticks = ["Disagree", "Agree"]
-) {
-    pages = []
-
-// Make questions
-    var mint_questions = []
-    for (const [index, element] of MINT_items.entries()) {
-    mint_questions.push({
-        key: Object.keys(element)[0],
-            q: {
-                title: element[key],
-                name: key,
-                type: "rating",
-                displayMode: "buttons",
-                // scaleColorMode: "colored",
-                isRequired: required,
-                minRateDescription: ticks[0],
-                maxRateDescription: ticks[1],
-                rateValues: [0, 1, 2, 3, 4, 5, 6],
-            }
-    })
-}
-}
-
-var mint = {
-    type: jsPsychMultipleSlider,
-    questions: mint_questions,
-    randomize_question_order: true,
-    preamble:
-        "<h2>About you and your body...</h2>" +
-        "<p>You will be asked various questions about the way you feel and you think about your body.</p>"+
-        "<p>There are no right or wrong answers.</p><br /><br/> ",
-    require_movement: false,
-    slider_width: null,
-    data: {
-        screen: "MINT",
-    },
-}
-
-// IAS Questions
-var ias_questions = []
-for (const [index, element] of IAS_items.entries()) {
-    ias_questions.push({
-        prompt: "<b>" + element + "</b>",
-        name: IAS_dimensions[index],
-        ticks: ["Strongly Disagree", "Strongly Agree"],
-        required: false,
-        min: 0,
-        max: 1,
-        step: 0.01,
-        slider_start: 0.5,
-    })
-}
-
-var ias = {
-    type: jsPsychMultipleSlider,
-    questions: ias_questions,
-    randomize_question_order: true,
-    preamble:
-        "<h2>About your body sensations...</h2>" +
-        "<p>Below are several statements regarding how accurately you can perceive specific bodily sensations. Please rate on the scale how well you believe you can perceive each specific signal.</p>" +
-        "<p>For example, if you often feel you need to urinate and then realise you do not need to when you go to the toilet you would rate your accuracy perceiving this bodily signal as low.</p>" +
-        "<p>Please only rate how well you can perceive these signals without using external cues, for example, if you can only perceive how fast your heart is beating when you measure it by taking your pulse this would not count as accurate internal perception.</p><br /><br/> ",
-    require_movement: false,
-    slider_width: null,
-    data: {
-        screen: "IAS",
-    },
-}
-
-// BPQ Questions
-var bpq_questions = []
-for (const [index, element] of BPQ_items.entries()) {
-    bpq_questions.push({
-        prompt: "<b>" + element + "</b>",
-        name: IAS_dimensions[index],
-        ticks: ["Strongly Disagree", "Strongly Agree"],
-        required: false,
-        min: 0,
-        max: 1,
-        step: 0.01,
-        slider_start: 0.5,
-    })
-}
-
-var BPQ = {
-    type: htmlButtonResponse,
-    questions: ias_questions,
-    randomize_question_order: true,
-    preamble:
-        "<h2> BPQ </h2>" +
-        "<p> In your daily life, how often are you aware of the following sensations? Please rate yourself on each of the statements below: </p>" +
-        "<p>Please only rate how well you can perceive these signals without using external cues, for example, if you can only perceive how fast your heart is beating when you measure it by taking your pulse this would not count as accurate internal perception.</p><br /><br/> ",
-    require_movement: false,
-    slider_width: null,
-    data: {
-        screen: "BPQ",
-    },
-}
