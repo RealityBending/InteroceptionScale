@@ -77,31 +77,31 @@ const ConsentForm = {
     },
 }
 
-var demographics_browser_info = {
-    type: jsPsychBrowserCheck,
-    data: {
-        screen: "browser_info",
-        date: new Date().toLocaleDateString("en-GB"),
-        time: new Date().toLocaleTimeString("en-GB"),
-    },
-    on_finish: function (data) {
-        data["participantID"] = participantID
-        data["condition"] = intero_condition
+// var demographics_browser_info = {
+//     type: jsPsychBrowserCheck,
+//     data: {
+//         screen: "browser_info",
+//         date: new Date().toLocaleDateString("en-GB"),
+//         time: new Date().toLocaleTimeString("en-GB"),
+//     },
+//     on_finish: function (data) {
+//         data["participantID"] = participantID
+//         data["condition"] = intero_condition
 
-        // Rename
-        dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
-        data["screen_height"] = dat["height"]
-        data["screen_width"] = dat["width"]
+//         // Rename
+//         dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
+//         data["screen_height"] = dat["height"]
+//         data["screen_width"] = dat["width"]
 
-        // Add URL variables - ?sona_id=x&exp=1
-        let urlvars = jsPsych.data.urlVariables()
-        data["researcher"] = urlvars["exp"]
-        data["sona_id"] = urlvars["sona_id"]
-        data["prolific_id"] = urlvars["PROLIFIC_PID"] // Prolific
-        data["study_id"] = urlvars["STUDY_ID"] // Prolific
-        data["session_id"] = urlvars["SESSION_ID"] // Prolific
-    },
-}
+//         // Add URL variables - ?sona_id=x&exp=1
+//         let urlvars = jsPsych.data.urlVariables()
+//         data["researcher"] = urlvars["exp"]
+//         data["sona_id"] = urlvars["sona_id"]
+//         data["prolific_id"] = urlvars["PROLIFIC_PID"] // Prolific
+//         data["study_id"] = urlvars["STUDY_ID"] // Prolific
+//         data["session_id"] = urlvars["SESSION_ID"] // Prolific
+//     },
+// }
 
 var demographic_questions = {
     type: jsPsychSurvey,
@@ -274,7 +274,6 @@ var wearables_questions = {
                             "Calorie intake",
                             "Sleep quality",
                             "Respiratory rate",
-                            "I do not own a device that can monitor this",
                         ],
                         showSelectAllItem: false,
                         showNoneItem: true,
@@ -286,8 +285,8 @@ var wearables_questions = {
                         colCount: 1,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} != 'I do not own a device that can monitor this'",
-                        title: "How important are these information about your body to you?",
+                        visibleIf: "{Wearables_Ownership} notcontains 'None'",
+                        title: "How important is this information about your body to you?",
                         name: "Wearables_Importance",
                         type: "rating",
                         rateCount: 8,
@@ -298,7 +297,7 @@ var wearables_questions = {
                     },
                     {
                         visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
-                        title: "How often do you check your heart rate?",
+                        title: "How often do you check your heart rate with your device?",
                         name: "Wearables_Heart",
                         type: "rating",
                         displayMode: "buttons",
@@ -328,12 +327,18 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description: 
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
             {
                 elements: [
+                    {
+                        type: "html",
+                        name: "Feedback_Alert",
+                        html: "<p><b style='color:red;'>Answers to these questions will not affect your reward but will help us to contextualize your answers</b></p>"
+                    },
                     {
                         type: "rating",
                         name: "Feedback_Enjoyment",
@@ -355,7 +360,6 @@ var experiment_feedback = {
                         type: "rating",
                         name: "Feedback_Performance",
                         title: "To what extent did you do the experiment carefully and to the best of your abilities?",
-                        description: "<p><b style='color:red;'><b>Answers to this question will not affect your reward but will help us to contextualize your answers</b>",
                         isRequired: false,
                     }
                 ],
