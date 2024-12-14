@@ -1,5 +1,5 @@
 // Instructions ================================================
-const intero_instructions = {
+const instructions = {
     type: jsPsychSurvey,
     survey_json: {
         showQuestionNumbers: false,
@@ -13,14 +13,14 @@ const intero_instructions = {
                         html:
                             "<div style='display: flex;'>" +
                             "<div style='width: 60%; margin-right: 20px;'>" +
-                            "<h1>About you and your body...</h1>" +
+                            //"<h1>About you and your body...</h1>" +
                             "<h2>Instructions</h2>" +
-                            "<p>In the following questionnaires, you will be asked various questions about the way you feel and you think about your body. " +
+                            //REPHRASE
+                            "<p>In the stage, you will be asked various questions about the way you feel and think about your body. " +
                             "There are no right or wrong answers.</p>" +
                             "<p>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>" +
                             "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related). " +
-                            "Please read carefully each item and consider it <i>on its own</i> (<b>without trying to relate it or remember your answers to previous items</b>), and don't hesitate to take breaks if you need.</p>" +
-                            "<p style='color:green;'>At the end, you will be shown a <b>graph</b> summarizing your answers.<p>" +
+                            // "<p style='color:green;'>At the end, you will be shown a <b>graph</b> summarizing your answers.<p>" +
                             "</div>" +
                             "<div style='width: 40%;'>" +
                             "<img src='https://www.newthinking.com/wp-content/uploads/2023/06/2-ways-to-improve-mind-body-scaled.jpg' alt='Mind and Body' style='width: 100%;'>" +
@@ -33,7 +33,8 @@ const intero_instructions = {
     },
 }
 
-// Questionnaires
+// QUESTIONNAIRES ============================================================================================================================
+
 // MAIA-2 questionnaire
 const MAIA_items = [
     "When I am tense I notice where the tension is located in my body",
@@ -74,98 +75,6 @@ const MAIA_items = [
     "I feel my body is a safe place",
     "I trust my body sensations",
 ]
-
-const MAIA_dimensions = [
-    "Noticing_1",
-    "Noticing_2",
-    "Noticing_3",
-    "Noticing_4",
-    "NotDistracting_1_R",
-    "NotDistracting_2_R",
-    "NotDistracting_3_R",
-    "NotDistracting_4_R",
-    "NotDistracting_5_R",
-    "NotDistracting_6_R",
-    "NotWorrying_1_R",
-    "NotWorrying_2_R",
-    "NotWorrying_3",
-    "NotWorrying_4",
-    "NotWorrying_5_R",
-    "AttentionRegulation_1",
-    "AttentionRegulation_2",
-    "AttentionRegulation_3",
-    "AttentionRegulation_4",
-    "AttentionRegulation_5",
-    "AttentionRegulation_6",
-    "AttentionRegulation_7",
-    "EmotionalAwareness_1",
-    "EmotionalAwareness_2",
-    "EmotionalAwareness_3",
-    "EmotionalAwareness_4",
-    "EmotionalAwareness_5",
-    "SelfRegulation_1",
-    "SelfRegulation_2",
-    "SelfRegulation_3",
-    "SelfRegulation_4",
-    "BodyListening_1",
-    "BodyListening_2",
-    "BodyListening_3",
-    "Trusting_1",
-    "Trusting_2",
-    "Trusting_3",
-]
-
-function maia_questions(
-    required = true,
-    ticks = ["Never", "Always"],
-    items = MAIA_items,
-    dimensions = MAIA_dimensions
-) {
-    // Make questions
-    var questions = []
-    for (const [index, element] of items.entries()) {
-        q = {
-            title: element,
-            name: dimensions[index],
-            type: "rating",
-            displayMode: "buttons",
-            // scaleColorMode: "colored",
-            isRequired: required,
-            minRateDescription: ticks[0],
-            maxRateDescription: ticks[1],
-            rateValues: [0, 1, 2, 3, 4, 5], // 6-point likert-scale
-        }
-        questions.push(q)
-    }
-
-    // Randomize order
-    for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[questions[i], questions[j]] = [questions[j], questions[i]]
-    }
-
-    return [{ elements: questions }]
-}
-
-const maia_questionnaire = {
-    type: jsPsychSurvey,
-    survey_json: function () {
-        return {
-            title: "About your body sensations...",
-            description:
-                "Please indicate how often each statement applies to you generally in daily life.",
-            showQuestionNumbers: false,
-            goNextPageAutomatic: true,
-            pageNextText: "Next",
-            pagePrevText: "Previous",
-            showProgressBar: "aboveHeader",
-            pages: maia_questions(),
-        }
-    },
-    data: {
-        screen: "MAIA_questionnaire",
-    },
-}
 
 // MINT Items ================================================
 const MINT_items = [
@@ -210,130 +119,6 @@ const MINT_items = [
     "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
 ]
 
-const MINT_dimensions = [
-    "DysregulatedPerception_1",
-    "DysregulatedPerception_2",
-    "DysregulatedPerception_3",
-    "DysregulatedPerception_4",
-    "DysregulatedPerception_5",
-    "DysregulatedPerception_6",
-    "DysregulatedPerception_7",
-    "DysregulatedPerception_8",
-    "DysregulatedPerception_9",
-    "DysregulatedPerception_10",
-    "DysregulatedPerception_11",
-    "DysregulatedPerception_12",
-    "DysregulatedPerception_13",
-    "DysregulatedPerception_14",
-    "DysregulatedPerception_15",
-    "HeightenedPerception_1",
-    "HeightenedPerception_2",
-    "HeightenedPerception_3",
-    "HeightenedPerception_4",
-    "HeightenedPerception_5",
-    "HeightenedPerception_6",
-    "HeightenedPerception_7",
-    "HeightenedPerception_8",
-    "HeightenedPerception_9",
-    "HeightenedPerception_10",
-    "HeightenedPerception_11",
-    "HeightenedPerception_12",
-    "HeightenedPerception_13",
-    "HeightenedPerception_14",
-    "HeightenedPerception_15",
-    "HeightenedAwareness_1",
-    "HeightenedAwareness_2",
-    "HeightenedAwareness_3",
-    "HeightenedAwareness_4",
-    "HeightenedAwareness_5",
-    "HeightenedAwareness_6",
-    "HeightenedAwareness_7",
-    "HeightenedAwareness_8",
-    "HeightenedAwareness_9",
-]
-
-function mint_questions(
-    required = true,
-    ticks = ["Disagree", "Agree"], //
-    items = IAS_items,
-    dimensions = IAS_dimensions
-) {
-    // Make questions
-    var questions = []
-    for (const [index, element] of items.entries()) {
-        q = {
-            title: element,
-            name: dimensions[index],
-            type: "rating",
-            displayMode: "buttons",
-            // scaleColorMode: "colored",
-            isRequired: required,
-            minRateDescription: ticks[0],
-            maxRateDescription: ticks[1],
-            rateValues: [0, 1, 2, 3, 4, 5, 6], // 7-point likert-scale
-        }
-        questions.push(q)
-    }
-
-    // Randomize order
-    for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[questions[i], questions[j]] = [questions[j], questions[i]]
-    }
-
-    return [{ elements: questions }]
-}
-
-// function intero_makequestions(
-//     groups,
-//     required = true,
-//     ticks = ["Disagree", "Agree"]
-// ) {
-//     pages = []
-
-//     // Make questions
-//     for (const g in groups) {
-//         for (const [index, element] of groups[g].entries()) {
-//             key = Object.keys(element)[0]
-//             q = {
-//                 title: element[key],
-//                 name: key,
-//                 type: "rating",
-//                 displayMode: "buttons",
-//                 // scaleColorMode: "colored",
-//                 isRequired: required,
-//                 minRateDescription: ticks[0],
-//                 maxRateDescription: ticks[1],
-//                 rateValues: [0, 1, 2, 3, 4, 5, 6],
-//             }
-//             groups[g][index] = q
-//         }
-//         pages.push({ elements: groups[g] })
-//     }
-
-//     return pages
-// }
-
-const intero_questionnaire = {
-    type: jsPsychSurvey,
-    survey_json: function () {
-        return {
-            title: "About you and your body",
-            description:
-                "Please answer the following questions based on how accurately each statement describes you in general.",
-            showQuestionNumbers: false,
-            goNextPageAutomatic: true,
-            pageNextText: "Next",
-            pagePrevText: "Previous",
-            showProgressBar: "aboveHeader",
-            pages: intero_makequestions(),
-        }
-    },
-    data: {
-        screen: "mint_questionnaire",
-    },
-}
-
 // IAS questionnaire
 const IAS_items = [
     "I can always accurately perceive when my heart is beating fast",
@@ -358,82 +143,8 @@ const IAS_items = [
     "I can always accurately perceive when something is going to be ticklish",
     "I can always accurately perceive when something is going to be itchy",
 ]
-const IAS_dimensions = [
-    "IAS_1",
-    "IAS_2",
-    "IAS_3",
-    "IAS_4",
-    "IAS_5",
-    "IAS_6",
-    "IAS_7",
-    "IAS_8",
-    "IAS_9",
-    "IAS_10",
-    "IAS_11",
-    "IAS_12",
-    "IAS_13",
-    "IAS_14",
-    "IAS_15",
-    "IAS_16",
-    "IAS_17",
-    "IAS_18",
-    "IAS_19",
-    "IAS_20",
-    "IAS_21",
-]
 
-function ias_questions(
-    groups,
-    required = true,
-    ticks = ["Disagree Strongly", "Strongly Agree"] //based on their validation paper
-) {
-    pages = []
-
-    // Make questions
-    for (const g in groups) {
-        for (const [index, element] of groups[g].entries()) {
-            key = Object.keys(element)[0]
-            q = {
-                title: element[key],
-                name: key,
-                type: "rating",
-                displayMode: "buttons",
-                // scaleColorMode: "colored",
-                isRequired: required,
-                minRateDescription: ticks[0],
-                maxRateDescription: ticks[1],
-                rateValues: [0, 1, 2, 3, 4], // 5-point likert scale
-            }
-            groups[g][index] = q
-        }
-        pages.push({ elements: groups[g] })
-    }
-
-    return pages
-}
-
-const ias_questionnaire = {
-    type: jsPsychSurvey,
-    survey_json: function () {
-        return {
-            title: "About your body sensations...",
-            description:
-                "Below are several statements regarding how accurately you can perceive specific bodily sensations. Please rate on the scale how well you believe you can perceive each specific signal.",
-            showQuestionNumbers: false,
-            goNextPageAutomatic: true,
-            pageNextText: "Next",
-            pagePrevText: "Previous",
-            showProgressBar: "aboveHeader",
-            pages: ias_questions(),
-        }
-    },
-    data: {
-        screen: "ias_questionnaire",
-    },
-}
-
-// BPQ questionnaire
-// 46 items
+// BPQ questionnaire short version
 const BPQ_items = [
     "Swallowing frequently.",
     "An urge to cough or clear my throat.",
@@ -482,101 +193,163 @@ const BPQ_items = [
     "I have diarrhea.",
 ]
 
-const BPQ_dimensions = [
-    "BodyAwareness_1",
-    "BodyAwareness_2",
-    "BodyAwareness_3",
-    "BodyAwareness_4",
-    "BodyAwareness_5",
-    "BodyAwareness_6",
-    "BodyAwareness_7",
-    "BodyAwareness_8",
-    "BodyAwareness_9",
-    "BodyAwareness_10",
-    "BodyAwareness_11",
-    "BodyAwareness_12",
-    "BodyAwareness_13",
-    "BodyAwareness_14",
-    "BodyAwareness_15",
-    "BodyAwareness_16",
-    "BodyAwareness_17",
-    "BodyAwareness_18",
-    "BodyAwareness_19",
-    "BodyAwareness_20",
-    "BodyAwareness_21",
-    "BodyAwareness_22",
-    "BodyAwareness_23",
-    "BodyAwareness_24",
-    "BodyAwareness_25",
-    "BodyAwareness_26",
-    "AutonomicNervous_1",
-    "AutonomicNervous_2",
-    "AutonomicNervous_3",
-    "AutonomicNervous_4",
-    "AutonomicNervous_5",
-    "AutonomicNervous_6",
-    "AutonomicNervous_7",
-    "AutonomicNervous_8",
-    "AutonomicNervous_9",
-    "AutonomicNervous_10",
-    "AutonomicNervous_11",
-    "AutonomicNervous_12",
-    "AutonomicNervous_13",
-    "AutonomicNervous_14",
-    "AutonomicNervous_15",
-    "AutonomicNervous_16",
-    "AutonomicNervous_17",
-    "AutonomicNervous_18",
-    "AutonomicNervous_19",
-    "AutonomicNervous_20",
-]
-
-function bpq_questions(
-    groups,
-    required = true,
-    ticks = ["Never", "Always"] //
-) {
-    pages = []
-
-    // Make questions
-    for (const g in groups) {
-        for (const [index, element] of groups[g].entries()) {
-            key = Object.keys(element)[0]
-            q = {
-                title: element[key],
-                name: key,
-                type: "rating",
-                displayMode: "buttons",
-                // scaleColorMode: "colored",
-                isRequired: required,
-                minRateDescription: ticks[0],
-                maxRateDescription: ticks[1],
-                rateValues: [0, 1, 2, 3, 4], // 5-point likert scale
-            }
-            groups[g][index] = q
-        }
-        pages.push({ elements: groups[g] })
+// Function to shuffle an array - to shuffle items
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]] // Swap elements
     }
-
-    return pages
+    return arr
 }
 
-const bpq_questionnaire = {
+function maia_questions(
+    MAIA_items,
+    required = true,
+    ticks = ["Never", "Always"],
+    pageId = "MAIA"
+) {
+    // Convert items into survey questions
+    const questions = MAIA_items.map((item, index) => ({
+        title: item, // The string from IAS_items
+        name: `${pageId}_item_${index + 1}`, // Unique name for each question
+        type: "rating",
+        displayMode: "buttons",
+        isRequired: required,
+        minRateDescription: ticks[0],
+        maxRateDescription: ticks[1],
+        rateValues: [0, 1, 2, 3, 4, 5, 6], // 7-point Likert scale
+    }))
+
+    const shuffledQuestions = shuffleArray(questions)
+
+    return shuffledQuestions
+}
+
+function mint_questions(
+    MINT_items,
+    required = true,
+    ticks = ["Disagree", "Agree"],
+    pageId = "MINT"
+) {
+    // Convert items into survey questions
+    const questions = MINT_items.map((item, index) => ({
+        title: item, // The string from IAS_items
+        name: `${pageId}_item_${index + 1}`, // Unique name for each question
+        type: "rating",
+        displayMode: "buttons",
+        isRequired: required,
+        minRateDescription: ticks[0],
+        maxRateDescription: ticks[1],
+        rateValues: [0, 1, 2, 3, 4, 5, 6], // 7-point Likert scale
+    }))
+
+    const shuffledQuestions = shuffleArray(questions)
+
+    return shuffledQuestions
+}
+
+function ias_questions(
+    IAS_items,
+    required = true,
+    ticks = ["Disagree Strongly", "Strongly Agree"],
+    pageId = "IAS" //
+) {
+    // Convert items into survey questions
+    const questions = IAS_items.map((item, index) => ({
+        title: item, // The string from IAS_items
+        name: `${pageId}_item_${index + 1}`, // Unique name for each question
+        type: "rating",
+        displayMode: "buttons",
+        isRequired: required,
+        minRateDescription: ticks[0],
+        maxRateDescription: ticks[1],
+        rateValues: [1, 2, 3, 4, 5], // 5-point Likert scale
+    }))
+
+    const shuffledQuestions = shuffleArray(questions)
+
+    return shuffledQuestions
+}
+
+function bpq_questions(
+    BPQ_items,
+    required = true,
+    ticks = ["Never", "Always"],
+    pageId = "BPQ"
+) {
+    // Convert items into survey questions
+    const questions = BPQ_items.map((item, index) => ({
+        title: item, // The string from BPQ_items
+        name: `${pageId}_item_${index + 1}`,
+        type: "rating",
+        displayMode: "buttons",
+        isRequired: required,
+        minRateDescription: ticks[0],
+        maxRateDescription: ticks[1],
+        rateValues: [0, 1, 2, 3, 4, 5, 6], // 7-point Likert scale
+    }))
+
+    const shuffledQuestions = shuffleArray(questions)
+
+    return shuffledQuestions
+}
+
+const questionnaires = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {
             title: "About your body sensations...",
             description:
-                "Below are several statements regarding how accurately you can perceive specific bodily sensations. Please rate on the scale how well you believe you can perceive each specific signal.",
+                "Below are several questionnaires about the way you feel and think about your body.",
             showQuestionNumbers: false,
             goNextPageAutomatic: true,
             pageNextText: "Next",
             pagePrevText: "Previous",
             showProgressBar: "aboveHeader",
-            pages: ias_questions(),
+            pages: [
+                // MAIA Questions with discription
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            html: `<p>Please indicate how often each statement applies to you generally in daily life.</p>`,
+                        },
+                        ...maia_questions(MAIA_items),
+                    ],
+                },
+
+                // MINT Questions with discription
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            html: `<p>Please answer the following questions based on how accurately each statement describes you in general.</p>`,
+                        },
+                        ...mint_questions(MINT_items),
+                    ],
+                },
+
+                // IAS Questions with Description
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            html: `<p>Please rate on the scale how accurately you believe you can perceive each specific signal.</p>`,
+                        },
+                        ...ias_questions(IAS_items),
+                    ],
+                },
+                // BPQ Questions with Description
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            html: `<p>Please rate your awareness on each of the characteristics described below.</p>`,
+                        },
+                        ...bpq_questions(BPQ_items),
+                    ],
+                },
+            ],
         }
-    },
-    data: {
-        screen: "bpq_questionnaire",
     },
 }

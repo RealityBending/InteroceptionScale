@@ -8,8 +8,8 @@
         <script src="https://unpkg.com/jspsych@8.0.2"></script>
         <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
-        <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
+        <!-- <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
+        <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script> -->
 
         <!-- Plots -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -17,7 +17,7 @@
         <script src="https://unpkg.com/@jspsych/plugin-canvas-button-response@2.0.0"></script>
 
         <!-- Load parameters here (always below the loading of the JsPsych) -->
-        <script src="intero.js"></script>
+        <!-- <script src="intero.js"></script> -->
         <script src="demographics.js"></script>
 
         <link
@@ -66,21 +66,9 @@
         timeline.push(ConsentForm)
         timeline.push(demographics_browser_info)
         timeline.push(demographic_questions)
-        timeline.push(intero_instructions)
-        timeline.push(intero_questionnaire)
-        timeline.push(intero_feedback)
+        timeline.push(demographics_wearables)
         timeline.push(experiment_feedback)
         timeline.push(demographics_debriefing)
-
-        // save data via DataPipe
-        timeline.push({
-            type: jsPsychPipe,
-            action: "save",
-            experiment_id: "QAKI6wikDpwy", // This in generated in the DataPipe interface
-            filename: `${participantID}.csv`,
-            data_string: () => jsPsych.data.get().csv(),
-        })
-
         timeline.push(demographics_endscreen)
 
         /* ----------------- Run the timeline ----------------- */
