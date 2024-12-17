@@ -143,6 +143,7 @@ function erqs_questions(
 function phq4_questions(
     phq4_items,
     required = true,
+    ticks = ["Not al all", "Nearly every day"],
     pageId = "PHQ4"
 ) {
     // Convert items into survey questions
