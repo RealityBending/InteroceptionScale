@@ -294,7 +294,7 @@ function bpq_questions(
     return shuffledQuestions
 }
 
-const questionnaires = {
+const intero_questionnaires = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {

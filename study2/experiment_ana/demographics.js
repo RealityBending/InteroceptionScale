@@ -298,8 +298,7 @@ var demographics_wearables = {
                         maxRateDescription: "Very much",
                     },
                     {
-                        visibleIf:
-                            "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate with your device?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -330,13 +329,18 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description:
+        description: 
             "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
             {
                 elements: [
+                    {
+                        type: "html",
+                        name: "Feedback_Alert",
+                        html: "<p><b style='color:red;'>Answers to these questions will not affect your reward but will help us to contextualize your answers</b></p>"
+                    },
                     {
                         type: "rating",
                         name: "Feedback_Enjoyment",
@@ -352,6 +356,12 @@ var experiment_feedback = {
                         title: "Anything else you would like to share with us?",
                         description:
                             "Please note that these comments might be shared publicly as part of the results of this study - avoid sharing personal information.",
+                        isRequired: false,
+                    },
+                    {
+                        type: "rating",
+                        name: "Feedback_Performance",
+                        title: "To what extent did you do the experiment carefully and to the best of your abilities?",
                         isRequired: false,
                     },
                 ],
