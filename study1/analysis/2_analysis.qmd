@@ -236,7 +236,6 @@ bootstrap_similarity <- function(df) {
   rez
 }
 
-
 rez <- bootstrap_similarity(df)
 ```
 
@@ -260,12 +259,12 @@ rez |>
 ```{r}
 #| fig-width: 10
 #| fig-height: 10
-#| eval: true
+
 
 p_sim <- rez |>
   pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
   filter(str_detect(name, "d_") & str_detect(Comparison, "Facet")) |>
-  filter(Sample == "Random") |> 
+  filter(Sample == "Random") |>
   ggplot(aes(x=value, y=name)) +
   ggdist::stat_eye(aes(fill = after_stat(x < 0))) +
   geom_vline(xintercept=0, linetype="dashed") +
@@ -280,16 +279,16 @@ r <- correlation::cor_sort(cor(byrandom))
 order <- colnames(r)
 
 make_corplot <- function(data, order) {
-  rownames_to_column(as.data.frame(cor(data)), "item") |> 
-    pivot_longer(-item) |> 
+  rownames_to_column(as.data.frame(cor(data)), "item") |>
+    pivot_longer(-item) |>
     mutate(item = fct_relevel(item, order),
            name = fct_relevel(name, order)) |>
     ggplot(aes(x=name, y=item, fill=value)) +
     geom_tile() +
     # scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0, values=c(-1, 0, 1)) +
     scale_fill_gradientn(
-      colors=c("blue", "white", "#FFEE58", "#FFC107", "#FF9800", "#FF5722", 
-               "#F44336", "#E91E63", "#9C27B0", "#8231B4", "#673AB7", "white"), 
+      colors=c("blue", "white", "#FFEE58", "#FFC107", "#FF9800", "#FF5722",
+               "#F44336", "#E91E63", "#9C27B0", "#8231B4", "#673AB7", "white"),
       values=c(-1, seq(0, 1, 0.1))) +
     theme_minimal() +
     theme(axis.text = element_blank(),
@@ -305,10 +304,10 @@ p2 <- make_corplot(byfacet, order) +
 p3 <- make_corplot(bymodality, order) +
   ggtitle("Grouped by modality")
 
-p1 / (p2 | p_sim | p3) + 
-  patchwork::plot_layout(heights=c(3, 1)) + 
+p1 / (p2 | p_sim | p3) +
+  patchwork::plot_layout(heights=c(3, 1)) +
   patchwork::plot_annotation(
-    title="Effect of Item-presentation Grouping", 
+    title="Effect of Item-presentation Grouping",
     theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
 ```
 
@@ -532,24 +531,47 @@ plot(itemStability(ega3))
 ```{r}
 #| message: false
 
-higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order)$std))
+dimensions <- list(
+  C01 = "UrIn",       # Urointestinal Inaccuracy
+  C09 = "CaCo",       # Cardiorespiratory Confusion
+  C13 = "CaNo",       # Cardiorespiratory Noticing
+  C18 = "Olfa",       # Olfactory Compensation
+  C03 = "Sati",       # Satiety Noticing
+  C04 = "SexA",       # Sexual Arousal Awareness
+  C06 = "SexS",       # Sexual Arousal Sensitivity
+  C15 = "SexO",       # Sexual Organs Sensitivity
+  C08 = "UrSe",       # Urointestinal Sensitivity
+  C10 = "RelA",       # Relaxation Awareness
+  C05 = "StaS",       # State Specificity
+  C02 = "ExAc",       # Expulsion Accuracy
+  C17 = "Card",       # Cardioception
+  C14 = "Resp",       # Respiroception
+  C12 = "Sign",       # Signalling
+  C16 = "Gast",       # Gastroception
+  C11 = "Derm",       # Dermatoception
+  C07 = "SexC"        # Sexual Arousal Changes
+)
+
+higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order, loading.method="revised")$std))
 cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
 
 
-lower <- make_loadingtable(net.loads(ega3$EGA$lower_order)$std) |>
+lower <- make_loadingtable(net.loads(ega3$EGA$lower_order, loading.method="revised")$std) |>
   select(names(higher)) |>
   mutate(Cluster = fct_relevel(Cluster, cluster_order)) |>
   arrange(Cluster, desc(Max))
 
-higher$Item <- paste0("H", higher$Item)
-higher$Label <- paste("TODO", 1:nrow(higher))
+higher$Item <- paste0("M", higher$Item)
+higher$Label <- c("Interoceptive Deficit", "Interoceptive Awareness", "Interoceptive Sensitivity")
 lower <- mutate(lower, Label = labels[Item], ID= Item, Item = 1:n())
 
 
-rbind(higher, select(lower, -ID)) |>
+tab1 <- rbind(higher, select(lower, -ID)) |>
   datawizard::data_relocate("Label", after = "Item") |>
   select(-Cluster, -Max) |>
-  # datawizard::data_rename(c(XC1 = "C01", XC2 = "C02")) |> 
+  # datawizard::data_rename(dimensions) |>  # https://github.com/easystats/datawizard/issues/576
+  datawizard::data_rename(names(dimensions), dimensions) |> 
+  mutate(`|` = "") |> 
   gt::gt() |>
   gt::tab_row_group(
     label = "Items",
@@ -565,7 +587,7 @@ rbind(higher, select(lower, -ID)) |>
                  domain = c(-1, 1)) |>
   gt::tab_style(
     style = gt::cell_text(size="small", style="italic"),
-    locations = gt::cells_body(columns="Label")
+    locations = gt::cells_body(columns="Label", rows=c(4:57))
   ) |>
   gt::tab_style(
     style = list(gt::cell_text(weight="bold"),
@@ -712,12 +734,23 @@ rbind(higher, select(lower, -ID)) |>
   gt::opt_vertical_padding(scale = 0.7) |>
   gt::opt_horizontal_padding(scale = 0.5) |>
   # gt::tab_options(table.width = gt::pct(100)) |> 
-  gt::cols_width(Label ~ gt::pct(30)) |>
-  gt::gtsave("table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
+  gt::cols_width(Label ~ gt::pct(66),
+                 `|` ~ gt::pct(1))
+
+gt::gtsave(gt::cols_hide(tab1, `|`), "table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
+
+Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
+
+gt::gtsave(tab1, "table1.png", vwidth=1660, expand=0, quiet=TRUE)
 ```
 
 
-<object type="text/html" data="table1.html" width="120%" height="1000"></object>
+<object type="text/html" data="table1.html" width="125%" height="1000"></object>
+
+<!-- ![](table1.png) -->
+
+### Graph
+
 
 ```{r}
 # REMOVE ONCE https://github.com/hfgolino/EGAnet/pull/167 is merged
@@ -797,7 +830,6 @@ convert2tidygraph <- function(EGA.object)
 }
 ```
 
-### Graph
 
 ```{r}
 #| fig-width: 9
@@ -825,7 +857,8 @@ lower_nodes <- graph$nodes |>
 lower_edges <- graph$edges |> 
   filter(from %in% lower_nodes$name & to %in% lower_nodes$name)
 lower_layout <- tidygraph::tbl_graph(lower_nodes, edges=lower_edges, directed=FALSE) |> 
-  ggraph::create_layout(layout = 'circle')
+  ggraph::create_layout(layout = 'circle') |> 
+  as.data.frame()
 rownames(lower_layout) <- lower_nodes$name
 
 # Arrange higher nodes in circle
@@ -838,20 +871,29 @@ higher_nodes <- graph$nodes |>
 higher_edges <- graph$edges |> 
   filter(from %in% higher_nodes$name & to %in% higher_nodes$name)
 higher_layout <- tidygraph::tbl_graph(higher_nodes, edges=higher_edges, directed=FALSE) |> 
-  ggraph::create_layout(layout = 'circle')
+  ggraph::create_layout(layout = 'circle') |> 
+  as.data.frame()
 rownames(higher_layout) <- higher_nodes$ID
 
 
 # Put circles together
 layout <- tidygraph::tbl_graph(graph$nodes, edges=graph$edges, directed=FALSE) |> 
   ggraph::create_layout(layout = 'linear', circular = TRUE)
-layout[layout$level == "Lower", "x"] <- lower_layout[layout[layout$level == "Lower", "name"], "x"]
-layout[layout$level == "Lower", "y"] <- lower_layout[layout[layout$level == "Lower", "name"], "y"]
-layout[layout$level == "Higher", "x"] <- higher_layout[layout[layout$level == "Higher", "name"], "x"] * 0.5
-layout[layout$level == "Higher", "y"] <- higher_layout[layout[layout$level == "Higher", "name"], "y"] * 0.5
-layout[layout$level == "Lower", "name"] <- replace_lowernames(layout[layout$level == "Lower", "name"], lower)
-layout[layout$level == "Higher", "name"] <- replace_highernames(layout[layout$level == "Higher", "name"])
+layout[layout$level == "Lower", "x"] <- lower_layout[layout[layout$level == "Lower", ]$name, "x"]
+layout[layout$level == "Lower", "y"] <- lower_layout[layout[layout$level == "Lower", ]$name, "y"]
+layout[layout$level == "Higher", "x"] <- higher_layout[layout[layout$level == "Higher", ]$name, "x"] * 0.5
+layout[layout$level == "Higher", "y"] <- higher_layout[layout[layout$level == "Higher", ]$name, "y"] * 0.5
+layout[layout$level == "Lower", "name"] <- replace_lowernames(layout[layout$level == "Lower", ]$name, lower)
+layout[layout$level == "Higher", "name"] <- replace_highernames(layout[layout$level == "Higher", ]$name)
 
+# Final renaming
+layout[layout$level == "Higher", "name"] <- unlist(dimensions)[layout[layout$level == "Higher", ]$name]
+layout[layout$level == "Higher", "dimension"] <- layout[layout$level == "Higher", ]$dimension |> 
+  str_replace("H1", "Deficit") |> 
+  str_replace("H2", "Awareness") |> 
+  str_replace("H3", "Sensitivity")
+
+ 
 # layout$dimmension_label <- layout$dimension
 # layout[layout$level == "Higher", "dimmension_label"] <- NA
 
@@ -869,12 +911,13 @@ ggraph(layout) +
                               values=c(-1, -0.5, 0, 0.5, 1), guide="none") +
   scale_shape_manual(values=c("Higher"="square", "Lower"="circle"), guide="none") +
   scale_color_manual(values=c(
-    "H1"="#90CAF9", "H2"="#C5E1A5", "H3"="#EF9A9A", 
+    "Deficit"="#90CAF9", "Awareness"="#C5E1A5", "Sensitivity"="#EF9A9A", 
     "L1"="#B39DDB", "L9"="#9FA8DA", "L13"="#90CAF9", "L18"="#81D4FA", "L3"="#80DEEA",
     "L4"="#F3F29D", "L6"="#E6EE9C", "L15"="#D6E8A1", "L8"="#C5E1A5", "L10"="#B5DCA6", "L5"="#A5D6A7", "L2"="#93D1B6",
     "L17"="#CE93D8", "L14"="#F48FB1", "L12"="#EF9A9A", "L16"="#FFAB91", "L11"="#FFCC80", "L7"="#FFE082"),
-                     breaks=c("H1", "H2", "H3")) +
+                     breaks=c("Deficit", "Awareness", "Sensitivity")) +
   theme_void() +
+  theme(legend.title = element_text(face="bold")) +
   labs(color="Metaclusters")
 ```
 
