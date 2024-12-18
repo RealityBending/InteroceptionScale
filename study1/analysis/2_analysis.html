@@ -439,7 +439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="2_analysis_files/figure-html/corsimilarity-1.png" class="img-fluid figure-img" width="2000"></p>
 </figure>
 </div>
 </div>
@@ -474,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="2_analysis_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -521,7 +521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="2_analysis_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -1014,6 +1014,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 #lcjmtprrxt .gt_indent_5 {
   text-indent: 25px;
+}
+
+#lcjmtprrxt .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#lcjmtprrxt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 
@@ -5402,7 +5411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="2_analysis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -5872,6 +5881,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 #cutjomxjma .gt_indent_5 {
   text-indent: 25px;
+}
+
+#cutjomxjma .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#cutjomxjma div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 
@@ -7360,7 +7378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="2_analysis_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -7672,94 +7690,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">convert2tidygraph</span>(ega3)</span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>replace_lowernames <span class="ot">&lt;-</span> <span class="cf">function</span>(names, lower) {</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(lower) <span class="ot">&lt;-</span> lower<span class="sc">$</span>ID</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="fu">as.numeric</span>(lower[names, <span class="st">"Item"</span>]))</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>replace_highernames <span class="ot">&lt;-</span> <span class="cf">function</span>(names) {</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(names, <span class="st">"L"</span>))  </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"C"</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, x))</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange lower nodes in circle</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>lower_nodes <span class="ot">&lt;-</span> graph<span class="sc">$</span>nodes <span class="sc">|&gt;</span> </span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(level <span class="sc">==</span> <span class="st">"Lower"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">fct_relevel</span>(name, <span class="fu">as.character</span>(lower<span class="sc">$</span>ID)),</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">ID =</span> name) <span class="sc">|&gt;</span> </span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name)  </span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>lower_edges <span class="ot">&lt;-</span> graph<span class="sc">$</span>edges <span class="sc">|&gt;</span> </span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">%in%</span> lower_nodes<span class="sc">$</span>name <span class="sc">&amp;</span> to <span class="sc">%in%</span> lower_nodes<span class="sc">$</span>name)</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>lower_layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(lower_nodes, <span class="at">edges=</span>lower_edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'circle'</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lower_layout) <span class="ot">&lt;-</span> lower_nodes<span class="sc">$</span>name</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange higher nodes in circle</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>higher_nodes <span class="ot">&lt;-</span> graph<span class="sc">$</span>nodes <span class="sc">|&gt;</span> </span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(level <span class="sc">==</span> <span class="st">"Higher"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> name,</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">replace_highernames</span>(name),</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">fct_relevel</span>(name, <span class="fu">names</span>(<span class="fu">select</span>(higher, <span class="sc">-</span>Item, <span class="sc">-</span>Cluster,<span class="sc">-</span>Max,<span class="sc">-</span>Label)))) <span class="sc">|&gt;</span></span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name)</span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>higher_edges <span class="ot">&lt;-</span> graph<span class="sc">$</span>edges <span class="sc">|&gt;</span> </span>
-<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">%in%</span> higher_nodes<span class="sc">$</span>name <span class="sc">&amp;</span> to <span class="sc">%in%</span> higher_nodes<span class="sc">$</span>name)</span>
-<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>higher_layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(higher_nodes, <span class="at">edges=</span>higher_edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'circle'</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(higher_layout) <span class="ot">&lt;-</span> higher_nodes<span class="sc">$</span>ID</span>
-<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Put circles together</span></span>
-<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(graph<span class="sc">$</span>nodes, <span class="at">edges=</span>graph<span class="sc">$</span>edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'linear'</span>, <span class="at">circular =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"x"</span>] <span class="ot">&lt;-</span> lower_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, <span class="st">"x"</span>]</span>
-<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"y"</span>] <span class="ot">&lt;-</span> lower_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, <span class="st">"y"</span>]</span>
-<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"x"</span>] <span class="ot">&lt;-</span> higher_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name, <span class="st">"x"</span>] <span class="sc">*</span> <span class="fl">0.5</span></span>
-<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"y"</span>] <span class="ot">&lt;-</span> higher_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name, <span class="st">"y"</span>] <span class="sc">*</span> <span class="fl">0.5</span></span>
-<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">replace_lowernames</span>(layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, lower)</span>
-<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">replace_highernames</span>(layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name)</span>
-<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Final renaming</span></span>
-<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dimensions)[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name]</span>
-<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"dimension"</span>] <span class="ot">&lt;-</span> layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>dimension <span class="sc">|&gt;</span> </span>
-<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H1"</span>, <span class="st">"Deficit"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H2"</span>, <span class="st">"Awareness"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H3"</span>, <span class="st">"Sensitivity"</span>)</span>
-<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a><span class="co"># layout$dimmension_label &lt;- layout$dimension</span></span>
-<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a><span class="co"># layout[layout$level == "Higher", "dimmension_label"] &lt;- NA</span></span>
-<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="co"># layout[layout$level == "Higher", "dimension"] &lt;- layout[layout$level == "Higher", "dimension"]</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">convert2tidygraph</span>(ega3)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>replace_lowernames <span class="ot">&lt;-</span> <span class="cf">function</span>(names, lower) {</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(lower) <span class="ot">&lt;-</span> lower<span class="sc">$</span>ID</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="fu">as.numeric</span>(lower[names, <span class="st">"Item"</span>]))</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>replace_highernames <span class="ot">&lt;-</span> <span class="cf">function</span>(names) {</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">str_remove</span>(names, <span class="st">"L"</span>))  </span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"C"</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, x))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange lower nodes in circle</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>lower_nodes <span class="ot">&lt;-</span> graph<span class="sc">$</span>nodes <span class="sc">|&gt;</span> </span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(level <span class="sc">==</span> <span class="st">"Lower"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">fct_relevel</span>(name, <span class="fu">as.character</span>(lower<span class="sc">$</span>ID)),</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">ID =</span> name) <span class="sc">|&gt;</span> </span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name)  </span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>lower_edges <span class="ot">&lt;-</span> graph<span class="sc">$</span>edges <span class="sc">|&gt;</span> </span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">%in%</span> lower_nodes<span class="sc">$</span>name <span class="sc">&amp;</span> to <span class="sc">%in%</span> lower_nodes<span class="sc">$</span>name)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>lower_layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(lower_nodes, <span class="at">edges=</span>lower_edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'circle'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lower_layout) <span class="ot">&lt;-</span> lower_nodes<span class="sc">$</span>name</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange higher nodes in circle</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>higher_nodes <span class="ot">&lt;-</span> graph<span class="sc">$</span>nodes <span class="sc">|&gt;</span> </span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(level <span class="sc">==</span> <span class="st">"Higher"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> name,</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">replace_highernames</span>(name),</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">fct_relevel</span>(name, <span class="fu">names</span>(<span class="fu">select</span>(higher, <span class="sc">-</span>Item, <span class="sc">-</span>Cluster,<span class="sc">-</span>Max,<span class="sc">-</span>Label)))) <span class="sc">|&gt;</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name)</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>higher_edges <span class="ot">&lt;-</span> graph<span class="sc">$</span>edges <span class="sc">|&gt;</span> </span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">%in%</span> higher_nodes<span class="sc">$</span>name <span class="sc">&amp;</span> to <span class="sc">%in%</span> higher_nodes<span class="sc">$</span>name)</span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>higher_layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(higher_nodes, <span class="at">edges=</span>higher_edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'circle'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(higher_layout) <span class="ot">&lt;-</span> higher_nodes<span class="sc">$</span>ID</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Put circles together</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>layout <span class="ot">&lt;-</span> tidygraph<span class="sc">::</span><span class="fu">tbl_graph</span>(graph<span class="sc">$</span>nodes, <span class="at">edges=</span>graph<span class="sc">$</span>edges, <span class="at">directed=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>  ggraph<span class="sc">::</span><span class="fu">create_layout</span>(<span class="at">layout =</span> <span class="st">'linear'</span>, <span class="at">circular =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"x"</span>] <span class="ot">&lt;-</span> lower_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, <span class="st">"x"</span>]</span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"y"</span>] <span class="ot">&lt;-</span> lower_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, <span class="st">"y"</span>]</span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"x"</span>] <span class="ot">&lt;-</span> higher_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name, <span class="st">"x"</span>] <span class="sc">*</span> <span class="fl">0.5</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"y"</span>] <span class="ot">&lt;-</span> higher_layout[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name, <span class="st">"y"</span>] <span class="sc">*</span> <span class="fl">0.5</span></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">replace_lowernames</span>(layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Lower"</span>, ]<span class="sc">$</span>name, lower)</span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">replace_highernames</span>(layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name)</span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Final renaming</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"name"</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dimensions)[layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>name]</span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, <span class="st">"dimension"</span>] <span class="ot">&lt;-</span> layout[layout<span class="sc">$</span>level <span class="sc">==</span> <span class="st">"Higher"</span>, ]<span class="sc">$</span>dimension <span class="sc">|&gt;</span> </span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H1"</span>, <span class="st">"Deficit"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H2"</span>, <span class="st">"Awareness"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"H3"</span>, <span class="st">"Sensitivity"</span>)</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a><span class="co"># layout$dimmension_label &lt;- layout$dimension</span></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a><span class="co"># layout[layout$level == "Higher", "dimmension_label"] &lt;- NA</span></span>
 <span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(layout) <span class="sc">+</span></span>
-<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">edge_alpha=</span><span class="fu">as.numeric</span>(type <span class="sc">==</span> <span class="st">"virtual"</span>), <span class="at">edge_width =</span> <span class="fu">abs</span>(link)), <span class="at">edge_width=</span><span class="fl">0.2</span>, <span class="at">color=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
-<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_arc</span>(<span class="fu">aes</span>(<span class="at">edge_color =</span> link, <span class="at">edge_width =</span> <span class="fu">abs</span>(link), <span class="at">edge_alpha=</span><span class="fu">as.numeric</span>(type <span class="sc">==</span> <span class="st">"real"</span>))) <span class="sc">+</span></span>
-<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>dimension, <span class="at">shape=</span>level), <span class="at">size=</span><span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), <span class="at">fontface=</span><span class="st">"bold"</span>) <span class="sc">+</span></span>
-<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_node_text(aes(label = dimmension_label, angle = node_angle(x, y), hjust = 'outward')) +</span></span>
-<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_alpha</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.9</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">3</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_colour_gradientn</span>(<span class="at">colors=</span><span class="fu">c</span>(<span class="st">"#E53935"</span>, <span class="st">"#E53935"</span>, <span class="st">"white"</span>, <span class="st">"#43A047"</span>, <span class="st">"#43A047"</span>), </span>
-<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>                              <span class="at">values=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"Higher"</span><span class="ot">=</span><span class="st">"square"</span>, <span class="st">"Lower"</span><span class="ot">=</span><span class="st">"circle"</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(</span>
-<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Deficit"</span><span class="ot">=</span><span class="st">"#90CAF9"</span>, <span class="st">"Awareness"</span><span class="ot">=</span><span class="st">"#C5E1A5"</span>, <span class="st">"Sensitivity"</span><span class="ot">=</span><span class="st">"#EF9A9A"</span>, </span>
-<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L1"</span><span class="ot">=</span><span class="st">"#B39DDB"</span>, <span class="st">"L9"</span><span class="ot">=</span><span class="st">"#9FA8DA"</span>, <span class="st">"L13"</span><span class="ot">=</span><span class="st">"#90CAF9"</span>, <span class="st">"L18"</span><span class="ot">=</span><span class="st">"#81D4FA"</span>, <span class="st">"L3"</span><span class="ot">=</span><span class="st">"#80DEEA"</span>,</span>
-<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L4"</span><span class="ot">=</span><span class="st">"#F3F29D"</span>, <span class="st">"L6"</span><span class="ot">=</span><span class="st">"#E6EE9C"</span>, <span class="st">"L15"</span><span class="ot">=</span><span class="st">"#D6E8A1"</span>, <span class="st">"L8"</span><span class="ot">=</span><span class="st">"#C5E1A5"</span>, <span class="st">"L10"</span><span class="ot">=</span><span class="st">"#B5DCA6"</span>, <span class="st">"L5"</span><span class="ot">=</span><span class="st">"#A5D6A7"</span>, <span class="st">"L2"</span><span class="ot">=</span><span class="st">"#93D1B6"</span>,</span>
-<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L17"</span><span class="ot">=</span><span class="st">"#CE93D8"</span>, <span class="st">"L14"</span><span class="ot">=</span><span class="st">"#F48FB1"</span>, <span class="st">"L12"</span><span class="ot">=</span><span class="st">"#EF9A9A"</span>, <span class="st">"L16"</span><span class="ot">=</span><span class="st">"#FFAB91"</span>, <span class="st">"L11"</span><span class="ot">=</span><span class="st">"#FFCC80"</span>, <span class="st">"L7"</span><span class="ot">=</span><span class="st">"#FFE082"</span>),</span>
-<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks=</span><span class="fu">c</span>(<span class="st">"Deficit"</span>, <span class="st">"Awareness"</span>, <span class="st">"Sensitivity"</span>)) <span class="sc">+</span></span>
-<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>)) <span class="sc">+</span></span>
-<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">"Metaclusters"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="co"># layout[layout$level == "Higher", "dimension"] &lt;- layout[layout$level == "Higher", "dimension"]</span></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(layout) <span class="sc">+</span></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">edge_alpha=</span><span class="fu">as.numeric</span>(type <span class="sc">==</span> <span class="st">"virtual"</span>), <span class="at">edge_width =</span> <span class="fu">abs</span>(link)), <span class="at">edge_width=</span><span class="fl">0.2</span>, <span class="at">color=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_arc</span>(<span class="fu">aes</span>(<span class="at">edge_color =</span> link, <span class="at">edge_width =</span> <span class="fu">abs</span>(link), <span class="at">edge_alpha=</span><span class="fu">as.numeric</span>(type <span class="sc">==</span> <span class="st">"real"</span>))) <span class="sc">+</span></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>dimension, <span class="at">shape=</span>level), <span class="at">size=</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>name), <span class="at">fontface=</span><span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_node_text(aes(label = dimmension_label, angle = node_angle(x, y), hjust = 'outward')) +</span></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_alpha</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.9</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">7</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_colour_gradientn</span>(<span class="at">colors=</span><span class="fu">c</span>(<span class="st">"#E53935"</span>, <span class="st">"#E53935"</span>, <span class="st">"white"</span>, <span class="st">"#43A047"</span>, <span class="st">"#43A047"</span>), </span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>                              <span class="at">values=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"Higher"</span><span class="ot">=</span><span class="st">"square"</span>, <span class="st">"Lower"</span><span class="ot">=</span><span class="st">"circle"</span>), <span class="at">guide=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(</span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Deficit"</span><span class="ot">=</span><span class="st">"#90CAF9"</span>, <span class="st">"Awareness"</span><span class="ot">=</span><span class="st">"#C5E1A5"</span>, <span class="st">"Sensitivity"</span><span class="ot">=</span><span class="st">"#EF9A9A"</span>, </span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L1"</span><span class="ot">=</span><span class="st">"#B39DDB"</span>, <span class="st">"L9"</span><span class="ot">=</span><span class="st">"#9FA8DA"</span>, <span class="st">"L13"</span><span class="ot">=</span><span class="st">"#90CAF9"</span>, <span class="st">"L18"</span><span class="ot">=</span><span class="st">"#81D4FA"</span>, <span class="st">"L3"</span><span class="ot">=</span><span class="st">"#80DEEA"</span>,</span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L4"</span><span class="ot">=</span><span class="st">"#F3F29D"</span>, <span class="st">"L6"</span><span class="ot">=</span><span class="st">"#E6EE9C"</span>, <span class="st">"L15"</span><span class="ot">=</span><span class="st">"#D6E8A1"</span>, <span class="st">"L8"</span><span class="ot">=</span><span class="st">"#C5E1A5"</span>, <span class="st">"L10"</span><span class="ot">=</span><span class="st">"#B5DCA6"</span>, <span class="st">"L5"</span><span class="ot">=</span><span class="st">"#A5D6A7"</span>, <span class="st">"L2"</span><span class="ot">=</span><span class="st">"#93D1B6"</span>,</span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>    <span class="st">"L17"</span><span class="ot">=</span><span class="st">"#CE93D8"</span>, <span class="st">"L14"</span><span class="ot">=</span><span class="st">"#F48FB1"</span>, <span class="st">"L12"</span><span class="ot">=</span><span class="st">"#EF9A9A"</span>, <span class="st">"L16"</span><span class="ot">=</span><span class="st">"#FFAB91"</span>, <span class="st">"L11"</span><span class="ot">=</span><span class="st">"#FFCC80"</span>, <span class="st">"L7"</span><span class="ot">=</span><span class="st">"#FFE082"</span>),</span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks=</span><span class="fu">c</span>(<span class="st">"Deficit"</span>, <span class="st">"Awareness"</span>, <span class="st">"Sensitivity"</span>)) <span class="sc">+</span></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face=</span><span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">"Metaclusters"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="2_analysis_files/figure-html/graph-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -7814,7 +7834,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="2_analysis_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="2_analysis_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

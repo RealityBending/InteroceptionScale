@@ -256,9 +256,10 @@ rez |>
   theme_minimal()
 ```
 
-```{r}
+```{r corsimilarity}
 #| fig-width: 10
 #| fig-height: 10
+#| fig-dpi: 200
 
 
 p_sim <- rez |>
@@ -831,9 +832,11 @@ convert2tidygraph <- function(EGA.object)
 ```
 
 
-```{r}
+```{r graph}
 #| fig-width: 9
 #| fig-height: 8
+#| fig-dpi: 200
+
 #| warning: false
 
 graph <- convert2tidygraph(ega3)
@@ -906,7 +909,7 @@ ggraph(layout) +
   geom_node_text(aes(label=name), fontface="bold") +
   # geom_node_text(aes(label = dimmension_label, angle = node_angle(x, y), hjust = 'outward')) +
   scale_edge_alpha(range = c(0, 0.9), guide="none") +
-  scale_edge_width(range = c(0.2, 3), guide="none") +
+  scale_edge_width(range = c(0.2, 7), guide="none") +
   scale_edge_colour_gradientn(colors=c("#E53935", "#E53935", "white", "#43A047", "#43A047"), 
                               values=c(-1, -0.5, 0, 0.5, 1), guide="none") +
   scale_shape_manual(values=c("Higher"="square", "Lower"="circle"), guide="none") +
