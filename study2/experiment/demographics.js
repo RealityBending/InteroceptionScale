@@ -253,13 +253,13 @@ var demographic_questions = {
 var demographics_wearables = {
     type: jsPsychSurvey,
     survey_json: {
-        title: "Wearable Device Usage",
+        title: "Health Monitoring",
         completeText: "Continue",
         pageNextText: "Next",
         pagePrevText: "Previous",
         goNextPageAutomatic: false,
         showQuestionNumbers: false,
-        showProgressBar: "aboveHeader",
+        // showProgressBar: "aboveHeader",
         pages: [
             {
                 elements: [
@@ -275,7 +275,7 @@ var demographics_wearables = {
                             "Calories burnt",
                             "Calorie intake",
                             "Sleep quality",
-                            "Respiratory rate",
+                            "Weight (including with a regular scale)",
                         ],
                         showSelectAllItem: false,
                         showNoneItem: true,
@@ -285,17 +285,7 @@ var demographics_wearables = {
                         separateSpecialChoices: true,
                         colCount: 0,
                         colCount: 1,
-                    },
-                    {
-                        visibleIf: "{Wearables_Ownership} notcontains 'None'",
-                        title: "How important is this information about your body to you?",
-                        name: "Wearables_Importance",
-                        type: "rating",
-                        rateCount: 8,
-                        rateMin: 0,
-                        rateMax: 7,
-                        minRateDescription: "Not at all",
-                        maxRateDescription: "Very much",
+                        isRequired: true,
                     },
                     {
                         visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
@@ -304,15 +294,16 @@ var demographics_wearables = {
                         type: "rating",
                         displayMode: "buttons",
                         rateValues: [
+                            "Never",
                             "Very rarely",
                             "A few times per week",
                             "A few times per day",
                             "A few times per hour",
-                            "Whenever I have the occasion",
                         ],
                         isRequired: true,
                         colCount: 0,
                     },
+                    // TODO: add subquestions for each device
                 ],
             },
         ],
@@ -329,8 +320,7 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: 
-            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -339,7 +329,7 @@ var experiment_feedback = {
                     {
                         type: "html",
                         name: "Feedback_Alert",
-                        html: "<p><b style='color:red;'>Answers to these questions will not affect your reward but will help us to contextualize your answers</b></p>"
+                        html: "<p><b style='color:red;'>Answers to these questions will not affect your reward but will help us to contextualize your answers</b></p>",
                     },
                     {
                         type: "rating",
@@ -433,9 +423,7 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
-                "trials"
-            ][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +

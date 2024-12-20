@@ -118,7 +118,8 @@ const questions_mentalhealth = {
                         colCount: 1,
                     },
                     {
-                        visibleIf: "{Disorders_Psychiatric} notempty",
+                        visibleIf:
+                            "{Disorders_Psychiatric} notempty and {Disorders_Psychiatric} notcontains 'None'",
                         title: "Are you currently undergoing any of the following treatments",
                         name: "Disorders_PsychiatricTreatment",
                         type: "checkbox",
