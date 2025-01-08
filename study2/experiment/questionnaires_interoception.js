@@ -47,4 +47,85 @@ const items_maia = {
     MAIA_Trusting_3: "I trust my body sensations",
 }
 
-// TODO
+// IAS =================================================================================================
+const items_ias = {
+    IAS_1:"I can always accurately perceive when my heart is beating fast",
+    IAS_2:"I can always accurately perceive when I am hungry",
+    IAS_3:"I can always accurately perceive when I am breathing fast",
+    IAS_4:"I can always accurately perceive when I am thirsty",
+    IAS_5:"I can always accurately perceive when I need to urinate",
+    IAS_6:"I can always accurately perceive when I need to defecate",
+    IAS_7:"I can always accurately perceive when I encounter different tastes",
+    IAS_8:"I can always accurately perceive when I am going to vomit",
+    IAS_9:"I can always accurately perceive when I am going to sneeze",
+    IAS_10:"I can always accurately perceive when I am going to cough",
+    IAS_11:"I can always accurately perceive when I am hot/cold",
+    IAS_12:"I can always accurately perceive when I am sexually aroused",
+    IAS_13:"I can always accurately perceive when I am going to pass wind",
+    IAS_14:"I can always accurately perceive when I am going to burp",
+    IAS_15:"I can always accurately perceive when my muscles are tired/sore",
+    IAS_16:"I can always accurately perceive when I am going to get a bruise",
+    IAS_17:"I can always accurately perceive when I am in pain",
+    IAS_18:"I can always accurately perceive when my blood sugar is low",
+    IAS_19:"I can always accurately perceive when someone is touching me affectionately rather than non-affectionately",
+    IAS_20:"I can always accurately perceive when something is going to be ticklish",
+    IAS_21:"I can always accurately perceive when something is going to be itchy",
+}
+
+//BPQ =================================================================================================
+
+const items_bpq= {
+    BodyAwareness_1:"Swallowing frequently.",
+    BodyAwareness_2:"An urge to cough or clear my throat.",
+    BodyAwareness_3:"An urge to cough or clear my throat.",
+    BodyAwareness_4:"My mouth being dry.",
+    BodyAwareness_5:"How fast I am breathing.",
+    BodyAwareness_6:"Watering or tearing of my eyes.",
+    BodyAwareness_7:"Noises associated with my digestion.",
+    BodyAwareness_8:"An urge to defecate.",
+    BodyAwareness_9: "Muscle tension in my arms and legs.",
+    BodyAwareness_10:"An bloating feeling because of water retention.",
+    BodyAwareness_11:"Muscle tension in my face.",
+    BodyAwareness_12:"Goose bumps.",
+    BodyAwareness_13:"Stomach and gut pains.",
+    BodyAwareness_14:"Stomach distension or bloatedness.",
+    BodyAwareness_15:"Palms sweating.",
+    BodyAwareness_16:"Sweat on my forehead.",
+    BodyAwareness_17:"Tremor in my lips.",
+    BodyAwareness_18:"Sweat in my armpits.",
+    BodyAwareness_19:"The temperature of my face(especially my ears).",
+    BodyAwareness_20:"Grinding my teeth.",
+    BodyAwareness_21:"General jitteriness.",
+    BodyAwareness_22:"The hair on the back of my neck 'standing up'.",
+    BodyAwareness_23:"Difficulty in focussing.",
+    BodyAwareness_24:"An urge to swallow.",
+    BodyAwareness_25:"How hard my heart is beating.",
+    BodyAwareness_26:"Feeling constipated.",
+    AutonomicNervous_1:"I have difficulty coordinating breathing and eating.",
+    AutonomicNervous_2:"When I am eating, I have difficulty talking.",
+    AutonomicNervous_3:"My heart often beats irregularly.",
+    AutonomicNervous_4:"When I eat, food feels dry and sticks to my mouth and throat.",
+    AutonomicNervous_5:"I feel shortness of breath.",
+    AutonomicNervous_6:"I have difficulty coordinating breathing with talking.",
+    AutonomicNervous_7:"When I eat, I have difficulty coordinating swallowing, chewing, and/or sucking with breathing.",
+    AutonomicNervous_8:"I have a persistent cough that interferes with my talking and eating.",
+    AutonomicNervous_9:"I gag from the saliva in my mouth.",
+    AutonomicNervous_10:"I have chest pains.",
+    AutonomicNervous_11:"I gag when I eat.",
+    AutonomicNervous_12:"When I talk, I often feel I should cough or swallow the saliva in my mouth.",
+    AutonomicNervous_13:"When I breathe, I feel like I cannot get enough oxygen.",
+    AutonomicNervous_14:"I have difficulty controlling my eyes.",
+    AutonomicNervous_15:"I feel like vomiting.",
+    AutonomicNervous_16:"I have 'sour' stomach.",
+    AutonomicNervous_17:"I am constipated.",
+    AutonomicNervous_18:"I have indigestion.",
+    AutonomicNervous_19:"After eating I have digestive problems.",
+    AutonomicNervous_20:"I have diarrhea.",
+}
+
+ 
+    
+    
+    
+    
+    
