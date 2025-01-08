@@ -150,3 +150,74 @@ const questions_mentalhealth = {
         screen: "questions_mentalhealth",
     },
 }
+
+// Somatic disorders - PHQ-15 ================================================
+const items_phq15 = {
+    PHQ15_1: "Stomach pain",
+    PHQ15_2: "Back pain",
+    PHQ15_3: "Pain in your arms, legs or joints (knees, hips, etc.)",
+    PHQ15_4: "Menstrual cramps or other problems with your periods (If applicable)",
+    PHQ15_5: "Headaches",
+    PHQ15_6: "Dizziness",
+    PHQ15_7: "Feeling your heart pound or race",
+    PHQ15_8: "Shortness of breath",
+    PHQ15_9: "Pain or problems during sexual intercourse",
+    PHQ15_10: "Constipation, loose bowels or diarrhea",
+    PHQ15_11: "Nausea, gas or indigestion",
+    PHQ15_12: "Feeling tired or having low energy",
+    PHQ15_13: "Trouble sleeping",
+    PHQ15_14: "Chest pain",
+    PHQ15_15: "Fainting spells",
+}
+
+const instructions_phq15 = {
+    type: "html",
+    name: "instructions_phq15",
+    html: "<p>Over the <b>last week</b>, how often have you been bothered by the following problems?</p>",
+}
+
+function make_phq15(items, required = true) {
+    questions = [instructions_phq15]
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            isRequired: required,
+            rateValues: [
+                {
+                    value: 0,
+                    text: "Not at all",
+                },
+                {
+                    value: 1,
+                    text: "Bothered a little",
+                },
+                {
+                    value: 2,
+                    text: "Bothered a lot",
+                },
+            ],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+const questionnaire_phq15 = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your health",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_phq15(items_phq15),
+        }
+    },
+    data: {
+        screen: "questionnaire_phq15",
+    },
+}
