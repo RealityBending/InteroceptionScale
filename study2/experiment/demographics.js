@@ -138,6 +138,32 @@ var demographic_questions = {
                     },
                 ],
             },
+
+            {
+                elements: [
+                    {
+                        title: "How tall are you?",
+                        name: "Height",
+                        type: "text",
+                        inputType: "range",
+                        min: 0,
+                        max: 100,
+                        defaultValue: 90
+                        
+                    },
+                    { 
+                        title: "How much do you weigh?",
+                        name: "Weight",
+                        type: "text",
+                        inputType: "range",
+                        min: 0,
+                        max: 100,
+                        defaultValue: 90
+                    },
+                ],
+            }, 
+                
+
             {
                 elements: [
                     {
