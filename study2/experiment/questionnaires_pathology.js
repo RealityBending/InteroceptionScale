@@ -156,7 +156,7 @@ const items_phq15 = {
     PHQ15_1: "Stomach pain",
     PHQ15_2: "Back pain",
     PHQ15_3: "Pain in your arms, legs or joints (knees, hips, etc.)",
-    PHQ15_4: "Menstrual cramps or other problems with your periods (If applicable)",
+    PHQ15_4: "Menstrual cramps or other problems with your periods (if applicable)",
     PHQ15_5: "Headaches",
     PHQ15_6: "Dizziness",
     PHQ15_7: "Feeling your heart pound or race",
@@ -219,5 +219,68 @@ const questionnaire_phq15 = {
     },
     data: {
         screen: "questionnaire_phq15",
+    },
+}
+
+// DDD - CEFSA-S ================================================
+
+const items_cefsa = {
+    CEFSA_Emotion_1: "I don't fully experience emotions",
+    CEFSA_Connection_2: "I feel disconnected from the world around me",
+    CEFSA_Agency_3: "I'm absorbed in my own world and don't notice what is happening around me",
+    CEFSA_Self_4: "My personality changes seemingly at random",
+    CEFSA_Connection_5: "I feel disconnected from other people",
+    CEFSA_Agency_6: "I find myself drifting off into my own world when I'm with others",
+    CEFSA_Body_7: "My body (or parts of it) feels unreal or strange",
+    CEFSA_Emotion_8: "I feel detached from my emotions",
+    CEFSA_Self_9: "I act like someone else without meaning to",
+    CEFSA_Familiarity_10: "People I know seem unfamiliar",
+    CEFSA_Reality_11: "I feel as though other people stop existing when I can't see them",
+    CEFSA_Body_12: "My body feels numb",
+    CEFSA_Familiarity_13: "Things I've done many times before seem new or unfamiliar",
+    CEFSA_Reality_14: "I feel like an alien or a ghost",
+}
+
+const instructions_cefsa = {
+    type: "html",
+    name: "instructions_cefsa",
+    html:
+        `<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b>.</p>` +
+        `<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>`,
+}
+
+function make_cefsa(items, required = true, ticks = ["Never", "Always"]) {
+    questions = [instructions_cefsa]
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+const questionnaire_cefsa = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your feelings",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_cefsa(items_cefsa),
+        }
+    },
+    data: {
+        screen: "questionnaire_cefsa",
     },
 }

@@ -47,6 +47,61 @@ const items_maia = {
     MAIA_Trusting_3: "I trust my body sensations",
 }
 
+// Generation code ================================================
+// Convernience function to shuffle an object (used internally)
+function shuffleObject(obj) {
+    const entries = Object.entries(obj)
+    for (let i = entries.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[entries[i], entries[j]] = [entries[j], entries[i]]
+    }
+    return Object.fromEntries(entries)
+}
+
+// This function formats each question into a jsPsych-survey question that contains information about the question format
+function make_maia(items, required = true, ticks = ["Never", "Always"]) {
+    items = shuffleObject(items)
+
+    questions = []
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4, 5, 6],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+// Questionnaire ================================================
+const questionnaire_maia = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About you and your body",
+            description:
+                "Please indicate how often each statement applies to you generally in daily life.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_maia(items_maia),
+        }
+    },
+    data: {
+        screen: "questionnaire_maia",
+    },
+}
+
+
 // IAS =================================================================================================
 const items_ias = {
     IAS_1:"I can always accurately perceive when my heart is beating fast",
@@ -71,6 +126,61 @@ const items_ias = {
     IAS_20:"I can always accurately perceive when something is going to be ticklish",
     IAS_21:"I can always accurately perceive when something is going to be itchy",
 }
+
+// Generation code ================================================
+// Convernience function to shuffle an object (used internally)
+function shuffleObject(obj) {
+    const entries = Object.entries(obj)
+    for (let i = entries.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[entries[i], entries[j]] = [entries[j], entries[i]]
+    }
+    return Object.fromEntries(entries)
+}
+
+// This function formats each question into a jsPsych-survey question that contains information about the question format
+function make_ias(items, required = true, ticks = ["Disagree Strongly", "Strongly Agree"]) {
+    items = shuffleObject(items)
+
+    questions = []
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [1, 2, 3, 4, 5],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+// Questionnaire ================================================
+const questionnaire_ias = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About you and your body",
+            description:
+                "Please rate on the scale how accurately you believe you can perceive each specific signals without using external cues, e.g. measuring your pulse.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_ias(items_ias),
+        }
+    },
+    data: {
+        screen: "questionnaire_ias",
+    },
+}
+
 
 //BPQ =================================================================================================
 
@@ -123,9 +233,56 @@ const items_bpq= {
     AutonomicNervous_20:"I have diarrhea.",
 }
 
- 
-    
-    
-    
-    
-    
+// Generation code ================================================
+// Convernience function to shuffle an object (used internally)
+function shuffleObject(obj) {
+    const entries = Object.entries(obj)
+    for (let i = entries.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[entries[i], entries[j]] = [entries[j], entries[i]]
+    }
+    return Object.fromEntries(entries)
+}
+
+// This function formats each question into a jsPsych-survey question that contains information about the question format
+function make_bpq(items, required = true, ticks = ["Never", "Always"]) {
+    items = shuffleObject(items)
+
+    questions = []
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4, 5, 6],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+// Questionnaire ================================================
+const questionnaire_bpq = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About you and your body",
+            description:
+                "Please rate your awareness on each of the characteristics described below.",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_bpq(items_bpq),
+        }
+    },
+    data: {
+        screen: "questionnaire_bpq",
+    },
+}

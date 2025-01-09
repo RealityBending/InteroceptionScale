@@ -1,3 +1,35 @@
+// Single Item Life Satisfaction scale ================================================
+
+const questionnaire_sils = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your life satisfaction",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: [
+                {
+                    elements: [
+                        {
+                            title: "Thinking about your own life and personal circumstances, how satisfied are you with your life as a whole?",
+                            name: "questionnaire_sils",
+                            type: "rating",
+                            rateCount: 11,
+                            rateMin: 0,
+                            rateMax: 10,
+                            minRateDescription: "No satisfaction at all",
+                            maxRateDescription: "Completely satisfied",
+                        },
+                    ],
+                },
+            ],
+        }
+    },
+    data: {
+        screen: "questionnaire_sils",
+    },
+}
+
 // TAS-20 questionnaire ================================================
 // Short alexithymia: PAQ-S questionnaire? (https://www.sciencedirect.com/science/article/pii/S0165032723000460à
 
@@ -122,5 +154,74 @@ const questionnaire_erq = {
     },
     data: {
         screen: "questionnaire_erq",
+    },
+}
+
+// PI-18 - Primals ================================================
+
+const items_pi18 = {
+    PI18_GE_1: "In life, there's way more beauty than ugliness",
+    PI18_GA_2: "It often feels like events are happening in order to help me in some way",
+    PI18_GS_3: "I tend to see the world as pretty safe",
+    PI18_A_4: "What happens in the world is meant to happen",
+    PI18_GE_5_R: "While some things are worth checking out or exploring further, most things probably aren't worth the effort",
+    PI18_GE_6_R: "Most things in life are kind of boring",
+    PI18_GE_7: "The world is an abundant place with tons and tons to offer",
+    PI18_GE_8: "No matter where we are or what the topic might be, the world is fascinating",
+    PI18_GE_9_R: "The world is a somewhat dull place where plenty of things are not that interesting",
+    PI18_GS_10_R: "On the whole, the world is a dangerous place",
+    PI18_GS_11_R: "Instead of being cooperative, the world is a cut-throat and competitive place",
+    PI18_A_12_R: "Events seem to lack any cosmic or bigger purpose",
+    PI18_GS_13_R: "Most things have a habit of getting worse",
+    PI18_GA_14: "The universe needs me for something important",
+    PI18_GS_15: "Most things in the world are good",
+    PI18_A_16: "Everything happens for a reason and on purpose",
+    PI18_GS_17: "Most things and situations are harmless and totally safe",
+    PI18_GE_18: "No matter where we are, incredible beauty is always around us",
+}
+
+const instructions_pi18 = {
+    type: "html",
+    name: "instructions_pi18",
+    html:
+        `<p>Below are very general statements about the world, not the world we wish we lived in, but the actual world as it is now.</p>` +
+        `<p>Please share your sense of agreement or disagreement.</p>` +
+        `<p>When in doubt, go with what initially feels true of the real world.</p>` +
+        `<p><p>There are no wrong answers. There is no need to overthink.</p><br /><br/>`,
+}
+
+function make_pi18(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
+    questions = [instructions_pi18]
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4, 5],
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+const questionnaire_pi18 = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About the world we live in",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_pi18(items_pi18),
+        }
+    },
+    data: {
+        screen: "questionnaire_pi18",
     },
 }

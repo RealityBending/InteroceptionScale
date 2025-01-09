@@ -20,7 +20,7 @@
         <!-- <script src="intero.js"></script> -->
         <script src="demographics.js"></script>
         <script src="questionnaires_mint.js"></script>
-        <script src="intero_questionnaires.js"></script>
+        <script src="questionnaires_interoception.js"></script>
         <script src="questionnaires_convergent.js"></script>
         <script src="questionnaires_pathology.js"></script>
 
@@ -66,19 +66,25 @@
         // Participant ID
         const participantID = jsPsych.randomization.randomID(10)
 
-        // timeline.push(ConsentForm)
+        timeline.push(ConsentForm)
         // timeline.push(demographics_browser_info)
         timeline.push(demographic_questions)
-        // timeline.push(questionnaires_instructions)
+        timeline.push(questionnaires_instructions)
         timeline.push(questionnaire_mint)
-        // timeline.push(questionnaire_tas)
-        // timeline.push(questionnaire_erq)
-        // timeline.push(questionnaire_phq4)
+        timeline.push(questionnaire_maia)
+        timeline.push(questionnaire_ias)
+        timeline.push(questionnaire_bpq)
+        timeline.push(questionnaire_sils)
+        timeline.push(questionnaire_tas)
+        timeline.push(questionnaire_erq)
+        timeline.push(questionnaire_pi18)
+        timeline.push(questionnaire_phq4)
         timeline.push(questionnaire_phq15)
         timeline.push(questions_mentalhealth)
+        timeline.push(questionnaire_cefsa)
         timeline.push(demographics_wearables)
-        // timeline.push(experiment_feedback)
-        // timeline.push(demographics_debriefing)
+        timeline.push(experiment_feedback)
+        timeline.push(demographics_debriefing)
         timeline.push(demographics_endscreen)
 
         /* ----------------- Run the timeline ----------------- */
