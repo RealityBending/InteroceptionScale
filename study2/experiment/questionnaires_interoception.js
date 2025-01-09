@@ -203,11 +203,11 @@ const items_bpq= {
     BodyAwareness_16:"Sweat on my forehead.",
     BodyAwareness_17:"Tremor in my lips.",
     BodyAwareness_18:"Sweat in my armpits.",
-    BodyAwareness_19:"The temperature of my face(especially my ears).",
+    BodyAwareness_19:"The temperature of my face (especially my ears).",
     BodyAwareness_20:"Grinding my teeth.",
     BodyAwareness_21:"General jitteriness.",
     BodyAwareness_22:"The hair on the back of my neck 'standing up'.",
-    BodyAwareness_23:"Difficulty in focussing.",
+    BodyAwareness_23:"Difficulty in focusing.",
     BodyAwareness_24:"An urge to swallow.",
     BodyAwareness_25:"How hard my heart is beating.",
     BodyAwareness_26:"Feeling constipated.",
@@ -261,7 +261,7 @@ function make_bpq(items, required = true, ticks = ["Never", "Always"]) {
             isRequired: required,
             minRateDescription: ticks[0],
             maxRateDescription: ticks[1],
-            rateValues: [0, 1, 2, 3, 4, 5, 6],
+            rateValues: [1, 2, 3, 4, 5],
         }
         questions.push(q)
     }
@@ -276,7 +276,7 @@ const questionnaire_bpq = {
         return {
             title: "About you and your body",
             description:
-                "Please rate your awareness on each of the characteristics described below.",
+                "In your daily life, how often are you aware of the following sensations??",
             showQuestionNumbers: false,
             goNextPageAutomatic: true,
             pages: make_bpq(items_bpq),
