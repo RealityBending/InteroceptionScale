@@ -370,6 +370,80 @@ var demographics_wearables = {
     },
 }
 
+
+// Make general chart ========================================================================================================
+function radar_plotdata(screen) {
+    let data = jsPsych.data.get().filter({ screen: screen })
+    data = data["trials"][0]["response"]
+
+    // Compute average and rescale to percentage
+
+    BodyConnect = Object.keys(data).filter((key) => key.includes("IAS"))
+    BodyConnect =
+        BodyConnect.map((key) => data[key]).reduce((a, b) => a + b) / BodyConnect.length
+    BodyConnect = (BodyConnect / 21) * 100
+
+    CopingSkills = Object.keys(data).filter((key) => key.includes("Reappraisal"))
+    CopingSkills =
+        CopingSkills.map((key) => data[key]).reduce((a, b) => a + b) /
+        CopingSkills.length
+    CopingSkills= (CopingSkills / 3) * 100
+    
+    EmotionSuppress = Object.keys(data).filter((key) => key.includes("Suppression"))
+    EmotionSuppress =
+        EmotionSuppress.map((key) => data[key]).reduce((a, b) => a + b) / EmotionSuppress.length
+    EmotionSuppress = (EmotionSuppress / 3) * 100
+ 
+    LowMood = Object.keys(data).filter((key) => key.includes("PHQ4"))
+    LowMood =
+        LowMood.map((key) => data[key]).reduce((a, b) => a + b) /
+        LowMood.length
+    LowMood = (LowMood / 4) * 100
+
+
+    // Prepare output
+    var output = {
+        names: [
+            "Body Connection",
+            "Coping Skills",
+            "Emotion Expression",
+            "Low Mood",
+        ],
+        scores: [BodyConnect, CopingSkills, EmotionExpress, LowMood],
+        label: "Your Results (%)",
+    }
+    return output
+}
+
+// Results
+const radar_feedback = {
+    type: jsPsychCanvasButtonResponse,
+    on_load: function () {
+        document.querySelector("canvas").style.removeProperty("display") // Force it to center
+    },
+    stimulus: function (c) {
+        let data = radar_plotdata("questionnaires_pathology", "questionnaires_convergent", "questionnaires_interoception")
+        let ctx = c.getContext("2d")
+        let plot = new Chart(
+            ctx,
+            make_radarplot(
+                (names = data.names),
+                (scores = data.scores),
+                (minmax = [0, 100]),
+                (label = data.label),
+                (color = [0, 137, 123])
+            )
+        )
+    },
+    canvas_size: plot_getsize(),
+    choices: ["Continue"],
+    prompt:
+        "<p><b>Done!</b> This chart represents how you relate to different body functions. <b>What does it mean?</b></p>" +
+        "<p>From what we know so far, it seems like people vary a lot on these dimensions. However, we don't exactly know what these differences mean yet (hence why we do this research).<br>" +
+        'It seems like it is neither good or bad to score high on any of these, and that there is no "normal": everybody is different!</p>',
+}
+
+
 // Feedback, Debrief, Thank you Screen
 
 var experiment_feedback = {
