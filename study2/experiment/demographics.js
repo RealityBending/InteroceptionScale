@@ -191,8 +191,8 @@ var demographic_questions = {
                         placeholder: "e.g., 84",
                     },
                 ],
-            }, 
-                
+            },
+
 
             {
                 elements: [
@@ -370,11 +370,11 @@ var demographics_wearables = {
     },
 }
 
-
 // Make general chart ========================================================================================================
-function radar_plotdata(screen) {
-    let data = jsPsych.data.get().filter({ screen: screen })
-    data = data["trials"][0]["response"]
+function radar_plotdata() {
+    let data_ias = jsPsych.data.get().filter({ screen: screen }) // filter by screen 
+    let data_ecr = bla bla ...
+        data = data["trials"][0]["response"]
 
     // Compute average and rescale to percentage
 
@@ -387,13 +387,13 @@ function radar_plotdata(screen) {
     CopingSkills =
         CopingSkills.map((key) => data[key]).reduce((a, b) => a + b) /
         CopingSkills.length
-    CopingSkills= (CopingSkills / 3) * 100
-    
+    CopingSkills = (CopingSkills / 3) * 100
+
     EmotionSuppress = Object.keys(data).filter((key) => key.includes("Suppression"))
     EmotionSuppress =
         EmotionSuppress.map((key) => data[key]).reduce((a, b) => a + b) / EmotionSuppress.length
     EmotionSuppress = (EmotionSuppress / 3) * 100
- 
+
     LowMood = Object.keys(data).filter((key) => key.includes("PHQ4"))
     LowMood =
         LowMood.map((key) => data[key]).reduce((a, b) => a + b) /
@@ -422,7 +422,7 @@ const radar_feedback = {
         document.querySelector("canvas").style.removeProperty("display") // Force it to center
     },
     stimulus: function (c) {
-        let data = radar_plotdata("questionnaires_pathology", "questionnaires_convergent", "questionnaires_interoception")
+        let data = radar_plotdata("questionnaire_ias", "questionnaires_erq", "questionnaires_phq4")
         let ctx = c.getContext("2d")
         let plot = new Chart(
             ctx,
