@@ -406,10 +406,10 @@ function radar_plotdata(screen) {
         names: [
             "Body Connection",
             "Coping Skills",
-            "Emotion Expression",
+            "Emotion Suppression",
             "Low Mood",
         ],
-        scores: [BodyConnect, CopingSkills, EmotionExpress, LowMood],
+        scores: [BodyConnect, CopingSkills, EmotionSuppress, LowMood],
         label: "Your Results (%)",
     }
     return output
