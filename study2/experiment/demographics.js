@@ -462,7 +462,6 @@ const radar_feedback = {
 }
 
 // Feedback, Debrief, Thank you Screen
-
 var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {

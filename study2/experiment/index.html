@@ -103,11 +103,21 @@
         timeline.push(qs_pathology[2])
         timeline.push(qs_pathology[3])
 
-        //timeline.push(demographics_wearables) */
-        // timeline.push(radar_feedback)
-        //timeline.push(experiment_feedback)
-        // timeline.push(demographics_debriefing)
-        // timeline.push(demographics_endscreen)
+        timeline.push(demographics_wearables)
+        timeline.push(radar_feedback)
+        timeline.push(experiment_feedback)
+        timeline.push(demographics_debriefing)
+
+        // save data via DataPipe
+        timeline.push({
+            type: jsPsychPipe,
+            action: "save",
+            experiment_id: "818NyQh9EBvw", // This in generated in the DataPipe interface
+            filename: `${participantID}.csv`,
+            data_string: () => jsPsych.data.get().csv(),
+        })
+
+        timeline.push(demographics_endscreen)
 
         /* ----------------- Run the timeline ----------------- */
         jsPsych.run(timeline)
