@@ -56,7 +56,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>asf25@sussex.ac.uk</i>). This research has been approved (ER/XXXX/X) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>A.neves@sussex.ac.uk</i>). This research has been approved (ER/XXXX/X) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -192,7 +192,6 @@ var demographic_questions = {
                     },
                 ],
             },
-
 
             {
                 elements: [
@@ -344,7 +343,8 @@ var demographics_wearables = {
                         isRequired: true,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate with your device?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -372,44 +372,62 @@ var demographics_wearables = {
 
 // Make general chart ========================================================================================================
 function radar_plotdata() {
-    let data_ias = jsPsych.data.get().filter({ screen: screen }) // filter by screen 
-    let data_ecr = bla bla ...
-        data = data["trials"][0]["response"]
+    let data_ias = jsPsych.data
+        .get()
+        .filter({ screen: "questionnaire_ias" })
+        .values()[0].response // filter by screen
+    let data_erq = jsPsych.data
+        .get()
+        .filter({ screen: "questionnaire_erq" })
+        .values()[0].response
+    let data_tas = jsPsych.data
+        .get()
+        .filter({ screen: "questionnaire_tas" })
+        .values()[0].response
+    let data_phq4 = jsPsych.data
+        .get()
+        .filter({ screen: "questionnaire_phq4" })
+        .values()[0].response
 
     // Compute average and rescale to percentage
-
-    BodyConnect = Object.keys(data).filter((key) => key.includes("IAS"))
+    BodyConnect = Object.keys(data_ias).filter((key) => key.includes("IAS"))
     BodyConnect =
-        BodyConnect.map((key) => data[key]).reduce((a, b) => a + b) / BodyConnect.length
-    BodyConnect = (BodyConnect / 21) * 100
+        BodyConnect.map((key) => data_ias[key]).reduce((a, b) => a + b) /
+        BodyConnect.length
+    BodyConnect = (BodyConnect / 5) * 100
 
-    CopingSkills = Object.keys(data).filter((key) => key.includes("Reappraisal"))
+    CopingSkills = Object.keys(data_erq).filter((key) =>
+        key.includes("Reappraisal")
+    )
     CopingSkills =
-        CopingSkills.map((key) => data[key]).reduce((a, b) => a + b) /
+        CopingSkills.map((key) => data_erq[key]).reduce((a, b) => a + b) /
         CopingSkills.length
-    CopingSkills = (CopingSkills / 3) * 100
+    CopingSkills = (CopingSkills / 7) * 100
 
-    EmotionSuppress = Object.keys(data).filter((key) => key.includes("Suppression"))
-    EmotionSuppress =
-        EmotionSuppress.map((key) => data[key]).reduce((a, b) => a + b) / EmotionSuppress.length
-    EmotionSuppress = (EmotionSuppress / 3) * 100
+    EmotionUnderstanding = Object.keys(data_erq).filter((key) =>
+        key.includes("Suppression")
+    )
+    EmotionUnderstanding =
+        EmotionUnderstanding.map((key) => data_tas[key]).reduce(
+            (a, b) => a + b
+        ) / EmotionUnderstanding.length
+    EmotionUnderstanding = (EmotionUnderstanding / 5) * 100
 
-    LowMood = Object.keys(data).filter((key) => key.includes("PHQ4"))
+    LowMood = Object.keys(data_phq4).filter((key) => key.includes("PHQ4"))
     LowMood =
-        LowMood.map((key) => data[key]).reduce((a, b) => a + b) /
+        LowMood.map((key) => data_phq4[key]).reduce((a, b) => a + b) /
         LowMood.length
-    LowMood = (LowMood / 4) * 100
-
+    LowMood = (LowMood / 5) * 100
 
     // Prepare output
     var output = {
         names: [
             "Body Connection",
             "Coping Skills",
-            "Emotion Suppression",
+            "Emotional Understanding",
             "Low Mood",
         ],
-        scores: [BodyConnect, CopingSkills, EmotionSuppress, LowMood],
+        scores: [BodyConnect, CopingSkills, EmotionUnderstanding, LowMood],
         label: "Your Results (%)",
     }
     return output
@@ -422,9 +440,9 @@ const radar_feedback = {
         document.querySelector("canvas").style.removeProperty("display") // Force it to center
     },
     stimulus: function (c) {
-        let data = radar_plotdata("questionnaire_ias", "questionnaires_erq", "questionnaires_phq4")
+        let data = radar_plotdata()
         let ctx = c.getContext("2d")
-        let plot = new Chart(
+        new Chart(
             ctx,
             make_radarplot(
                 (names = data.names),
@@ -443,14 +461,14 @@ const radar_feedback = {
         'It seems like it is neither good or bad to score high on any of these, and that there is no "normal": everybody is different!</p>',
 }
 
-
 // Feedback, Debrief, Thank you Screen
 
 var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -553,7 +571,9 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
+                "trials"
+            ][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +

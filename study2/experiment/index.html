@@ -1,98 +1,115 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <!-- Title shown in tab -->
+        <title>University of Sussex - Research</title>
 
-<head>
-    <!-- Title shown in tab -->
-    <title>University of Sussex - Research</title>
-
-    <!-- Load all necessary plugins -->
-    <script src="https://unpkg.com/jspsych@8.0.2"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
-    <!-- <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
+        <!-- Load all necessary plugins -->
+        <script src="https://unpkg.com/jspsych@8.0.2"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
+        <!-- <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script> -->
 
-    <!-- Plots -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://realitybending.github.io/JSmisc/misc/plots.js"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-canvas-button-response@2.0.0"></script>
+        <!-- Plots -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://realitybending.github.io/JSmisc/misc/plots.js"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-canvas-button-response@2.0.0"></script>
 
-    <!-- Load parameters here (always below the loading of the JsPsych) -->
-    <!-- <script src="intero.js"></script> -->
-    <script src="demographics.js"></script>
-    <script src="questionnaires_mint.js"></script>
-    <script src="questionnaires_interoception.js"></script>
-    <script src="questionnaires_convergent.js"></script>
-    <script src="questionnaires_pathology.js"></script>
+        <!-- Load parameters here (always below the loading of the JsPsych) -->
+        <!-- <script src="intero.js"></script> -->
+        <script src="demographics.js"></script>
+        <script src="questionnaires_mint.js"></script>
+        <script src="questionnaires_interoception.js"></script>
+        <script src="questionnaires_convergent.js"></script>
+        <script src="questionnaires_pathology.js"></script>
 
-    <link href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@2.0.0/css/survey.css" />
-</head>
+        <link
+            href="https://unpkg.com/jspsych@8.0.1/css/jspsych.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/@jspsych/plugin-survey@2.0.0/css/survey.css"
+        />
+    </head>
 
-<body></body>
+    <body></body>
 
-<script>
-    // Initialize experiment =================================================
-    var timeline = []
+    <script>
+        // Initialize experiment =================================================
+        var timeline = []
 
-    var jsPsych = initJsPsych({
-        show_progress_bar: true,
-        on_finish: function () {
-            jsPsych.data.displayData("json") // Display data in browser
-            // window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
+        var jsPsych = initJsPsych({
+            show_progress_bar: true,
+            on_finish: function () {
+                jsPsych.data.displayData("json") // Display data in browser
+                // window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
 
-            // If prolific and passed the attention check, redirect to prolific completion link
-            // if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            //     d = jsPsych.data
-            //         .get()
-            //         .filter({ screen: "demographics_debrief" })["trials"][0]
-            //     if (d["Reward"] == "Automatic") {
-            //         window.location =
-            //             "https://app.prolific.com/submissions/complete?cc=C8I1NGST"
-            //     } else {
-            //         window.location =
-            //             "https://app.prolific.com/submissions/complete?cc=C1BHVQIZ"
-            //     }
-            // }
-        },
-    })
+                // If prolific and passed the attention check, redirect to prolific completion link
+                // if (jsPsych.data.urlVariables()["exp"] == "prolific") {
+                //     d = jsPsych.data
+                //         .get()
+                //         .filter({ screen: "demographics_debrief" })["trials"][0]
+                //     if (d["Reward"] == "Automatic") {
+                //         window.location =
+                //             "https://app.prolific.com/submissions/complete?cc=C8I1NGST"
+                //     } else {
+                //         window.location =
+                //             "https://app.prolific.com/submissions/complete?cc=C1BHVQIZ"
+                //     }
+                // }
+            },
+        })
 
-    // Participant ID
-    const participantID = jsPsych.randomization.randomID(10)
+        // Participant ID
+        const participantID = jsPsych.randomization.randomID(10)
 
+        // full screen
+        timeline.push(ConsentForm)
 
-    // full screen
-    timeline.push(ConsentForm)
+        qs_intero = [questionnaire_maia, questionnaire_ias, questionnaire_bpq]
+        qs_intero = jsPsych.randomization.shuffleNoRepeats(qs_intero)
+        qs_convergent = [
+            questionnaire_tas,
+            questionnaire_erq,
+            questionnaire_pi18,
+        ]
+        qs_convergent = jsPsych.randomization.shuffleNoRepeats(qs_convergent)
+        qs_pathology = [
+            questionnaire_cefsa,
+            questionnaire_phq15,
+            questions_mentalhealth,
+            questionnaire_phq4,
+        ]
+        qs_pathology = jsPsych.randomization.shuffleNoRepeats(qs_pathology)
 
-    qs_intero = [questionnaire_mint, questionnaire_maia, questionnaire_ias]
-    qs_intero = jsPsych.randomization.shuffleNoRepeats(qs_intero)
-    qs
+        timeline.push(demographics_browser_info)
+        timeline.push(demographic_questions)
+        timeline.push(questionnaires_instructions)
+        timeline.push(questionnaire_mint)
+        // shuffle intero questionnaires
+        timeline.push(qs_intero[0])
+        timeline.push(qs_intero[1])
+        timeline.push(qs_intero[2])
+        // shuffle convergent questionnaires
+        timeline.push(qs_convergent[0])
+        timeline.push(qs_convergent[1])
+        timeline.push(qs_convergent[2])
+        // shuffle pathology questionnaires
+        timeline.push(qs_pathology[0])
+        timeline.push(qs_pathology[1])
+        timeline.push(qs_pathology[2])
+        timeline.push(qs_pathology[3])
 
-    timeline.push(demographics_browser_info)
-    timeline.push(demographic_questions)
-    timeline.push(questionnaires_instructions)
-    timeline.push(questionnaire_mint)
-    // shuffle intero questionnaires 
-    timeline.push(qs_intero[0])
-    timeline.push(qs_intero[1])
-    timeline.push(qs_intero[2])
-    //timeline.push(questionnaire_bpq)
-    //timeline.push(questionnaire_sils)
-    //timeline.push(questionnaire_tas)
-    timeline.push(questionnaire_erq)
-    //timeline.push(questionnaire_pi18)
-    timeline.push(questionnaire_phq4)
-    //timeline.push(questionnaire_phq15)
-    // timeline.push(questions_mentalhealth)
-    //timeline.push(questionnaire_cefsa)
-    //timeline.push(demographics_wearables) */
-    // timeline.push(radar_feedback)
-    timeline.push(experiment_feedback)
-    // timeline.push(demographics_debriefing)
-    // timeline.push(demographics_endscreen)
+        //timeline.push(demographics_wearables) */
+        // timeline.push(radar_feedback)
+        //timeline.push(experiment_feedback)
+        // timeline.push(demographics_debriefing)
+        // timeline.push(demographics_endscreen)
 
-    /* ----------------- Run the timeline ----------------- */
-    jsPsych.run(timeline)
-</script>
-
+        /* ----------------- Run the timeline ----------------- */
+        jsPsych.run(timeline)
+    </script>
 </html>
