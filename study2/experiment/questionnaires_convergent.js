@@ -11,7 +11,7 @@ const questionnaire_sils = {
                 {
                     elements: [
                         {
-                            title: "Thinking about your own life and personal circumstances, how satisfied are you with your life as a whole?",
+                            title: "All things considered, how satisfied are you with your life as a whole?",
                             name: "questionnaire_sils",
                             type: "rating",
                             rateCount: 11,
@@ -31,7 +31,7 @@ const questionnaire_sils = {
 }
 
 // TAS-20 questionnaire ================================================
-// Short alexithymia: PAQ-S questionnaire? (https://www.sciencedirect.com/science/article/pii/S0165032723000460à
+// Short alexithymia: PAQ-S (6 items) questionnaire? (https://www.sciencedirect.com/science/article/pii/S0165032723000460)
 
 //  DDF: Difficulty Describing Feelings
 //  DIF: Difficulty Identifying Feeling
@@ -171,11 +171,13 @@ const items_pi18 = {
     PI18_GA_2: "It often feels like events are happening in order to help me in some way",
     PI18_GS_3: "I tend to see the world as pretty safe",
     PI18_A_4: "What happens in the world is meant to happen",
-    PI18_GE_5_R: "While some things are worth checking out or exploring further, most things probably aren't worth the effort",
+    PI18_GE_5_R:
+        "While some things are worth checking out or exploring further, most things probably aren't worth the effort",
     PI18_GE_6_R: "Most things in life are kind of boring",
     PI18_GE_7: "The world is an abundant place with tons and tons to offer",
     PI18_GE_8: "No matter where we are or what the topic might be, the world is fascinating",
-    PI18_GE_9_R: "The world is a somewhat dull place where plenty of things are not that interesting",
+    PI18_GE_9_R:
+        "The world is a somewhat dull place where plenty of things are not that interesting",
     PI18_GS_10_R: "On the whole, the world is a dangerous place",
     PI18_GS_11_R: "Instead of being cooperative, the world is a cut-throat and competitive place",
     PI18_A_12_R: "Events seem to lack any cosmic or bigger purpose",
