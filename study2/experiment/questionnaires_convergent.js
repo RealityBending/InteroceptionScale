@@ -33,6 +33,10 @@ const questionnaire_sils = {
 // TAS-20 questionnaire ================================================
 // Short alexithymia: PAQ-S questionnaire? (https://www.sciencedirect.com/science/article/pii/S0165032723000460à
 
+//  DDF: Difficulty Describing Feelings
+//  DIF: Difficulty Identifying Feeling
+//  EOT: Externally-Oriented Thinking
+
 const items_tas = {
     TAS_DIF_1: "I am often confused about what emotion I am feeling",
     TAS_DDF_2: "I have physical sensations that even doctors don't understand",
@@ -56,9 +60,11 @@ const items_tas = {
     TAS_EOT_18: "I can feel close to someone, even in moments of silence",
     TAS_EOT_19: "I find examination of my feelings useful in solving personal problems",
     TAS_EOT_20: "Looking for hidden meanings in movies or plays distracts from their enjoyment",
+    TAS_A: "I am able to respond all the way to the left",
 }
 
 function make_tas(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
+    items = shuffleObject(items)
     questions = []
 
     // Make questions
@@ -122,6 +128,7 @@ const instructions_erq = {
 }
 
 function make_erq(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
+    items = shuffleObject(items)
     questions = [instructions_erq]
 
     // Make questions
@@ -178,6 +185,7 @@ const items_pi18 = {
     PI18_A_16: "Everything happens for a reason and on purpose",
     PI18_GS_17: "Most things and situations are harmless and totally safe",
     PI18_GE_18: "No matter where we are, incredible beauty is always around us",
+    PI18_A: "On the whole, I know I must press the highest option",
 }
 
 const instructions_pi18 = {
@@ -191,6 +199,7 @@ const instructions_pi18 = {
 }
 
 function make_pi18(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
+    items = shuffleObject(items)
     questions = [instructions_pi18]
 
     // Make questions

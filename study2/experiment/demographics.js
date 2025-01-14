@@ -56,7 +56,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>A.neves@sussex.ac.uk</i>). This research has been approved (ER/XXXX/X) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>A.Neves@sussex.ac.uk</i>). This research has been approved (ER/XXXX/X) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -372,22 +372,10 @@ var demographics_wearables = {
 
 // Make general chart ========================================================================================================
 function radar_plotdata() {
-    let data_ias = jsPsych.data
-        .get()
-        .filter({ screen: "questionnaire_ias" })
-        .values()[0].response // filter by screen
-    let data_erq = jsPsych.data
-        .get()
-        .filter({ screen: "questionnaire_erq" })
-        .values()[0].response
-    let data_tas = jsPsych.data
-        .get()
-        .filter({ screen: "questionnaire_tas" })
-        .values()[0].response
-    let data_phq4 = jsPsych.data
-        .get()
-        .filter({ screen: "questionnaire_phq4" })
-        .values()[0].response
+    let data_ias = jsPsych.data.get().filter({ screen: "questionnaire_ias" }).values()[0].response // filter by screen
+    let data_erq = jsPsych.data.get().filter({ screen: "questionnaire_erq" }).values()[0].response
+    let data_tas = jsPsych.data.get().filter({ screen: "questionnaire_tas" }).values()[0].response
+    let data_phq4 = jsPsych.data.get().filter({ screen: "questionnaire_phq4" }).values()[0].response
 
     // Compute average and rescale to percentage
     BodyConnect = Object.keys(data_ias).filter((key) => key.includes("IAS"))
@@ -396,21 +384,16 @@ function radar_plotdata() {
         BodyConnect.length
     BodyConnect = (BodyConnect / 5) * 100
 
-    CopingSkills = Object.keys(data_erq).filter((key) =>
-        key.includes("Reappraisal")
-    )
+    CopingSkills = Object.keys(data_erq).filter((key) => key.includes("Reappraisal"))
     CopingSkills =
         CopingSkills.map((key) => data_erq[key]).reduce((a, b) => a + b) /
         CopingSkills.length
     CopingSkills = (CopingSkills / 7) * 100
 
-    EmotionUnderstanding = Object.keys(data_erq).filter((key) =>
-        key.includes("Suppression")
-    )
+    EmotionUnderstanding = Object.keys(data_tas).filter((key) => key.includes("DIF")) // DIF = difficulty identifying feelings 
     EmotionUnderstanding =
-        EmotionUnderstanding.map((key) => data_tas[key]).reduce(
-            (a, b) => a + b
-        ) / EmotionUnderstanding.length
+        EmotionUnderstanding.map((key) => data_tas[key]).reduce((a, b) => a + b) /
+        EmotionUnderstanding.length
     EmotionUnderstanding = (EmotionUnderstanding / 5) * 100
 
     LowMood = Object.keys(data_phq4).filter((key) => key.includes("PHQ4"))
@@ -510,6 +493,63 @@ var experiment_feedback = {
     },
 }
 
+// attention checks function 
+function check_attentionchecks() {
+    // Compute scores for mint 
+    let data_mint = jsPsych.data.get().filter({ screen: "questionnaire_mint" }).values()[0].response
+
+    let mint_score_A1 = data_mint["AttentionCheck_1"] / 6
+    let mint_score_A2 = 1 - data_mint["AttentionCheck_2"] / 6
+    let mint_score_A3 = 1 - data_mint["AttentionCheck_3"] / 6
+    let mint_score_A4 = data_mint["AttentionCheck_4"] / 6
+    let mint_score_A5 = data_mint["AttentionCheck_5"] / 6
+    let mint_score_A6 = 1 - data_mint["AttentionCheck_6"] / 6
+    let mint_score_A7 = 1 - data_mint["AttentionCheck_7"] / 6
+    let mint_score_A8 = data_mint["AttentionCheck_8"] / 6
+
+    // compute scores for tas
+    let data_tas = jsPsych.data.get().filter({ screen: "questionnaire_tas" }).values()[0].response
+    let tas_score_A = 1 - data_tas["TAS_A"] / 5
+
+    //compute scores for pi18
+    let data_pi = jsPsych.data.get().filter({ screen: "questionnaire_pi18" }).values()[0].response
+    let pi_score_A = data_pi["PI18_A"] / 5
+
+    // compute scores for CEFSA
+    let data_cefsa = jsPsych.data.get().filter({ screen: "questionnaire_cefsa" }).values()[0].response
+    let cefsa_score_A = 1 - data_cefsa["CEFSA_A"] / 4
+
+    //compute scores for MAIA
+    let data_maia = jsPsych.data.get().filter({ screen: "questionnaire_maia" }).values()[0].response
+    let maia_score_A = data_maia["MAIA_A"] / 6
+
+    //compute scores for IAS
+    let data_ias = jsPsych.data.get().filter({ screen: "questionnaire_ias" }).values()[0].response
+    let ias_score_A = 1 - data_ias["IAS_A"] / 5
+
+    //compute scores for BPQ
+    let data_bpq = jsPsych.data.get().filter({ screen: "questionnaire_bpq" }).values()[0].response
+    let bpq_score_A = data_bpq["AutonomicNervous_A"] / 5
+
+    // Average
+    return (
+        (mint_score_A1 +
+            mint_score_A2 +
+            mint_score_A3 +
+            mint_score_A4 +
+            mint_score_A5 +
+            mint_score_A6 +
+            mint_score_A7 +
+            mint_score_A8 +
+            tas_score_A +
+            pi_score_A +
+            cefsa_score_A +
+            maia_score_A +
+            ias_score_A +
+            bpq_score_A) / 14
+    )
+}
+
 var demographics_debriefing = {
     type: jsPsychSurvey,
     survey_json: {
@@ -526,7 +566,7 @@ var demographics_debriefing = {
                             "<h2>Debriefing</h2>" +
                             "<p align='left'>The purpose of this study was to create and validate a new questionnaire measuring interoception. " +
                             "Interoception involves being aware of changes happening inside our bodies, both physiological (e.g., our heart rate) and emotional, and it plays a crucial role in how we perceive and experience the world around us. It has been related to emotion regulation, self-awareness and overall mental well-being. " +
-                            "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk.</p>" +
+                            "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk. and/or A.Neves@Sussex.ac.uk </p>" +
                             "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> ",
                     },
                 ],
@@ -537,7 +577,7 @@ var demographics_debriefing = {
         screen: "demographics_debrief",
     },
     on_finish: function (data) {
-        let score = check_attentionchecks() // This function is defined in intero.js
+        let score = check_attentionchecks()
         if (score >= 0.75) {
             //  TODO: Change later
             data["Reward"] = "Automatic"

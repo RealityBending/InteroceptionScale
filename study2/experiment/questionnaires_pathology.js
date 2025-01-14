@@ -13,7 +13,8 @@ const instructions_phq4 = {
 }
 
 function make_phq4(items, required = true) {
-    questions = [instructions_phq4]
+    items = shuffleObject(items)
+    questions = []
 
     // Make questions
     for (const key of Object.keys(items)) {
@@ -177,7 +178,8 @@ const instructions_phq15 = {
 }
 
 function make_phq15(items, required = true) {
-    questions = [instructions_phq15]
+    items = shuffleObject(items)
+    questions = []
 
     // Make questions
     for (const key of Object.keys(items)) {
@@ -239,6 +241,7 @@ const items_cefsa = {
     CEFSA_Body_12: "My body feels numb",
     CEFSA_Familiarity_13: "Things I've done many times before seem new or unfamiliar",
     CEFSA_Reality_14: "I feel like an alien or a ghost",
+    CEFSA_A: "I feel that to show I'm being attentive I will press the lowest option",
 }
 
 const instructions_cefsa = {
@@ -250,7 +253,8 @@ const instructions_cefsa = {
 }
 
 function make_cefsa(items, required = true, ticks = ["Never", "Always"]) {
-    questions = [instructions_cefsa]
+    items = shuffleObject(items)
+    questions = []
 
     // Make questions
     for (const key of Object.keys(items)) {
