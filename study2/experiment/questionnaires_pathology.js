@@ -15,7 +15,7 @@ const instructions_phq4 = {
 
 function make_phq4(items, required = true) {
     items = shuffleObject(items)
-    questions = []
+    questions = [instructions_phq4]
 
     // Make questions
     for (const key of Object.keys(items)) {
@@ -181,7 +181,7 @@ const instructions_phq15 = {
 
 function make_phq15(items, required = true) {
     items = shuffleObject(items)
-    questions = []
+    questions = [instructions_phq15]
 
     // Make questions
     for (const key of Object.keys(items)) {
@@ -250,16 +250,16 @@ const instructions_cefsa = {
     type: "html",
     name: "instructions_cefsa",
     title: "About your feelings",
-    description: 
-    "<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b>.</p>"+
+    html: 
+    "<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b> </p>"+
     "<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>",       
-    // html:
      
 }
 
 function make_cefsa(items, required = true, ticks = ["Never", "Always"]) {
     items = shuffleObject(items)
-    questions = []
+    questions = [instructions_cefsa]
+
 
     // Make questions
     for (const key of Object.keys(items)) {
