@@ -1,4 +1,6 @@
 // PHQ-4 ================================================
+// + Single Item Life Satisfaction scale (SILS)
+
 const items_phq4 = {
     PHQ4_Anxiety_1: "Feeling nervous, anxious or on edge",
     PHQ4_Anxiety_2: "Not being able to stop or control worrying",
@@ -9,7 +11,6 @@ const items_phq4 = {
 const instructions_phq4 = {
     type: "html",
     name: "instructions_phq4",
-    title: "About your mood",
     html: "<p>Over the <b>last 2 weeks</b>, how often have you been bothered by the following problems?</p>",
 }
 
@@ -60,7 +61,23 @@ const questionnaire_phq4 = {
             title: "About your mood",
             showQuestionNumbers: false,
             goNextPageAutomatic: true,
-            pages: make_phq4(items_phq4),
+            pages: [
+                {
+                    elements: [
+                        {
+                            title: "All things considered, how satisfied are you with your life as a whole?",
+                            name: "questionnaire_sils",
+                            type: "rating",
+                            rateCount: 11,
+                            rateMin: 0,
+                            rateMax: 10,
+                            minRateDescription: "No satisfaction at all",
+                            maxRateDescription: "Completely satisfied",
+                        },
+                    ],
+                },
+                make_phq4(items_phq4),
+            ],
         }
     },
     data: {
@@ -175,7 +192,6 @@ const items_phq15 = {
 const instructions_phq15 = {
     type: "html",
     name: "instructions_phq15",
-    title: "About your health",
     html: "<p>Over the <b>last week</b>, how often have you been bothered by the following problems?</p>",
 }
 
@@ -243,23 +259,21 @@ const items_cefsa = {
     CEFSA_Body_12: "My body feels numb",
     CEFSA_Familiarity_13: "Things I've done many times before seem new or unfamiliar",
     CEFSA_Reality_14: "I feel like an alien or a ghost",
-    CEFSA_A: "I feel that to show I'm being attentive I will press the lowest option",
+    CEFSA_AttentionCheck_1:
+        "I feel that to show I'm being attentive I will press the lowest option",
 }
 
 const instructions_cefsa = {
     type: "html",
     name: "instructions_cefsa",
-    title: "About your feelings",
-    html: 
-    "<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b> </p>"+
-    "<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>",       
-     
+    html:
+        "<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b> </p>" +
+        "<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>",
 }
 
 function make_cefsa(items, required = true, ticks = ["Never", "Always"]) {
     items = shuffleObject(items)
     questions = [instructions_cefsa]
-
 
     // Make questions
     for (const key of Object.keys(items)) {
@@ -283,7 +297,7 @@ const questionnaire_cefsa = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {
-            title: "About your feelings",
+            title: "About your experiences",
             showQuestionNumbers: false,
             goNextPageAutomatic: true,
             pages: make_cefsa(items_cefsa),

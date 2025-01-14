@@ -1,35 +1,3 @@
-// Single Item Life Satisfaction scale ================================================
-
-const questionnaire_sils = {
-    type: jsPsychSurvey,
-    survey_json: function () {
-        return {
-            title: "About your life satisfaction",
-            showQuestionNumbers: false,
-            goNextPageAutomatic: true,
-            pages: [
-                {
-                    elements: [
-                        {
-                            title: "All things considered, how satisfied are you with your life as a whole?",
-                            name: "questionnaire_sils",
-                            type: "rating",
-                            rateCount: 11,
-                            rateMin: 0,
-                            rateMax: 10,
-                            minRateDescription: "No satisfaction at all",
-                            maxRateDescription: "Completely satisfied",
-                        },
-                    ],
-                },
-            ],
-        }
-    },
-    data: {
-        screen: "questionnaire_sils",
-    },
-}
-
 // TAS-20 questionnaire ================================================
 // Short alexithymia: PAQ-S (6 items) questionnaire? (https://www.sciencedirect.com/science/article/pii/S0165032723000460)
 
