@@ -174,7 +174,7 @@ const items_bpq = {
     BodyAwareness_7: "Noises associated with my digestion.",
     BodyAwareness_8: "An urge to defecate.",
     BodyAwareness_9: "Muscle tension in my arms and legs.",
-    BodyAwareness_10: "An bloating feeling because of water retention.",
+    BodyAwareness_10: "A bloating feeling because of water retention.",
     BodyAwareness_11: "Muscle tension in my face.",
     BodyAwareness_12: "Goose bumps.",
     BodyAwareness_13: "Stomach and gut pains.",

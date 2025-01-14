@@ -9,6 +9,7 @@ const items_phq4 = {
 const instructions_phq4 = {
     type: "html",
     name: "instructions_phq4",
+    title: "About your mood",
     html: "<p>Over the <b>last 2 weeks</b>, how often have you been bothered by the following problems?</p>",
 }
 
@@ -174,6 +175,7 @@ const items_phq15 = {
 const instructions_phq15 = {
     type: "html",
     name: "instructions_phq15",
+    title: "About your health",
     html: "<p>Over the <b>last week</b>, how often have you been bothered by the following problems?</p>",
 }
 
@@ -247,9 +249,12 @@ const items_cefsa = {
 const instructions_cefsa = {
     type: "html",
     name: "instructions_cefsa",
-    html:
-        `<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b>.</p>` +
-        `<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>`,
+    title: "About your feelings",
+    description: 
+    "<p>Please read the following items and rate how often you have experienced these over the past <b>two weeks</b>.</p>"+
+    "<p>Please note that this should <b>NOT</b> be whilst under the influence of drugs, alcohol or legal highs.</p>",       
+    // html:
+     
 }
 
 function make_cefsa(items, required = true, ticks = ["Never", "Always"]) {
