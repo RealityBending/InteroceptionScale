@@ -162,10 +162,9 @@ const instructions_pi18 = {
     type: "html",
     name: "instructions_pi18",
     html:
-        `<p>Below are very general statements about the world, not the world we wish we lived in, but the actual world as it is now.</p>` +
-        `<p>Please share your sense of agreement or disagreement.</p>` +
-        `<p>When in doubt, go with what initially feels true of the real world.</p>` +
-        `<p><p>There are no wrong answers. There is no need to overthink.</p><br /><br/>`,
+        `<p>Below are very general statements about the world, not the world we wish we lived in, but the <b>actual world as it is now</b>.</p>` +
+        `<p>Please share your sense of agreement or disagreement. When in doubt, go with what initially feels true of the real world.</p>` +
+        `<p>There are no wrong answers. There is no need to overthink.</p>`,
 }
 
 function make_pi18(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
