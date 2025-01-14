@@ -90,7 +90,6 @@ const questionnaire_maia = {
     },
 }
 
-
 // IAS =================================================================================================
 const items_ias = {
     IAS_1: "I can always accurately perceive when my heart is beating fast",
@@ -116,7 +115,6 @@ const items_ias = {
     IAS_21: "I can always accurately perceive when something is going to be itchy",
     IAS_A: "I can always accurately choose the lowest option",
 }
-
 
 // This function formats each question into a jsPsych-survey question that contains information about the question format
 function make_ias(items, required = true, ticks = ["Disagree Strongly", "Strongly Agree"]) {
@@ -148,7 +146,7 @@ const questionnaire_ias = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {
-            title: "About you and your body",
+            title: "Bodily sensations",
             description:
                 "Please rate on the scale how accurately you believe you can perceive each specific signals without using external cues, e.g. measuring your pulse.",
             showQuestionNumbers: false,
@@ -160,7 +158,6 @@ const questionnaire_ias = {
         screen: "questionnaire_ias",
     },
 }
-
 
 //BPQ =================================================================================================
 
@@ -197,12 +194,14 @@ const items_bpq = {
     AutonomicNervous_4: "When I eat, food feels dry and sticks to my mouth and throat.",
     AutonomicNervous_5: "I feel shortness of breath.",
     AutonomicNervous_6: "I have difficulty coordinating breathing with talking.",
-    AutonomicNervous_7: "When I eat, I have difficulty coordinating swallowing, chewing, and/or sucking with breathing.",
+    AutonomicNervous_7:
+        "When I eat, I have difficulty coordinating swallowing, chewing, and/or sucking with breathing.",
     AutonomicNervous_8: "I have a persistent cough that interferes with my talking and eating.",
     AutonomicNervous_9: "I gag from the saliva in my mouth.",
     AutonomicNervous_10: "I have chest pains.",
     AutonomicNervous_11: "I gag when I eat.",
-    AutonomicNervous_12: "When I talk, I often feel I should cough or swallow the saliva in my mouth.",
+    AutonomicNervous_12:
+        "When I talk, I often feel I should cough or swallow the saliva in my mouth.",
     AutonomicNervous_13: "When I breathe, I feel like I cannot get enough oxygen.",
     AutonomicNervous_14: "I have difficulty controlling my eyes.",
     AutonomicNervous_15: "I feel like vomiting.",
@@ -213,7 +212,6 @@ const items_bpq = {
     AutonomicNervous_20: "I have diarrhea.",
     AutonomicNervous_A: "I have no difficulty responding all the way to the right.",
 }
-
 
 // This function formats each question into a jsPsych-survey question that contains information about the question format
 function make_bpq(items, required = true, ticks = ["Never", "Always"]) {
@@ -245,9 +243,8 @@ const questionnaire_bpq = {
     type: jsPsychSurvey,
     survey_json: function () {
         return {
-            title: "About you and your body",
-            description:
-                "In your daily life, how often are you aware of the following sensations??",
+            title: "Bodily reactions",
+            description: "In your daily life, how often are you aware of the following sensations?",
             showQuestionNumbers: false,
             goNextPageAutomatic: true,
             pages: make_bpq(items_bpq),
