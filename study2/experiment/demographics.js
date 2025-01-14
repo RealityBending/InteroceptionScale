@@ -169,14 +169,14 @@ var demographic_questions = {
                         type: "boolean",
                         title: "What measurement do you use for weight?",
                         name: "Weight_Measurement",
-                        labelTrue: "Stone",
+                        labelTrue: "Stones",
                         labelFalse: "Kilograms",
                         isRequired: false,
                     },
                     {
                         visibleIf: "{Weight_Measurement} == true",
                         type: "text",
-                        title: "What is your weight (in stone)",
+                        title: "What is your weight (in stones)",
                         name: "Weight_st",
                         isRequired: false,
                         placeholder: "e.g., 13.04",
@@ -343,8 +343,7 @@ var demographics_wearables = {
                         isRequired: true,
                     },
                     {
-                        visibleIf:
-                            "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate with your device?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -380,36 +379,27 @@ function radar_plotdata() {
     // Compute average and rescale to percentage
     BodyConnect = Object.keys(data_ias).filter((key) => key.includes("IAS"))
     BodyConnect =
-        BodyConnect.map((key) => data_ias[key]).reduce((a, b) => a + b) /
-        BodyConnect.length
+        BodyConnect.map((key) => data_ias[key]).reduce((a, b) => a + b) / BodyConnect.length
     BodyConnect = (BodyConnect / 5) * 100
 
     CopingSkills = Object.keys(data_erq).filter((key) => key.includes("Reappraisal"))
     CopingSkills =
-        CopingSkills.map((key) => data_erq[key]).reduce((a, b) => a + b) /
-        CopingSkills.length
+        CopingSkills.map((key) => data_erq[key]).reduce((a, b) => a + b) / CopingSkills.length
     CopingSkills = (CopingSkills / 7) * 100
 
-    EmotionUnderstanding = Object.keys(data_tas).filter((key) => key.includes("DIF")) // DIF = difficulty identifying feelings 
+    EmotionUnderstanding = Object.keys(data_tas).filter((key) => key.includes("DIF")) // DIF = difficulty identifying feelings
     EmotionUnderstanding =
         EmotionUnderstanding.map((key) => data_tas[key]).reduce((a, b) => a + b) /
         EmotionUnderstanding.length
     EmotionUnderstanding = (EmotionUnderstanding / 5) * 100
 
     LowMood = Object.keys(data_phq4).filter((key) => key.includes("PHQ4"))
-    LowMood =
-        LowMood.map((key) => data_phq4[key]).reduce((a, b) => a + b) /
-        LowMood.length
+    LowMood = LowMood.map((key) => data_phq4[key]).reduce((a, b) => a + b) / LowMood.length
     LowMood = (LowMood / 5) * 100
 
     // Prepare output
     var output = {
-        names: [
-            "Body Connection",
-            "Coping Skills",
-            "Emotional Understanding",
-            "Low Mood",
-        ],
+        names: ["Body Connection", "Coping Skills", "Emotional Understanding", "Low Mood"],
         scores: [BodyConnect, CopingSkills, EmotionUnderstanding, LowMood],
         label: "Your Results (%)",
     }
@@ -449,8 +439,7 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description:
-            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -493,9 +482,9 @@ var experiment_feedback = {
     },
 }
 
-// attention checks function 
+// attention checks function
 function check_attentionchecks() {
-    // Compute scores for mint 
+    // Compute scores for mint
     let data_mint = jsPsych.data.get().filter({ screen: "questionnaire_mint" }).values()[0].response
 
     let mint_score_A1 = data_mint["AttentionCheck_1"] / 6
@@ -516,7 +505,10 @@ function check_attentionchecks() {
     let pi_score_A = data_pi["PI18_A"] / 5
 
     // compute scores for CEFSA
-    let data_cefsa = jsPsych.data.get().filter({ screen: "questionnaire_cefsa" }).values()[0].response
+    let data_cefsa = jsPsych.data
+        .get()
+        .filter({ screen: "questionnaire_cefsa" })
+        .values()[0].response
     let cefsa_score_A = 1 - data_cefsa["CEFSA_A"] / 4
 
     //compute scores for MAIA
@@ -546,7 +538,8 @@ function check_attentionchecks() {
             cefsa_score_A +
             maia_score_A +
             ias_score_A +
-            bpq_score_A) / 14
+            bpq_score_A) /
+        14
     )
 }
 
@@ -610,9 +603,7 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
-                "trials"
-            ][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
