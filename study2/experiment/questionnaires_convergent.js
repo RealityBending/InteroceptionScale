@@ -28,7 +28,7 @@ const items_tas = {
     TAS_EOT_18: "I can feel close to someone, even in moments of silence",
     TAS_EOT_19: "I find examination of my feelings useful in solving personal problems",
     TAS_EOT_20: "Looking for hidden meanings in movies or plays distracts from their enjoyment",
-    TAS_A: "I am able to respond all the way to the left",
+    TAS_AttentionCheck_1: "I am able to respond all the way to the left",
 }
 
 function make_tas(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
@@ -211,6 +211,7 @@ const items_cerq = {
 // }
 
 // PI-18 - Primals ================================================
+// Items with _R are reverse coded
 
 const items_pi18 = {
     PI18_GE_1: "In life, there's way more beauty than ugliness",
@@ -233,7 +234,7 @@ const items_pi18 = {
     PI18_A_16: "Everything happens for a reason and on purpose",
     PI18_GS_17: "Most things and situations are harmless and totally safe",
     PI18_GE_18: "No matter where we are, incredible beauty is always around us",
-    PI18_A: "On the whole, I know I must press the highest option",
+    PI18_AttentionCheck_1: "On the whole, I know I must press the highest option",
 }
 
 const instructions_pi18 = {
