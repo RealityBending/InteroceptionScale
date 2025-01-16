@@ -73,36 +73,31 @@ const questionnaire_tas = {
 // Cognitive Emotion Rrgulation Questionaire (CERQ) ================================================
 
 const items_cerq = {
-    Self_Blame_1:"I feel that I am the one who is responsible for what has happened",
-    Self_Blame_2:"I think that basically the cause must lie within myself",
-    Acceptance_1:"I think that I have to accept that this has happened",
-    Acceptance_2:"I think that I have to accept the situation",
-    Rumination_1:"I often think about how I feel about what I have experienced",
-    Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
-    Positive_Refocusing_1:"I think of pleasant things that have nothing to do with it",
-    Positive_Refocusing_2:" think of something nice instead of what has happened",
-    Refocus_Planning_1:"I think about how to change the situation",
-    Refocus_Planning_2: "I think about a plan of what I can do best",
-    Positive_Reappraisal_1:"I think I can learn something from the situation",
-    Positive_Reappraisal_2:"I think that I can become a stronger person as a result of what has happened",
-    Perspective_1:"I think that it hasn't been too bad compared to other things",
-    Perspective_2:"I tell myself that there are worse things in life",
-    Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
-    Catastrophizing_2:"I continually think how horrible the situation has been",
-    Other_Blame_1:"I feel that others are responsible for what has happened",
-    Other_Blame_2:"I feel that basically the cause lies with others",
+    CERQ_SelfBlame_1:"I feel that I am the one who is responsible for what has happened",
+    CERQ_SelfBlame_2:"I think that basically the cause must lie within myself",
+    CERQ_Acceptance_1:"I think that I have to accept that this has happened",
+    CERQ_Acceptance_2:"I think that I have to accept the situation",
+    CERQ_Rumination_1:"I often think about how I feel about what I have experienced",
+    CERQ_Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
+    CERQ_PositiveRefocusing_1:"I think of pleasant things that have nothing to do with it",
+    CERQ_PositiveRefocusing_2:" think of something nice instead of what has happened",
+    CERQ_RefocusPlanning_1:"I think about how to change the situation",
+    CERQ_RefocusPlanning_2: "I think about a plan of what I can do best",
+    CERQ_PositiveReappraisal_1:"I think I can learn something from the situation",
+    CERQ_PositiveReappraisal_2:"I think that I can become a stronger person as a result of what has happened",
+    CERQ_Perspective_1:"I think that it hasn't been too bad compared to other things",
+    CERQ_Perspective_2:"I tell myself that there are worse things in life",
+    CERQ_Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
+    CERQ_Catastrophizing_2:"I continually think how horrible the situation has been",
+    CERQ_OtherBlame_1:"I feel that others are responsible for what has happened",
+    CERQ_OtherBlame_2:"I feel that basically the cause lies with others",
 }
 
     const instructions_cerq ={
            type: "html",
             name: "instructions_cerq",
             html:
-             "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control " +
-             "(that is, regulate and manage) your emotions</b>.<br>The questions below involve two distinct aspects of your " +
-             "emotional life:</p><p>" +
-             "- One is your emotional <b>experience</b>, or what you feel like <i>inside</i>.<br>" +
-             "- The other is your emotional <b>expression</b>, or how you <i>show</i> your emotions in the way you talk, gesture, or behave.</p>" +
-             "<p>Although some of the following questions may seem similar to one another, they differ in important ways.</p>", 
+             "<p> Please indicate how often you think in the following ways when facing intense, threatening or stressful situations </p>"
     }
 
 
@@ -144,9 +139,80 @@ const items_cerq = {
                     screen: "questionnaire_cerq",
                 },
             }
-    
 
-    
+
+// Emotion Reactivity Scale (B-ERS) ================================================
+
+const items_ers = {
+    ERS_Arousal_1:"I often get so upset it's hard for me to think straight",
+    ERS_Arousal_2:"My moods are very strong and powerful",
+    ERS_Arousal_3:"People tell me that my emotions are often too intense for the situation",
+    ERS_Arousal_4:"Other people tell me I'm overreacting",
+    ERS_Arousal_5:"I experience emotions very strongly",
+    ERS_Arousal_6:"When I experience emotions, I feel them very strongly/intensely",
+    ERS_Arousal_7:"When I'm emotionally upset, my whole body gets physically upset as well",
+    ERS_Persistence_1:"When I am angry/upset, it takes me much longer than most people to calm down",
+    ERS_Persistence_2:"When I feel emotional, it's hard for me to imagine feeling any other way",
+    ERS_Persistence_3:"When something happens that upsets me, it's all I can think about it for a long time",
+    ERS_Persistence_4:"If I have a disagreement with someone, it takes a long time for me to get over it",
+    ERS_Sensitivity_1:"Even the littlest things make me emotional",
+    ERS_Sensitivity_2:"I tend to get very emotional very easily",
+    ERS_Sensitivity_3:"My emotions go from neutral to extreme in an instant",
+    ERS_Sensitivity_4:"When something bad happens, my mood changes very quickly. People tell me I have a very short fuse",
+    ERS_Sensitivity_5:"I am a very sensitive person",
+    ERS_Sensitivity_6:"I am often bothered by things that other people don't react to",
+    ERS_Sensitivity_7:"My feelings get hurt easily",
+    ERS_Sensitivity_8:"I am easily agitated",
+    ERS_Sensitivity_9:"I get angry at people very easily",
+    ERS_Sensitivity_1:"	I often feel extremely anxious",
+}
+
+const instructions_ers ={
+    type: "html",
+     name: "instructions_ers",
+     html:
+      "<p> Please self-rate yourself based on the following statements, using a scale from 0 to 4 where 0 means 'not like me at all' and 4 means 'extremely like me' </p>",
+}
+
+function make_ers(items, required = true, ticks = ["Not like me at all", "Extremely like me"]) {
+    items = shuffleObject(items)
+    questions = [instructions_ers]
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [0, 1, 2, 3, 4], 
+        }
+        questions.push(q)
+    }
+
+    return { elements: questions }
+}
+
+const questionnaire_ers = {
+type: jsPsychSurvey,
+survey_json: function () {
+    return {
+        title: "About your emotions",
+        showQuestionNumbers: false,
+        oNextPageAutomatic: true,
+        pages: make_erq(items_ers),
+     }
+    },
+    data: {
+        screen: "questionnaire_ers",
+    },
+}
+
+
 // ERQ   ================================================
 
 //   const items_erq = {
