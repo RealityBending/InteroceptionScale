@@ -131,7 +131,7 @@ const items_cerq = {
                 return {
                     title: "About your emotions",
                     showQuestionNumbers: false,
-                    oNextPageAutomatic: true,
+                    goNextPageAutomatic: true,
                     pages: make_cerq(items_cerq),
                  }
                 },
@@ -188,7 +188,7 @@ survey_json: function () {
     return {
         title: "About your emotions",
         showQuestionNumbers: false,
-        oNextPageAutomatic: true,
+        goNextPageAutomatic: true,
         pages: make_ers(items_ers),
      }
     },
