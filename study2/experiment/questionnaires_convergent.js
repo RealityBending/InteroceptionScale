@@ -146,32 +146,17 @@ const items_cerq = {
 const items_ers = {
     ERS_Arousal_1:"I often get so upset it's hard for me to think straight",
     ERS_Arousal_2:"My moods are very strong and powerful",
-    ERS_Arousal_3:"People tell me that my emotions are often too intense for the situation",
-    ERS_Arousal_4:"Other people tell me I'm overreacting",
-    ERS_Arousal_5:"I experience emotions very strongly",
-    ERS_Arousal_6:"When I experience emotions, I feel them very strongly/intensely",
-    ERS_Arousal_7:"When I'm emotionally upset, my whole body gets physically upset as well",
     ERS_Persistence_1:"When I am angry/upset, it takes me much longer than most people to calm down",
     ERS_Persistence_2:"When I feel emotional, it's hard for me to imagine feeling any other way",
-    ERS_Persistence_3:"When something happens that upsets me, it's all I can think about it for a long time",
-    ERS_Persistence_4:"If I have a disagreement with someone, it takes a long time for me to get over it",
     ERS_Sensitivity_1:"Even the littlest things make me emotional",
     ERS_Sensitivity_2:"I tend to get very emotional very easily",
-    ERS_Sensitivity_3:"My emotions go from neutral to extreme in an instant",
-    ERS_Sensitivity_4:"When something bad happens, my mood changes very quickly. People tell me I have a very short fuse",
-    ERS_Sensitivity_5:"I am a very sensitive person",
-    ERS_Sensitivity_6:"I am often bothered by things that other people don't react to",
-    ERS_Sensitivity_7:"My feelings get hurt easily",
-    ERS_Sensitivity_8:"I am easily agitated",
-    ERS_Sensitivity_9:"I get angry at people very easily",
-    ERS_Sensitivity_1:"	I often feel extremely anxious",
 }
 
 const instructions_ers ={
     type: "html",
      name: "instructions_ers",
      html:
-      "<p> Please self-rate yourself based on the following statements, using a scale from 0 to 4 where 0 means 'not like me at all' and 4 means 'extremely like me' </p>",
+      "<p> This questionnaire asks different questions about how you experience emotions <b> on a regular basis (for example, each day)</b>. When you are asked about being 'emotional,' this may refer to being angry, sad, excited, or some other emotion.  Please rate the following statements.</p>",
 }
 
 function make_ers(items, required = true, ticks = ["Not like me at all", "Extremely like me"]) {
@@ -204,7 +189,7 @@ survey_json: function () {
         title: "About your emotions",
         showQuestionNumbers: false,
         oNextPageAutomatic: true,
-        pages: make_erq(items_ers),
+        pages: make_ers(items_ers),
      }
     },
     data: {
