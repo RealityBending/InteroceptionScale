@@ -78,14 +78,13 @@
         ])
         qs_convergent = jsPsych.randomization.shuffleNoRepeats([
             questionnaire_tas,
-            // questionnaire_erq,
             questionnaire_pi18,
             questionnaire_cerq,
             questionnaire_ers,
         ])
         qs_pathology = jsPsych.randomization.shuffleNoRepeats([
             questionnaire_cefsa,
-            questionnaire_phq15,
+            questions_somatichealth,
             questions_mentalhealth,
             questionnaire_phq4,
         ])
@@ -94,22 +93,44 @@
         timeline.push(demographics_browser_info)
         timeline.push(demographic_questions)
         timeline.push(questionnaires_instructions)
-        timeline.push(questionnaire_mint)
-        // shuffle intero questionnaires
-        timeline.push(qs_intero[0])
-        timeline.push(qs_intero[1])
-        timeline.push(qs_intero[2])
-        // shuffle convergent questionnaires
-        timeline.push(qs_convergent[0])
-        timeline.push(qs_convergent[1])
-        timeline.push(qs_convergent[2])
-        timeline.push(qs_convergent[3])
-        // shuffle pathology questionnaires
-        timeline.push(qs_pathology[0])
-        timeline.push(qs_pathology[1])
-        timeline.push(qs_pathology[2])
-        timeline.push(qs_pathology[3])
 
+        // Block 1
+        timeline.push(questionnaire_mint)
+        b1 = jsPsych.randomization.shuffleNoRepeats([
+            qs_convergent[0],
+            qs_pathology[0],
+        ])
+        timeline.push(b1[0])
+        timeline.push(b1[1])
+
+        // Block 2
+        timeline.push(qs_intero[0])
+        b2 = jsPsych.randomization.shuffleNoRepeats([
+            qs_convergent[1],
+            qs_pathology[1],
+        ])
+        timeline.push(b2[0])
+        timeline.push(b2[1])
+
+        // Block 3
+        timeline.push(qs_intero[1])
+        b3 = jsPsych.randomization.shuffleNoRepeats([
+            qs_convergent[2],
+            qs_pathology[2],
+        ])
+        timeline.push(b3[0])
+        timeline.push(b3[1])
+
+        // Block 4
+        timeline.push(qs_intero[2])
+        b4 = jsPsych.randomization.shuffleNoRepeats([
+            qs_convergent[3],
+            qs_pathology[3],
+        ])
+        timeline.push(b4[0])
+        timeline.push(b4[1])
+
+        // End
         timeline.push(demographics_wearables)
         timeline.push(radar_feedback)
         timeline.push(experiment_feedback)

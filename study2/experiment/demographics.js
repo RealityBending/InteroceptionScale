@@ -319,6 +319,38 @@ var demographics_wearables = {
             {
                 elements: [
                     {
+                        title: "In general, how physically active are you?",
+                        name: "Physical_Active",
+                        type: "rating",
+                        rateCount: 8,
+                        rateMin: 0,
+                        rateMax: 7,
+                        minRateDescription: "Not at all",
+                        maxRateDescription: "Very much",
+                        isRequired: true,
+                    },
+                    {
+                        title: "How many hours of active workout do you do per week (e.g., gym, running, sports)?",
+                        name: "Physical_Workout",
+                        type: "rating",
+                        displayMode: "buttons",
+                        rateValues: [
+                            "Never",
+                            "1-30 minutes",
+                            "30-60 minutes",
+                            "1-2 hours",
+                            "2-6 hours",
+                            "6-12 hours",
+                            "12+ hours",
+                        ],
+                        isRequired: true,
+                        colCount: 0,
+                    },
+                ],
+            },
+            {
+                elements: [
+                    {
                         title: "Do you own a device that can monitor any of the following?",
                         description:
                             "Many electronic devices, like smart watches, sports sensors (FitBits) or medical devices, can detect bodily signals such as heart rate, sleep quality, etc.",
@@ -347,7 +379,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -363,7 +396,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_HeartImportance",
                         type: "rating",
@@ -378,7 +412,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Number of steps'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Number of steps'",
                         title: "How often do you check your number of steps?",
                         name: "Wearables_Steps",
                         type: "rating",
@@ -394,7 +429,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Number of steps'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Number of steps'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_StepsImportance",
                         type: "rating",
@@ -409,7 +445,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calories burnt'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calories burnt'",
                         title: "How often do you check your number of calories burnt?",
                         name: "Wearables_CaloriesBurnt",
                         type: "rating",
@@ -425,7 +462,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calories burnt'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calories burnt'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_CaloriesBurntImportance",
                         type: "rating",
@@ -440,7 +478,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calorie intake'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calorie intake'",
                         title: "How often do you check your calorie intake?",
                         name: "Wearables_CalorieIntake",
                         type: "rating",
@@ -456,7 +495,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calorie intake'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calorie intake'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_CalorieIntakeImportance",
                         type: "rating",
@@ -471,7 +511,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Sleep quality'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Sleep quality'",
                         title: "How often do you check your sleep quality?",
                         name: "Wearables_Sleep",
                         type: "rating",
@@ -487,7 +528,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Sleep quality'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Sleep quality'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_SleepImportance",
                         type: "rating",
@@ -502,7 +544,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
                         title: "How often do you check your weight (including with a regular scale)?",
                         name: "Wearables_Weight",
                         type: "rating",
@@ -518,7 +561,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_WeightImportance",
                         type: "rating",
@@ -530,46 +574,6 @@ var demographics_wearables = {
                     },
                 ],
             },
-            {
-                elements: [
-                    {
-                        title: "How active are you?",
-                        name: "Activity_Active",
-                        type: "rating",
-                        rateCount: 8,
-                        rateMin: 0,
-                        rateMax: 7,
-                        minRateDescription: "Not at all",
-                        maxRateDescription: "Very much",
-                    },
-                    {
-                        title: "How many times do you work out per week (e.g. gym, running, football)?",
-                        name: "Activity_Workout",
-                        type: "rating",
-                        displayMode: "buttons",
-                        rateValues: [
-                            "Never",
-                            "1-2 times",
-                            "3-4 times",
-                            "5-6 times",
-                            "Every day",
-                            "Multiple times per day",
-                        ],
-                        isRequired: true,
-                        colCount: 0,
-                    },
-                    {
-                        visibleIf: "{Activity_Workout} contains '1-2 times', '3-4 times', '5-6 times', 'Every day', 'Multiple times per day'",
-                        title: "What kind of sports/activities do you do?",
-                        name: "Activity_Type",
-                        type: "comment",
-                        rows: 2,
-                        autoGrow: true,
-                        allowResize: false,
-                        isRequired: true,
-                    },
-                ],
-            },
         ],
     },
 
@@ -578,13 +582,13 @@ var demographics_wearables = {
     },
 }
 
-
 // Feedback, Debrief, Thank you Screen
 var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -687,7 +691,9 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
+                "trials"
+            ][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
