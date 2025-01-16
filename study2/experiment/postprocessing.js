@@ -38,7 +38,7 @@ function check_attentionchecks() {
 
     //compute scores for BPQ
     let data_bpq = get_screen("questionnaire_bpq")
-    let bpq_score_A = data_bpq["AutonomicNervous_AttentionCheck_1"] / 5
+    let bpq_score_A = data_bpq["BodyAwareness_AttentionCheck_1"] / 5
 
     // Average
     return (
