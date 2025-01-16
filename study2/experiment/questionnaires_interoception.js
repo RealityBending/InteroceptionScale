@@ -45,7 +45,7 @@ const items_maia = {
     MAIA_Trusting_1: "I am at home in my body",
     MAIA_Trusting_2: "I feel my body is a safe place",
     MAIA_Trusting_3: "I trust my body sensations",
-    MAIA_A: "I notice that I am being asked to respond all the way to the right",
+    MAIA_AttentionCheck_1: "I notice that I am being asked to respond all the way to the right",
 }
 
 // This function formats each question into a jsPsych-survey question that contains information about the question format
@@ -113,7 +113,7 @@ const items_ias = {
     IAS_19: "I can always accurately perceive when someone is touching me affectionately rather than non-affectionately",
     IAS_20: "I can always accurately perceive when something is going to be ticklish",
     IAS_21: "I can always accurately perceive when something is going to be itchy",
-    IAS_A: "I can always accurately choose the lowest option",
+    IAS_AttentionCheck_1: "I can always accurately choose the lowest option",
 }
 
 // This function formats each question into a jsPsych-survey question that contains information about the question format
@@ -210,7 +210,7 @@ const items_bpq = {
     AutonomicNervous_18: "I have indigestion.",
     AutonomicNervous_19: "After eating I have digestive problems.",
     AutonomicNervous_20: "I have diarrhea.",
-    AutonomicNervous_A: "I have no difficulty responding all the way to the right.",
+    AutonomicNervous_AttentionCheck_1: "I have no difficulty responding all the way to the right.",
 }
 
 // This function formats each question into a jsPsych-survey question that contains information about the question format
