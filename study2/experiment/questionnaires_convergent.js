@@ -97,12 +97,7 @@ const items_cerq = {
            type: "html",
             name: "instructions_cerq",
             html:
-             "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control " +
-             "(that is, regulate and manage) your emotions</b>.<br>The questions below involve two distinct aspects of your " +
-             "emotional life:</p><p>" +
-             "- One is your emotional <b>experience</b>, or what you feel like <i>inside</i>.<br>" +
-             "- The other is your emotional <b>expression</b>, or how you <i>show</i> your emotions in the way you talk, gesture, or behave.</p>" +
-             "<p>Although some of the following questions may seem similar to one another, they differ in important ways.</p>", //change instructions
+             "<p> Please indicate how often you think in the following ways when facing intense, threatening or stressful situations </p>"
     }
 
 
@@ -176,7 +171,7 @@ const instructions_ers ={
     type: "html",
      name: "instructions_ers",
      html:
-      "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control",//add instructions
+      "<p> Please self-rate yourself based on the following statements, using a scale from 0 to 4 where 0 means 'not like me at all' and 4 means 'extremely like me' </p>",
 }
 
 function make_ers(items, required = true, ticks = ["Not like me at all", "Extremely like me"]) {
