@@ -73,24 +73,24 @@ const questionnaire_tas = {
 // Cognitive Emotion Rrgulation Questionaire (CERQ) ================================================
 
 const items_cerq = {
-    Self_Blame_1:"I feel that I am the one who is responsible for what has happened",
-    Self_Blame_2:"I think that basically the cause must lie within myself",
-    Acceptance_1:"I think that I have to accept that this has happened",
-    Acceptance_2:"I think that I have to accept the situation",
-    Rumination_1:"I often think about how I feel about what I have experienced",
-    Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
-    Positive_Refocusing_1:"I think of pleasant things that have nothing to do with it",
-    Positive_Refocusing_2:" think of something nice instead of what has happened",
-    Refocus_Planning_1:"I think about how to change the situation",
-    Refocus_Planning_2: "I think about a plan of what I can do best",
-    Positive_Reappraisal_1:"I think I can learn something from the situation",
-    Positive_Reappraisal_2:"I think that I can become a stronger person as a result of what has happened",
-    Perspective_1:"I think that it hasn't been too bad compared to other things",
-    Perspective_2:"I tell myself that there are worse things in life",
-    Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
-    Catastrophizing_2:"I continually think how horrible the situation has been",
-    Other_Blame_1:"I feel that others are responsible for what has happened",
-    Other_Blame_2:"I feel that basically the cause lies with others",
+    CERQ_SelfBlame_1:"I feel that I am the one who is responsible for what has happened",
+    CERQ_SelfBlame_2:"I think that basically the cause must lie within myself",
+    CERQ_Acceptance_1:"I think that I have to accept that this has happened",
+    CERQ_Acceptance_2:"I think that I have to accept the situation",
+    CERQ_Rumination_1:"I often think about how I feel about what I have experienced",
+    CERQ_Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
+    CERQ_PositiveRefocusing_1:"I think of pleasant things that have nothing to do with it",
+    CERQ_PositiveRefocusing_2:" think of something nice instead of what has happened",
+    CERQ_RefocusPlanning_1:"I think about how to change the situation",
+    CERQ_RefocusPlanning_2: "I think about a plan of what I can do best",
+    CERQ_PositiveReappraisal_1:"I think I can learn something from the situation",
+    CERQ_PositiveReappraisal_2:"I think that I can become a stronger person as a result of what has happened",
+    CERQ_Perspective_1:"I think that it hasn't been too bad compared to other things",
+    CERQ_Perspective_2:"I tell myself that there are worse things in life",
+    CERQ_Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
+    CERQ_Catastrophizing_2:"I continually think how horrible the situation has been",
+    CERQ_OtherBlame_1:"I feel that others are responsible for what has happened",
+    CERQ_OtherBlame_2:"I feel that basically the cause lies with others",
 }
 
     const instructions_cerq ={
@@ -144,6 +144,9 @@ const items_cerq = {
                     screen: "questionnaire_cerq",
                 },
             }
+
+
+// Emotion Reactivity Scale (B-ERS) ================================================
     
 
     
