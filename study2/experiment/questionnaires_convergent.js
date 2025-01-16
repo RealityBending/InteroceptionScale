@@ -70,67 +70,145 @@ const questionnaire_tas = {
     },
 }
 
-// Emotion Regulation Questionnaire (ERQ-6) ================================================
-const items_erq = {
-    ERQ_Reappraisal_1:
-        "When I want to feel more positive emotion, I change the way I am thinking about the situation",
-    ERQ_Suppression_2: "I control my emotions by not expressing them",
-    ERQ_Reappraisal_3:
-        "When I want to feel less negative emotion, I change the way I am thinking about the situation",
-    ERQ_Suppression_4: "When I am feeling positive emotions, I am careful not to express them",
-    ERQ_Reappraisal_5:
-        "I control my emotions by changing the way I think about the situation I am in",
-    ERQ_Suppression_6: "When I am feeling negative emotions, I make sure not to express them",
+// Cognitive Emotion Rrgulation Questionaire (CERQ) ================================================
+
+const items_cerq = {
+    Self_Blame_1:"I feel that I am the one who is responsible for what has happened",
+    Self_Blame_2:"I think that basically the cause must lie within myself",
+    Acceptance_1:"I think that I have to accept that this has happened",
+    Acceptance_2:"I think that I have to accept the situation",
+    Rumination_1:"I often think about how I feel about what I have experienced",
+    Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
+    Positive_Refocusing_1:"I think of pleasant things that have nothing to do with it",
+    Positive_Refocusing_2:" think of something nice instead of what has happened",
+    Refocus_Planning_1:"I think about how to change the situation",
+    Refocus_Planning_2: "I think about a plan of what I can do best",
+    Positive_Reappraisal_1:"I think I can learn something from the situation",
+    Positive_Reappraisal_2:"I think that I can become a stronger person as a result of what has happened",
+    Perspective_1:"I think that it hasn't been too bad compared to other things",
+    Perspective_2:"I tell myself that there are worse things in life",
+    Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
+    Catastrophizing_2:"I continually think how horrible the situation has been",
+    Other_Blame_1:"I feel that others are responsible for what has happened",
+    Other_Blame_2:"I feel that basically the cause lies with others",
 }
 
-const instructions_erq = {
-    type: "html",
-    name: "instructions_erq",
-    html:
-        "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control " +
-        "(that is, regulate and manage) your emotions</b>.<br>The questions below involve two distinct aspects of your " +
-        "emotional life:</p><p>" +
-        "- One is your emotional <b>experience</b>, or what you feel like <i>inside</i>.<br>" +
-        "- The other is your emotional <b>expression</b>, or how you <i>show</i> your emotions in the way you talk, gesture, or behave.</p>" +
-        "<p>Although some of the following questions may seem similar to one another, they differ in important ways.</p>",
-}
-
-function make_erq(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
-    items = shuffleObject(items)
-    questions = [instructions_erq]
-
-    // Make questions
-    for (const key of Object.keys(items)) {
-        q = {
-            title: items[key],
-            name: key,
-            type: "rating",
-            displayMode: "buttons",
-            isRequired: required,
-            minRateDescription: ticks[0],
-            maxRateDescription: ticks[1],
-            rateValues: [1, 2, 3, 4, 5, 6, 7], // 7-point Likert scale
-        }
-        questions.push(q)
+    const instructions_cerq ={
+           type: "html",
+            name: "instructions_cerq",
+            html:
+             "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control " +
+             "(that is, regulate and manage) your emotions</b>.<br>The questions below involve two distinct aspects of your " +
+             "emotional life:</p><p>" +
+             "- One is your emotional <b>experience</b>, or what you feel like <i>inside</i>.<br>" +
+             "- The other is your emotional <b>expression</b>, or how you <i>show</i> your emotions in the way you talk, gesture, or behave.</p>" +
+             "<p>Although some of the following questions may seem similar to one another, they differ in important ways.</p>", 
     }
 
-    return { elements: questions }
-}
 
-const questionnaire_erq = {
-    type: jsPsychSurvey,
-    survey_json: function () {
-        return {
-            title: "About your emotions",
-            showQuestionNumbers: false,
-            goNextPageAutomatic: true,
-            pages: make_erq(items_erq),
-        }
-    },
-    data: {
-        screen: "questionnaire_erq",
-    },
-}
+
+ function make_cerq(items, required = true, ticks = ["Almost never", "Almost always"]) {
+                items = shuffleObject(items)
+                questions = [instructions_cerq]
+            
+                // Make questions
+                for (const key of Object.keys(items)) {
+                    q = {
+                        title: items[key],
+                        name: key,
+                        type: "rating",
+                        displayMode: "buttons",
+                        // scaleColorMode: "colored",
+                        isRequired: required,
+                        minRateDescription: ticks[0],
+                        maxRateDescription: ticks[1],
+                        rateValues: [1, 2, 3, 4, 5], 
+                    }
+                    questions.push(q)
+                }
+            
+                return { elements: questions }
+            }
+
+        const questionnaire_cerq = {
+            type: jsPsychSurvey,
+            survey_json: function () {
+                return {
+                    title: "About your emotions",
+                    showQuestionNumbers: false,
+                    oNextPageAutomatic: true,
+                    pages: make_erq(items_cerq),
+                 }
+                },
+                data: {
+                    screen: "questionnaire_cerq",
+                },
+            }
+    
+
+    
+// ERQ   ================================================
+
+//   const items_erq = {
+//     ERQ_Reappraisal_1:
+//         "When I want to feel more positive emotion, I change the way I am thinking about the situation",
+//     ERQ_Suppression_2: "I control my emotions by not expressing them",
+//     ERQ_Reappraisal_3:
+//         "When I want to feel less negative emotion, I change the way I am thinking about the situation",
+//     ERQ_Suppression_4: "When I am feeling positive emotions, I am careful not to express them",
+//     ERQ_Reappraisal_5:
+//         "I control my emotions by changing the way I think about the situation I am in",
+//     ERQ_Suppression_6: "When I am feeling negative emotions, I make sure not to express them",
+// }
+
+// const instructions_erq = {
+//     type: "html",
+//     name: "instructions_erq",
+//     html:
+//         "<p>We would like to ask you some questions about your emotional life, in particular, how you <b>control " +
+//         "(that is, regulate and manage) your emotions</b>.<br>The questions below involve two distinct aspects of your " +
+//         "emotional life:</p><p>" +
+//         "- One is your emotional <b>experience</b>, or what you feel like <i>inside</i>.<br>" +
+//         "- The other is your emotional <b>expression</b>, or how you <i>show</i> your emotions in the way you talk, gesture, or behave.</p>" +
+//         "<p>Although some of the following questions may seem similar to one another, they differ in important ways.</p>",
+// }
+
+// function make_erq(items, required = true, ticks = ["Strongly Disagree", "Strongly Agree"]) {
+//     items = shuffleObject(items)
+//     questions = [instructions_erq]
+
+//     // Make questions
+//     for (const key of Object.keys(items)) {
+//         q = {
+//             title: items[key],
+//             name: key,
+//             type: "rating",
+//             displayMode: "buttons",
+//             isRequired: required,
+//             minRateDescription: ticks[0],
+//             maxRateDescription: ticks[1],
+//             rateValues: [1, 2, 3, 4, 5, 6, 7], // 7-point Likert scale
+//         }
+//         questions.push(q)
+//     }
+
+//     return { elements: questions }
+// }
+
+// const questionnaire_erq = {
+//     type: jsPsychSurvey,
+//     survey_json: function () {
+//         return {
+//             title: "About your emotions",
+//             showQuestionNumbers: false,
+//             goNextPageAutomatic: true,
+//             pages: make_erq(items_erq),
+//         }
+//     },
+//     data: {
+//         screen: "questionnaire_erq",
+//     },
+// }
 
 // PI-18 - Primals ================================================
 
