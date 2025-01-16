@@ -70,7 +70,7 @@ const questionnaire_tas = {
     },
 }
 
-// Cognitive Emotion Rrgulation Questionaire (CERQ) ================================================
+// Cognitive Emotion Regulation Questionaire (CERQ) ================================================
 
 const items_cerq = {
     CERQ_SelfBlame_1:"I feel that I am the one who is responsible for what has happened",
@@ -132,7 +132,7 @@ const items_cerq = {
                     title: "About your emotions",
                     showQuestionNumbers: false,
                     oNextPageAutomatic: true,
-                    pages: make_erq(items_cerq),
+                    pages: make_cerq(items_cerq),
                  }
                 },
                 data: {
