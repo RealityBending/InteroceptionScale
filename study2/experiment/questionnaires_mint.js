@@ -21,6 +21,10 @@ const questionnaires_instructions = {
                             "<div style='width: 40%;'>" +
                             "<img src='https://www.simplypsychology.org/wp-content/uploads/psychology.jpeg' alt='Illustration' style='width: 100%;'>" +
                             "</div>" +
+                            "</div>" +
+                            "<div style='width: 30%;'>" +
+                            "<img src='https://github.com/RealityBending/InteroceptionScale/blob/main/study2/Example%20radar%20chart.png?raw=true' alt='Graph' style='width: 100%;'>" +
+                            "</div>" +
                             "</div>",
                     },
                 ],
