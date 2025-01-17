@@ -17,13 +17,10 @@ const questionnaires_instructions = {
                             "<p>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, failed attention checks...).</li>" +
                             "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related, and opposite questions to be inversely related). " +
                             "<p style='color:green;'>At the end, you will be shown a <b>graph</b> summarizing your answers, and provided with an explanation about why we are asking all of this.<p>" +
+                            "<center><figure><img src='img/example_chart.png' alt='Graph' style='width: 50%;'><figcaption><i>Example of result graph obtained at the end</i></figcaption></figure></center>" +
                             "</div>" +
                             "<div style='width: 40%;'>" +
                             "<img src='https://www.simplypsychology.org/wp-content/uploads/psychology.jpeg' alt='Illustration' style='width: 100%;'>" +
-                            "</div>" +
-                            "</div>" +
-                            "<div style='width: 30%;'>" +
-                            "<img src='https://github.com/RealityBending/InteroceptionScale/blob/main/study2/Example%20radar%20chart.png?raw=true' alt='Graph' style='width: 100%;'>" +
                             "</div>" +
                             "</div>",
                     },

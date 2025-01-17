@@ -96,37 +96,25 @@
 
         // Block 1
         timeline.push(questionnaire_mint)
-        b1 = jsPsych.randomization.shuffleNoRepeats([
-            qs_convergent[0],
-            qs_pathology[0],
-        ])
+        b1 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[0], qs_pathology[0]])
         timeline.push(b1[0])
         timeline.push(b1[1])
 
         // Block 2
         timeline.push(qs_intero[0])
-        b2 = jsPsych.randomization.shuffleNoRepeats([
-            qs_convergent[1],
-            qs_pathology[1],
-        ])
+        b2 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[1], qs_pathology[1]])
         timeline.push(b2[0])
         timeline.push(b2[1])
 
         // Block 3
         timeline.push(qs_intero[1])
-        b3 = jsPsych.randomization.shuffleNoRepeats([
-            qs_convergent[2],
-            qs_pathology[2],
-        ])
+        b3 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[2], qs_pathology[2]])
         timeline.push(b3[0])
         timeline.push(b3[1])
 
         // Block 4
         timeline.push(qs_intero[2])
-        b4 = jsPsych.randomization.shuffleNoRepeats([
-            qs_convergent[3],
-            qs_pathology[3],
-        ])
+        b4 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[3], qs_pathology[3]])
         timeline.push(b4[0])
         timeline.push(b4[1])
 
@@ -137,13 +125,13 @@
         timeline.push(demographics_debriefing)
 
         // save data via DataPipe
-        // timeline.push({
-        //     type: jsPsychPipe,
-        //     action: "save",
-        //     experiment_id: "818NyQh9EBvw", // This in generated in the DataPipe interface
-        //     filename: `${participantID}.csv`,
-        //     data_string: () => jsPsych.data.get().csv(),
-        // })
+        timeline.push({
+            type: jsPsychPipe,
+            action: "save",
+            experiment_id: "818NyQh9EBvw", // This in generated in the DataPipe interface
+            filename: `${participantID}.csv`,
+            data_string: () => jsPsych.data.get().csv(),
+        })
 
         timeline.push(demographics_endscreen)
         /* ----------------- Run the timeline ----------------- */
