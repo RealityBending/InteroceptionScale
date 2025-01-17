@@ -70,14 +70,7 @@ const items_mint = {
     InteroceptiHypervigilance_7: "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)",
     InteroceptiHypervigilance_8: "When I am sexually aroused, I often feel like some areas of my skin become sweaty (e.g., palms, back, forehead)",
     InteroceptiHypervigilance_9: "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
-    MINT_AttentionCheck_1: "I always know that I am attentively doing a study",
-    MINT_AttentionCheck_2: "Even if I am anxious, I should now answer all the way to the left",
-    MINT_AttentionCheck_3: "I often experience sensations, and I will answer zero to this question",
-    MINT_AttentionCheck_4: "In general, I am very sensitive and attentive to the questions I am currently answering",
-    MINT_AttentionCheck_5: "I am always very aware of the answers I am giving right now",
-    MINT_AttentionCheck_6: "I can always accurately answer to the left on this question to show that I am reading it",
-    MINT_AttentionCheck_7: "I can always accurately perceive that to this question I should answer the lowest option",
-    MINT_AttentionCheck_8: "Sometimes I notice that I need to answer all the way to the right",
+    MINT_AttentionCheck_1: "I can always accurately answer to the left on this question to show that I am reading it",
 }
 
 // Generation code ================================================

@@ -7,15 +7,7 @@ function check_attentionchecks() {
 
     // Compute scores for mint
     let data_mint = get_screen("questionnaire_mint")
-
-    let mint_score_A1 = data_mint["MINT_AttentionCheck_1"] / 6
-    let mint_score_A2 = 1 - data_mint["MINT_AttentionCheck_2"] / 6
-    let mint_score_A3 = 1 - data_mint["MINT_AttentionCheck_3"] / 6
-    let mint_score_A4 = data_mint["MINT_AttentionCheck_4"] / 6
-    let mint_score_A5 = data_mint["MINT_AttentionCheck_5"] / 6
-    let mint_score_A6 = 1 - data_mint["MINT_AttentionCheck_6"] / 6
-    let mint_score_A7 = 1 - data_mint["MINT_AttentionCheck_7"] / 6
-    let mint_score_A8 = data_mint["MINT_AttentionCheck_8"] / 6
+    let mint_score_A = 1 - data_mint["MINT_AttentionCheck_1"] / 6
 
     // compute scores for tas) }).values()[0].response
     let tas_score_A = 1 - data_tas["TAS_AttentionCheck_1"] / 5
@@ -42,21 +34,14 @@ function check_attentionchecks() {
 
     // Average
     return (
-        (mint_score_A1 +
-            mint_score_A2 +
-            mint_score_A3 +
-            mint_score_A4 +
-            mint_score_A5 +
-            mint_score_A6 +
-            mint_score_A7 +
-            mint_score_A8 +
+        (mint_score_A +
             tas_score_A +
             pi_score_A +
             cefsa_score_A +
             maia_score_A +
             ias_score_A +
             bpq_score_A) /
-        14
+        7
     )
 }
 
