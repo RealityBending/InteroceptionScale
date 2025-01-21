@@ -50,7 +50,7 @@ const items_mint = {
     InteroceptiveSensitivityPleasure_1: "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
     InteroceptiveSensitivityPleasure_2: "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
     InteroceptiveSensitivityPleasure_3: "My genital organs are very sensitive to pleasant stimulations",
-    InteroceptiveSensitivityPleasure_4: "I always feel in my body if I am sexually aroused",
+    InteroceptiveSensitivityPleasure_4: "I always feel it in my body if I am sexually aroused",
     InteroceptiveSensitivityPleasure_5: "I always know when I am sexually aroused",
     InteroceptiveSensitivityPleasure_6: "I can always tell that I am sexually aroused from the way I feel inside",
     InteroceptiveSensitivityPleasure_7: "Being relaxed is a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after exercise)",
@@ -71,7 +71,7 @@ const items_mint = {
     InteroceptiHypervigilance_7: "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)",
     InteroceptiHypervigilance_8: "When I am sexually aroused, I often feel like some areas of my skin become sweaty (e.g., palms, back, forehead)",
     InteroceptiHypervigilance_9: "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
-    MINT_AttentionCheck_1: "I can always accurately answer to the left on this question to show that I am reading it",
+    MINT_AttentionCheck_1: "I can always accurately answer to the extreme left on this question to show that I am reading it",
 }
 
 // Generation code ================================================

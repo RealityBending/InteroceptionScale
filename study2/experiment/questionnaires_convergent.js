@@ -73,90 +73,90 @@ const questionnaire_tas = {
 // Cognitive Emotion Regulation Questionaire (CERQ) ================================================
 
 const items_cerq = {
-    CERQ_SelfBlame_1:"I feel that I am the one who is responsible for what has happened",
-    CERQ_SelfBlame_2:"I think that basically the cause must lie within myself",
-    CERQ_Acceptance_1:"I think that I have to accept that this has happened",
-    CERQ_Acceptance_2:"I think that I have to accept the situation",
-    CERQ_Rumination_1:"I often think about how I feel about what I have experienced",
+    CERQ_SelfBlame_1: "I feel that I am the one who is responsible for what has happened",
+    CERQ_SelfBlame_2: "I think that basically the cause must lie within myself",
+    CERQ_Acceptance_1: "I think that I have to accept that this has happened",
+    CERQ_Acceptance_2: "I think that I have to accept the situation",
+    CERQ_Rumination_1: "I often think about how I feel about what I have experienced",
     CERQ_Rumination_2: "I am preoccupied with what I think and feel about what I have experienced",
-    CERQ_PositiveRefocusing_1:"I think of pleasant things that have nothing to do with it",
-    CERQ_PositiveRefocusing_2:" think of something nice instead of what has happened",
-    CERQ_RefocusPlanning_1:"I think about how to change the situation",
+    CERQ_PositiveRefocusing_1: "I think of pleasant things that have nothing to do with it",
+    CERQ_PositiveRefocusing_2: "Think of something nice instead of what has happened",
+    CERQ_RefocusPlanning_1: "I think about how to change the situation",
     CERQ_RefocusPlanning_2: "I think about a plan of what I can do best",
-    CERQ_PositiveReappraisal_1:"I think I can learn something from the situation",
-    CERQ_PositiveReappraisal_2:"I think that I can become a stronger person as a result of what has happened",
-    CERQ_Perspective_1:"I think that it hasn't been too bad compared to other things",
-    CERQ_Perspective_2:"I tell myself that there are worse things in life",
-    CERQ_Catastrophizing_1:" I keep thinking about how terrible it is what I have experienced",
-    CERQ_Catastrophizing_2:"I continually think how horrible the situation has been",
-    CERQ_OtherBlame_1:"I feel that others are responsible for what has happened",
-    CERQ_OtherBlame_2:"I feel that basically the cause lies with others",
+    CERQ_PositiveReappraisal_1: "I think I can learn something from the situation",
+    CERQ_PositiveReappraisal_2: "I think that I can become a stronger person as a result of what has happened",
+    CERQ_Perspective_1: "I think that it hasn't been too bad compared to other things",
+    CERQ_Perspective_2: "I tell myself that there are worse things in life",
+    CERQ_Catastrophizing_1: " I keep thinking about how terrible it is what I have experienced",
+    CERQ_Catastrophizing_2: "I continually think how horrible the situation has been",
+    CERQ_OtherBlame_1: "I feel that others are responsible for what has happened",
+    CERQ_OtherBlame_2: "I feel that basically the cause lies with others",
 }
 
-    const instructions_cerq ={
-           type: "html",
-            name: "instructions_cerq",
-            html:
-             "<p> Please indicate how often you think in the following ways when facing intense, threatening or stressful situations </p>"
+const instructions_cerq = {
+    type: "html",
+    name: "instructions_cerq",
+    html:
+        "<p> Please indicate how often you think in the following ways when facing intense, threatening or stressful situations </p>"
+}
+
+
+
+function make_cerq(items, required = true, ticks = ["Almost never", "Almost always"]) {
+    items = shuffleObject(items)
+    questions = [instructions_cerq]
+
+    // Make questions
+    for (const key of Object.keys(items)) {
+        q = {
+            title: items[key],
+            name: key,
+            type: "rating",
+            displayMode: "buttons",
+            // scaleColorMode: "colored",
+            isRequired: required,
+            minRateDescription: ticks[0],
+            maxRateDescription: ticks[1],
+            rateValues: [1, 2, 3, 4, 5],
+        }
+        questions.push(q)
     }
 
+    return { elements: questions }
+}
 
-
- function make_cerq(items, required = true, ticks = ["Almost never", "Almost always"]) {
-                items = shuffleObject(items)
-                questions = [instructions_cerq]
-            
-                // Make questions
-                for (const key of Object.keys(items)) {
-                    q = {
-                        title: items[key],
-                        name: key,
-                        type: "rating",
-                        displayMode: "buttons",
-                        // scaleColorMode: "colored",
-                        isRequired: required,
-                        minRateDescription: ticks[0],
-                        maxRateDescription: ticks[1],
-                        rateValues: [1, 2, 3, 4, 5], 
-                    }
-                    questions.push(q)
-                }
-            
-                return { elements: questions }
-            }
-
-        const questionnaire_cerq = {
-            type: jsPsychSurvey,
-            survey_json: function () {
-                return {
-                    title: "About your emotions",
-                    showQuestionNumbers: false,
-                    goNextPageAutomatic: true,
-                    pages: make_cerq(items_cerq),
-                 }
-                },
-                data: {
-                    screen: "questionnaire_cerq",
-                },
-            }
+const questionnaire_cerq = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your emotions",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_cerq(items_cerq),
+        }
+    },
+    data: {
+        screen: "questionnaire_cerq",
+    },
+}
 
 
 // Emotion Reactivity Scale (B-ERS) ================================================
 
 const items_ers = {
-    ERS_Arousal_1:"I often get so upset it's hard for me to think straight",
-    ERS_Arousal_2:"My moods are very strong and powerful",
-    ERS_Persistence_1:"When I am angry/upset, it takes me much longer than most people to calm down",
-    ERS_Persistence_2:"When I feel emotional, it's hard for me to imagine feeling any other way",
-    ERS_Sensitivity_1:"Even the littlest things make me emotional",
-    ERS_Sensitivity_2:"I tend to get very emotional very easily",
+    ERS_Arousal_1: "I often get so upset it's hard for me to think straight",
+    ERS_Arousal_2: "My moods are very strong and powerful",
+    ERS_Persistence_1: "When I am angry/upset, it takes me much longer than most people to calm down",
+    ERS_Persistence_2: "When I feel emotional, it's hard for me to imagine feeling any other way",
+    ERS_Sensitivity_1: "Even the littlest things make me emotional",
+    ERS_Sensitivity_2: "I tend to get very emotional very easily",
 }
 
-const instructions_ers ={
+const instructions_ers = {
     type: "html",
-     name: "instructions_ers",
-     html:
-      "<p> This questionnaire asks different questions about how you experience emotions <b> on a regular basis (for example, each day)</b>. When you are asked about being 'emotional,' this may refer to being angry, sad, excited, or some other emotion.  Please rate the following statements.</p>",
+    name: "instructions_ers",
+    html:
+        "<p> This questionnaire asks different questions about how you experience emotions <b> on a regular basis (for example, each day)</b>. When you are asked about being 'emotional,' this may refer to being angry, sad, excited, or some other emotion.  Please rate the following statements.</p>",
 }
 
 function make_ers(items, required = true, ticks = ["Not like me at all", "Extremely like me"]) {
@@ -174,7 +174,7 @@ function make_ers(items, required = true, ticks = ["Not like me at all", "Extrem
             isRequired: required,
             minRateDescription: ticks[0],
             maxRateDescription: ticks[1],
-            rateValues: [0, 1, 2, 3, 4], 
+            rateValues: [0, 1, 2, 3, 4],
         }
         questions.push(q)
     }
@@ -183,14 +183,14 @@ function make_ers(items, required = true, ticks = ["Not like me at all", "Extrem
 }
 
 const questionnaire_ers = {
-type: jsPsychSurvey,
-survey_json: function () {
-    return {
-        title: "About your emotions",
-        showQuestionNumbers: false,
-        goNextPageAutomatic: true,
-        pages: make_ers(items_ers),
-     }
+    type: jsPsychSurvey,
+    survey_json: function () {
+        return {
+            title: "About your emotions",
+            showQuestionNumbers: false,
+            goNextPageAutomatic: true,
+            pages: make_ers(items_ers),
+        }
     },
     data: {
         screen: "questionnaire_ers",

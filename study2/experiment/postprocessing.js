@@ -10,6 +10,7 @@ function check_attentionchecks() {
     let mint_score_A = 1 - data_mint["MINT_AttentionCheck_1"] / 6
 
     // compute scores for tas) }).values()[0].response
+    let data_tas = get_screen("questionnaire_tas")
     let tas_score_A = 1 - data_tas["TAS_AttentionCheck_1"] / 5
 
     //compute scores for pi18
@@ -17,7 +18,7 @@ function check_attentionchecks() {
     let pi_score_A = data_pi["PI18_AttentionCheck_1"] / 5
 
     // compute scores for CEFSA
-    let data_cefsa = get_screen("questionnaire_cefsa").values()[0].response
+    let data_cefsa = get_screen("questionnaire_cefsa")//.values()[0].response
     let cefsa_score_A = 1 - data_cefsa["CEFSA_AttentionCheck_1"] / 4
 
     //compute scores for MAIA
@@ -104,9 +105,9 @@ const radar_feedback = {
         )
     },
     canvas_size: plot_getsize(),
-    choices: ["Continue"],
+    choices: ["Click here to continue"],
     prompt:
         "<p><b>Done!</b> This chart represents how you relate to different body functions. <b>What does it mean?</b></p>" +
-        "<p>From what we know so far, it seems like people vary a lot on these dimensions. However, we don't exactly know what these differences mean yet (hence why we do this research).<br>" +
+        "<p>From what we know so far, it seems like people vary a lot on these dimensions. However, we don't exactly know what these differences mean yet (hence why we are doing this research).<br>" +
         'It seems like it is neither good or bad to score high on any of these, and that there is no "normal": everybody is different!</p>',
 }
