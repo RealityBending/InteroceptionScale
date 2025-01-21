@@ -52,17 +52,13 @@ for (file in files) {
   feedback <- jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"])
   data_ppt$Experiment_Enjoyment <- ifelse(is.null(feedback$Feedback_Enjoyment), NA, feedback$Feedback_Enjoyment)
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
-  
-  
-  # Questionnaire
-  
-  
+
   
   # Attention checks --------------------------------------------------------
   checks <- data.frame(
     MINT_AttentionCheck_1 = alldata$MINT_AttentionCheck_1/ 6,
     TAS_AttentionCheck_1 = 1 - alldata$TAS_AttentionCheck_1 / 5,
-    I18_AttentionCheck_1= 1 - alldata$Nociception_ColonBladder_A / 5,
+    I18_AttentionCheck_1= 1 - alldata$I18_AttentionCheck_/ 5,
     CEFSA_AttentionCheck_1 = alldata$CEFSA_AttentionCheck_1 / 4,
     MAIA_AttentionCheck_1 = 1 - alldata$MAIA_AttentionCheck_1/ 6,
     IAS_AttentionCheck_1 = alldata$IAS_AttentionCheck_1/ 5,
