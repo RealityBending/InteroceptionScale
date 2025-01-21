@@ -214,11 +214,11 @@ var demographic_questions = {
                             },
                             {
                                 value: "High school",
-                                text: "High school",
+                                text: "High school / Secondary school (or 6th form college)",
                             },
                             {
                                 value: "Elementary school",
-                                text: "Elementary school",
+                                text: "Elementary school / Primary school",
                             },
                         ],
                         showOtherItem: true,

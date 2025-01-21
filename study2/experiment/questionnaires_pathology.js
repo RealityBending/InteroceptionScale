@@ -24,6 +24,7 @@ function make_phq4(items, required = true) {
             title: items[key],
             name: key,
             type: "rating",
+            displayMode: "buttons",
             isRequired: required,
             rateValues: [
                 {
@@ -68,6 +69,7 @@ const questionnaire_phq4 = {
                             title: "All things considered, how satisfied are you with your life as a whole?",
                             name: "questionnaire_sils",
                             type: "rating",
+                            displayMode: "buttons",
                             rateCount: 11,
                             rateMin: 0,
                             rateMax: 10,
