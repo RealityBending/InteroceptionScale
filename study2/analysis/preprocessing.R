@@ -53,6 +53,69 @@ for (file in files) {
   data_ppt$Experiment_Enjoyment <- ifelse(is.null(feedback$Feedback_Enjoyment), NA, feedback$Feedback_Enjoyment)
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
 
+  # Mint questionnaire
+  mint <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])
+  mint <- as.data.frame(mint)
+  data_ppt <- cbind(data_ppt, mint)
+
+  # Convergent questionnaires 
+
+  tas <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_tas", "response"])
+  mint <- as.data.frame(tas)
+  data_ppt <- cbind(data_ppt, tas)
+
+  cerq <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_cerq", "response"])
+  cerq <- as.data.frame(cerq)
+  data_ppt <- cbind(data_ppt, cerq)
+
+  ers <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_ers", "response"])
+  ers <- as.data.frame(ers)
+  data_ppt <- cbind(data_ppt, ers)
+
+  pi18 <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_pi18", "response"])
+  pi18 <- as.data.frame(pi18)
+  data_ppt <- cbind(data_ppt, pi18)
+
+  # Interoception questionnaires 
+
+  maia <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_maia", "response"])
+  maia <- as.data.frame(maia)
+  data_ppt <- cbind(data_ppt, maia)
+
+  ias <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_ias", "response"])
+  ias <- as.data.frame(ias)
+  data_ppt <- cbind(data_ppt, ias)
+
+  bpq <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_bpq", "response"])
+  bpq <- as.data.frame(bpq)
+  data_ppt <- cbind(data_ppt, bpq)
+
+  # Pathology questionnaires 
+
+  phq4 <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_phq4", "response"])
+  phq4 <- as.data.frame(phq4)
+  data_ppt <- cbind(data_ppt, phq4)
+
+  mentalhealth <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_mentalhealth", "response"])
+  mentalhealth <- as.data.frame(mentalhealth)
+  data_ppt <- cbind(data_ppt, mentalhealth)
+
+  somatichealth <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_somatichealth", "response"])
+  somatichealth <- as.data.frame(somatichealthhealth)
+  data_ppt <- cbind(data_ppt, somatichealth)
+
+  phq15 <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_phq15", "response"])
+  phq15 <- as.data.frame(phq15)
+  data_ppt <- cbind(data_ppt, phq15)
+
+  cefsa <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_cefsa", "response"])
+  cefsa  <- as.data.frame(cefsa)
+  data_ppt <- cbind(data_ppt, cefsa)
+
+  alldata <- rbind(data_ppt, alldata)
+
+}
+
   
   # Attention checks --------------------------------------------------------
   checks <- data.frame(
