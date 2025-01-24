@@ -47,7 +47,7 @@ There are no risks involved in this study.
 
 No.
 A6: Yes.
-A10. Participants will be asked to report on their race, gender, age, educational level, ethcniticty, and the country of current residence. However, all the data will be anonymised and their participation will be kept confidential (ie., no recording of IP address).
+A10. Participants will be asked to report on their race, gender, age, educational level, ethnicity, and the country of current residence. However, all the data will be anonymised and their participation will be kept confidential (ie., no recording of IP address).
 
 **Section B**
 
@@ -55,7 +55,7 @@ A10. Participants will be asked to report on their race, gender, age, educationa
 -   B.2: Participants will be recruited via recruitment platforms (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected
     separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect).
 -   B.3: Online survey
--   B.5: The survey will be completed online.
+-   B.4: The survey will be completed online.
 -   B.5: No
 -   B.6: Yes
 -   B.7: Yes
@@ -63,7 +63,7 @@ A10. Participants will be asked to report on their race, gender, age, educationa
 -   B.9: Yes
 -   B.10: Yes
 -   B.11: Yes
-    B11a: Survey is anonymous so name will not be collected. Deanonimized data is stored privately on university Box.
+    B11a: Survey is anonymous so name will not be collected. Deanonymized data is stored privately on university Box.
 -   B.12: No
     B12a: Potential for anonymous data sharing is included in the consent.
 -   B.13: Yes
