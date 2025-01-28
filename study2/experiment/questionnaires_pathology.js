@@ -67,7 +67,7 @@ const questionnaire_phq4 = {
                     elements: [
                         {
                             title: "All things considered, how satisfied are you with your life as a whole?",
-                            name: "questionnaire_sils",
+                            name: "LifeSatisfaction",
                             type: "rating",
                             displayMode: "buttons",
                             rateCount: 11,
@@ -140,8 +140,7 @@ const questions_mentalhealth = {
                         colCount: 1,
                     },
                     {
-                        visibleIf:
-                            "{Disorders_Psychiatric} notempty and {Disorders_Psychiatric} notcontains 'None'",
+                        visibleIf: "{Disorders_Psychiatric} notempty and {Disorders_Psychiatric} notcontains 'None'",
                         title: "Are you currently undergoing any of the following treatments",
                         name: "Disorders_PsychiatricTreatment",
                         type: "checkbox",
@@ -301,12 +300,7 @@ const questions_somatichealth = {
                         title: "Genitourinary",
                         name: "Disorders_Somatic_Genitourinary",
                         type: "checkbox",
-                        choices: [
-                            "Frequent Urination",
-                            "Endometriosis",
-                            "Interstitial Cystitis",
-                            "Chronic Pelvic Pain Syndrome",
-                        ],
+                        choices: ["Frequent Urination", "Endometriosis", "Interstitial Cystitis", "Chronic Pelvic Pain Syndrome"],
                         showOtherItem: true,
                         otherText: "Other",
                         otherPlaceholder: "Please specify",
@@ -412,8 +406,7 @@ const items_cefsa = {
     CEFSA_Body_12: "My body feels numb",
     CEFSA_Familiarity_13: "Things I've done many times before seem new or unfamiliar",
     CEFSA_Reality_14: "I feel like an alien or a ghost",
-    CEFSA_AttentionCheck_1:
-        "I feel that to show I'm being attentive I will press the lowest option",
+    CEFSA_AttentionCheck_1: "I feel that to show I'm being attentive I will press the lowest option",
 }
 
 const instructions_cefsa = {
