@@ -7,9 +7,9 @@
 
 We propose running the same experiment as in the previously approved project (ER/MB2021/2), with minor modifications.
 
-Specifically, all participants recruited through SONA will now be automatically accredited; however, we are introducing a random allocation mechanism that assigns participants to one of two conditions:
+Specifically, all participants recruited through SONA will be automatically accredited; however, we are introducing a random allocation mechanism that assigns participants to one of three conditions:
 
-    - Attention Checks Condition – Participants will be informed in the consent form (see consent document) that their course credit depends on passing attention checks throughout the experiment.
+    - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see consent and ) that their course credit depends on passing attention checks throughout the experiment.
     - Quiz Condition – Participants will be informed that their course credit depends on correctly answering three multiple-choice questions about the experiment at the end (see quiz document).
 
 The purpose of these modifications is to assess which approach yields higher data quality in an online setting. We will compare the two conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
