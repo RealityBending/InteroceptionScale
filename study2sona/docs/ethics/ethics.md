@@ -10,10 +10,11 @@ We propose running the same experiment as in the previously approved project (ER
 Specifically, all participants recruited through SONA will be automatically accredited; however, we are introducing a random allocation mechanism that assigns participants to one of three conditions:
 
     - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see ConsentChecks.pdf and  Questionnaire_InstructionsChecks.pdf) that credits might be withwhold if they not pass attention checks throughout the experiment.
-    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering a few multiple-question answers about the experiment at the end (see QuizInfo.pdf and Quiz.pdf).
-    - Baseline: Participants will not be told about conditional credit allocation based on passing attention checks or the quiz (ConsentNone.pdf, Questionnaire_Instructions.pdf)
+    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering a few multiple-question answers about the experiment at the end (see QuizInfo.pdf and Quiz.pdf). However at the end they will be informed of the automatic credit allocation (see DebriefQuiz.pdf).
+    - Baseline: Participants will not be told about conditional credit allocation based on passing attention checks or the quiz. 
 
-The purpose of these modifications is to assess which approach yields higher data quality in an online setting. We will compare the three conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
+The purpose of these modifications is to assess which approach yields higher data quality in an online setting. 
+We will compare the three conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
 
 <!-- Study 2 Aproved Ethics -->
 

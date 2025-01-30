@@ -61,8 +61,8 @@
 
     // Participant ID
     const participantID = jsPsych.randomization.randomID(10)
-    const condition = "Control"
-    
+    const condition = "Attention Checks"
+
     // jsPsych.randomization.shuffle([
     //     "Quiz",
     //     "Attention Checks",
@@ -129,7 +129,7 @@
     if (condition === "Quiz") {
         timeline.push(quiz_items)
     }
-    timeline.push(experiment_feedback)
+    // timeline.push(experiment_feedback)
     timeline.push(demographics_debriefing)
 
     // save data via DataPipe

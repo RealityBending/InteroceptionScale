@@ -623,8 +623,8 @@ var demographics_debriefing = {
 
         if (condition == "Quiz") {
             text +=
-                "<p> <b style='color:#FF5722;'>We apologize </b> for any stress caused by the quiz. " +
-                "Please note that course credits are granted automatically, regardless of quiz performance."
+                "<p><b>We apologize </b> for any stress caused by the quiz. " +
+                "Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance."
         }
         return {
             showQuestionNumbers: false,

@@ -5,16 +5,16 @@ const questionnaires_instructions = {
             "<div style='display: flex;'>" +
             "<div style='width: 60%; margin-right: 10px;'>" +
             "<h2>Instructions</h2>" +
-            "<p>In this study, you will be asked to complete various questionnaires. Please read each question carefully, and don't hesitate to take breaks in-between them.</p>" +
-            "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related, and opposite questions to be inversely related). " 
+            "<p>In this study, you will be asked to complete various questionnaires. Please read each question carefully, and don't hesitate to take breaks in-between them.</p>"
 
         if (condition === "Attention Checks") {
             text +=
                 "<p>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. " +
-                "<p> We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, failed attention checks...).</li>"
+                "We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, failed attention checks...).</li>"
         }
 
         text +=
+            "<p> We are aware that answering these questionnaires <b>might feel long and repetitive</b>, but having similar questions is necessary to ensure the validity of the results (we expect similar questions to be related, and opposite questions to be inversely related)." +
             "<p style='color:green;'>At the end, you will be shown a <b>graph</b> summarizing your answers, and provided with an explanation about why we are asking all of this.<p>" +
             "<center><figure><img src='img/example_chart.png' alt='Graph' style='width: 50%;'><figcaption><i>Example of result graph obtained at the end</i></figcaption></figure></center>" +
             "</div>" +
