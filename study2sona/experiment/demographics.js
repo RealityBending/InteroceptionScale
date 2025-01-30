@@ -621,10 +621,13 @@ var demographics_debriefing = {
             "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk. and/or A.Neves@Sussex.ac.uk </p>" +
             "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> "
 
-        if (condition == "Quiz") {
+        if (condition === "Quiz") {
             text +=
                 "<p><b>We apologize </b> for any stress caused by the quiz. " +
                 "Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance."
+        }
+        if (condition === "Attention Checks") {
+            text += "Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance."
         }
         return {
             showQuestionNumbers: false,

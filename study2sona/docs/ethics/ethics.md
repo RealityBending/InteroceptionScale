@@ -9,12 +9,12 @@ We propose running the same experiment as in the previously approved project (ER
 
 Specifically, all participants recruited through SONA will be automatically accredited; however, we are introducing a random allocation mechanism that assigns participants to one of three conditions:
 
-    - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see ConsentChecks.pdf and  Questionnaire_InstructionsChecks.pdf) that credits might be withwhold if they not pass attention checks throughout the experiment.
-    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering a few multiple-question answers about the experiment at the end (see QuizInfo.pdf and Quiz.pdf). However at the end they will be informed of the automatic credit allocation (see DebriefQuiz.pdf).
-    - Baseline: Participants will not be told about conditional credit allocation based on passing attention checks or the quiz. 
+    - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see ConsentChecks.pdf and  Questionnaire_InstructionsChecks.pdf) that credits might be withwhold if they not pass attention checks throughout the experiment. At the end they will be informed of the automatic credit allocation (see DebrieChecks.pdf).
+    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering a few multiple-question answers about the experiment at the end (see QuizInfo.pdf and Quiz.pdf).Similarily, participants will be informed of the automatic credit allocation during debrief (see DebriefQuiz.pdf).
+    - Baseline: Participants will not be told about any form of conditional credit allocation. 
 
 The purpose of these modifications is to assess which approach yields higher data quality in an online setting. 
-We will compare the three conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
+We will compare the three conditions to determine which method is more effective in ensuring participant attentiveness.
 
 <!-- Study 2 Aproved Ethics -->
 
@@ -50,8 +50,13 @@ The samples from different methods of recruitment will be collected separately i
 **Section A**
 
 No.
+A2: Yes
+A4: Yes
 A6: Yes.
-A10. Participants will be asked to report on their race, gender, age, educational level, ethnicity, and the country of current residence. However, all the data will be anonymised and their participation will be kept confidential (ie., no recording of IP address).
+A10. 
+    A2: Participants in the quiz and the attention checks condition are told their credits are conditional on passing a quiz or not failing attention checks, respectively. However, for both conditions the credits are given automatically. This will be made clear at the end during debriefing. 
+    A4:The quiz condition may induce stress. Participants in this condition will be informed at the end that credits are granted automatically, regardless of their quiz performance, and they will be apologised to for any potential stress caused.
+    A6:Participants will be asked to report on their race, gender, age, educational level, ethnicity, and the country of current residence. However, all the data will be anonymised and their participation will be kept confidential (ie., no recording of IP address).
 
 **Section B**
 
