@@ -61,11 +61,13 @@
 
     // Participant ID
     const participantID = jsPsych.randomization.randomID(10)
-    const condition = jsPsych.randomization.shuffle([
-        "Quiz",
-        "Attention Checks",
-        "Control"
-    ])[0]
+    const condition = "Control"
+    
+    // jsPsych.randomization.shuffle([
+    //     "Quiz",
+    //     "Attention Checks",
+    //     "Control"
+    // ])[0]
 
     // full screen
     timeline.push(ConsentForm)

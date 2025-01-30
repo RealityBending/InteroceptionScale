@@ -9,10 +9,11 @@ We propose running the same experiment as in the previously approved project (ER
 
 Specifically, all participants recruited through SONA will be automatically accredited; however, we are introducing a random allocation mechanism that assigns participants to one of three conditions:
 
-    - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see consent and ) that their course credit depends on passing attention checks throughout the experiment.
-    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering three multiple-choice questions about the experiment at the end (see quiz document).
+    - Attention Checks Condition – Participants will be informed in the consent form and questionnaire instructions (see ConsentChecks.pdf and  Questionnaire_InstructionsChecks.pdf) that credits might be withwhold if they not pass attention checks throughout the experiment.
+    - Quiz Condition – Participants will be informed that their course credit depends on correctly answering a few multiple-question answers about the experiment at the end (see QuizInfo.pdf and Quiz.pdf).
+    - Baseline: Participants will not be told about conditional credit allocation based on passing attention checks or the quiz (ConsentNone.pdf, Questionnaire_Instructions.pdf)
 
-The purpose of these modifications is to assess which approach yields higher data quality in an online setting. We will compare the two conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
+The purpose of these modifications is to assess which approach yields higher data quality in an online setting. We will compare the three conditions based on the proportion of failed attention checks to determine which method is more effective in ensuring participant attentiveness.
 
 <!-- Study 2 Aproved Ethics -->
 
@@ -24,19 +25,13 @@ The present study is a online survey with the aim of validating a new interocept
 4. Physical exercise and wearables questions.
 5. Feedback and Debriefing information.
 
-Consent form
-
-At the beginning, participants will be shown information about the study's goal (no deception will be involved).
+**Consent form**. At the beginning, participants will be shown information about the study's goal (no deception will be involved).
 The page also emphasizes that their response and participation will be kept confidential and entirely anonymous (no IP addresses are collected).
 Participant's data is saved only at the end of the study (giving them a chance to retract their participation till the end).
 
-Demographic information
+**Demographic information**. Participant will then answer a few demographic questions designed to better identify the characteristics and representativeness of the sample (age, sex, education level, ethnicity, country of current residence). No IP addresses will be collected, and the deanonymized data with identifiers, will be stored on a University Box only accessible to the researchers.
 
-Participant will then answer a few demographic questions designed to better identify the characteristics and representativeness of the sample (age, sex, education level, ethnicity, country of current residence). No IP addresses will be collected, and the deanonymized data with identifiers, will be stored on a University Box only accessible to the researchers.
-
-Questionnaires
-
-Participants will be informed that the study aims to validate a new Interoception questionnaire and that it includes attention-check items. They will be advised that failing these checks may result in withholding their rewards (e.g., credits or payment).
+**Questionnaires**. Participants will be informed that the study aims to validate a new Interoception questionnaire and that it includes attention-check items. They will be advised that failing these checks may result in withholding their rewards (e.g., credits or payment).
 
     * Interoception questionnaires: MAIA-2 (Mehling et al., 2018); IAS (Murphy et al., 2020) ; BPQ-VSF (Brand et al., 2024)
     * Trait questionnaires: TAS20 (Bagby et al., 1994) ; CERQ (Saetren et al., 2025), B-ERS (Veilleux et al., 2024), and  PI18 (Clifton, 2019)
@@ -44,18 +39,12 @@ Participants will be informed that the study aims to validate a new Interoceptio
 
 The sequence always begins with the MINT questionnaire, followed by a trait questionnaire-disorder questionnaire or disorder-trait pairing. Subsequent rounds consist of one interoception questionnaire followed by a trait-disorder or disorder-trait pairing. All questionnaires, except the MINT, are randomised within their categories.
 
-Feedback & Debriefing
+**Feedback & Debriefing**. Participants will be asked if they enjoyed the survey and whether they have any thoughts they want to share. Lastly, a debriefing screen will appear with the aim of the survey explicit (e.g., validation of a new questionnaire) and more information regarding Interoception is given alongside a reminder that data is anonymised.
 
-Participants will be asked if they enjoyed the survey and whether they have any thoughts they want to share. Lastly, a debriefing screen will appear with the aim of the survey explicit (e.g., validation of a new questionnaire) and more information regarding Interoception is given alongside a reminder that data is anonymised.
-
-Participants
-
-Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific).
+**Participants**. Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific).
 The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect).As we aim at recruiting a diverse sample, there are no exclusion criteria.
 
-Risks
-
-There are no risks involved in this study.
+**Risks** There are no risks involved in this study.
 
 **Section A**
 
