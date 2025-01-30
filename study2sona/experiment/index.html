@@ -63,7 +63,8 @@
     const participantID = jsPsych.randomization.randomID(10)
     const condition = jsPsych.randomization.shuffle([
         "Quiz",
-        "Attention Checks"
+        "Attention Checks",
+        "Control"
     ])[0]
 
     // full screen
@@ -92,7 +93,7 @@
     ])
 
     // Start -------------------------------------------------------------------
-    timeline.push(demographics_browser_info)
+    // timeline.push(demographics_browser_info)
     // timeline.push(demographic_questions)
     timeline.push(questionnaires_instructions)
 

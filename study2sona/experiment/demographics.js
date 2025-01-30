@@ -37,7 +37,7 @@ const ConsentForm = {
             "<li align='left'>I understand that my collected data will be stored in a de-identified way. De-identified data may be made publicly available through secured scientific online data repositories.</li>"
 
         // Incentive
-        if (["sona"].includes(urlvars["exp"])) {
+        if (condition === "Attention checks") {
             text +=
                 "<li align='left'>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>"
         }
