@@ -617,18 +617,24 @@ var demographics_debriefing = {
             "<img src='https://blogs.brighton.ac.uk/sussexwrites/files/2019/06/University-of-Sussex-logo-transparent.png' width='150px' align='right'/><br><br><br><br><br>" +
             "<h2>Debriefing</h2>" +
             "<p align='left'>The purpose of this study was to create and validate a new questionnaire measuring interoception. " +
-            "Interoception involves being aware of changes happening inside our bodies, both physiological (e.g., our heart rate) and emotional, and it plays a crucial role in how we perceive and experience the world around us. It has been related to emotion regulation, self-awareness and overall mental well-being. " +
-            "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk. and/or A.Neves@Sussex.ac.uk </p>" +
-            "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> "
+            "Interoception involves being aware of changes happening inside our bodies, both physiological (e.g., our heart rate) and emotional, and it plays a crucial role in how we perceive and experience the world around us. It has been related to emotion regulation, self-awareness and overall mental well-being. "
 
         if (condition === "Quiz") {
             text +=
-                "<p><b>We apologize </b> for any stress caused by the quiz. " +
-                "Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance."
+                "<p>At the beginning, we informed you that credits were conditional on passing the quiz. <b>We apologize </b> for any stress this may have caused. " +
+                " Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance.</p>" +
+                " In addition to the primary objective of validating a new questionnaire, we are also evaluating which strategies are most effective in improving data quality in online studies."
+
         }
         if (condition === "Attention Checks") {
-            text += "Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance."
+            text +=
+                "<p>At the beginning, we informed you that credits could be withheld if attention checks were failed. <b>We apologize</b> for any stress this may have caused." +
+                " Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of attention checks performance.</p>" +
+                " In addition to the primary objective of validating a new questionnaire, we are also evaluating which strategies are most effective in improving data quality in online studies."
         }
+        text +=
+            "<p align='left'><b>Thank you again!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact D.Makowski@sussex.ac.uk. and/or A.Neves@Sussex.ac.uk </p>" +
+            "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> "
         return {
             showQuestionNumbers: false,
             completeText: "Continue",
