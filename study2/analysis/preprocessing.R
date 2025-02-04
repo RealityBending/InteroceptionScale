@@ -4,7 +4,8 @@ library(progress)
 # path for data
 
 # path <- "C:/Users/maisi/Box/InteroceptionScale/study2"
-path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
+# path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
+path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 
 
@@ -110,7 +111,20 @@ for (file in files) {
     dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
                   MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
                   MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
-                  MINT_Deficit_UrIn_1 = InteroceptiveFailures_4)
+                  MINT_Deficit_UrIn_1 = InteroceptiveFailures_4,
+                  MINT_Deficit_Urin_2 = InteroceptiveFailures_5,
+                  MINT_Deficit_Urin_3 = InteroceptiveFailures_6,
+                  MINT_Deficit_CaNo_7 = InteroceptiveFailures_7, 
+                  MINT_Deficit_CaNo_8 = InteroceptiveFailures_8, 
+                  MINT_Deficit_CaNo_9  = InteroceptiveFailures_9,
+                  MINT_Deficit_Olfa_11 = InteroceptiveFailures_10,
+                  MINT_Deficit_Olfa_10 = InteroceptiveFailures_11,
+                  MINT_Deficit_Olfa_12 = InteroceptiveFailures_12,
+                  MINT_Deficit_Sati_15 = InteroceptiveFailures_13,
+                  MINT_Deficit_Sati_13 = InteroceptiveFailures_14,
+                  MINT_Deficit_Sati_14 = InteroceptiveFailures_14,) # does not match the table 
+                  MINT_Awareness_SexS_19 = InteroceptiveSensitivityPleasure_1, 
+                  
   # TODO
 
   data_ppt <- cbind(data_ppt, as.data.frame(mint))
