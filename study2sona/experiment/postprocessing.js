@@ -11,14 +11,14 @@ function check_attentionchecks() {
 
     // compute scores for tas) }).values()[0].response
     let data_tas = get_screen("questionnaire_tas")
-    let tas_score_A = (5 - data_tas["TAS_AttentionCheck_1"]) / 4
+    let tas_score_A = 1 - (data_tas["TAS_AttentionCheck_1"] - 1) / 4
 
     //compute scores for pi18
     let data_pi = get_screen("questionnaire_pi18")
     let pi_score_A = data_pi["PI18_AttentionCheck_1"] / 5
 
     // compute scores for CEFSA
-    let data_cefsa = get_screen("questionnaire_cefsa")//.values()[0].response
+    let data_cefsa = get_screen("questionnaire_cefsa") //.values()[0].response
     let cefsa_score_A = 1 - data_cefsa["CEFSA_AttentionCheck_1"] / 4
 
     //compute scores for MAIA
@@ -27,23 +27,14 @@ function check_attentionchecks() {
 
     //compute scores for IAS
     let data_ias = get_screen("questionnaire_ias")
-    let ias_score_A = (5 - data_ias["IAS_AttentionCheck_1"]) / 4
+    let ias_score_A = 1 - (data_ias["IAS_AttentionCheck_1"] - 1) / 4
 
     //compute scores for BPQ
     let data_bpq = get_screen("questionnaire_bpq")
     let bpq_score_A = data_bpq["BodyAwareness_AttentionCheck_1"] / 4
 
     // Average
-    return (
-        (mint_score_A +
-            tas_score_A +
-            pi_score_A +
-            cefsa_score_A +
-            maia_score_A +
-            ias_score_A +
-            bpq_score_A) /
-        7
-    )
+    return (mint_score_A + tas_score_A + pi_score_A + cefsa_score_A + maia_score_A + ias_score_A + bpq_score_A) / 7
 }
 
 // Make general chart ========================================================================================================
