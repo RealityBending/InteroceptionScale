@@ -75,6 +75,7 @@ const questionnaire_phq4 = {
                             rateMax: 10,
                             minRateDescription: "No satisfaction at all",
                             maxRateDescription: "Completely satisfied",
+                            isRequired: true,
                         },
                     ],
                 },
