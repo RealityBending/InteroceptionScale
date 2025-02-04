@@ -11,14 +11,14 @@ function check_attentionchecks() {
 
     // compute scores for tas) }).values()[0].response
     let data_tas = get_screen("questionnaire_tas")
-    let tas_score_A = 1 - data_tas["TAS_AttentionCheck_1"] / 5
+    let tas_score_A = 1 - (data_tas["TAS_AttentionCheck_1"] - 1) / 4
 
     //compute scores for pi18
     let data_pi = get_screen("questionnaire_pi18")
     let pi_score_A = data_pi["PI18_AttentionCheck_1"] / 5
 
     // compute scores for CEFSA
-    let data_cefsa = get_screen("questionnaire_cefsa")//.values()[0].response
+    let data_cefsa = get_screen("questionnaire_cefsa") //.values()[0].response
     let cefsa_score_A = 1 - data_cefsa["CEFSA_AttentionCheck_1"] / 4
 
     //compute scores for MAIA
@@ -27,23 +27,14 @@ function check_attentionchecks() {
 
     //compute scores for IAS
     let data_ias = get_screen("questionnaire_ias")
-    let ias_score_A = 1 - data_ias["IAS_AttentionCheck_1"] / 5
+    let ias_score_A = 1 - (data_ias["IAS_AttentionCheck_1"] - 1) / 4
 
     //compute scores for BPQ
     let data_bpq = get_screen("questionnaire_bpq")
     let bpq_score_A = data_bpq["BodyAwareness_AttentionCheck_1"] / 5
 
     // Average
-    return (
-        (mint_score_A +
-            tas_score_A +
-            pi_score_A +
-            cefsa_score_A +
-            maia_score_A +
-            ias_score_A +
-            bpq_score_A) /
-        7
-    )
+    return (mint_score_A + tas_score_A + pi_score_A + cefsa_score_A + maia_score_A + ias_score_A + bpq_score_A) / 7
 }
 
 // Make general chart ========================================================================================================
@@ -56,19 +47,15 @@ function radar_plotdata() {
 
     // Compute average and rescale to percentage
     BodyConnect = Object.keys(data_ias).filter((key) => key.includes("IAS"))
-    BodyConnect =
-        BodyConnect.map((key) => data_ias[key]).reduce((a, b) => a + b) / BodyConnect.length
+    BodyConnect = BodyConnect.map((key) => data_ias[key]).reduce((a, b) => a + b) / BodyConnect.length
     BodyConnect = (BodyConnect / 5) * 100
 
     CopingSkills = Object.keys(data_cerq).filter((key) => key.includes("CERQ"))
-    CopingSkills =
-        CopingSkills.map((key) => data_cerq[key]).reduce((a, b) => a + b) / CopingSkills.length
+    CopingSkills = CopingSkills.map((key) => data_cerq[key]).reduce((a, b) => a + b) / CopingSkills.length
     CopingSkills = (CopingSkills / 7) * 100
 
     EmotionUnderstanding = Object.keys(data_tas).filter((key) => key.includes("DIF")) // DIF = difficulty identifying feelings
-    EmotionUnderstanding =
-        EmotionUnderstanding.map((key) => data_tas[key]).reduce((a, b) => a + b) /
-        EmotionUnderstanding.length
+    EmotionUnderstanding = EmotionUnderstanding.map((key) => data_tas[key]).reduce((a, b) => a + b) / EmotionUnderstanding.length
     EmotionUnderstanding = (EmotionUnderstanding / 5) * 100
 
     LowMood = Object.keys(data_phq4).filter((key) => key.includes("PHQ4"))
@@ -95,13 +82,7 @@ const radar_feedback = {
         let ctx = c.getContext("2d")
         new Chart(
             ctx,
-            make_radarplot(
-                (names = data.names),
-                (scores = data.scores),
-                (minmax = [0, 100]),
-                (label = data.label),
-                (color = [0, 137, 123])
-            )
+            make_radarplot((names = data.names), (scores = data.scores), (minmax = [0, 100]), (label = data.label), (color = [0, 137, 123]))
         )
     },
     canvas_size: plot_getsize(),

@@ -37,6 +37,8 @@ for (file in files) {
 
   if("prolific_id" %in% colnames(dat)){
     data_ppt$Prolific_ID <- dat$prolific_id
+  } else {
+    stop("Not prolific")
   }
 
   data_ppt$Reward <- rawdata[rawdata$screen == "demographics_debrief", "Reward"]
@@ -45,7 +47,7 @@ for (file in files) {
   resp <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
 
   # Education
-  data_ppt$Education <- ifelse(resp$Education == "other", demog$`Education-Comment`, resp$Education)
+  data_ppt$Education <- ifelse(resp$Education == "other", resp$`Education-Comment`, resp$Education)
 
   data_ppt$Student <- ifelse(!is.null(resp$Student), resp$Student, NA)
   data_ppt$Country <- ifelse(!is.null(resp$Country), resp$Country, NA)
@@ -68,6 +70,8 @@ for (file in files) {
 
   # Mint questionnaire
   mint <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])
+  names(mint) <- as.character(sapply(names(mint), function(x) gsub("InteroceptiHypervigilance", "InteroceptiveHypervigilance", x)))
+  names(mint) <- as.character(sapply(names(mint), function(x) gsub("Interoceptive", "MINT_Interoceptive", x)))
   data_ppt <- cbind(data_ppt, as.data.frame(mint))
 
   # Interoception questionnaires
@@ -106,33 +110,71 @@ for (file in files) {
   cefsa$instructions_cefsa <- NULL
   data_ppt <- cbind(data_ppt, as.data.frame(cefsa))
 
-  # mentalhealth <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_mentalhealth", "response"])
-  # mentalhealth <- as.data.frame(mentalhealth)
-  # data_ppt <- cbind(data_ppt, mentalhealth)
-  #
-  # somatichealth <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_somatichealth", "response"])
-  # somatichealth <- as.data.frame(somatichealthhealth)
-  # data_ppt <- cbind(data_ppt, somatichealth)
+  # # Multiple Choices
+  mental <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_mentalhealth", "response"])
+  v <- mental$Disorders_Psychiatric
+  v[grep("GAD", v)] <- "GAD"
+  v[grep("Eating", v)] <- "Eating"
+  v[grep("PTSD", v)] <- "PTSD"
+  v[grep("MDD", v)] <- "MDD"
+  v[grep("ADHD", v)] <- "ADHD"
+  v[grep("Specific Phobias", v)] <- "Phobia"
+  v[grep("Autism", v)] <- "ASD"
+  data_ppt$Disorders_Psychiatric <- paste0(v, collapse = "; ")
+
+  if(!is.null(mental$Disorders_PsychiatricTreatment)) {
+    v <- mental$Disorders_PsychiatricTreatment
+    v[grep("Antidepressant", v)] <- "Antidepressant"
+    v[grep("Anxiolytic", v)] <- "Anxiolytic"
+    v[grep("LITHIUM", v)] <- "Mood Stabilizers"
+    v[grep("Mindfulness", v)] <- "Mindfulness"
+    v[grep("CBT", v)] <- "Psychotherapy"
+    v[grep("Lifestyle", v)] <- "Lifestyle"
+    v[grep("none", v)] <- NA
+    data_ppt$Disorders_PsychiatricTreatment <- paste0(v, collapse = "; ")
+  } else {
+    data_ppt$Disorders_PsychiatricTreatment <- NA
+  }
+
+  somatic <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_somatichealth", "response"])
+  somatic$Disorders_Somatic_Instructions <- NULL
+  somatic <- somatic[grep("-Comment", names(somatic), invert=TRUE)]
+  for(s in names(somatic)) {
+    somatic[[s]] <- ifelse(somatic[[s]] == "other", paste0("Other ", gsub("Disorders_Somatic_", "", s)), somatic[[s]])
+  }
+  somatic <- unlist(somatic[sapply(somatic, function(x) all(x != "none"))])
+  somatic[grep("IBS", somatic)] <- "IBS"
+  somatic[grep("Lactose ", somatic)] <- "Lactose"
+  somatic[grep("Gluten Intolerance", somatic)] <- "Gluten"
+  somatic[grep("palpitations ", somatic)] <- "Cardiac Arrhythmia"
+  data_ppt$Disorders_Somatic <- paste0(somatic, collapse = "; ")
 
   alldata <- rbind(data_ppt, alldata)
-
 }
+
+
+unique(alldata$Disorders_Psychiatric)
+unique(alldata$Disorders_PsychiatricTreatment)
+unique(alldata$Disorders_Somatic)
+unique(alldata$Education)
+unique(alldata$Ethnicity)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
-  MINT_AttentionCheck_1 = alldata$MINT_AttentionCheck_1/ 6,
-  TAS_AttentionCheck_1 = 1 - alldata$TAS_AttentionCheck_1 / 5,
-  I18_AttentionCheck_1= 1 - alldata$I18_AttentionCheck_/ 5,
-  CEFSA_AttentionCheck_1 = alldata$CEFSA_AttentionCheck_1 / 4,
-  MAIA_AttentionCheck_1 = 1 - alldata$MAIA_AttentionCheck_1/ 6,
-  IAS_AttentionCheck_1 = alldata$IAS_AttentionCheck_1/ 5,
-  BodyAwareness_AttentionCheck_1A = 1 - alldata$BodyAwareness_AttentionCheck_1/ 5,
+  MINT = alldata$MINT_AttentionCheck_1/ 6,
+  TAS = 1 - (alldata$TAS_AttentionCheck_1 - 1) / 4,
+  PI18 = 1 - alldata$PI18_AttentionCheck_1 / 5,
+  CEFSA = alldata$CEFSA_AttentionCheck_1 / 4,
+  MAIA = 1 - alldata$MAIA_AttentionCheck_1 / 6,
+  IAS = (alldata$IAS_AttentionCheck_1 - 1) / 4,
+  BPQ = 1 - alldata$BodyAwareness_AttentionCheck_1 / 5
 )
 checks$Score <- rowMeans(checks)
 checks$Prolific_ID <- alldata$Prolific_ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
+checks <- checks[order(checks$Score, decreasing = TRUE), ]
 # checks[checks$Prolific_ID=="66736dd26745b3fe0afb8993", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
