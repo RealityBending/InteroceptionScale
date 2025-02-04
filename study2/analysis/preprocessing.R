@@ -6,7 +6,41 @@ library(progress)
 # path <- "C:/Users/maisi/Box/InteroceptionScale/study2"
 path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
 
-# JsPsych experiment ------------------------------------------------------
+
+
+# Convenience Functions ---------------------------------------------------
+
+convert_feet_to_meters <- function(height) {
+  # Remove extra spaces and quotes
+  height <- trimws(gsub("\"", "", height))
+
+  # Error if warning during as.numeric
+  options(warn = 2)
+
+
+  # Handle integer input like "6" (assume feet only, zero inches)
+  if (grepl("^\\d+$", height)) {
+    feet <- as.numeric(height)
+    inches <- 0
+  } else {
+    # Split input based on common delimiters: ' (apostrophe), space, ., "," or "-"
+    parts <- unlist(strsplit(height, "[ ' .,\\-]"))
+
+    # Extract feet and inches
+    feet <- as.numeric(parts[1])
+    inches <- ifelse(length(parts) > 1, as.numeric(parts[2]), 0)
+  }
+
+  # Retsore default warning behavior
+  options(warn = 0)
+
+  # Convert to meters (1 foot = 0.3048 m, 1 inch = 0.0254 m)
+  feet * 0.3048 + inches * 0.0254
+}
+
+
+# Run loop ----------------------------------------------------------------
+
 
 files <- list.files(path, pattern = "*.csv")
 
@@ -46,6 +80,9 @@ for (file in files) {
   # Demographics
   resp <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
 
+  data_ppt$Gender <- ifelse(!is.null(resp$Gender), resp$Gender, NA)
+  data_ppt$Age <- ifelse(!is.null(resp$Age), resp$Age, NA)
+
   # Education
   data_ppt$Education <- ifelse(resp$Education == "other", resp$`Education-Comment`, resp$Education)
 
@@ -57,8 +94,8 @@ for (file in files) {
   data_ppt$Ethnicity <- ifelse(resp$Ethnicity == "other", resp$`Ethnicity-Comment`, resp$Ethnicity)
 
   # BMI
-  data_ppt$Height <- ifelse(!is.null(resp$Height_ft), resp$Height_cm / 100, resp$Height_ft * 0.3048)
-  data_ppt$Weight <- ifelse(!is.null(resp$Weight_st), resp$Weight_kg, resp$Weight_st * 6.35029)
+  data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
+  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), resp$Weight_kg, as.numeric(resp$Weight_st) * 6.35029)
   data_ppt$BMI <- data_ppt$Weight / data_ppt$Height^2
 
 
@@ -69,9 +106,13 @@ for (file in files) {
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
 
   # Mint questionnaire
-  mint <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])
-  names(mint) <- as.character(sapply(names(mint), function(x) gsub("InteroceptiHypervigilance", "InteroceptiveHypervigilance", x)))
-  names(mint) <- as.character(sapply(names(mint), function(x) gsub("Interoceptive", "MINT_Interoceptive", x)))
+  mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])) |>
+    dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
+                  MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
+                  MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
+                  MINT_Deficit_UrIn_1 = InteroceptiveFailures_4)
+  # TODO
+
   data_ppt <- cbind(data_ppt, as.data.frame(mint))
 
   # Interoception questionnaires
@@ -104,6 +145,7 @@ for (file in files) {
   # Pathology questionnaires
   phq4 <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_phq4", "response"])
   phq4$instructions_phq4 <- NULL
+  if(is.null(phq4$LifeSatisfaction)) phq4$LifeSatisfaction <- NA
   data_ppt <- cbind(data_ppt, as.data.frame(phq4))
 
   cefsa <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_cefsa", "response"])
@@ -120,6 +162,8 @@ for (file in files) {
   v[grep("ADHD", v)] <- "ADHD"
   v[grep("Specific Phobias", v)] <- "Phobia"
   v[grep("Autism", v)] <- "ASD"
+  v[grep("Addiction ", v)] <- "Addiction"
+  v[grep("Social Anxiety ", v)] <- "Social Phobia"
   data_ppt$Disorders_Psychiatric <- paste0(v, collapse = "; ")
 
   if(!is.null(mental$Disorders_PsychiatricTreatment)) {
@@ -130,8 +174,10 @@ for (file in files) {
     v[grep("Mindfulness", v)] <- "Mindfulness"
     v[grep("CBT", v)] <- "Psychotherapy"
     v[grep("Lifestyle", v)] <- "Lifestyle"
-    v[grep("none", v)] <- NA
     data_ppt$Disorders_PsychiatricTreatment <- paste0(v, collapse = "; ")
+    if(all(data_ppt$Disorders_PsychiatricTreatment == "none")) {
+      data_ppt$Disorders_PsychiatricTreatment <- NA
+    }
   } else {
     data_ppt$Disorders_PsychiatricTreatment <- NA
   }
@@ -146,12 +192,15 @@ for (file in files) {
   somatic[grep("IBS", somatic)] <- "IBS"
   somatic[grep("Lactose ", somatic)] <- "Lactose"
   somatic[grep("Gluten Intolerance", somatic)] <- "Gluten"
-  somatic[grep("palpitations ", somatic)] <- "Cardiac Arrhythmia"
+  somatic[grep("palpitations", somatic)] <- "Cardiac Arrhythmia"
+  somatic[grep("GERD", somatic)] <- "Reflux"
+  somatic[grep("COPD ", somatic)] <- "COPD"
+  somatic[grep("Crohn's ", somatic)] <- "Crohn"
+  somatic[grep("Sjogren's ", somatic)] <- "Sjogren"
   data_ppt$Disorders_Somatic <- paste0(somatic, collapse = "; ")
 
   alldata <- rbind(data_ppt, alldata)
 }
-
 
 unique(alldata$Disorders_Psychiatric)
 unique(alldata$Disorders_PsychiatricTreatment)
@@ -175,7 +224,18 @@ checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
 checks <- checks[order(checks$Score, decreasing = TRUE), ]
-# checks[checks$Prolific_ID=="66736dd26745b3fe0afb8993", c("Prolific_ID", "Experiment_Duration", "Score", "Reward")]
+checks
+# checks[checks$Prolific_ID=="5b4133cd9c2ec600014f2487", ]
+
+
+# MINT: "I can always accurately answer to the extreme left on this question to show that I am reading it"
+# MAIA: "I notice that I am being asked to respond all the way to the right"
+# IAS: "I can always accurately choose the lowest option"
+# BPQ: "Respond all the way to the right."
+# TAS: "I am able to respond all the way to the left"
+# PI18: "On the whole, I know I must press the highest option"
+# CEFSA: "I feel that to show I'm being attentive I will press the lowest option"
+
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
 

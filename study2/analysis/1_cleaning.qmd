@@ -1,0 +1,395 @@
+---
+title: "Interoception Scale (Study 2) - Data Cleaning"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+---
+
+## Data Preparation
+
+```{r}
+#| warning: false
+#| code-fold: false
+#| error: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(ggdist)
+
+df <- read.csv("../data/rawdata_participants.csv")
+```
+
+## Feedback
+
+### Experiment Enjoyment
+
+```{r}
+df |> 
+  summarise(n = n(), .by=c("Experiment_Enjoyment")) |>
+  filter(!is.na(Experiment_Enjoyment)) |> 
+  mutate(n = n / sum(n),
+         Experiment_Enjoyment = fct_rev(as.factor(Experiment_Enjoyment))) |>
+  ggplot(aes(y = n, x = 1, fill = Experiment_Enjoyment)) +
+  geom_bar(stat="identity", position="stack") +
+  scale_fill_manual(values=c("green", "yellowgreen",  "yellow", "orange", "red")) +
+  coord_flip() +
+  scale_x_continuous(expand=c(0, 0))  +
+  scale_y_continuous(labels = scales::percent)  +
+  labs(title="Experiment Enjoyment",
+       subtitle="Proportion of participants by condition") + 
+  guides(fill = guide_legend(reverse=TRUE)) +
+  theme_minimal() +
+  theme(
+    axis.title = element_blank(),
+    axis.text.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    legend.position = "top",
+    legend.title = element_blank()) 
+```
+
+### Comments
+
+```{r}
+data.frame(Comments = df$Experiment_Feedback) |> 
+  filter(!tolower(Comments) %in% c(NA, "no", "none", "no thank you", "no not at all", "no thanks", "no comment", "nil", "n.a", "n/a", "na", "not really", "thank you", "nothing", "no not at the moment", "none for now", "thank you!", "thanks", "not really.")) |> 
+  gt::gt() |> 
+  gt::opt_stylize() |> 
+  gt::opt_interactive(use_compact_mode = TRUE) 
+```
+
+## Exclusions
+
+```{r}
+outliers <- list()
+```
+
+### Attention Checks
+
+```{r}
+dfchecks <- df |>
+  dplyr::mutate(
+    # "I can always accurately answer to the extreme left on this question to show that I am reading it"
+    A1 = ifelse(MINT_AttentionCheck_1 == 0, 0, 1),
+    # "I notice that I am being asked to respond all the way to the right"
+    A2 = ifelse(MAIA_AttentionCheck_1 == 6, 0, 1),
+    # "I can always accurately choose the lowest option"
+    A3 = ifelse(IAS_AttentionCheck_1 == 1, 0, 1),
+    # "Respond all the way to the right."
+    A4 = ifelse(BodyAwareness_AttentionCheck_1 == 5, 0, 1),
+    # "I am able to respond all the way to the left"
+    A5 = ifelse(TAS_AttentionCheck_1 == 1, 0, 1),
+    # "On the whole, I know I must press the highest option"
+    A6 = ifelse(PI18_AttentionCheck_1 == 5, 0, 1),
+    # "I feel that to show I'm being attentive I will press the lowest option"
+    A7 = ifelse(CEFSA_AttentionCheck_1 == 0, 0, 1),
+    .keep = "none"
+  ) 
+dfchecks$Total <- rowSums(dfchecks)
+
+
+dfchecks |>
+  mutate(Total = as.factor(paste0(Total, "/8"))) |> 
+  ggplot(aes(x = Total)) +
+  geom_bar(aes(fill = Total)) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Failed Attention Checks", y = "Number of Participants", subtitle = "Number of failed attention checks per participant") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.title.x = element_blank(),
+  )
+```
+
+```{r}
+outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
+```
+
+We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8).
+
+### Experiment Duration
+
+```{r}
+dfchecks$Duration <- df$Experiment_Duration
+dfchecks$Outlier <- ifelse(dfchecks$Total >= 1, 1, 0)
+dfchecks <- filter(dfchecks, Duration < 45)
+
+m <- mgcv::gam(Outlier ~ s(Duration), data = dfchecks, family = "binomial")
+
+estimate_relation(m, length=50) |> 
+  ggplot(aes(x = Duration, y = Predicted)) +
+  geom_ribbon(aes(ymin = CI_low, ymax = CI_high), alpha = 0.2) +
+  geom_line() +
+  geom_vline(xintercept=5, linetype="dashed", color="red") +
+  theme_minimal() +
+  ggside::geom_xsidedensity(data=mutate(dfchecks, 
+                                        Outlier=ifelse(Outlier==1, "Failed attention check", "Valid")), 
+                            aes(fill=Outlier), alpha=0.3) +
+  ggside::theme_ggside_void() +
+  labs(title = "Experiment Duration",
+       subtitle = "Predicted probability of failing attention checks by duration",
+       x = "Experiment Duration (minutes)",
+       y = "Probability of failing attention checks") 
+```
+
+```{r}
+outliers$duration <- as.character(df[df$Experiment_Duration < 5, "Participant"])
+outliers$duration <- outliers$duration[!outliers$duration %in% outliers$attentionchecks]
+```
+
+We removed `r length(outliers$duration)` (`r insight::format_percent(length(outliers$duration) / nrow(df))`) participants for having completed the experiment in less than 5 minutes.
+
+### Multivariate Distance
+
+```{r}
+# Compute distance
+dfoutlier <- performance::check_outliers(select(df, contains("MINT_")), 
+                                         method=c("optics"),
+                                         threshold=list(optics=2.5, optics_xi=0.03)) |> 
+  as.data.frame() |> 
+  mutate(Participant = fct_reorder(df$Participant, Distance_OPTICS),
+         Outlier_AttentionCheck = ifelse(Participant %in% outliers$attentionchecks, 1, 0),
+         Outlier_Duration = ifelse(Participant %in% outliers$duration, 1, 0),
+         Outlier = ifelse(Outlier_AttentionCheck == 1, "Failed Attention Checks", "Passed"),
+         Outlier = ifelse(Outlier == "Passed" & Outlier_Duration == 1, "Duration", Outlier))
+
+
+outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 8, "Participant"])
+outliers$distance <- outliers$distance[!outliers$distance %in% c(outliers$attentionchecks, outliers$duration)]
+
+
+p1 <- dfoutlier |> 
+  ggplot(aes(x=Participant, y=Distance_OPTICS)) +
+  geom_bar(aes(fill=Outlier), stat="identity") +
+  geom_hline(yintercept = 8, linetype="dashed", color="red") +
+  labs(fill = "Status") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        panel.grid.major.x = element_blank())
+
+m <- mgcv::gam(Outlier_AttentionCheck ~ s(Distance_OPTICS), data = dfoutlier, family = "binomial")
+# parameters::parameters(m)
+
+p2 <- estimate_relation(m, length=30) |> 
+  ggplot(aes(x=Distance_OPTICS, y=Predicted)) +
+  geom_ribbon(aes(ymin=CI_low, ymax=CI_high), alpha=0.2) +
+  geom_line() +
+  geom_vline(xintercept=8, linetype="dashed", color="red") +
+  theme_minimal() 
+
+p1 | p2
+```
+
+
+We removed `r length(outliers$distance)` (`r insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance.
+
+
+```{r}
+#| code-fold: false
+
+df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration, outliers$distance))
+```
+
+## Final Sample
+
+::: panel-tabset
+
+### Summary
+
+The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
+
+### Age and Gender
+
+```{r p_demographics_age_gender}
+p_age <- df |>
+  ggplot(aes(x = Age, fill = Gender)) + 
+  geom_histogram(data=df, aes(x = Age, fill=Gender), binwidth = 2) +
+  geom_vline(xintercept = mean(df$Age), color = "red", linewidth=1.5, linetype="dashed") +
+  scale_fill_viridis_d() +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(20, max(df$Age), by = 10 )) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(title = "Age", y = "Number of Participants", color = NULL, subtitle = "Distribution of participants' age") +
+  theme_modern(axis.title.space = 10) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(1.1)),
+    axis.title.x = element_blank()
+  )
+
+p_age
+```
+
+### Education
+
+```{r p_demographics_education}
+#| warning: false
+#| error: false
+
+p_edu <- df |>
+  mutate (Student = ifelse(is.na(Student), FALSE, Student)) |>
+  ggplot(aes(x = Education)) +
+  geom_bar(aes(fill = Student)) +
+  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
+  labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level", fill = "Is currently a student") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.text.y = element_text(size = rel(1.1)),
+    axis.text.x = element_text(size = rel(0.5), angle = 45, hjust =1),
+    axis.title.x = element_blank()
+  )
+
+p_edu
+```
+
+### Ethnicity
+
+```{r p_demographics_ethnicity}
+#| warning: false
+#| error: false
+
+p_eth <- df |>
+  filter(!is.na(Ethnicity)) |> 
+  ggplot(aes(x = "", fill = Ethnicity)) +
+  geom_bar() +
+  coord_polar("y") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank()
+  )
+    
+p_eth
+```
+
+### Country of Residence
+
+```{r p_demographics_map}
+p_map <- df |>
+  mutate(Country = case_when(
+    Country=="United States"~ "USA",
+    Country=="United Kingdom" ~ "UK",
+    TRUE ~ Country
+  ))|>
+  dplyr::select(region = Country) |>
+  group_by(region) |>
+  summarize(n = n()) |>
+  right_join(map_data("world"), by = "region") |>
+  # mutate(n = replace_na(n, 0)) |>
+  ggplot(aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = n)) +
+  scale_fill_gradientn(colors = c("#E66101", "#ca0020", "#cc66cc")) +
+  labs(fill = "N") +
+  theme_void() +
+  labs(title = "Country of Residence", subtitle = "Number of participants by country")  +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2))
+  )
+
+p_map
+```
+
+```{r}
+sort(table(df$Country)) |> 
+  as.data.frame() |> 
+  gt::gt()
+```
+
+### BMI
+
+```{r}
+df |> 
+  ggplot(aes(x=BMI)) +
+  annotate("rect", xmin=10, xmax=18.5, ymin=0, ymax=Inf, fill="red", alpha=0.1) +
+  annotate("rect", xmin=18.5, xmax=25, ymin=0, ymax=Inf, fill="green", alpha=0.1) +
+  annotate("rect", xmin=25, xmax=30, ymin=0, ymax=Inf, fill="yellow", alpha=0.1) +
+  annotate("rect", xmin=30, xmax=40, ymin=0, ymax=Inf, fill="orange", alpha=0.1) +
+  annotate("rect", xmin=40, xmax=Inf, ymin=0, ymax=Inf, fill="red", alpha=0.1) +
+  geom_density(aes(color=Gender, fill=Gender), alpha=0.3, linewidth=1) +
+  labs(title = "BMI distribution") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+
+
+df |> 
+  ggplot(aes(x=Age, y=BMI, color=Gender)) +
+  geom_point() +
+  geom_smooth(aes(fill=Gender), alpha=0.3, method = 'loess', formula = 'y ~ x') +
+  labs(title = "BMI and Age") +
+  theme_minimal() 
+```
+
+### Mental Health
+
+
+```{r}
+df$Disorders_Psychiatric_Mood <- ifelse(str_detect(df$Disorders_Psychiatric, "MDD|GAD|Bipolar"), TRUE, FALSE)
+df$Disorders_Psychiatric_MoodTreatment <- ifelse(
+  df$Disorders_Psychiatric_Mood & !is.na(df$Disorders_PsychiatricTreatment) & str_detect(df$Disorders_PsychiatricTreatment, "Mood|Antidepressant|Anxiolytic|Psychotherapy"), TRUE, FALSE)
+# df$Disorders_Psychiatric_Other <- ifelse(str_detect(df$Disorders_Psychiatric, "MDD|GAD|Bipolar"), TRUE, FALSE)
+
+p1 <- select(df, Participant, Gender, Disorders_Psychiatric_Mood, Disorders_Psychiatric_MoodTreatment) |> 
+  pivot_longer(cols = starts_with("Disorders_"), names_to = "Disorder", values_to = "Value") |> 
+  mutate(Disorder = str_remove_all(Disorder, fixed("Disorders_Psychiatric_")),
+         Disorder = str_replace(Disorder, "MoodTreatment", "Mood Disorder (with treatment)"),
+         Disorder = str_replace(Disorder, "Mood$", "Mood Disorder")) |> 
+  summarize(N = sum(Value) / nrow(df), .by=c("Gender", "Disorder")) |> 
+  mutate(N_tot = sum(N), .by="Disorder") |>
+  mutate(Disorder = fct_reorder(Disorder, desc(N_tot))) |>
+  ggplot(aes(x = Disorder, y = N, fill=Gender)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("Male"= "#64B5F6", "Female"= "#F06292", "Other"="orange", "Missing"="brown")) +
+  scale_y_continuous(expand = c(0, 0), labels=scales::percent) +
+  labs(title = "Mood Disorders", y = "Number of Participants", subtitle = "Participants per self-declared mood disorder", x="Type") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_minimal()
+
+df$Disorders_Somatic_Number <- ifelse(df$Disorders_Somatic == "", 0, str_count(df$Disorders_Somatic, ";")+1)
+
+p2 <- df |> 
+  ggplot(aes(x = Disorders_Somatic_Number, fill=Gender)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Male"= "#64B5F6", "Female"= "#F06292", "Other"="orange", "Missing"="brown")) +
+  scale_x_continuous(breaks = c(0:10)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(title = "Somatic Issues", y = "Number of Participants", subtitle = "Participants per somatic issues", x="Type") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_minimal()
+
+p1 / p2
+```
+
+
+
+
+:::
+
+```{r p_summary}
+#| fig-width: 14
+#| fig-height: 14
+
+(p_age | p_edu) / p_map
+```
+
+## Save
+
+```{r}
+df |> 
+  select(-contains("AttentionCheck")) |> 
+  write.csv("../data/data_participants.csv", row.names = FALSE)
+```

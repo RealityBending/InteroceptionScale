@@ -1,0 +1,114 @@
+---
+title: "InteroceptionScale (study 2) - Data Analysis"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute: 
+  cache: true
+---
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(EGAnet)
+library(tidygraph)
+library(ggraph)
+
+set.seed(42)
+```
+
+```{r}
+#| code-fold: false
+
+df <- read.csv("../data/data_participants.csv")
+```
+
+## Structure Validation
+
+```{r}
+#| code-fold: false
+
+items <- select(df, starts_with("MINT_"))
+```
+
+
+
+```{r}
+labels <- list(
+  MINT_Deficit_CaCo_4 = "Sometimes my breathing becomes erratic or shallow and I often don't know why",
+  MINT_Deficit_CaCo_5 =  "I often feel like I can't get enough oxygen by breathing normally"
+)
+# TODO
+```
+
+
+
+
+### Cluster Stability
+
+```{r}
+#| eval: false
+
+ega1 <- bootEGA(
+  items,
+  EGA.type = "hierEGA",
+  model = "glasso",  # BGGM
+  algorithm = "leiden",
+  type="resampling",
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=FALSE,
+  iter=500,
+  seed=3, ncores = 4)
+
+save(ega1, file="models/ega1.RData")
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
+load("models/ega1.RData")
+
+# EGAnet::dimensionStability(ega)
+itemstability <- EGAnet::itemStability(ega1, IS.plot=FALSE)
+plot(itemstability)
+
+make_loadingtable <- function(x) {
+  t <- as.data.frame(x) |>
+    datawizard::data_addprefix("C")
+  t$Cluster <- colnames(t)[max.col(t, ties.method='first')]
+
+  t |>
+    rownames_to_column(var="Item") |>
+    rowwise() |>
+    mutate(Max = max(c_across(-c(Item, Cluster)))) |>
+    arrange(Cluster, desc(Max)) |>
+    as.data.frame()
+}
+
+itemstability_table <- make_loadingtable(itemstability$lower_order$item.stability$all.dimensions)
+
+# Remove items
+toremove2 <- filter(itemstability_table, Max < 0.8)$Item
+toremove2 <- itemstability_table |> 
+  filter(!Item %in% toremove2) |>
+  mutate(Item, n=n(), .by="Cluster", .keep="used") |> 
+  filter(n < 3) |>  # Remove small clusters
+  pull(Item) |> 
+  c(toremove2)
+```
+
