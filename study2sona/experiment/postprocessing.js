@@ -11,7 +11,7 @@ function check_attentionchecks() {
 
     // compute scores for tas) }).values()[0].response
     let data_tas = get_screen("questionnaire_tas")
-    let tas_score_A = 1 - data_tas["TAS_AttentionCheck_1"] / 5
+    let tas_score_A = (5 - data_tas["TAS_AttentionCheck_1"]) / 4
 
     //compute scores for pi18
     let data_pi = get_screen("questionnaire_pi18")
@@ -27,11 +27,11 @@ function check_attentionchecks() {
 
     //compute scores for IAS
     let data_ias = get_screen("questionnaire_ias")
-    let ias_score_A = 1 - data_ias["IAS_AttentionCheck_1"] / 5
+    let ias_score_A = (5 - data_ias["IAS_AttentionCheck_1"]) / 4
 
     //compute scores for BPQ
     let data_bpq = get_screen("questionnaire_bpq")
-    let bpq_score_A = data_bpq["BodyAwareness_AttentionCheck_1"] / 5
+    let bpq_score_A = data_bpq["BodyAwareness_AttentionCheck_1"] / 4
 
     // Average
     return (
