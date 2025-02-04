@@ -57,7 +57,7 @@ const items_mint = {
     InteroceptiveFailures_12: "I often check the smell of my farts",
     InteroceptiveFailures_13: "I don't always feel the need to drink until I am really thirsty",
     InteroceptiveFailures_14: "I don't always feel the need to eat until I am really hungry",
-    InteroceptiveFailures_15: "I don't always feel the need to urinate until my bladder is very full",
+    InteroceptiveFailures_15: "Sometimes I don't realise I was hungry until I ate something",
     InteroceptiveSensitivityPleasure_1: "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
     InteroceptiveSensitivityPleasure_2: "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
     InteroceptiveSensitivityPleasure_3: "My genital organs are very sensitive to pleasant stimulations",

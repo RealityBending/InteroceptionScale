@@ -40,7 +40,7 @@
     var jsPsych = initJsPsych({
         show_progress_bar: true,
         on_finish: function () {
-            jsPsych.data.displayData("json") // Display data in browser
+            //jsPsych.data.displayData("json") // Display data in browser
             // window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
 
             // If prolific and passed the attention check, redirect to prolific completion link
@@ -61,13 +61,11 @@
 
     // Participant ID
     const participantID = jsPsych.randomization.randomID(10)
-    const condition = "Control"
-
-    // jsPsych.randomization.shuffle([
-    //     "Quiz",
-    //     "Attention Checks",
-    //     "Control"
-    // ])[0]
+    const condition = jsPsych.randomization.shuffle([
+        "Quiz",
+        "Attention Checks",
+        "Control"
+    ])[0]
 
     // full screen
     timeline.push(ConsentForm)
@@ -95,48 +93,48 @@
     ])
 
     // Start -------------------------------------------------------------------
-    // timeline.push(demographics_browser_info)
-    // timeline.push(demographic_questions)
+    timeline.push(demographics_browser_info)
+    timeline.push(demographic_questions)
     timeline.push(questionnaires_instructions)
 
     // Block 1
-    // timeline.push(questionnaire_mint)
-    // b1 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[0], qs_pathology[0]])
-    // timeline.push(b1[0])
-    // timeline.push(b1[1])
+    timeline.push(questionnaire_mint)
+    b1 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[0], qs_pathology[0]])
+    timeline.push(b1[0])
+    timeline.push(b1[1])
 
-    // // Block 2
-    // timeline.push(qs_intero[0])
-    // b2 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[1], qs_pathology[1]])
-    // timeline.push(b2[0])
-    // timeline.push(b2[1])
+    // Block 2
+    timeline.push(qs_intero[0])
+    b2 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[1], qs_pathology[1]])
+    timeline.push(b2[0])
+    timeline.push(b2[1])
 
-    // // Block 3
-    // timeline.push(qs_intero[1])
-    // b3 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[2], qs_pathology[2]])
-    // timeline.push(b3[0])
-    // timeline.push(b3[1])
+    // Block 3
+    timeline.push(qs_intero[1])
+    b3 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[2], qs_pathology[2]])
+    timeline.push(b3[0])
+    timeline.push(b3[1])
 
-    // // Block 4
-    // timeline.push(qs_intero[2])
-    // b4 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[3], qs_pathology[3]])
-    // timeline.push(b4[0])
-    // timeline.push(b4[1])
+    // Block 4
+    timeline.push(qs_intero[2])
+    b4 = jsPsych.randomization.shuffleNoRepeats([qs_convergent[3], qs_pathology[3]])
+    timeline.push(b4[0])
+    timeline.push(b4[1])
 
     // End
-    // timeline.push(demographics_wearables)
-    // timeline.push(radar_feedback)
+    timeline.push(demographics_wearables)
+    timeline.push(radar_feedback)
     if (condition === "Quiz") {
         timeline.push(quiz_items)
     }
-    // timeline.push(experiment_feedback)
+    timeline.push(experiment_feedback)
     timeline.push(demographics_debriefing)
 
     // save data via DataPipe
     timeline.push({
         type: jsPsychPipe,
         action: "save",
-        experiment_id: "818NyQh9EBvw", // This in generated in the DataPipe interface
+        experiment_id: "HQhOfa9E7ymA", // This in generated in the DataPipe interface
         filename: `${participantID}.csv`,
         data_string: () => jsPsych.data.get().csv(),
     })
