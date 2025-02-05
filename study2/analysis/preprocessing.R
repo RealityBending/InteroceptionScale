@@ -142,26 +142,26 @@ for (file in files) {
     data_ppt$MINT_Awareness_SexS_20 <- mint$InteroceptiveSensitivityPleasure_2
     data_ppt$MINT_Awareness_SexS_21 <- mint$InteroceptiveSensitivityPleasure_3
     data_ppt$MINT_Extra_1 <- mint$InteroceptiveSensitivityPleasure_4
-    data_ppt$MINT_Awareness_SexA_18 <- mint$InteroceptiveSensitivityPleasure_5 # not on the final items
-    data_ppt$MINT_Awareness_SexA_17 <- mint$InteroceptiveSensitivityPleasure_6 # not on the final items
+    data_ppt$MINT_Extra_2 <- mint$InteroceptiveSensitivityPleasure_5
+    data_ppt$MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_6
     data_ppt$MINT_Awareness_StaS_31 <- mint$InteroceptiveSensitivityPleasure_7
     data_ppt$MINT_Awareness_StaS_33 <- mint$InteroceptiveSensitivityPleasure_8
     data_ppt$MINT_Awareness_StaS_32 <- mint$InteroceptiveSensitivityPleasure_9
     data_ppt$MINT_Awareness_ExAc_36 <- mint$InteroceptiveSensitivityPleasure_10
-    data_ppt$MINT_Extra_2 <- mint$nteroceptiveSensitivityPleasure_11
+    data_ppt$MINT_Extra_4 <- mint$nteroceptiveSensitivityPleasure_11
     data_ppt$MINT_Awareness_ExAc_34 <- mint$InteroceptiveSensitivityPleasure_12
     data_ppt$MINT_Sensitivity_Derm_50 <- mint$InteroceptiveSensitivityPleasure_13
-    data_ppt$MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_14
+    data_ppt$MINT_Extra_5 <- mint$InteroceptiveSensitivityPleasure_14
     data_ppt$MINT_Sensitivity_Derm_51 <- mint$InteroceptiveSensitivityPleasure_15
     data_ppt$MINT_Sensitivity_Resp_40 <- mint$InteroceptiHypervigilance_1
     data_ppt$MINT_Sensitivity_Resp_42 <- mint$InteroceptiHypervigilance_2
     data_ppt$MINT_Sensitivity_Resp_41 <- mint$InteroceptiHypervigilance_3
     data_ppt$MINT_Sensitivity_Card_39 <- mint$InteroceptiHypervigilance_4
-    data_ppt$MINT_Extra_4 <- mint$InteroceptiHypervigilance_5
+    data_ppt$MINT_Extra_6 <- mint$InteroceptiHypervigilance_5
     data_ppt$MINT_Sensitivity_Card_38 <- mint$InteroceptiHypervigilance_6
-    data_ppt$MINT_Sensitivity_SexC_54 <- mint$InteroceptiHypervigilance_7 # not on the final items
-    data_ppt$MINT_Extra_5 <- mint$InteroceptiHypervigilance_8
-    data_ppt$MINT_Sensitivity_SexC_52 <- mint$InteroceptiHypervigilance_9 # not on the final items
+    data_ppt$MINT_Extra_7 <- mint$InteroceptiHypervigilance_7
+    data_ppt$MINT_Extra_8 <- mint$InteroceptiHypervigilance_8
+    data_ppt$MINT_Extra_9 <- mint$InteroceptiHypervigilance_9
   } else {
     stop("Not MINT")
   }
