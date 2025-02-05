@@ -11,7 +11,7 @@ function check_attentionchecks() {
 
     // compute scores for tas) }).values()[0].response
     let data_tas = get_screen("questionnaire_tas")
-    let tas_score_A = (data_tas["TAS_AttentionCheck_1"] - 1) / 4
+    let tas_score_A = 1 - (data_tas["TAS_AttentionCheck_1"] - 1) / 4
 
     //compute scores for pi18
     let data_pi = get_screen("questionnaire_pi18")
