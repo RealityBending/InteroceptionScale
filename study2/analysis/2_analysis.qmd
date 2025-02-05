@@ -97,11 +97,11 @@ labels <- list(
   MINT_Sensitivity_Gast_48 = "I am always very aware of what my stomach is doing, even when I am calm",
   MINT_Sensitivity_Derm_49 = "In general, my skin is very sensitive",
   MINT_Sensitivity_Derm_50 = "My skin is susceptible to itchy fabrics and materials",
-  MINT_Sensitivity_Derm_51 = "I can notice even very subtle stimulations to my skin (e.g., very light touches)",
+  MINT_Sensitivity_Derm_51 = "I can notice even very subtle stimulations to my skin (e.g., very light touches)"
   # MINT_Sensitivity_SexC_52 = "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
   # MINT_Sensitivity_SexC_53 = "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
-  # MINT_Sensitivity_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)",
-  MINT_AttentionCheck_1 = "I can always accurately answer to the extreme left on this question to show that I am reading it")
+  # MINT_Sensitivity_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)"
+)
 ```
 
 ### Cluster Stability
@@ -111,6 +111,7 @@ labels <- list(
 
 ega1 <- bootEGA(
   items,
+  na.data = "pairwise",
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "leiden",

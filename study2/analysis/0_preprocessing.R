@@ -13,6 +13,7 @@ path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
 # Convenience Functions ---------------------------------------------------
 
 convert_feet_to_meters <- function(height) {
+  height[height == "5\"11"] <- "5'11"
   # Remove extra spaces and quotes
   height <- trimws(gsub("\"", "", height))
 
@@ -127,7 +128,7 @@ for (file in files) {
     data_ppt$MINT_Deficit_CaCo_4 <- mint$InteroceptiveFailures_1
     data_ppt$MINT_Deficit_CaCo_5 <- mint$InteroceptiveFailures_2
     data_ppt$MINT_Deficit_CaCo_6 <- mint$InteroceptiveFailures_3
-    data_ppt$MINT_Deficit_UrIn_1 <- mint$InteroceptiveFailures_4
+    data_ppt$MINT_Deficit_Urin_1 <- mint$InteroceptiveFailures_4
     data_ppt$MINT_Deficit_Urin_2 <- mint$InteroceptiveFailures_5
     data_ppt$MINT_Deficit_Urin_3 <- mint$InteroceptiveFailures_6
     data_ppt$MINT_Deficit_CaNo_7 <- mint$InteroceptiveFailures_7
@@ -141,50 +142,29 @@ for (file in files) {
     data_ppt$MINT_Awareness_SexS_19 <- mint$InteroceptiveSensitivityPleasure_1
     data_ppt$MINT_Awareness_SexS_20 <- mint$InteroceptiveSensitivityPleasure_2
     data_ppt$MINT_Awareness_SexS_21 <- mint$InteroceptiveSensitivityPleasure_3
-    data_ppt$MINT_Extra_1 <- mint$InteroceptiveSensitivityPleasure_4
-    data_ppt$MINT_Extra_2 <- mint$InteroceptiveSensitivityPleasure_5
-    data_ppt$MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_6
+    # data_ppt$MINT_Extra_1 <- mint$InteroceptiveSensitivityPleasure_4
+    # data_ppt$MINT_Extra_2 <- mint$InteroceptiveSensitivityPleasure_5
+    # data_ppt$MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_6
     data_ppt$MINT_Awareness_StaS_31 <- mint$InteroceptiveSensitivityPleasure_7
     data_ppt$MINT_Awareness_StaS_33 <- mint$InteroceptiveSensitivityPleasure_8
     data_ppt$MINT_Awareness_StaS_32 <- mint$InteroceptiveSensitivityPleasure_9
     data_ppt$MINT_Awareness_ExAc_36 <- mint$InteroceptiveSensitivityPleasure_10
-    data_ppt$MINT_Extra_4 <- mint$nteroceptiveSensitivityPleasure_11
+    # data_ppt$MINT_Extra_4 <- mint$nteroceptiveSensitivityPleasure_11
     data_ppt$MINT_Awareness_ExAc_34 <- mint$InteroceptiveSensitivityPleasure_12
     data_ppt$MINT_Sensitivity_Derm_50 <- mint$InteroceptiveSensitivityPleasure_13
-    data_ppt$MINT_Extra_5 <- mint$InteroceptiveSensitivityPleasure_14
+    # data_ppt$MINT_Extra_5 <- mint$InteroceptiveSensitivityPleasure_14
     data_ppt$MINT_Sensitivity_Derm_51 <- mint$InteroceptiveSensitivityPleasure_15
     data_ppt$MINT_Sensitivity_Resp_40 <- mint$InteroceptiHypervigilance_1
     data_ppt$MINT_Sensitivity_Resp_42 <- mint$InteroceptiHypervigilance_2
     data_ppt$MINT_Sensitivity_Resp_41 <- mint$InteroceptiHypervigilance_3
     data_ppt$MINT_Sensitivity_Card_39 <- mint$InteroceptiHypervigilance_4
-    data_ppt$MINT_Extra_6 <- mint$InteroceptiHypervigilance_5
+    # data_ppt$MINT_Extra_6 <- mint$InteroceptiHypervigilance_5
     data_ppt$MINT_Sensitivity_Card_38 <- mint$InteroceptiHypervigilance_6
-    data_ppt$MINT_Extra_7 <- mint$InteroceptiHypervigilance_7
-    data_ppt$MINT_Extra_8 <- mint$InteroceptiHypervigilance_8
-    data_ppt$MINT_Extra_9 <- mint$InteroceptiHypervigilance_9
-  } else {
-    stop("Not MINT")
+    # data_ppt$MINT_Extra_7 <- mint$InteroceptiHypervigilance_7
+    # data_ppt$MINT_Extra_8 <- mint$InteroceptiHypervigilance_8
+    # data_ppt$MINT_Extra_9 <- mint$InteroceptiHypervigilance_9
   }
-  #   dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
-  #                 MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
-  #                 MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
-  #                 MINT_Deficit_UrIn_1 = InteroceptiveFailures_4,
-  #                 MINT_Deficit_Urin_2 = InteroceptiveFailures_5,
-  #                 MINT_Deficit_Urin_3 = InteroceptiveFailures_6,
-  #                 MINT_Deficit_CaNo_7 = InteroceptiveFailures_7,
-  #                 MINT_Deficit_CaNo_8 = InteroceptiveFailures_8,
-  #                 MINT_Deficit_CaNo_9  = InteroceptiveFailures_9,
-  #                 MINT_Deficit_Olfa_11 = InteroceptiveFailures_10,
-  #                 MINT_Deficit_Olfa_10 = InteroceptiveFailures_11,
-  #                 MINT_Deficit_Olfa_12 = InteroceptiveFailures_12,
-  #                 MINT_Deficit_Sati_15 = InteroceptiveFailures_13,
-  #                 MINT_Deficit_Sati_13 = InteroceptiveFailures_14,
-  #                 MINT_Deficit_Sati_14 = InteroceptiveFailures_14,) # does not match the table
-  #                 MINT_Awareness_SexS_19 = InteroceptiveSensitivityPleasure_1,
-  #
-  # # TODO
-  #
-  # data_ppt <- cbind(data_ppt, as.data.frame(mint))
+  data_ppt <- cbind(data_ppt, as.data.frame(mint))
 
   # Interoception questionnaires
   maia <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_maia", "response"])
@@ -272,7 +252,7 @@ for (file in files) {
   somatic[grep("Sjogren's ", somatic)] <- "Sjogren"
   data_ppt$Disorders_Somatic <- paste0(somatic, collapse = "; ")
 
-  alldata <- rbind(data_ppt, alldata)
+  alldata <- merge(data_ppt, alldata, all = TRUE)
 }
 
 unique(alldata$Disorders_Psychiatric)
@@ -284,8 +264,8 @@ unique(alldata$Weight)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
-  # MINT = alldata$MINT_AttentionCheck_1/ 6,
-  TAS = 1 - (alldata$TAS_AttentionCheck_1 - 1) / 4,
+  MINT = alldata$MINT_AttentionCheck_1/ 6,
+  TAS = (alldata$TAS_AttentionCheck_1 - 1) / 4,
   PI18 = 1 - alldata$PI18_AttentionCheck_1 / 5,
   CEFSA = alldata$CEFSA_AttentionCheck_1 / 4,
   MAIA = 1 - alldata$MAIA_AttentionCheck_1 / 6,
@@ -298,8 +278,8 @@ checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
 checks <- checks[order(checks$Score, decreasing = TRUE), ]
-checks
-# checks[checks$Prolific_ID=="676d58ce00a6e457cfe1fed2", ]
+# checks
+# checks[checks$Prolific_ID=="6083d7eabcd2e4687edeb542", ]
 
 
 # MINT: "I can always accurately answer to the extreme left on this question to show that I am reading it"
