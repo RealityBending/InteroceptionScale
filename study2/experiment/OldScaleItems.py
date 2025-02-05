@@ -1,4 +1,4 @@
-// Items from the old experiment scripts and their mapping to the new interoceptive dimensions from table.html 
+# Items from the old experiment scripts and their mapping to the new interoceptive dimensions from table.html 
 
 MINT_Deficit_CaCo_4 = InteroceptiveFailures_1: "Sometimes my breathing becomes erratic or shallow and I often don't know why",
 MINT_Deficit_CaCo_5 = InteroceptiveFailures_2: "I often feel like I can't get enough oxygen by breathing normally",
@@ -12,9 +12,9 @@ MINT_Deficit_CaNo_9 = InteroceptiveFailures_9: "I often only notice how I am bre
 MINT_Deficit_Olfa_11 = InteroceptiveFailures_10: "I often check the smell of my own breath",
 MINT_Deficit_Olfa_10 = InteroceptiveFailures_11: "I often check the smell of my armpits",
 MINT_Deficit_Olfa_12 = InteroceptiveFailures_12: "I often check the smell of my farts",
-# MINT_Deficit_Sati_15 = InteroceptiveFailures_13: "I don't always feel the need to drink until I am really thirsty",
-# MINT_Deficit_Sati_13 = InteroceptiveFailures_14: "I don't always feel the need to eat until I am really hungry",
-# MINT_Deficit_Sati_14 = InteroceptiveFailures_15: "Sometimes I don't realise I was hungry until I ate something",
+MINT_Deficit_Sati_15 = InteroceptiveFailures_13: "I don't always feel the need to drink until I am really thirsty",
+MINT_Deficit_Sati_13 = InteroceptiveFailures_14: "I don't always feel the need to eat until I am really hungry",
+MINT_Deficit_Sati_14 = InteroceptiveFailures_15: "Sometimes I don't realise I was hungry until I ate something",
 MINT_Awareness_SexS_19 = InteroceptiveSensitivityPleasure_1: "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
 MINT_Awareness_SexS_20 = InteroceptiveSensitivityPleasure_2: "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
 MINT_Awareness_SexS_21 = InteroceptiveSensitivityPleasure_3: "My genital organs are very sensitive to pleasant stimulations",
