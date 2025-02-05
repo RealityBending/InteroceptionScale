@@ -1,11 +1,12 @@
 library(jsonlite)
 library(progress)
 
-# path for data
+
+options(warn = 2)  # Stop on warnings
 
 # path <- "C:/Users/maisi/Box/InteroceptionScale/study2"
-# path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
-path <- "C:/Users/asf25/Box/InteroceptionScale/"
+path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
+# path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 
 
@@ -15,28 +16,41 @@ convert_feet_to_meters <- function(height) {
   # Remove extra spaces and quotes
   height <- trimws(gsub("\"", "", height))
 
-  # Error if warning during as.numeric
-  options(warn = 2)
-
-
   # Handle integer input like "6" (assume feet only, zero inches)
   if (grepl("^\\d+$", height)) {
     feet <- as.numeric(height)
     inches <- 0
   } else {
-    # Split input based on common delimiters: ' (apostrophe), space, ., "," or "-"
-    parts <- unlist(strsplit(height, "[ ' .,\\-]"))
+    # Split input based on common delimiters: ' (apostrophe), space, ., "," or "-", or " ft "
+    parts <- unlist(strsplit(height, "[ ' .,\\-]| ft "))
 
     # Extract feet and inches
     feet <- as.numeric(parts[1])
     inches <- ifelse(length(parts) > 1, as.numeric(parts[2]), 0)
   }
 
-  # Retsore default warning behavior
-  options(warn = 0)
-
   # Convert to meters (1 foot = 0.3048 m, 1 inch = 0.0254 m)
   feet * 0.3048 + inches * 0.0254
+}
+
+convert_stones_to_kg <- function(weight) {
+  weight <- trimws(gsub("\"", "", weight))
+
+  # Handle integer input like "6" (assume stones only, zero pounds)
+  if (grepl("^\\d+$", weight)) {
+    stones <- as.numeric(weight)
+    pounds <- 0
+  } else {
+    # Split input based on common delimiters: ' (apostrophe), space, ., "," or "-", or " st "
+    parts <- unlist(strsplit(weight, "[ ' .,\\-]| st "))
+
+    # Extract stones and pounds
+    stones <- as.numeric(parts[1])
+    pounds <- ifelse(length(parts) > 1, as.numeric(parts[2]), 0)
+  }
+
+  # Convert to kg (1 stone = 6.35029 kg, 1 pound = 0.453592 kg)
+  stones * 6.35029 + pounds * 0.453592
 }
 
 
@@ -86,6 +100,7 @@ for (file in files) {
 
   # Education
   data_ppt$Education <- ifelse(resp$Education == "other", resp$`Education-Comment`, resp$Education)
+  data_ppt$Education <- ifelse(data_ppt$Education %in% c("HND (college)"), "High school", data_ppt$Education)
 
   data_ppt$Student <- ifelse(!is.null(resp$Student), resp$Student, NA)
   data_ppt$Country <- ifelse(!is.null(resp$Country), resp$Country, NA)
@@ -96,7 +111,7 @@ for (file in files) {
 
   # BMI
   data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
-  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), resp$Weight_kg, as.numeric(resp$Weight_st) * 6.35029)
+  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), resp$Weight_kg, convert_stones_to_kg(resp$Weight_st))
   data_ppt$BMI <- data_ppt$Weight / data_ppt$Height^2
 
 
@@ -107,27 +122,27 @@ for (file in files) {
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
 
   # Mint questionnaire
-  mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])) |>
-    dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
-                  MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
-                  MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
-                  MINT_Deficit_UrIn_1 = InteroceptiveFailures_4,
-                  MINT_Deficit_Urin_2 = InteroceptiveFailures_5,
-                  MINT_Deficit_Urin_3 = InteroceptiveFailures_6,
-                  MINT_Deficit_CaNo_7 = InteroceptiveFailures_7, 
-                  MINT_Deficit_CaNo_8 = InteroceptiveFailures_8, 
-                  MINT_Deficit_CaNo_9  = InteroceptiveFailures_9,
-                  MINT_Deficit_Olfa_11 = InteroceptiveFailures_10,
-                  MINT_Deficit_Olfa_10 = InteroceptiveFailures_11,
-                  MINT_Deficit_Olfa_12 = InteroceptiveFailures_12,
-                  MINT_Deficit_Sati_15 = InteroceptiveFailures_13,
-                  MINT_Deficit_Sati_13 = InteroceptiveFailures_14,
-                  MINT_Deficit_Sati_14 = InteroceptiveFailures_14,) # does not match the table 
-                  MINT_Awareness_SexS_19 = InteroceptiveSensitivityPleasure_1, 
-                  
-  # TODO
-
-  data_ppt <- cbind(data_ppt, as.data.frame(mint))
+  # mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])) |>
+  #   dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
+  #                 MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
+  #                 MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
+  #                 MINT_Deficit_UrIn_1 = InteroceptiveFailures_4,
+  #                 MINT_Deficit_Urin_2 = InteroceptiveFailures_5,
+  #                 MINT_Deficit_Urin_3 = InteroceptiveFailures_6,
+  #                 MINT_Deficit_CaNo_7 = InteroceptiveFailures_7,
+  #                 MINT_Deficit_CaNo_8 = InteroceptiveFailures_8,
+  #                 MINT_Deficit_CaNo_9  = InteroceptiveFailures_9,
+  #                 MINT_Deficit_Olfa_11 = InteroceptiveFailures_10,
+  #                 MINT_Deficit_Olfa_10 = InteroceptiveFailures_11,
+  #                 MINT_Deficit_Olfa_12 = InteroceptiveFailures_12,
+  #                 MINT_Deficit_Sati_15 = InteroceptiveFailures_13,
+  #                 MINT_Deficit_Sati_13 = InteroceptiveFailures_14,
+  #                 MINT_Deficit_Sati_14 = InteroceptiveFailures_14,) # does not match the table
+  #                 MINT_Awareness_SexS_19 = InteroceptiveSensitivityPleasure_1,
+  #
+  # # TODO
+  #
+  # data_ppt <- cbind(data_ppt, as.data.frame(mint))
 
   # Interoception questionnaires
   maia <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_maia", "response"])
@@ -178,6 +193,8 @@ for (file in files) {
   v[grep("Autism", v)] <- "ASD"
   v[grep("Addiction ", v)] <- "Addiction"
   v[grep("Social Anxiety ", v)] <- "Social Phobia"
+  v[grep("Borderline", v)] <- "BPD"
+  v[grep("Panic ", v)] <- "Panic"
   data_ppt$Disorders_Psychiatric <- paste0(v, collapse = "; ")
 
   if(!is.null(mental$Disorders_PsychiatricTreatment)) {
@@ -221,6 +238,7 @@ unique(alldata$Disorders_PsychiatricTreatment)
 unique(alldata$Disorders_Somatic)
 unique(alldata$Education)
 unique(alldata$Ethnicity)
+unique(alldata$Weight)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
