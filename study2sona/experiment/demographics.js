@@ -662,9 +662,6 @@ var demographics_debriefing = {
                     ],
                 },
             ],
-            data: {
-                screen: "demographics_debrief",
-            },
             // on_finish: function (data) {
             //     let score = check_attentionchecks()
             //     if (score >= 0.75) {
@@ -677,6 +674,9 @@ var demographics_debriefing = {
             //     }
             // }
         }
+    },
+    data: {
+        screen: "demographics_debrief",
     },
 }
 
