@@ -45,7 +45,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>A.Neves@sussex.ac.uk</i>). This research has been approved (ER/EB672/2) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
+            "<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>) and/or Ana Neves (<i style='color:DodgerBlue;'>A.Neves@sussex.ac.uk</i>). This research has been approved (ER/EB672/3) by the Sciences & Technology Cross-Schools Research Ethics Committee (C-REC) (<i style='color:DodgerBlue;'>crecscitec@sussex.ac.uk</i>). The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>"
 
         // Return Survey
         return {
@@ -240,7 +240,8 @@ var demographic_questions = {
                     //     otherPlaceholder: "Please specify",
                     // },
                     {
-                        visibleIf: "{Education} == 'High school' || {Education} == 'Master' || {Education} == 'Bachelor'",
+                        visibleIf:
+                            "{Education} == 'High school' || {Education} == 'Master' || {Education} == 'Bachelor'",
                         title: "Are you currently a student?",
                         name: "Student",
                         type: "boolean",
@@ -362,7 +363,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How often do you check your heart rate?",
                         name: "Wearables_Heart",
                         type: "rating",
@@ -379,7 +381,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Heart rate'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Heart rate'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_HeartImportance",
                         type: "rating",
@@ -394,7 +397,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Number of steps'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Number of steps'",
                         title: "How often do you check your number of steps?",
                         name: "Wearables_Steps",
                         type: "rating",
@@ -411,7 +415,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Number of steps'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Number of steps'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_StepsImportance",
                         type: "rating",
@@ -426,7 +431,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calories burnt'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calories burnt'",
                         title: "How often do you check your number of calories burnt?",
                         name: "Wearables_CaloriesBurnt",
                         type: "rating",
@@ -443,7 +449,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calories burnt'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calories burnt'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_CaloriesBurntImportance",
                         type: "rating",
@@ -458,7 +465,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calorie intake'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calorie intake'",
                         title: "How often do you check your calorie intake?",
                         name: "Wearables_CalorieIntake",
                         type: "rating",
@@ -475,7 +483,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Calorie intake'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Calorie intake'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_CalorieIntakeImportance",
                         type: "rating",
@@ -490,7 +499,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Sleep quality'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Sleep quality'",
                         title: "How often do you check your sleep quality?",
                         name: "Wearables_Sleep",
                         type: "rating",
@@ -507,7 +517,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Sleep quality'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Sleep quality'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_SleepImportance",
                         type: "rating",
@@ -522,7 +533,8 @@ var demographics_wearables = {
             {
                 elements: [
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
                         title: "How often do you check your weight (including with a regular scale)?",
                         name: "Wearables_Weight",
                         type: "rating",
@@ -539,7 +551,8 @@ var demographics_wearables = {
                         colCount: 0,
                     },
                     {
-                        visibleIf: "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
+                        visibleIf:
+                            "{Wearables_Ownership} contains 'Weight (including with a regular scale)'",
                         title: "How important is this information about your body to you?",
                         name: "Wearables_WeightImportance",
                         type: "rating",
@@ -564,7 +577,8 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -624,7 +638,6 @@ var demographics_debriefing = {
                 "<p>At the beginning, we informed you that credits were conditional on passing the quiz. <b>We apologize </b> for any stress this may have caused. " +
                 " Please note that <b style='color:green;'>course credits are granted automatically</b>, regardless of quiz performance.</p>" +
                 " In addition to the primary objective of validating a new questionnaire, we are also evaluating which strategies are most effective in improving data quality in online studies."
-
         }
         if (condition === "Attention Checks") {
             text +=
@@ -644,7 +657,7 @@ var demographics_debriefing = {
                         {
                             type: "html",
                             name: "Debrief",
-                            html: text
+                            html: text,
                         },
                     ],
                 },
@@ -664,13 +677,15 @@ var demographics_debriefing = {
             //     }
             // }
         }
-    }
+    },
 }
 
 var demographics_endscreen = {
     type: jsPsychSurvey,
     survey_json: function () {
-        text = "<h2 style='color:green;'>Data saved successfully!</h2>" + "<p>Thank you for participating, it means a lot to us.</p>"
+        text =
+            "<h2 style='color:green;'>Data saved successfully!</h2>" +
+            "<p>Thank you for participating, it means a lot to us.</p>"
 
         // Snowball (uncomment if the study is really fun)
         // text +=
@@ -686,7 +701,9 @@ var demographics_endscreen = {
 
         // Deal with Prolific/SurveyCircle/SurveySwap/SONA
         if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })["trials"][0]
+            d = jsPsych.data.get().filter({ screen: "demographics_debrief" })[
+                "trials"
+            ][0]
             if (d["Reward"] == "Automatic") {
                 text +=
                     "<p><b style='color:red;'>After clicking 'End', you will be redirected to the Prolific reimbursement page</b> (You can alternatively click " +
