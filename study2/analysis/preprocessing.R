@@ -22,7 +22,7 @@ convert_feet_to_meters <- function(height) {
     inches <- 0
   } else {
     # Split input based on common delimiters: ' (apostrophe), space, ., "," or "-", or " ft "
-    parts <- unlist(strsplit(height, "[ ' .,\\-]| ft "))
+    parts <- unlist(strsplit(height, "[ ' .,’\\-]| ft "))
 
     # Extract feet and inches
     feet <- as.numeric(parts[1])
@@ -122,7 +122,22 @@ for (file in files) {
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
 
   # Mint questionnaire
-  # mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"])) |>
+  mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"]))
+  if("InteroceptiveFailures_1" %in% colnames(mint)){
+    data_ppt$MINT_Deficit_CaCo_4 <- mint$InteroceptiveFailures_1
+    data_ppt$MINT_Deficit_CaCo_5 <- mint$InteroceptiveFailures_2
+    data_ppt$MINT_Deficit_CaCo_6 <- mint$InteroceptiveFailures_3
+    data_ppt$MINT_Deficit_UrIn_1 <- mint$InteroceptiveFailures_4
+    data_ppt$MINT_Deficit_Urin_2 <- mint$InteroceptiveFailures_5
+    data_ppt$MINT_Deficit_Urin_3 <- mint$InteroceptiveFailures_6
+    data_ppt$MINT_Deficit_CaNo_7 <- mint$InteroceptiveFailures_7
+    data_ppt$MINT_Deficit_CaNo_8 <- mint$InteroceptiveFailures_8
+    data_ppt$MINT_Deficit_CaNo_9 <- mint$InteroceptiveFailures_9
+    data_ppt$MINT_Deficit_Olfa_11 <- mint$InteroceptiveFailures_11
+  } else {
+    stop("Not MINT")
+  }
+
   #   dplyr::rename(MINT_Deficit_CaCo_4 = InteroceptiveFailures_1,
   #                 MINT_Deficit_CaCo_5 = InteroceptiveFailures_2,
   #                 MINT_Deficit_CaCo_6 = InteroceptiveFailures_3,
@@ -242,7 +257,7 @@ unique(alldata$Weight)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
-  MINT = alldata$MINT_AttentionCheck_1/ 6,
+  # MINT = alldata$MINT_AttentionCheck_1/ 6,
   TAS = 1 - (alldata$TAS_AttentionCheck_1 - 1) / 4,
   PI18 = 1 - alldata$PI18_AttentionCheck_1 / 5,
   CEFSA = alldata$CEFSA_AttentionCheck_1 / 4,
@@ -257,7 +272,7 @@ checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$Prolific_ID), ]
 checks <- checks[order(checks$Score, decreasing = TRUE), ]
 checks
-# checks[checks$Prolific_ID=="5b4133cd9c2ec600014f2487", ]
+# checks[checks$Prolific_ID=="676d58ce00a6e457cfe1fed2", ]
 
 
 # MINT: "I can always accurately answer to the extreme left on this question to show that I am reading it"
