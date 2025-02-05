@@ -32,9 +32,9 @@ const questionnaires_instructions = {
 
 // Items ================================================
 // We dropped the following dimensions:
-// - Awareness_SexA: too high level and abstract compared to other items.
-// - Sensitivity_Sign: Potentially ambiguous nature of "something important"
-// - Sensitivity_SexC: Less consistent with the other dimensions of Sensitivity that were about different modalities
+// - Awareness_SexA: too high level and abstract ("in my body") compared to other items
+// - Sensitivity_Sign: Potentially ambiguous phrasing of "something important"
+// - Sensitivity_SexC: Less consistent with the other dimensions of Sensitivity that are about different modalities
 const items_mint = {
     MINT_Deficit_Urin_1: "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I produce less than I expected",
     MINT_Deficit_Urin_2: "I often feel the need to urinate even when my bladder is not full",
