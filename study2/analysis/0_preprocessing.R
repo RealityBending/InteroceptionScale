@@ -14,6 +14,9 @@ path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
 
 convert_feet_to_meters <- function(height) {
   height[height == "5\"11"] <- "5'11"
+  height[height == "511"] <- "5'11"
+  height[height == "5ft2in"] <- "5'12"
+  height[height == "5ft 5 in"] <- "5'5"
   # Remove extra spaces and quotes
   height <- trimws(gsub("\"", "", height))
 
@@ -35,6 +38,8 @@ convert_feet_to_meters <- function(height) {
 }
 
 convert_stones_to_kg <- function(weight) {
+  weight[weight == "10st1lb"] <- "10'1"
+  weight[weight == "64"] <- "6'4"
   weight <- trimws(gsub("\"", "", weight))
 
   # Handle integer input like "6" (assume stones only, zero pounds)
@@ -77,7 +82,7 @@ for (file in files) {
     Participant = dat$participantID,
     Recruitment = dat$researcher,
     Experiment_StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
-    Experiment_Duration = rawdata[rawdata$screen == "demographics_debrief", "time_elapsed"] / 1000 / 60,
+    Experiment_Duration = max(rawdata$time_elapsed) / 1000 / 60,
     Browser_Version = paste(dat$browser, dat$browser_version),
     Mobile = dat$mobile,
     Platform = dat$os,
@@ -112,7 +117,11 @@ for (file in files) {
 
   # BMI
   data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
-  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), resp$Weight_kg, convert_stones_to_kg(resp$Weight_st))
+  if(!is.na(data_ppt$Height) && data_ppt$Height > 2.5) stop("Height too high")
+  data_ppt$Weight <- ifelse(is.null(resp$Weight_st),
+                            ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg),
+                            convert_stones_to_kg(resp$Weight_st))
+  if(!is.na(data_ppt$Weight) && data_ppt$Weight > 300) stop("Weight too high")
   data_ppt$BMI <- data_ppt$Weight / data_ppt$Height^2
 
 
@@ -121,6 +130,24 @@ for (file in files) {
   data_ppt$Experiment_Enjoyment <- ifelse(is.null(feedback$Feedback_Enjoyment), NA, feedback$Feedback_Enjoyment)
   data_ppt$Experiment_Quality <- ifelse(is.null(feedback$Feedback_Quality), NA, feedback$Feedback_Quality)
   data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
+
+  # Wearables
+  wearables <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographics_wearables", "response"])
+  data_ppt$Physical_Active <- wearables$Physical_Active
+  data_ppt$Physical_Workout <- wearables$Physical_Workout
+  data_ppt$Wearables_Number <- ifelse(is.null(wearables$Wearables_Ownership), NA, length(wearables$Wearables_Ownership))
+  data_ppt$Wearables_Heart <- ifelse(is.null(wearables$Wearables_Heart), "Not owning", wearables$Wearables_Heart)
+  data_ppt$Wearables_HeartImportance <- ifelse(is.null(wearables$Wearables_HeartImportance), NA, wearables$Wearables_HeartImportance)
+  data_ppt$Wearables_Steps <- ifelse(is.null(wearables$Wearables_Steps), "Not owning", wearables$Wearables_Steps)
+  data_ppt$Wearables_StepsImportance <- ifelse(is.null(wearables$Wearables_StepsImportance), NA, wearables$Wearables_StepsImportance)
+  data_ppt$Wearables_Sleep <- ifelse(is.null(wearables$Wearables_Sleep), "Not owning", wearables$Wearables_Sleep)
+  data_ppt$Wearables_SleepImportance <- ifelse(is.null(wearables$Wearables_SleepImportance), NA, wearables$Wearables_SleepImportance)
+  data_ppt$Wearables_CaloriesBurnt <- ifelse(is.null(wearables$Wearables_CaloriesBurnt), "Not owning", wearables$Wearables_CaloriesBurnt)
+  data_ppt$Wearables_CaloriesBurntImportance <- ifelse(is.null(wearables$Wearables_CaloriesBurntImportance), NA, wearables$Wearables_CaloriesBurntImportance)
+  data_ppt$Wearables_CalorieIntake <- ifelse(is.null(wearables$Wearables_CalorieIntake), "Not owning", wearables$Wearables_CalorieIntake)
+  data_ppt$Wearables_CalorieIntakeImportance <- ifelse(is.null(wearables$Wearables_CalorieIntakeImportance), NA, wearables$Wearables_CalorieIntakeImportance)
+  data_ppt$Wearables_Weight <- ifelse(is.null(wearables$Wearables_Weight), "Not owning", wearables$Wearables_Weight)
+  data_ppt$Wearables_WeightImportance <- ifelse(is.null(wearables$Wearables_WeightImportance), NA, wearables$Wearables_WeightImportance)
 
   # Mint questionnaire
   mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"]))
@@ -217,16 +244,19 @@ for (file in files) {
   v[grep("Social Anxiety ", v)] <- "Social Phobia"
   v[grep("Borderline", v)] <- "BPD"
   v[grep("Panic ", v)] <- "Panic"
+  v[grep("Obsessive-Compulsive ", v)] <- "OCD"
   data_ppt$Disorders_Psychiatric <- paste0(v, collapse = "; ")
 
   if(!is.null(mental$Disorders_PsychiatricTreatment)) {
     v <- mental$Disorders_PsychiatricTreatment
     v[grep("Antidepressant", v)] <- "Antidepressant"
+    v[grep("Antipsychotic ", v)] <- "Antipsychotic"
     v[grep("Anxiolytic", v)] <- "Anxiolytic"
     v[grep("LITHIUM", v)] <- "Mood Stabilizers"
     v[grep("Mindfulness", v)] <- "Mindfulness"
     v[grep("CBT", v)] <- "Psychotherapy"
     v[grep("Lifestyle", v)] <- "Lifestyle"
+    v[grep("Alternative ", v)] <- "Alternative"
     data_ppt$Disorders_PsychiatricTreatment <- paste0(v, collapse = "; ")
     if(all(data_ppt$Disorders_PsychiatricTreatment == "none")) {
       data_ppt$Disorders_PsychiatricTreatment <- NA
@@ -296,6 +326,7 @@ checks <- checks[order(checks$Score, decreasing = TRUE), ]
 
 # Anonymize ---------------------------------------------------------------
 alldata$Prolific_ID <- NULL
+alldata$Reward <- NULL
 
 # Generate IDs
 ids <- paste0("S", format(sprintf("%03d", 1:nrow(alldata))))
@@ -306,6 +337,8 @@ alldata$Participant <- ids[alldata$Participant]
 
 
 # Save --------------------------------------------------------------------
+# restore default warnings settings
+options(warn = 0)
 
 write.csv(alldata, "../data/rawdata_participants.csv", row.names = FALSE)
 

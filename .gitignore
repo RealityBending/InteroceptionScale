@@ -46,3 +46,4 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 study1/analysis/models/*.RData
+study2/analysis/models/*.RData
