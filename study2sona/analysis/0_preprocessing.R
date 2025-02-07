@@ -5,8 +5,8 @@ library(progress)
 options(warn = 2)  # Stop on warnings
 
 # path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
-# path <- "C:/Users/asf25/Box/InteroceptionScale/"
-path <- "C:/Users/aneve/Box/InteroceptionScale/study2sona/"
+path <- "C:/Users/asf25/Box/InteroceptionScale/study2sona/"
+# path <- "C:/Users/aneve/Box/InteroceptionScale/study2sona/"
 
 
 # Convenience Functions ---------------------------------------------------
@@ -74,7 +74,9 @@ for (file in files) {
 
   data_ppt <- data.frame(
     Participant = dat$participantID,
-    #Recruitment = dat$researcher,
+    SonaID = dat$sona_id,
+    Condition = dat$condition,
+    Recruitment = dat$researcher,
     Experiment_StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
     Experiment_Duration = max(rawdata$time_elapsed) / 1000 / 60,
     Browser_Version = paste(dat$browser, dat$browser_version),
@@ -248,7 +250,7 @@ checks <- checks[order(checks$Score, decreasing = TRUE), ]
 
 
 # Anonymize ---------------------------------------------------------------
-alldata$Prolific_ID <- NULL
+alldata$SonaID <- NULL
 
 # Generate IDs
 ids <- paste0("S", format(sprintf("%03d", 1:nrow(alldata))))
