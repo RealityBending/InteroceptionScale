@@ -40,24 +40,18 @@
     var jsPsych = initJsPsych({
         show_progress_bar: true,
         on_finish: function () {
-            //jsPsych.data.displayData("json") // Display data in browser
-            // window.location = "https://realitybending.github.io/research/#participate" // Redirect to lab website
-
-            // If prolific and passed the attention check, redirect to prolific completion link
-            // if (jsPsych.data.urlVariables()["exp"] == "prolific") {
-            //     d = jsPsych.data
-            //         .get()
-            //         .filter({ screen: "demographics_debrief" })["trials"][0]
-            //     if (d["Reward"] == "Automatic") {
-            //         window.location =
-            //             "https://app.prolific.com/submissions/complete?cc=C8I1NGST"
-            //     } else {
-            //         window.location =
-            //             "https://app.prolific.com/submissions/complete?cc=C1BHVQIZ"
-            //     }
-            // }
+            //     jsPsych.data.displayData("json") // Display data in browser
+            if (jsPsych.data.urlVariables()["exp"] == "SONA") {
+                window.location =
+                    "https://sussexpsychology.sona-systems.com/webstudy_credit.aspx?experiment_id=1902&credit_token=49767141c9614189b846796fac1dde07&survey_code=" +
+                    jsPsych.data.urlVariables()["sona_id"]
+            } else {
+                window.location = "https://realitybending.github.io/" // Redirect to lab website
+            }
         },
+        extensions: [{ type: jsPsychExtensionWebgazer }],
     })
+
 
     // Participant ID
     const participantID = jsPsych.randomization.randomID(10)
