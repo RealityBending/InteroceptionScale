@@ -106,8 +106,12 @@ for (file in files) {
   data_ppt$Ethnicity <- ifelse(resp$Ethnicity == "other", resp$`Ethnicity-Comment`, resp$Ethnicity)
 
   # BMI
-  data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
-  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), resp$Weight_kg, convert_stones_to_kg(resp$Weight_st))
+  data_ppt$Height <-  ifelse(is.null(resp$Height_ft), 
+                             ifelse(is.null(resp$Height_cm), NA, resp$Height_cm / 100), 
+                             convert_feet_to_meters(resp$Height_ft))
+  data_ppt$Weight <- ifelse(is.null(resp$Weight_st), 
+                            ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg), 
+                            convert_stones_to_kg(resp$Weight_st))
   data_ppt$BMI <- data_ppt$Weight / data_ppt$Height^2
 
 
