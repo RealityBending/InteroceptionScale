@@ -1,0 +1,101 @@
+---
+title: "Data Quality - Data Analysis"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute: 
+  cache: true
+---
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(EGAnet)
+library(tidygraph)
+library(ggraph)
+
+set.seed(42)
+```
+
+```{r}
+#| code-fold: false
+
+df <- read.csv("../../study2/data/rawdata_participants.csv") |> 
+  mutate(Condition = fct_relevel(Condition, "Prolific", "Attention Checks", "Quiz", "Control"))
+```
+
+
+## Attention Checks
+
+```{r}
+dfchecks <- df |>
+  dplyr::mutate(
+    # "I can always accurately answer to the extreme left on this question to show that I am reading it"
+    A1 = ifelse(MINT_AttentionCheck_1 == 0, 0, 1),
+    # "I notice that I am being asked to respond all the way to the right"
+    A2 = ifelse(MAIA_AttentionCheck_1 == 6, 0, 1),
+    # "I can always accurately choose the lowest option"
+    A3 = ifelse(IAS_AttentionCheck_1 == 1, 0, 1),
+    # "Respond all the way to the right."
+    A4 = ifelse(BodyAwareness_AttentionCheck_1 == 5, 0, 1),
+    # "I am able to respond all the way to the left"
+    A5 = ifelse(TAS_AttentionCheck_1 == 1, 0, 1),
+    # "On the whole, I know I must press the highest option"
+    A6 = ifelse(PI18_AttentionCheck_1 == 5, 0, 1),
+    # "I feel that to show I'm being attentive I will press the lowest option"
+    A7 = ifelse(CEFSA_AttentionCheck_1 == 0, 0, 1),
+    .keep = "none"
+  ) 
+dfchecks$TotalFailed <- rowSums(dfchecks)
+df$TotalFailed <- dfchecks$TotalFailed
+
+dfchecks |>
+  mutate(Total = as.factor(paste0(TotalFailed, "/8"))) |> 
+  ggplot(aes(x = Total)) +
+  geom_bar(aes(fill = Total)) +
+  scale_fill_viridis_d(guide = "none") +
+  labs(title = "Failed Attention Checks", y = "Number of Participants", subtitle = "Number of failed attention checks per participant") +
+  theme_modern(axis.title.space = 15) +
+  theme(
+    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+    axis.title.x = element_blank(),
+  )
+```
+
+```{r}
+df |> 
+  mutate(Failed = ifelse(TotalFailed >= 1, 1, 0)) |> 
+  summarize(Failed = sum(Failed), N = n(), p = Failed / N, .by="Condition") |> 
+  gt::gt()
+```
+
+```{r}
+m1 <- glm(TotalFailed ~ Condition, data=df, family="poisson")
+m2 <- glmmTMB::glmmTMB(TotalFailed ~ Condition,
+                      data=df,
+                      ziformula=~1,
+                      family="poisson")
+m3 <- glmmTMB::glmmTMB(TotalFailed ~ Condition,
+                      data=df,
+                      ziformula=~1,
+                      family=glmmTMB::truncated_nbinom2)
+
+compare_performance(m1, m2, m3)
+test_performance(m1, m2, m3)
+
+modelbased::estimate_means(m1, by="Condition", backend="emmeans") |> 
+  plot()
+```

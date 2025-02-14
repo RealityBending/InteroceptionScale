@@ -32,7 +32,8 @@ set.seed(42)
 ```{r}
 #| code-fold: false
 
-df <- read.csv("../data/data_participants.csv")
+df <- read.csv("../data/data_participants.csv") |> 
+  filter(!is.na(MINT_Awareness_ExAc_35))
 ```
 
 ## Structure Validation
@@ -41,9 +42,11 @@ df <- read.csv("../data/data_participants.csv")
 #| code-fold: false
 
 items <- select(df, starts_with("MINT_"))
+names(items) <- str_remove(names(items), "MINT_")
+
+colors <- c(MINT="#00BCD4", MINTi="#00838F", IAS="#F44336", MAIA="#FF9800", MAIAi="#EF6C00", BPQ="#795548")
 ```
 
--   items commneted out - need to decide if keep or not
 
 ```{r}
 labels <- list(
@@ -59,9 +62,9 @@ labels <- list(
   MINT_Deficit_Olfa_10 = "I often check the smell of my armpits",
   MINT_Deficit_Olfa_11 = "I often check the smell of my own breath",
   MINT_Deficit_Olfa_12 = "I often check the smell of my farts",
-  #MINT_Deficit_Sati_13 = "I don't always feel the need to eat until I am really hungry",
-  #MINT_Deficit_Sati_14 = "Sometimes I don't realise I was hungry until I ate something",
-  #MINT_Deficit_Sati_15 = "I don't always feel the need to drink until I am really thirsty",
+  MINT_Deficit_Sati_13 = "I don't always feel the need to eat until I am really hungry",
+  MINT_Deficit_Sati_14 = "Sometimes I don't realise I was hungry until I ate something",
+  MINT_Deficit_Sati_15 = "I don't always feel the need to drink until I am really thirsty",
   # MINT_Awareness_SexA_16 = "I always feel in my body if I am sexually aroused",
   # MINT_Awareness_SexA_17 = "I can always tell that I am sexually aroused from the way I feel inside",
   # MINT_Awareness_SexA_18 = "I always know when I am sexually aroused",
@@ -102,16 +105,39 @@ labels <- list(
   # MINT_Sensitivity_SexC_53 = "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
   # MINT_Sensitivity_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)"
 )
+
+
+cleanlabels <- function(x, qname=FALSE) {
+  is_factor <- FALSE
+  if(is.factor(x)) {
+    is_factor <- TRUE
+    vec <- x
+    x <- levels(x)
+  }
+  
+  x <- x |> 
+    str_replace("MINT_", ifelse(qname, "MINT - ", "")) |> 
+    str_replace("MAIA_", ifelse(qname, "MAIA - ", "")) |> 
+    str_replace("_", " (") 
+  x <- ifelse(str_detect(x, "\\("), paste0(x, ")"), x)
+  
+  if(is_factor) {
+    levels(vec) <- x
+    return(vec)
+  }
+  x
+}
 ```
 
 ### Cluster Stability
+
+#### Full
 
 ```{r}
 #| eval: false
 
 ega1 <- bootEGA(
   items,
-  na.data = "pairwise",
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "leiden",
@@ -132,9 +158,58 @@ save(ega1, file="models/ega1.RData")
 
 load("models/ega1.RData")
 
-# EGAnet::dimensionStability(ega)
 itemstability <- EGAnet::itemStability(ega1, IS.plot=FALSE)
 plot(itemstability)
+```
+
+#### Final
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
+items <- items |> 
+  select(-contains("UrSe"))
+```
+
+
+```{r}
+#| eval: false
+
+ega2 <- bootEGA(
+  items,
+  EGA.type = "hierEGA",
+  model = "glasso",  # BGGM
+  algorithm = "leiden",
+  type="resampling",
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=FALSE,
+  iter=500,
+  seed=3, ncores = 4)
+
+save(ega2, file="models/ega2.RData")
+```
+
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
+load("models/ega2.RData")
+
+# EGAnet::dimensionStability(ega)
+itemstability <- EGAnet::itemStability(ega2, IS.plot=FALSE)
+plot(itemstability)
+```
+
+#### Item Table 
+
+
+```{r}
+#| message: false
 
 make_loadingtable <- function(x) {
   t <- as.data.frame(x) |>
@@ -149,14 +224,607 @@ make_loadingtable <- function(x) {
     as.data.frame()
 }
 
-itemstability_table <- make_loadingtable(itemstability$lower_order$item.stability$all.dimensions)
+dimensions <- list(
+  C08 = "CaCo",       # Cardiorespiratory Confusion
+  C01 = "UrIn",       # Urointestinal Inaccuracy
+  C02 = "Derm",       # Dermatoception
+  C10 = "CaNo",       # Cardiorespiratory Noticing
+  C13 = "Sati",       # Satiety Noticing
+  
+  C14 = "SexS",       # Sexual Arousal Sensitivity
+  C07 = "StaS",       # State Specificity
+  C09 = "SexO",       # Sexual Organs Sensitivity
+  C03 = "ExAc",       # Expulsion Accuracy
+  C06 = "RelA",       # Relaxation Awareness
+  
+  C05 = "Resp",       # Respiroception
+  C11 = "Card",       # Cardioception
+  C12 = "Gast",       # Gastroception
+  C04 = "Olfa"       # Olfactory Compensation
+  
+  # C04 = "SexA",       # Sexual Arousal Awareness
+  # C08 = "UrSe",       # Urointestinal Sensitivity
+  # C12 = "Sign",       # Signalling
+  # C07 = "SexC"        # Sexual Arousal Changes  
+)
 
-# Remove items
-toremove2 <- filter(itemstability_table, Max < 0.8)$Item
-toremove2 <- itemstability_table |> 
-  filter(!Item %in% toremove2) |>
-  mutate(Item, n=n(), .by="Cluster", .keep="used") |> 
-  filter(n < 3) |>  # Remove small clusters
-  pull(Item) |> 
-  c(toremove2)
+
+higher <- make_loadingtable(t(net.loads(ega2$EGA$higher_order, loading.method="revised")$std))
+cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
+
+
+lower <- make_loadingtable(net.loads(ega2$EGA$lower_order, loading.method="revised")$std) |>
+  select(names(higher)) |>
+  mutate(Cluster = fct_relevel(Cluster, cluster_order)) |>
+  arrange(Cluster, desc(Max))
+
+higher$Item <- paste0("M", higher$Item)
+# higher$Label <- c("Interoceptive Deficit", "Interoceptive Awareness", "Interoceptive Sensitivity")
+higher$Label <- ""
+# higher$ID  <- ""
+lower <- mutate(lower, Label = labels[paste0("MINT_", Item)], ID=Item, Item = 1:n())
+
+rbind(higher, select(lower, -ID)) |>
+# rbind(higher, lower) |>
+  datawizard::data_relocate("Label", after = "Item") |>
+  datawizard::data_rename(names(dimensions), dimensions) |>
+  select(-Cluster, -Max) |> 
+  mutate(`|` = "") |> 
+  gt::gt() |>
+  gt::tab_row_group(
+    label = "Items",
+    rows = 1:(nrow(lower) + nrow(higher))
+  ) |>
+  gt::tab_row_group(
+    label = "Metaclusters",
+    rows = 1:nrow(higher)
+  ) |>
+  gt::data_color(columns=-Item,
+                 method = "numeric",
+                 palette = c("red", "white", "green"),
+                 domain = c(-1, 1)) |>
+  gt::tab_style(
+    style = gt::cell_text(size="small", style="italic"),
+    locations = gt::cells_body(columns="Label", rows=c(4:45))
+  ) |>
+  gt::tab_style(
+    style = list(gt::cell_text(weight="bold"),
+                 gt::cell_fill(color = "#F5F5F5")),
+    locations = list(
+      gt::cells_row_groups(groups = "Items"),
+      gt::cells_row_groups(groups = "Metaclusters")
+    )
+  ) |>
+  gt::fmt_number(columns=-Item, decimals=2) |>
+  gt::tab_header(
+    title = gt::md("**Item Loadings**"),
+    subtitle = "Node centrality"
+  ) 
 ```
+
+
+### Score Extraction
+
+```{r}
+df$MINT_Deficit_CaCo <- rowMeans(select(df, starts_with("MINT_Deficit_CaCo_")), na.rm = TRUE)
+df$MINT_Deficit_Urin <- rowMeans(select(df, starts_with("MINT_Deficit_Urin_")), na.rm = TRUE)
+# df$MINT_Deficit <- rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin))
+
+df$MINT_Sensitivity_Derm <- rowMeans(select(df, starts_with("MINT_Sensitivity_Derm_")), na.rm = TRUE)
+df$MINT_Deficit_Sati <- rowMeans(select(df, starts_with("MINT_Deficit_Sati")), na.rm = TRUE)
+df$MINT_Deficit_CaNo <- rowMeans(select(df, starts_with("MINT_Deficit_CaNo")), na.rm = TRUE)
+# df$MINT_LackSensitivity <- rowMeans(select(df, MINT_Sensitivity_Derm, MINT_Deficit_Sati, MINT_Deficit_CaNo))
+
+
+df$MINT_Awareness_SexS <- rowMeans(select(df, starts_with("MINT_Awareness_SexS")), na.rm = TRUE)
+df$MINT_Awareness_StaS <- rowMeans(select(df, starts_with("MINT_Awareness_StaS")), na.rm = TRUE)
+df$MINT_Awareness_SexO <- rowMeans(select(df, starts_with("MINT_Awareness_SexO")), na.rm = TRUE)
+df$MINT_Awareness_ExaC <- rowMeans(select(df, starts_with("MINT_Awareness_ExaC")), na.rm = TRUE)
+df$MINT_Awareness_RelA <- rowMeans(select(df, starts_with("MINT_Awareness_RelA")), na.rm = TRUE)
+df$MINT_Awareness <- rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, MINT_Awareness_SexO, MINT_Awareness_ExaC, MINT_Awareness_RelA))
+
+df$MINT_Interoception_Card <- rowMeans(select(df, starts_with("MINT_Sensitivity_Card")), na.rm = TRUE)
+df$MINT_Interoception_Resp <- rowMeans(select(df, starts_with("MINT_Sensitivity_Resp")), na.rm = TRUE)
+df$MINT_Interoception_Gast <- rowMeans(select(df, starts_with("MINT_Sensitivity_Gast")), na.rm = TRUE)
+df$MINT_Interoception <- rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
+
+df$MINT_Deficit_Olfa <- rowMeans(select(df, starts_with("MINT_Deficit_Olfa")), na.rm = TRUE)
+# df$MINT_Awareness_UrSe <- rowMeans(select(df, starts_with("MINT_Awareness_UrSe")), na.rm = TRUE)
+
+
+
+# df$MINT_Awareness <- rowMeans(select(df, starts_with("MINT_Awareness"), -matches("[[:digit:]]")))
+
+
+df <- df[names(df)[!grepl("MINT_.*[0-9]$", names(df))]]
+
+
+minti <- data.frame(
+  # MINT_Deficit = df$MINT_Deficit,
+  MINT_Awareness = df$MINT_Awareness,
+  MINT_Interoception = df$MINT_Interoception
+)
+```
+
+
+```{r}
+#| warning: false
+
+make_cor <- function(df1, df2=NULL) {
+  df1 |> 
+    correlation::correlation(data2=df2, p_adjust="none", redundant=ifelse(is.null(df2), TRUE, FALSE)) |> 
+    correlation::cor_sort() |>
+    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
+           Parameter1 = cleanlabels(Parameter1, qname=FALSE),
+           Parameter2 = cleanlabels(Parameter2, qname=TRUE)) |> 
+    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+    geom_tile() +
+    geom_text(aes(label=label), size=3) +
+    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust=1),
+          legend.position = "none")
+}
+
+make_cor(select(df, starts_with("MINT"))) +
+  labs(x="", y="", title="Correlation between MINT dimensions") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1, 
+                                   face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
+                                          "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
+                                          "plain", "plain")))
+```
+
+
+
+## Convegent Validity
+
+::: panel-tabset
+
+### Interoception 
+
+
+```{r}
+#| warning: false
+
+make_cor <- function(df1, df2) {
+  df1 |> 
+    correlation::correlation(df2, p_adjust="none") |> 
+    correlation::cor_sort() |>
+    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
+           Parameter1 = cleanlabels(Parameter1, qname=FALSE),
+           Parameter2 = cleanlabels(Parameter2, qname=TRUE)) |> 
+    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+    geom_tile() +
+    geom_text(aes(label=label), size=3) +
+    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust=1),
+          legend.position = "none")
+}
+
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")),
+         select(df, starts_with("MAIA"), IAS, BPQ)) +
+  labs(x="MINT", y="", title="Correlations between the MINT and other Interoception Questionnaires") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1, 
+                                   face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
+                                          "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
+                                          "plain", "plain")))
+```
+
+```{r}
+select(df, starts_with("MINT"), starts_with("MAIA"), IAS, BPQ) |> 
+  parameters::factor_analysis(n=4, rotation="oblimin") |> 
+  plot()
+```
+
+
+
+```{r}
+# library(umap)
+# 
+# items_intero <- select(df, starts_with("MINT"), -matches("[[:digit:]]"), starts_with("MAIA"), IAS, BPQ)
+# rez <- umap::umap(datawizard::data_transpose(items_intero[complete.cases(items_intero),]))
+# 
+# rez
+# as.data.frame(rez$layout) |> 
+#   rownames_to_column(var="Variable") |> 
+#   separate(Variable, into=c("Questionnaire", "Dimension", "Sub"), fill="right") |> 
+#   ggplot(aes(x=V1, y=V2, color=Questionnaire)) +
+#   geom_point(size=3) +
+#   scale_color_manual(values=colors)
+```
+
+### Alexithymia
+
+```{r}
+compare_models <- function(outcome="TAS_DIF") {
+  
+  # Individual predictors
+  preds <- c("BPQ", "IAS", 
+             names(select(df, starts_with("MINT"), -matches("[[:digit:]]"))),
+             names(select(df, starts_with("MAIA"))))
+  
+  models <- list()
+  for(p in preds) {
+    models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=df)
+  }
+  perf <- compare_performance(models) |> 
+    arrange(desc(R2))
+  
+  best_mint <- perf$Name[str_detect(perf$Name, "MINT_")][1]
+  best_maia <- perf$Name[str_detect(perf$Name, "MAIA")][1]
+  
+  models <- list()
+  df_pred <- data.frame()
+  for(p in c(best_mint, best_maia, "BPQ", "IAS")) {
+    models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=df)
+    pred <- modelbased::estimate_relation(models[[p]], by=p, length=30) 
+    names(pred)[1] <- "Value"
+    pred$Predictor <- p
+    df_pred <- rbind(df_pred, pred)
+  }
+  
+  test <- test_performance(models) 
+  
+  cols <- colors
+  cols[[best_mint]] <- cols["MINT"]
+  cols[[best_maia]] <- cols["MAIA"]
+  
+  p <- df_pred |>
+    mutate(Questionnaire = case_when(
+      str_detect(Predictor, "MINT") ~ "MINT", 
+      str_detect(Predictor, "MAIA") ~ "MAIA",
+      .default = Predictor)) |> 
+    ggplot(aes(x=Value, y=Predicted)) +
+    geom_ribbon(aes(ymin=CI_low, ymax=CI_high, fill=Predictor), alpha=0.3) +
+    geom_line(aes(color=Predictor)) +
+    scale_fill_manual(values=cols) +
+    scale_color_manual(values=cols) +
+    facet_wrap(~Predictor, scales="free_x") +
+    labs(y=outcome, x="Interoception Index")
+  
+  # Full Questionnaires
+  m_mint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$"))) |> 
+    step(direction = "both", trace=0)
+  m_minti <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minti, df[outcome])) |> 
+    step(direction = "both", trace=0)
+  m_ias <- lm(as.formula(paste0(outcome, " ~ IAS")),
+              data = df)
+  m_maia <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), starts_with("MAIA"))) |> 
+    step(direction = "both", trace=0)
+  m_maiai <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), 
+                              starts_with("MAIA"), 
+                              -contains("NotWorrying"),
+                              -contains("NotDistracting"))) |> 
+    step(direction = "both", trace=0)
+  m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
+                data = df)
+  
+  test_all <- test_performance(m_mint, m_minti, m_ias, m_maia, m_maiai, m_bpq)
+  test_all$Predictors <- c(
+    paste0(cleanlabels(find_predictors(m_mint)$conditional), collapse = ", "),
+    paste0(cleanlabels(find_predictors(m_minti)$conditional), collapse = ", "),
+    "", 
+    paste0(cleanlabels(find_predictors(m_maia)$conditional), collapse = ", "),
+    paste0(cleanlabels(find_predictors(m_maiai)$conditional), collapse = ", "),
+    "")
+  
+  list(test=test,  test_all=test_all, p=p)
+}
+
+rez1 <- compare_models("TAS_DIF")
+rez1$test
+rez1$p
+rez1$test_all
+
+rez2 <- compare_models("TAS_DDF")
+rez2$test
+rez2$p
+rez2$test_all
+
+rez3 <- compare_models("TAS_EOT")
+rez3$test
+rez3$p
+rez3$test_all
+```
+
+
+### Mood
+
+```{r}
+rez <- compare_models("LifeSatisfaction")
+rez$test
+rez$p
+rez$test_all
+
+rez <- compare_models("PHQ4_Anxiety")
+rez$test
+rez$p
+rez$test_all
+
+rez <- compare_models("PHQ4_Depression")
+rez$test
+rez$p
+rez$test_all
+```
+
+### Emotions
+
+```{r}
+rez <- compare_models("ERS_Arousal")
+rez$test
+rez$p
+rez$test_all
+
+rez <- compare_models("ERS_Sensitivity")
+rez$test
+rez$p
+rez$test_all
+
+rez <- compare_models("ERS_Persistence")
+rez$test
+rez$p
+rez$test_all
+```
+
+:::
+
+## Predictive
+
+### Mental Health
+
+::: panel-tabset
+
+#### Mood Disorders
+
+```{r}
+compare_predictive <- function(outcome="Disorders_Psychiatric_Mood") {
+  m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$")),
+              family = "binomial") |> 
+  step(direction = "both", trace=0)
+  
+  m_minti <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minti, df[outcome]),
+              family = "binomial") |> 
+    step(direction = "both", trace=0)
+  
+  m_ias <- glm(as.formula(paste0(outcome, " ~ IAS")),
+              data = df,
+              family = "binomial")
+
+  m_maia <- glm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), starts_with("MAIA")),
+                family = "binomial") |> 
+    step(direction = "both", trace=0)
+  
+  m_maiai <- glm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), 
+                              starts_with("MAIA"), 
+                              -contains("NotWorrying"),
+                              -contains("NotDistracting")),
+                family = "binomial") |> 
+    step(direction = "both", trace=0)
+  
+  m_bpq <- glm(as.formula(paste0(outcome, " ~ BPQ")),
+                data = df,
+                family = "binomial")
+  
+  test <- test_performance(m_mint, m_minti, m_ias, m_maia, m_maiai, m_bpq)
+  
+  get_auc <- function(m) {
+    roc <- as.data.frame(performance_roc(m))
+    auc <- bayestestR::area_under_curve(roc$Specificity, roc$Sensitivity)
+    paste0("AUC = ", insight::format_percent(auc))
+  }
+  
+  p <- rbind(
+    mutate(as.data.frame(performance_roc(m_mint)), Predictor = "MINT"),
+    mutate(as.data.frame(performance_roc(m_minti)), Predictor = "MINTi"),
+    mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
+    mutate(as.data.frame(performance_roc(m_maia)), Predictor = "MAIA"),
+    mutate(as.data.frame(performance_roc(m_maiai)), Predictor = "MAIAi"),
+    mutate(as.data.frame(performance_roc(m_bpq)), Predictor = "BPQ")
+  ) |> 
+      ggplot(aes(x=Specificity)) +
+      geom_abline(intercept=0, slope=1, color="gray") +
+      geom_line(aes(y=Sensitivity, color=Predictor), linewidth=2, alpha=0.9) +
+      geom_label(data=data.frame(
+        label = c(get_auc(m_mint), get_auc(m_minti), get_auc(m_ias), get_auc(m_maia), get_auc(m_maiai), get_auc(m_bpq)),
+        Predictor = c("MINT", "MINTi", "IAS", "MAIA", "MAIAi", "BPQ"),
+        x = 0.25,
+        y = c(0.65, 0.60, 0.55, 0.45, 0.35, 0.20)), 
+        aes(x=x, y=y, label=label), color=colors) +
+      labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
+           color="Questionnaire Version") +
+      scale_color_manual(values=colors) +
+      scale_x_continuous(labels=scales::percent) +
+      scale_y_continuous(labels=scales::percent) +
+      theme_minimal()
+  
+  list(m_mint=m_mint, m_ias=m_ias, m_maia=m_maia, m_maiai=m_maiai, test=test, p=p)
+}
+```
+
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_Mood")
+rez$p
+```
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_MoodTreatment")
+rez$p
+```
+
+#### Anxiety
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_Anxiety")
+rez$p
+```
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_AnxietyTreatment")
+rez$p
+```
+
+#### Eating
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_Eating")
+rez$p
+```
+
+#### Addiction
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_Addiction")
+rez$p
+```
+
+#### ADHD
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_ADHD")
+rez$p
+```
+
+#### Autism
+
+```{r}
+rez <- compare_predictive("Disorders_Psychiatric_Autism")
+rez$p
+```
+
+
+#### Borderline
+
+```{r}
+# rez <- compare_predictive("Disorders_Psychiatric_Borderline")
+# rez$p
+```
+
+
+::::
+
+
+
+### Somatic Issues
+
+::: panel-tabset
+
+#### Autonomic
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Autonomic")
+rez$p
+```
+
+#### Functional
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Functional")
+rez$p
+```
+
+#### Hyperreactivity
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Hyperreactivity")
+rez$p
+```
+
+#### Immune
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Immune")
+rez$p
+```
+
+#### Cardio
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Cardio")
+rez$p
+```
+
+
+#### Connective
+
+```{r}
+rez <- compare_predictive("Disorders_Somatic_Connective")
+rez$p
+```
+
+:::
+
+
+### Biofeedback Usage
+
+```{r}
+model <- glm(as.formula(paste0("Wearables_Number ~ .")),
+              data = select(df, Wearables_Number, starts_with("MINT"), -matches("[[:digit:]]")),
+              family = "poisson") |> 
+  step(direction = "both", trace=0)
+
+parameters::parameters(model)
+
+model <- glm(as.formula(paste0("Wearables_Heart ~ .")),
+              data = df |>
+              mutate(Wearables_Heart = Wearables_Heart != "Not owning") |> 
+              select(Wearables_Heart, starts_with("MINT"), -matches("[[:digit:]]")),
+              family = "binomial") |> 
+  step(direction = "both", trace=0, k = log(nrow(df)))
+summary(model)
+
+
+model <- lm(as.formula(paste0("Wearables_HeartImportance ~ .")),
+              data = df |>
+              filter(!is.na(Wearables_HeartImportance)) |> 
+              select(Wearables_HeartImportance, starts_with("MINT"), -matches("[[:digit:]]"))) |> 
+  step(direction = "both", trace=0, k = log(nrow(filter(df, !is.na(Wearables_HeartImportance)))))
+
+parameters::parameters(model)
+```
+
+
+
+## Exploratory
+
+### CEFSA
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("CEFSA")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("CEFSA")))
+```
+
+### Emotion Regulation
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("CERQ")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("CERQ")))
+```
+
+
+
+### Primals
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("PI")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("PI")))
+```
+

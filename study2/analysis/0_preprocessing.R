@@ -2,10 +2,11 @@ library(jsonlite)
 library(progress)
 
 
-options(warn = 2)  # Stop on warnings
+options(warn = 2) # Stop on warnings
 
-# path <- "C:/Users/maisi/Box/InteroceptionScale/study2"
-path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
+# path <- "C:/Users/maisi/Box/InteroceptionScale/
+# path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
+path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
 # path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 
@@ -13,10 +14,28 @@ path <- "C:/Users/domma/Box/Data/InteroceptionScale/study2/"
 # Convenience Functions ---------------------------------------------------
 
 convert_feet_to_meters <- function(height) {
-  height[height == "5\"11"] <- "5'11"
+  height[height == "I'm 5ft8"] <- "5'8"
+  height <- gsub("ft ", "'", tolower(height))
+  height <- gsub("ft", "'", tolower(height))
+  height <- gsub(" feet ", "'", tolower(height))
+  height <- gsub(" in ", "", height)
+  height <- gsub("in", "", height)
+  height <- gsub(" inches", "", height)
+  height <- gsub("' ", "'", height)
+  height <- gsub("`", "'", height)
+  height <- gsub("”", "'", height)
+  height <- gsub("\"", "'", height)
+  height[height == "6f 5"] <- "6'5"
+  height[height == "54"] <- "5'4"
+  height[height == "5’qq"] <- "5'11"
   height[height == "511"] <- "5'11"
-  height[height == "5ft2in"] <- "5'12"
-  height[height == "5ft 5 in"] <- "5'5"
+  height[height == "6\"2"] <- "6'2"
+  height[height == "62"] <- "6'2"
+  height[height == "5<1"] <- "5'1"
+  height[height == "5/9"] <- "5'9"
+  height[height == "5.833"] <- "5'8.33"
+
+  if(height=="176") return(1.76)
   # Remove extra spaces and quotes
   height <- trimws(gsub("\"", "", height))
 
@@ -38,8 +57,17 @@ convert_feet_to_meters <- function(height) {
 }
 
 convert_stones_to_kg <- function(weight) {
-  weight[weight == "10st1lb"] <- "10'1"
+  weight <- gsub("st ", "'", weight)
+  weight <- gsub("st", "'", weight)
+  weight <- gsub("lbs", "", weight)
+  weight <- gsub("lb", "", weight)
+  weight <- gsub(" lb", "", weight)
+  weight <- gsub("’", "'", weight)
+  weight[weight == "58"] <- "5'8"
+  weight[weight == "62"] <- "6'2"
   weight[weight == "64"] <- "6'4"
+  weight[weight == "135"] <- "13'5"
+  weight[weight == "125"] <- "12'5"
   weight <- trimws(gsub("\"", "", weight))
 
   # Handle integer input like "6" (assume stones only, zero pounds)
@@ -63,7 +91,7 @@ convert_stones_to_kg <- function(weight) {
 # Run loop ----------------------------------------------------------------
 
 
-files <- list.files(path, pattern = "*.csv")
+files <- list.files(paste0(path, c("study2/", "study2sona/")), full.names = TRUE, pattern = "*.csv")
 
 
 # Progress bar
@@ -72,11 +100,16 @@ progbar <- progress_bar$new(total = length(files))
 alldata <- data.frame()
 for (file in files) {
   progbar$tick()
-  rawdata <- read.csv(paste0(path, "/", file))
+  rawdata <- read.csv(file)
 
 
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info", ]
+
+  if(is.na(dat$prolific_id) && is.na(dat$researcher)) {
+    print(paste0("skip (no 'exp' URLvar): ", gsub(path, "", file)))
+    next
+  }
 
   data_ppt <- data.frame(
     Participant = dat$participantID,
@@ -90,11 +123,18 @@ for (file in files) {
     Screen_Height = dat$screen_height
   )
 
-  if("prolific_id" %in% colnames(dat)){
-    data_ppt$Prolific_ID <- dat$prolific_id
+
+
+  if (data_ppt$Recruitment == "prolific") {
+    data_ppt$ID <- dat$prolific_id
+    data_ppt$Condition <- "Prolific"
+  } else if (data_ppt$Recruitment == "SONA") {
+    data_ppt$ID <- dat$sona_id
+    data_ppt$Condition <- dat$condition
   } else {
-    stop("Not prolific")
+    stop("No ID")
   }
+
 
   data_ppt$Reward <- rawdata[rawdata$screen == "demographics_debrief", "Reward"]
 
@@ -105,24 +145,38 @@ for (file in files) {
   data_ppt$Age <- ifelse(!is.null(resp$Age), resp$Age, NA)
 
   # Education
+
+
   data_ppt$Education <- ifelse(resp$Education == "other", resp$`Education-Comment`, resp$Education)
   data_ppt$Education <- ifelse(data_ppt$Education %in% c("HND (college)"), "High school", data_ppt$Education)
+  # Detect "equivalent to a Bachelors" and "HND (college)" and convert to "Bachelor" and "High school"
+  data_ppt$Education <- ifelse(stringr::str_detect(data_ppt$Education, "equivalent to a Bachelors"), "Bachelor", data_ppt$Education)
+  data_ppt$Education <- ifelse(data_ppt$Education %in% c("3rd year BSc", "Bachelor non-university", "graduate certificate (Certificate IV)"), "Bachelor", data_ppt$Education)
+  data_ppt$Education <- ifelse(data_ppt$Education %in% c("NVQ 4", "Professional", "Vocational degree.", "level 3 nvq's", "tech college", "College - HND"), "High school", data_ppt$Education)
 
   data_ppt$Student <- ifelse(!is.null(resp$Student), resp$Student, NA)
   data_ppt$Country <- ifelse(!is.null(resp$Country), resp$Country, NA)
 
   # Ethnicity
   data_ppt$Ethnicity <- ifelse(!is.null(resp$Ethnicity), resp$Ethnicity, NA)
-  data_ppt$Ethnicity <- ifelse(resp$Ethnicity == "other", resp$`Ethnicity-Comment`, resp$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(!is.na(resp$Ethnicity) && resp$Ethnicity == "other", resp$`Ethnicity-Comment`, resp$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Southern European"), "White", data_ppt$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("African"), "Black", data_ppt$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Maori"), "Other", data_ppt$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Mixed white black caribbean"), "Mixed", data_ppt$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Prefer not to say"), NA, data_ppt$Ethnicity)
 
   # BMI
   data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
-  if(!is.na(data_ppt$Height) && data_ppt$Height > 2.5) stop("Height too high")
+  if (!is.na(data_ppt$Height) && data_ppt$Height > 2.5) stop("Height too high")
   data_ppt$Weight <- ifelse(is.null(resp$Weight_st),
-                            ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg),
-                            convert_stones_to_kg(resp$Weight_st))
-  if(!is.na(data_ppt$Weight) && data_ppt$Weight > 300) stop("Weight too high")
+    ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg),
+    convert_stones_to_kg(resp$Weight_st)
+  )
+  data_ppt$Weight[data_ppt$Weight %in% c(45259, 300)] <- NA
+  if (!is.na(data_ppt$Weight) && data_ppt$Weight > 300) stop("Weight too high")
   data_ppt$BMI <- data_ppt$Weight / data_ppt$Height^2
+  if (!is.na(data_ppt$BMI) && data_ppt$BMI > 100) stop("BMI too high")
 
 
   # Feedback
@@ -135,7 +189,7 @@ for (file in files) {
   wearables <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographics_wearables", "response"])
   data_ppt$Physical_Active <- wearables$Physical_Active
   data_ppt$Physical_Workout <- wearables$Physical_Workout
-  data_ppt$Wearables_Number <- ifelse(is.null(wearables$Wearables_Ownership), NA, length(wearables$Wearables_Ownership))
+  data_ppt$Wearables_Number <- ifelse(all(wearables$Wearables_Ownership == "none"), 0, length(wearables$Wearables_Ownership))
   data_ppt$Wearables_Heart <- ifelse(is.null(wearables$Wearables_Heart), "Not owning", wearables$Wearables_Heart)
   data_ppt$Wearables_HeartImportance <- ifelse(is.null(wearables$Wearables_HeartImportance), NA, wearables$Wearables_HeartImportance)
   data_ppt$Wearables_Steps <- ifelse(is.null(wearables$Wearables_Steps), "Not owning", wearables$Wearables_Steps)
@@ -151,47 +205,49 @@ for (file in files) {
 
   # Mint questionnaire
   mint <- as.data.frame(jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_mint", "response"]))
-  if("InteroceptiveFailures_1" %in% colnames(mint)){
-    data_ppt$MINT_Deficit_CaCo_4 <- mint$InteroceptiveFailures_1
-    data_ppt$MINT_Deficit_CaCo_5 <- mint$InteroceptiveFailures_2
-    data_ppt$MINT_Deficit_CaCo_6 <- mint$InteroceptiveFailures_3
-    data_ppt$MINT_Deficit_Urin_1 <- mint$InteroceptiveFailures_4
-    data_ppt$MINT_Deficit_Urin_2 <- mint$InteroceptiveFailures_5
-    data_ppt$MINT_Deficit_Urin_3 <- mint$InteroceptiveFailures_6
-    data_ppt$MINT_Deficit_CaNo_7 <- mint$InteroceptiveFailures_7
-    data_ppt$MINT_Deficit_CaNo_8 <- mint$InteroceptiveFailures_8
-    data_ppt$MINT_Deficit_CaNo_9 <- mint$InteroceptiveFailures_9
-    data_ppt$MINT_Deficit_Olfa_11 <- mint$InteroceptiveFailures_11
-    data_ppt$MINT_Deficit_Olfa_12 <- mint$InteroceptiveFailures_12
-    data_ppt$MINT_Deficit_Sati_15 <- mint$InteroceptiveFailures_13
-    data_ppt$MINT_Deficit_Sati_13 <- mint$InteroceptiveFailures_14
-    data_ppt$MINT_Deficit_Sati_14 <- mint$InteroceptiveFailures_15
-    data_ppt$MINT_Awareness_SexS_19 <- mint$InteroceptiveSensitivityPleasure_1
-    data_ppt$MINT_Awareness_SexS_20 <- mint$InteroceptiveSensitivityPleasure_2
-    data_ppt$MINT_Awareness_SexS_21 <- mint$InteroceptiveSensitivityPleasure_3
-    # data_ppt$MINT_Extra_1 <- mint$InteroceptiveSensitivityPleasure_4
-    # data_ppt$MINT_Extra_2 <- mint$InteroceptiveSensitivityPleasure_5
-    # data_ppt$MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_6
-    data_ppt$MINT_Awareness_StaS_31 <- mint$InteroceptiveSensitivityPleasure_7
-    data_ppt$MINT_Awareness_StaS_33 <- mint$InteroceptiveSensitivityPleasure_8
-    data_ppt$MINT_Awareness_StaS_32 <- mint$InteroceptiveSensitivityPleasure_9
-    data_ppt$MINT_Awareness_ExAc_36 <- mint$InteroceptiveSensitivityPleasure_10
-    # data_ppt$MINT_Extra_4 <- mint$nteroceptiveSensitivityPleasure_11
-    data_ppt$MINT_Awareness_ExAc_34 <- mint$InteroceptiveSensitivityPleasure_12
-    data_ppt$MINT_Sensitivity_Derm_50 <- mint$InteroceptiveSensitivityPleasure_13
-    # data_ppt$MINT_Extra_5 <- mint$InteroceptiveSensitivityPleasure_14
-    data_ppt$MINT_Sensitivity_Derm_51 <- mint$InteroceptiveSensitivityPleasure_15
-    data_ppt$MINT_Sensitivity_Resp_40 <- mint$InteroceptiHypervigilance_1
-    data_ppt$MINT_Sensitivity_Resp_42 <- mint$InteroceptiHypervigilance_2
-    data_ppt$MINT_Sensitivity_Resp_41 <- mint$InteroceptiHypervigilance_3
-    data_ppt$MINT_Sensitivity_Card_39 <- mint$InteroceptiHypervigilance_4
-    # data_ppt$MINT_Extra_6 <- mint$InteroceptiHypervigilance_5
-    data_ppt$MINT_Sensitivity_Card_38 <- mint$InteroceptiHypervigilance_6
-    # data_ppt$MINT_Extra_7 <- mint$InteroceptiHypervigilance_7
-    # data_ppt$MINT_Extra_8 <- mint$InteroceptiHypervigilance_8
-    # data_ppt$MINT_Extra_9 <- mint$InteroceptiHypervigilance_9
+  if ("InteroceptiveFailures_1" %in% colnames(mint)) {
+    data_mint <- data.frame(
+      MINT_Deficit_CaCo_4 = mint$InteroceptiveFailures_1,
+      MINT_Deficit_CaCo_5 = mint$InteroceptiveFailures_2,
+      MINT_Deficit_CaCo_6 = mint$InteroceptiveFailures_3,
+      MINT_Deficit_Urin_1 = mint$InteroceptiveFailures_4,
+      MINT_Deficit_Urin_2 = mint$InteroceptiveFailures_5,
+      MINT_Deficit_Urin_3 = mint$InteroceptiveFailures_6,
+      MINT_Deficit_CaNo_7 = mint$InteroceptiveFailures_7,
+      MINT_Deficit_CaNo_8 = mint$InteroceptiveFailures_8,
+      MINT_Deficit_CaNo_9 = mint$InteroceptiveFailures_9,
+      MINT_Deficit_Olfa_11 = mint$InteroceptiveFailures_11,
+      MINT_Deficit_Olfa_12 = mint$InteroceptiveFailures_12,
+      MINT_Deficit_Sati_15 = mint$InteroceptiveFailures_13,
+      MINT_Deficit_Sati_13 = mint$InteroceptiveFailures_14,
+      MINT_Deficit_Sati_14 = mint$InteroceptiveFailures_15,
+      # MINT_Extra_1 <- mint$InteroceptiveSensitivityPleasure_4
+      # MINT_Extra_2 <- mint$InteroceptiveSensitivityPleasure_5
+      # MINT_Extra_3 <- mint$InteroceptiveSensitivityPleasure_6
+      MINT_Awareness_StaS_31 = mint$InteroceptiveSensitivityPleasure_7,
+      MINT_Awareness_StaS_33 = mint$InteroceptiveSensitivityPleasure_8,
+      MINT_Awareness_StaS_32 = mint$InteroceptiveSensitivityPleasure_9,
+      MINT_Awareness_ExAc_36 = mint$InteroceptiveSensitivityPleasure_10,
+      # MINT_Extra_4 = mint$nteroceptiveSensitivityPleasure_11
+      MINT_Awareness_ExAc_34 = mint$InteroceptiveSensitivityPleasure_12,
+      MINT_Sensitivity_Derm_50 = mint$InteroceptiveSensitivityPleasure_13,
+      # MINT_Extra_5 <- mint$InteroceptiveSensitivityPleasure_14
+      MINT_Sensitivity_Derm_51 = mint$InteroceptiveSensitivityPleasure_15,
+      MINT_Sensitivity_Resp_40 = mint$InteroceptiHypervigilance_1,
+      MINT_Sensitivity_Resp_42 = mint$InteroceptiHypervigilance_2,
+      MINT_Sensitivity_Resp_41 = mint$InteroceptiHypervigilance_3,
+      MINT_Sensitivity_Card_39 = mint$InteroceptiHypervigilance_4,
+      # MINT_Extra_6 <- mint$InteroceptiHypervigilance_5,
+      MINT_Sensitivity_Card_38 = mint$InteroceptiHypervigilance_6,
+      # MINT_Extra_7 <- mint$InteroceptiHypervigilance_7
+      # MINT_Extra_8 <- mint$InteroceptiHypervigilance_8
+      # MINT_Extra_9 <- mint$InteroceptiHypervigilance_9
+      MINT_AttentionCheck_1 = mint$MINT_AttentionCheck_1
+    )
+  } else {
+    data_mint <- as.data.frame(mint)
   }
-  data_ppt <- cbind(data_ppt, as.data.frame(mint))
+  data_ppt <- cbind(data_ppt, data_mint)
 
   # Interoception questionnaires
   maia <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_maia", "response"])
@@ -223,7 +279,7 @@ for (file in files) {
   # Pathology questionnaires
   phq4 <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_phq4", "response"])
   phq4$instructions_phq4 <- NULL
-  if(is.null(phq4$LifeSatisfaction)) phq4$LifeSatisfaction <- NA
+  if (is.null(phq4$LifeSatisfaction)) phq4$LifeSatisfaction <- NA
   data_ppt <- cbind(data_ppt, as.data.frame(phq4))
 
   cefsa <- jsonlite::fromJSON(rawdata[rawdata$screen == "questionnaire_cefsa", "response"])
@@ -244,10 +300,12 @@ for (file in files) {
   v[grep("Social Anxiety ", v)] <- "Social Phobia"
   v[grep("Borderline", v)] <- "BPD"
   v[grep("Panic ", v)] <- "Panic"
+  v[grep("Bipolar ", v)] <- "Bipolar"
   v[grep("Obsessive-Compulsive ", v)] <- "OCD"
+  v[grep("none", v)] <- "None"
   data_ppt$Disorders_Psychiatric <- paste0(v, collapse = "; ")
 
-  if(!is.null(mental$Disorders_PsychiatricTreatment)) {
+  if (!is.null(mental$Disorders_PsychiatricTreatment)) {
     v <- mental$Disorders_PsychiatricTreatment
     v[grep("Antidepressant", v)] <- "Antidepressant"
     v[grep("Antipsychotic ", v)] <- "Antipsychotic"
@@ -258,7 +316,7 @@ for (file in files) {
     v[grep("Lifestyle", v)] <- "Lifestyle"
     v[grep("Alternative ", v)] <- "Alternative"
     data_ppt$Disorders_PsychiatricTreatment <- paste0(v, collapse = "; ")
-    if(all(data_ppt$Disorders_PsychiatricTreatment == "none")) {
+    if (all(data_ppt$Disorders_PsychiatricTreatment == "none")) {
       data_ppt$Disorders_PsychiatricTreatment <- NA
     }
   } else {
@@ -267,8 +325,8 @@ for (file in files) {
 
   somatic <- jsonlite::fromJSON(rawdata[rawdata$screen == "questions_somatichealth", "response"])
   somatic$Disorders_Somatic_Instructions <- NULL
-  somatic <- somatic[grep("-Comment", names(somatic), invert=TRUE)]
-  for(s in names(somatic)) {
+  somatic <- somatic[grep("-Comment", names(somatic), invert = TRUE)]
+  for (s in names(somatic)) {
     somatic[[s]] <- ifelse(somatic[[s]] == "other", paste0("Other ", gsub("Disorders_Somatic_", "", s)), somatic[[s]])
   }
   somatic <- unlist(somatic[sapply(somatic, function(x) all(x != "none"))])
@@ -290,11 +348,11 @@ unique(alldata$Disorders_PsychiatricTreatment)
 unique(alldata$Disorders_Somatic)
 unique(alldata$Education)
 unique(alldata$Ethnicity)
-unique(alldata$Weight)
+unique(alldata$Recruitment)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
-  MINT = alldata$MINT_AttentionCheck_1/ 6,
+  MINT = alldata$MINT_AttentionCheck_1 / 6,
   TAS = (alldata$TAS_AttentionCheck_1 - 1) / 4,
   PI18 = 1 - alldata$PI18_AttentionCheck_1 / 5,
   CEFSA = alldata$CEFSA_AttentionCheck_1 / 4,
@@ -303,13 +361,13 @@ checks <- data.frame(
   BPQ = 1 - alldata$BodyAwareness_AttentionCheck_1 / 5
 )
 checks$Score <- rowMeans(checks)
-checks$Prolific_ID <- alldata$Prolific_ID
+checks$ID <- alldata$ID
 checks$Experiment_Duration <- alldata$Experiment_Duration
 checks$Reward <- alldata$Reward
-checks <- checks[!is.na(checks$Prolific_ID), ]
+checks <- checks[!is.na(checks$ID), ]
 checks <- checks[order(checks$Score, decreasing = TRUE), ]
 # checks
-# checks[checks$Prolific_ID=="6083d7eabcd2e4687edeb542", ]
+# checks[checks$Prolific_ID=="5e736c9f4e8cdf034bdfa5c3", ]
 
 
 # MINT: "I can always accurately answer to the extreme left on this question to show that I am reading it"
@@ -341,5 +399,3 @@ alldata$Participant <- ids[alldata$Participant]
 options(warn = 0)
 
 write.csv(alldata, "../data/rawdata_participants.csv", row.names = FALSE)
-
-
