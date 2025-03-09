@@ -36,6 +36,9 @@ df <- read.csv("../../study2/data/rawdata_participants.csv") |>
   mutate(Condition = fct_relevel(Condition, "Prolific", "Attention Checks", "Quiz", "Control"))
 ```
 
+```{r}
+
+```
 
 ## Attention Checks
 

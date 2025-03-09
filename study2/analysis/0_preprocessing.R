@@ -6,8 +6,8 @@ options(warn = 2) # Stop on warnings
 
 # path <- "C:/Users/maisi/Box/InteroceptionScale/
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
-path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
-# path <- "C:/Users/asf25/Box/InteroceptionScale/"
+# path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 
 
@@ -168,6 +168,9 @@ for (file in files) {
 
   # BMI
   data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
+  if ("3y39b5pwby" %in% data_ppt$Participant){
+    data_ppt$Height[data_ppt$Participant == "3y39b5pwby"] <- data_ppt$Height[data_ppt$Participant == "3y39b5pwby"] * 100
+  }
   if (!is.na(data_ppt$Height) && data_ppt$Height > 2.5) stop("Height too high")
   data_ppt$Weight <- ifelse(is.null(resp$Weight_st),
     ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg),
