@@ -26,6 +26,40 @@ library(ggdist)
 df <- read.csv("../data/rawdata_participants.csv")
 ```
 
+## Recruitment History
+
+```{r}
+#| message: false
+
+# Consecutive count of participants per day (as area)
+df |>
+  mutate(Date = as.Date(Experiment_StartDate, format = "%Y-%m-%d %H:%M:%S")) |> 
+  summarize(N = n(), .by=c("Date", "Recruitment")) |> 
+  complete(Date, Recruitment, fill = list(N = 0)) |> 
+  mutate(N = cumsum(N), .by="Recruitment") |>
+  ggplot(aes(x = Date, y = N)) +
+  geom_area(aes(fill=Recruitment)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(
+    title = "Recruitment History",
+    x = "Date",
+    y = "Total Number of Participants"
+  ) +
+  see::theme_modern()
+```
+
+```{r}
+#| message: false
+
+# Table
+summarize(df, N = n(), .by=c("Recruitment")) |> 
+  arrange(desc(N)) |> 
+  gt::gt() |> 
+  gt::opt_stylize() |> 
+  gt::opt_interactive(use_compact_mode = TRUE) |> 
+  gt::tab_header("Number of participants per recruitment source")
+```
+
 ## Feedback
 
 ### Experiment Enjoyment
@@ -279,15 +313,25 @@ df <- select(df, -starts_with("PI18_"))
 ```
 
 
+
 ## Final Sample
 
 ::: panel-tabset
 
 ### Summary
 
+
+We removed `r sum(is.na(df$MINT_Awareness_RelA_29))` participants with missing data for the MINT due to a technical error.
+
+```{r}
+#| code-fold: false
+
+df <- filter(df, !is.na(df$MINT_Awareness_RelA_29))
+```
+
+
 The final sample includes `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
 
-Among these, `r sum(is.na(df$MINT_Awareness_RelA_29))` have missing data for the MINT due to a technical error.
 
 
 ### Age and Gender
