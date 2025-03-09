@@ -63,6 +63,7 @@ dfchecks <- df |>
   ) 
 dfchecks$TotalFailed <- rowSums(dfchecks)
 df$TotalFailed <- dfchecks$TotalFailed
+df$Failed <- ifelse(dfchecks$TotalFailed >= 1, 1, 0)
 
 dfchecks |>
   mutate(Total = as.factor(paste0(TotalFailed, "/8"))) |> 
@@ -80,25 +81,53 @@ dfchecks |>
 
 ```{r}
 df |> 
-  mutate(Failed = ifelse(TotalFailed >= 1, 1, 0)) |> 
   summarize(Failed = sum(Failed), N = n(), p = Failed / N, .by="Condition") |> 
   gt::gt()
 ```
+
+### Failed at least one
+
+```{r}
+m1 <- glm(Failed ~ Prolific, 
+          data=mutate(df, Prolific = ifelse(Condition == "Prolific", "Prolific", "SONA")), 
+          family="binomial")
+# m1 <- brms::brm(Failed ~ Condition, data=df, family="poisson", backend="cmdstanr")
+
+modelbased::estimate_means(m1, by="Prolific", keep_iterations=10) |> 
+  plot()
+
+modelbased::estimate_contrasts(m1)
+```
+
+
+```{r}
+m1 <- glm(Failed ~ Condition, data=df, family="binomial")
+# m1 <- brms::brm(Failed ~ Condition, data=df, family="poisson", backend="cmdstanr")
+
+modelbased::estimate_means(m1, by="Condition", keep_iterations=10) |> 
+  plot()
+
+modelbased::estimate_contrasts(m1)
+```
+
+
+
+### Number
 
 ```{r}
 m1 <- glm(TotalFailed ~ Condition, data=df, family="poisson")
 m2 <- glmmTMB::glmmTMB(TotalFailed ~ Condition,
                       data=df,
-                      ziformula=~1,
+                      ziformula=~Condition,
                       family="poisson")
 m3 <- glmmTMB::glmmTMB(TotalFailed ~ Condition,
                       data=df,
-                      ziformula=~1,
+                      ziformula=~Condition,
                       family=glmmTMB::truncated_nbinom2)
 
 compare_performance(m1, m2, m3)
 test_performance(m1, m2, m3)
 
-modelbased::estimate_means(m1, by="Condition", backend="emmeans") |> 
+modelbased::estimate_means(m1, by="Condition") |> 
   plot()
 ```

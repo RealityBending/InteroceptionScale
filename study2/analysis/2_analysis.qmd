@@ -32,8 +32,7 @@ set.seed(42)
 ```{r}
 #| code-fold: false
 
-df <- read.csv("../data/data_participants.csv") |> 
-  filter(!is.na(MINT_Awareness_ExAc_35))
+df <- read.csv("../data/data_participants.csv")
 ```
 
 ## Structure Validation
@@ -41,10 +40,10 @@ df <- read.csv("../data/data_participants.csv") |>
 ```{r}
 #| code-fold: false
 
-items <- select(df, starts_with("MINT_"))
+items <- filter(df, !is.na(MINT_Awareness_ExAc_35)) 
 names(items) <- str_remove(names(items), "MINT_")
 
-colors <- c(MINT="#00BCD4", MINTi="#00838F", IAS="#F44336", MAIA="#FF9800", MAIAi="#EF6C00", BPQ="#795548")
+colors <- c(MINT="#00BCD4", MINTi="#00838F", IAS="#F44336", MAIA="#FF9800", MAIAi="#EF6C00", MAIAmin="#E65100", BPQ="#795548")
 ```
 
 
@@ -347,6 +346,18 @@ minti <- data.frame(
 ```
 
 
+Most correlated dims:
+- CaCo x8
+- Urin x4
+- Rela x4
+- Derm x3
+- Sati
+- Olfa
+- StaS
+- ExaC
+- Resp
+
+
 ```{r}
 #| warning: false
 
@@ -437,6 +448,22 @@ select(df, starts_with("MINT"), starts_with("MAIA"), IAS, BPQ) |>
 ### Alexithymia
 
 ```{r}
+table_models <- function(models) {
+  test <- test_performance(models)
+  test$Model <- NULL
+  test$Omega2 <- NULL
+  test$p_Omega2 <- NULL
+  test$R2 <- compare_performance(models, metrics="R2")$R2
+  
+  preds <- c()
+  for(m in models){
+    x <- names(sort(abs(coef(m)[-1]), decreasing=TRUE))
+    preds <- c(preds, paste0(cleanlabels(x), collapse = ", "))
+  }
+  test$Predictors <- preds
+  format(test, zap_small = TRUE)
+}
+
 compare_models <- function(outcome="TAS_DIF") {
   
   # Individual predictors
@@ -464,7 +491,8 @@ compare_models <- function(outcome="TAS_DIF") {
     df_pred <- rbind(df_pred, pred)
   }
   
-  test <- test_performance(models) 
+  test <- table_models(models)
+  test$Predictors <- NULL
   
   cols <- colors
   cols[[best_mint]] <- cols["MINT"]
@@ -501,75 +529,104 @@ compare_models <- function(outcome="TAS_DIF") {
                               -contains("NotWorrying"),
                               -contains("NotDistracting"))) |> 
     step(direction = "both", trace=0)
+  m_maiamin <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome),
+                              MAIA_AttentionRegulation, # remove?
+                              MAIA_SelfRegulation, # remove?
+                              # MAIA_Trusting, # remove?
+                              MAIA_BodyListening, 
+                              MAIA_EmotionalAwareness,
+                              MAIA_Noticing)) |> 
+    step(direction = "both", trace=0)
   m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
                 data = df)
   
-  test_all <- test_performance(m_mint, m_minti, m_ias, m_maia, m_maiai, m_bpq)
-  test_all$Predictors <- c(
-    paste0(cleanlabels(find_predictors(m_mint)$conditional), collapse = ", "),
-    paste0(cleanlabels(find_predictors(m_minti)$conditional), collapse = ", "),
-    "", 
-    paste0(cleanlabels(find_predictors(m_maia)$conditional), collapse = ", "),
-    paste0(cleanlabels(find_predictors(m_maiai)$conditional), collapse = ", "),
-    "")
+  models_full <- list(m_mint=m_mint, m_minti=m_minti, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq)
+  test_all <- table_models(models_full)
   
-  list(test=test,  test_all=test_all, p=p)
+  list(test=test,  test_all=test_all, p=p, models_full=models_full)
 }
 
 rez1 <- compare_models("TAS_DIF")
-rez1$test
+display(rez1$test, title="DIF")
 rez1$p
-rez1$test_all
+display(rez1$test_all, title="DIF")
 
 rez2 <- compare_models("TAS_DDF")
-rez2$test
+display(rez2$test, title="DDF")
 rez2$p
-rez2$test_all
+display(rez2$test_all, title="DDF")
 
 rez3 <- compare_models("TAS_EOT")
-rez3$test
+display(rez3$test, title="EOT")
 rez3$p
-rez3$test_all
+display(rez3$test_all, title="EOT")
 ```
 
+```{r}
+make_cor(select(df, starts_with("TAS_")),
+         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
+                starts_with("MAIA"), IAS, BPQ))
+```
+
+
+CaCo and Sati. 
 
 ### Mood
 
 ```{r}
 rez <- compare_models("LifeSatisfaction")
-rez$test
+display(rez$test, title="Life Satisfaction") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Life Satisfaction")
 
 rez <- compare_models("PHQ4_Anxiety")
-rez$test
+display(rez$test, title="Anxiety") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Anxiety")
 
 rez <- compare_models("PHQ4_Depression")
-rez$test
+display(rez$test, title="Depression") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Depression")
 ```
+
+```{r}
+make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
+         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
+                starts_with("MAIA"), IAS, BPQ))
+```
+
+
+- CaCo and RelA
 
 ### Emotions
 
 ```{r}
 rez <- compare_models("ERS_Arousal")
-rez$test
+display(rez$test, title="Arousal") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Arousal")
 
 rez <- compare_models("ERS_Sensitivity")
-rez$test
+display(rez$test, title="Sensitivity") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Sensitivity")
 
 rez <- compare_models("ERS_Persistence")
-rez$test
+display(rez$test, title="Persistence") 
 rez$p
-rez$test_all
+display(rez$test_all, title="Persistence")
 ```
+
+
+```{r}
+make_cor(select(df, starts_with("ERS_")),
+         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
+                starts_with("MAIA"), IAS, BPQ))
+```
+
+- CaCo
 
 :::
 
@@ -582,7 +639,7 @@ rez$test_all
 #### Mood Disorders
 
 ```{r}
-compare_predictive <- function(outcome="Disorders_Psychiatric_Mood") {
+compare_predictive <- function(outcome="Disorders_Psychiatric_Mood", y = c(0.65, 0.60, 0.50, 0.45, 0.40, 0.30, 0.20)) {
   m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
               data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$")),
               family = "binomial") |> 
@@ -610,11 +667,22 @@ compare_predictive <- function(outcome="Disorders_Psychiatric_Mood") {
                 family = "binomial") |> 
     step(direction = "both", trace=0)
   
+  m_maiamin <- glm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome),
+                              MAIA_AttentionRegulation, # remove?
+                              MAIA_SelfRegulation, # remove?
+                              # MAIA_Trusting, # remove?
+                              MAIA_BodyListening, 
+                              MAIA_EmotionalAwareness,
+                              MAIA_Noticing),
+                family = "binomial") |> 
+    step(direction = "both", trace=0)
+  
   m_bpq <- glm(as.formula(paste0(outcome, " ~ BPQ")),
                 data = df,
                 family = "binomial")
   
-  test <- test_performance(m_mint, m_minti, m_ias, m_maia, m_maiai, m_bpq)
+  test <- table_models(list(m_mint=m_mint, m_minti=m_minti, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq))
   
   get_auc <- function(m) {
     roc <- as.data.frame(performance_roc(m))
@@ -625,28 +693,30 @@ compare_predictive <- function(outcome="Disorders_Psychiatric_Mood") {
   p <- rbind(
     mutate(as.data.frame(performance_roc(m_mint)), Predictor = "MINT"),
     mutate(as.data.frame(performance_roc(m_minti)), Predictor = "MINTi"),
-    mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
     mutate(as.data.frame(performance_roc(m_maia)), Predictor = "MAIA"),
     mutate(as.data.frame(performance_roc(m_maiai)), Predictor = "MAIAi"),
+    mutate(as.data.frame(performance_roc(m_maiamin)), Predictor = "MAIAmin"),
+    mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
     mutate(as.data.frame(performance_roc(m_bpq)), Predictor = "BPQ")
   ) |> 
+    mutate(Predictor = fct_relevel(Predictor, "MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ")) |> 
       ggplot(aes(x=Specificity)) +
       geom_abline(intercept=0, slope=1, color="gray") +
       geom_line(aes(y=Sensitivity, color=Predictor), linewidth=2, alpha=0.9) +
       geom_label(data=data.frame(
-        label = c(get_auc(m_mint), get_auc(m_minti), get_auc(m_ias), get_auc(m_maia), get_auc(m_maiai), get_auc(m_bpq)),
-        Predictor = c("MINT", "MINTi", "IAS", "MAIA", "MAIAi", "BPQ"),
-        x = 0.25,
-        y = c(0.65, 0.60, 0.55, 0.45, 0.35, 0.20)), 
-        aes(x=x, y=y, label=label), color=colors) +
+        label = c(get_auc(m_mint), get_auc(m_minti), get_auc(m_maia), get_auc(m_maiai), get_auc(m_maiamin), get_auc(m_ias), get_auc(m_bpq)),
+        Predictor = c("MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ"),
+        x = 0.9,
+        y = y), 
+        aes(x=x, y=y, label=label), color=colors[c("MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ")]) +
       labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
            color="Questionnaire Version") +
       scale_color_manual(values=colors) +
       scale_x_continuous(labels=scales::percent) +
-      scale_y_continuous(labels=scales::percent) +
+      scale_y_continuous(labels=scales::percent) + 
       theme_minimal()
   
-  list(m_mint=m_mint, m_ias=m_ias, m_maia=m_maia, m_maiai=m_maiai, test=test, p=p)
+  list(m_mint=m_mint, m_ias=m_ias, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, test=test, p=p)
 }
 ```
 
@@ -654,11 +724,13 @@ compare_predictive <- function(outcome="Disorders_Psychiatric_Mood") {
 ```{r}
 rez <- compare_predictive("Disorders_Psychiatric_Mood")
 rez$p
+display(rez$test, title="Mood")
 ```
 
 ```{r}
 rez <- compare_predictive("Disorders_Psychiatric_MoodTreatment")
 rez$p
+display(rez$test, title="Mood (with Treatment)")
 ```
 
 #### Anxiety
@@ -771,16 +843,18 @@ model <- glm(as.formula(paste0("Wearables_Number ~ .")),
               data = select(df, Wearables_Number, starts_with("MINT"), -matches("[[:digit:]]")),
               family = "poisson") |> 
   step(direction = "both", trace=0)
-
 parameters::parameters(model)
 
-model <- glm(as.formula(paste0("Wearables_Heart ~ .")),
+
+# Heart
+m_owns <- glm(as.formula(paste0("Wearables_Heart ~ .")),
               data = df |>
               mutate(Wearables_Heart = Wearables_Heart != "Not owning") |> 
               select(Wearables_Heart, starts_with("MINT"), -matches("[[:digit:]]")),
               family = "binomial") |> 
   step(direction = "both", trace=0, k = log(nrow(df)))
-summary(model)
+parameters::parameters(m_owns)
+
 
 
 model <- lm(as.formula(paste0("Wearables_HeartImportance ~ .")),
@@ -788,8 +862,12 @@ model <- lm(as.formula(paste0("Wearables_HeartImportance ~ .")),
               filter(!is.na(Wearables_HeartImportance)) |> 
               select(Wearables_HeartImportance, starts_with("MINT"), -matches("[[:digit:]]"))) |> 
   step(direction = "both", trace=0, k = log(nrow(filter(df, !is.na(Wearables_HeartImportance)))))
-
 parameters::parameters(model)
+
+
+lm(Wearables_HeartImportance ~ MINT_Interoception_Card, data=df) |> 
+  estimate_relation() |> 
+  plot()
 ```
 
 
