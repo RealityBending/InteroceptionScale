@@ -111,6 +111,11 @@ for (file in files) {
     next
   }
 
+  # Deal with other datetime formats
+  if(dat$date == "2/5/2025") {
+    dat$date <- "05/02/2025"
+  }
+
   data_ppt <- data.frame(
     Participant = dat$participantID,
     Recruitment = dat$researcher,
@@ -122,7 +127,6 @@ for (file in files) {
     Screen_Width = dat$screen_width,
     Screen_Height = dat$screen_height
   )
-
 
 
   if (data_ppt$Recruitment == "prolific") {
@@ -168,9 +172,7 @@ for (file in files) {
 
   # BMI
   data_ppt$Height <- ifelse(is.null(resp$Height_ft), resp$Height_cm / 100, convert_feet_to_meters(resp$Height_ft))
-  if ("3y39b5pwby" %in% data_ppt$Participant){
-    data_ppt$Height[data_ppt$Participant == "3y39b5pwby"] <- data_ppt$Height[data_ppt$Participant == "3y39b5pwby"] * 100
-  }
+  if (!is.na(data_ppt$Height) && data_ppt$Height == 0.0165) data_ppt$Height <- 1.65
   if (!is.na(data_ppt$Height) && data_ppt$Height > 2.5) stop("Height too high")
   data_ppt$Weight <- ifelse(is.null(resp$Weight_st),
     ifelse(is.null(resp$Weight_kg), NA, resp$Weight_kg),
