@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -54,27 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="1_cleaning_files/libs/clipboard/clipboard.min.js"></script>
@@ -88,12 +68,19 @@ div.csl-indent {
 <link href="1_cleaning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="1_cleaning_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script src="1_cleaning_files/libs/core-js-2.5.3/shim.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react-dom.min.js"></script>
-<script src="1_cleaning_files/libs/reactwidget-1.0.0/react-tools.js"></script>
+
+<script src="1_cleaning_files/libs/reactwidget-2.0.0/react-tools.js"></script>
+
 <script src="1_cleaning_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
 <link href="1_cleaning_files/libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
 <script src="1_cleaning_files/libs/reactable-binding-0.4.4/reactable.js"></script>
+
 
 
 </head>
@@ -196,59 +183,50 @@ div.csl-indent {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">display</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Marginal Contrasts Analysis</caption>
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 21%">
-<col style="width: 7%">
-<col style="width: 10%">
-<col style="width: 9%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Level1</th>
-<th style="text-align: right;">Level2</th>
+<th style="text-align: left;">Level2</th>
 <th style="text-align: right;">Difference</th>
-<th style="text-align: left;">95% CI</th>
-<th style="text-align: left;">SE</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">95% CI</th>
 <th style="text-align: right;">t(731)</th>
-<th style="text-align: left;">p</th>
+<th style="text-align: right;">p</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">Domains</td>
 <td style="text-align: left;">Dimensions</td>
-<td style="text-align: right;">Random</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: left;">(-0.04, 0.26)</td>
-<td style="text-align: left;">0.07</td>
-<td style="text-align: right;">1.48</td>
-<td style="text-align: left;">0.140</td>
+<td style="text-align: right;">3.16e-03</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">(-0.14, 0.15)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.966</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Domains</td>
-<td style="text-align: right;">Dimensions</td>
-<td style="text-align: right;">3.16e-03</td>
-<td style="text-align: left;">(-0.14, 0.15)</td>
-<td style="text-align: left;">0.07</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: left;">0.966</td>
+<td style="text-align: left;">Random</td>
+<td style="text-align: left;">Dimensions</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">(-0.26, 0.04)</td>
+<td style="text-align: right;">-1.48</td>
+<td style="text-align: right;">0.140</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Random</td>
 <td style="text-align: left;">Domains</td>
-<td style="text-align: right;">Random</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: left;">(-0.03, 0.26)</td>
-<td style="text-align: left;">0.07</td>
-<td style="text-align: right;">1.55</td>
-<td style="text-align: left;">0.121</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">(-0.26, 0.03)</td>
+<td style="text-align: right;">-1.55</td>
+<td style="text-align: right;">0.121</td>
 </tr>
 </tbody>
 </table>
-<p>Marginal contrasts estimated at Condition p-values are uncorrected.</p>
+<p><em>Variable predicted: Experiment_Enjoyment; Predictors contrasted: Condition; p-values are uncorrected.</em></p>
 </div>
 </div>
 </section>
@@ -264,23 +242,23 @@ div.csl-indent {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">opt_interactive</span>(<span class="at">use_compact_mode =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="rfsmrzyfro" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rfsmrzyfro table {
+<div id="cpcagnammf" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cpcagnammf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rfsmrzyfro thead, #rfsmrzyfro tbody, #rfsmrzyfro tfoot, #rfsmrzyfro tr, #rfsmrzyfro td, #rfsmrzyfro th {
+#cpcagnammf thead, #cpcagnammf tbody, #cpcagnammf tfoot, #cpcagnammf tr, #cpcagnammf td, #cpcagnammf th {
   border-style: none;
 }
 
-#rfsmrzyfro p {
+#cpcagnammf p {
   margin: 0;
   padding: 0;
 }
 
-#rfsmrzyfro .gt_table {
+#cpcagnammf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -306,12 +284,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#rfsmrzyfro .gt_caption {
+#cpcagnammf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rfsmrzyfro .gt_title {
+#cpcagnammf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -323,7 +301,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#rfsmrzyfro .gt_subtitle {
+#cpcagnammf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -335,7 +313,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#rfsmrzyfro .gt_heading {
+#cpcagnammf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -347,13 +325,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#rfsmrzyfro .gt_bottom_border {
+#cpcagnammf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_col_headings {
+#cpcagnammf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #0076BA;
@@ -368,7 +346,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#rfsmrzyfro .gt_col_heading {
+#cpcagnammf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -388,7 +366,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#rfsmrzyfro .gt_column_spanner_outer {
+#cpcagnammf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -400,15 +378,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#rfsmrzyfro .gt_column_spanner_outer:first-child {
+#cpcagnammf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rfsmrzyfro .gt_column_spanner_outer:last-child {
+#cpcagnammf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rfsmrzyfro .gt_column_spanner {
+#cpcagnammf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #0076BA;
@@ -420,11 +398,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#rfsmrzyfro .gt_spanner_row {
+#cpcagnammf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rfsmrzyfro .gt_group_heading {
+#cpcagnammf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -450,7 +428,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#rfsmrzyfro .gt_empty_group_heading {
+#cpcagnammf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -465,15 +443,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#rfsmrzyfro .gt_from_md > :first-child {
+#cpcagnammf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rfsmrzyfro .gt_from_md > :last-child {
+#cpcagnammf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rfsmrzyfro .gt_row {
+#cpcagnammf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -492,7 +470,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#rfsmrzyfro .gt_stub {
+#cpcagnammf .gt_stub {
   color: #FFFFFF;
   background-color: #0076BA;
   font-size: 100%;
@@ -505,7 +483,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#rfsmrzyfro .gt_stub_row_group {
+#cpcagnammf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -519,15 +497,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#rfsmrzyfro .gt_row_group_first td {
+#cpcagnammf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rfsmrzyfro .gt_row_group_first th {
+#cpcagnammf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rfsmrzyfro .gt_summary_row {
+#cpcagnammf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -537,16 +515,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#rfsmrzyfro .gt_first_summary_row {
+#cpcagnammf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_first_summary_row.thick {
+#cpcagnammf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rfsmrzyfro .gt_last_summary_row {
+#cpcagnammf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -556,7 +534,7 @@ div.csl-indent {
   border-bottom-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_grand_summary_row {
+#cpcagnammf .gt_grand_summary_row {
   color: #333333;
   background-color: #89D3FE;
   text-transform: inherit;
@@ -566,7 +544,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#rfsmrzyfro .gt_first_grand_summary_row {
+#cpcagnammf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -576,7 +554,7 @@ div.csl-indent {
   border-top-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_last_grand_summary_row_top {
+#cpcagnammf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -586,11 +564,11 @@ div.csl-indent {
   border-bottom-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_striped {
+#cpcagnammf .gt_striped {
   background-color: #F4F4F4;
 }
 
-#rfsmrzyfro .gt_table_body {
+#cpcagnammf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #0076BA;
@@ -599,7 +577,7 @@ div.csl-indent {
   border-bottom-color: #0076BA;
 }
 
-#rfsmrzyfro .gt_footnotes {
+#cpcagnammf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -613,7 +591,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#rfsmrzyfro .gt_footnote {
+#cpcagnammf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -622,7 +600,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#rfsmrzyfro .gt_sourcenotes {
+#cpcagnammf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -636,7 +614,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#rfsmrzyfro .gt_sourcenote {
+#cpcagnammf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -644,68 +622,77 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#rfsmrzyfro .gt_left {
+#cpcagnammf .gt_left {
   text-align: left;
 }
 
-#rfsmrzyfro .gt_center {
+#cpcagnammf .gt_center {
   text-align: center;
 }
 
-#rfsmrzyfro .gt_right {
+#cpcagnammf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rfsmrzyfro .gt_font_normal {
+#cpcagnammf .gt_font_normal {
   font-weight: normal;
 }
 
-#rfsmrzyfro .gt_font_bold {
+#cpcagnammf .gt_font_bold {
   font-weight: bold;
 }
 
-#rfsmrzyfro .gt_font_italic {
+#cpcagnammf .gt_font_italic {
   font-style: italic;
 }
 
-#rfsmrzyfro .gt_super {
+#cpcagnammf .gt_super {
   font-size: 65%;
 }
 
-#rfsmrzyfro .gt_footnote_marks {
+#cpcagnammf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rfsmrzyfro .gt_asterisk {
+#cpcagnammf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rfsmrzyfro .gt_indent_1 {
+#cpcagnammf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rfsmrzyfro .gt_indent_2 {
+#cpcagnammf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rfsmrzyfro .gt_indent_3 {
+#cpcagnammf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rfsmrzyfro .gt_indent_4 {
+#cpcagnammf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rfsmrzyfro .gt_indent_5 {
+#cpcagnammf .gt_indent_5 {
   text-indent: 25px;
 }
+
+#cpcagnammf .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#cpcagnammf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
 </style>
-<div id="rfsmrzyfro" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="rfsmrzyfro">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Comments":["Really made me think about how I perceive my body during certain moments. When anxious I tend to focus on things that can be noticeable to others when in public and when in private I focus on more internal things (like heartbeat). So, I think a good thing to add as a measurement is how we perceive our body in specific circumstances.","It’s good as people would like to know more about their body and how to improve the functionalities. ","All good","WELL DONE GUYS ONE OF THE BETTER STUDIES  IVE DONE INTERESTIN QUESTIONED KEEP THE GOOD WORK UP","It was very helpful because it's like a self check-up ","I found this engaging and fun.","The questions given got me actually wondering about things going on in my body I previously never paid much attention to, those things are important. I enjoyed talking part in this experiment.","Quite an interesting study as it made me think about what I consider to be fairly subconcious thoughts. Thank you for the involvement.","interesting result, i like learning about myself","This was interesting, I'd love to see more of your research!","interesting study and i liked how it connected it all together","these were interesting questions to ask myself, thanks!","I enjoyed the survey because I learned along the survey ","thank you so much.","I think i am more aware of my heart because i have an irregular heart beat. I feel i have to be aware of what my heart is doing, to be safe. ","Nothing.","this experiment is very helpful and good","very interesting and informative study.","very interesting!","the attention checks was a bit trickish and hard to answer.","This study is very amazing.","I would appreciate what would be the outcome of the research as this is interesting! Thank you for the study.","This is a great way to know more about people, glad to share my opnion","Thanks! I thought this was very interesting.","\nI think it’s important to acknowledge how much our feelings and bodily experiences can influence each other. Reflecting on this relationship during the study has been insightful, as it’s not something we often stop to think about in our daily lives.\n\nFor example, I noticed that when I’m feeling positive or relaxed, my body tends to feel lighter and more at ease. On the flip side, stress or anxiety can manifest physically, making me feel tense or fatigued. Recognizing these patterns helps me better understand how to care for both my mental and physical health.\n\nI appreciate how this study encouraged me to take a moment to explore these connections. It’s a valuable reminder of how intertwined our emotional and physical well-being truly are.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","Thank you, all questions were understandable.","Some of the questions regarding how I felt about whether I wanted to answer all the way to the right or left were a little confusing and I didn't see the purpose.","Am interesting studies","if i got one of the attention questions wrong its not because i wasn't paying attention its became i forgot my left from my right. haha. thankyou","Thank you for the opportunity to participate in your survey, good luck with your research!","This is an interesting study! I think some people don't really consider how other people feel things. It was cool to see the graph of what sensations I'm the most connected to at the end. I haven't really considered it before, but I'd be curious to see how I compare to other people's perception of skin sensitivity.","This is great experiment, and would be interesting to take this again at different times of the year to see if there are seasonal variations.\nThere may also be difference with people  with autism or diabetes or other conditions and treatments and illnesses that can cause neuropathy.","fun!","Might do with a medical warning for the survey. Also, some people have illnesses which affect their perception of their body processes e.g known bowel problems make you notice what your tummy does way more than most.","I'm not sure if this is relevant, but just in case: I have allergy-induced asthma so I feel like that automatically makes me more attentive to my breath and my sneezing.","The survey was very insightful. I made sure I focused throughout and I answered accordingly so the researcher obtains optimum results. ","fingers crossed i clock if i have a heart attack. Also is it possible to have my graph sent to me please?","i enjoyed leaning more about myself from this","It made me think more about my body parts so I appreciate the survey.","The attention check questions were not accurate because the answers weren't clear. For example \"I can always accurately answer to the left on this question to show that I am reading it\" was not clear, because you could agree or disagree. I didn't realise some questions were attention check questions so I may have answered a couple incorrectly in the beginning","I notice changes in my breathing when I'm trying to get to sleep. sometimes it feels like I've stopped breathing and I gasp for breathe. My heartbeat often feels irregular when I'm trying to sleep too. I have to make myself relax","Smooth study, no issues :)","This felt a bit creepy","it said thirty minutes but didnt take that long, hope it was ok, the study was interesting and the way the questions were poised was clever, was a good study to do. ","Enjoyable study. Thank you for the opportunity to be apart of your work.","This was enjoyable!  Thank you for this :)","Nothing except I liked it ","very complicated nature of questions ","Scoring high for heartrate is not surprising, I have high anxiety and it is always the first thing i notice before a panic attack.","Sometimes I like feeling extremely tired or wanting to take another step even though I am exhausted, but I do not know why. Maybe I like that I am telling my body I can do that.","none, but an interesting experiment ","good study","I enjoyed the experiment. It was different and interesting. Thank you. ","It was fun, it felt good to reflect on a personal level about my body :)","I found the study interesting as it really made me think about things.","very interesting seeing how connected i am to certain parts and functions of my body. I had never really thought about it until this study so it was kind of eye opening, so thank you for that and best of luck with your research :)","some of the quality check question are worded oddly for me. Hopefully i have answered them properly ","I'd do this sorta thing again","it was a great survey","Very interesting survey and questions. Thank you for providing that graph at the end it was insightful to know the level to which I find connectivity with my body!","I suffer from IBS so that may be reflected in the answers I gave.","I found that study quite interesting","it was a nice study","Very interesting to see the graph at the end!","it was a great one ","really interesting study, thank you for the chance to participate!","This study was nice.  Made me think a lot about how I should be in touch more with my body as a whole.  ","It was an interesting survey.","This was an insightful Survey and i would like to know the results","It was interesting, but some of the questions seemed repetitive or just worded differently. ","I'm on the autism spectrum so the questions about interception could be useful for measuring functional capacity, sensory profiling and interventions etc. The visual diagram is more useful for lay people than the jargon that normal sensory profiles spit out! Good work!","It was very interesting and engaging, I sincerely appreciate my participation in this study.","I found the questions very interesting as not many people would ask something like this. Really enlightening!","I don't think I realised the first attention check was an attention check, the one about concentrating on studies - I thought it was about concentration and distraction! Sorry.","I thought it was cool to see the connection you have with your body. Surprisingly, I have around a 40-50% connection with everything in my body. It would be interesting to connect that to Alexithymia. The study mentioned that everyone has their own connections though and more and less in others. One thing I think this study needs to address is the heart stuff. I have a smart watch that tells me my heartrate all the time, so it was pretty easy to be connected with my heart. Maybe ask users if they have a smartwatch??","It was fun","really really good thank you in the most","good survey, but I think im much more in tune than that chart is showing. for example I can actually only smell and eat certain foods without getting nauseas","the study was educative and fun ","I enjoy this","This was a nice content of survey and i really enjoyed it.","Different but still interesting.  ","lots of spelling and grammer errors","I felt like i learned things about myself I never thought to question","none..very cool!","its was a great one. thank you.","This was interesting - thanks! ","annoying attention checks which effectively ask you to agree by clicking on disagree...","maybe put some more situation specific examples in ","Thanks - fun study!","Very interesting","Those were some interesting questions haha! Best of luck with your research  :).","I really enjoyed doing this one. It made me think about the way I feel at different times so I did enjoy this survey..","Very engaging","Great experiment, I enjoyed finding this out about myself.","I believe it is essential to pay close attention to our body sensation because it is a good indicator pointing out the state of our body at all times. ","I was ambivalent about some of the questions, but I answered as best as I could.","I really like the fact that the study gave me the avenue to reflect and ask my body some questions.","I am neurodivergent, so I may skew your results slightly! ","Good luck with the data:)","I answered highly agree to all the breathing questions - there is relevant context to this. I have asthma so people with asthma have to pay close attention to breathing and air intake. However, if I didn't have this medical condition, I probably wouldn't think much of my breathing.","nothing else","Thank you for the opportunity.","It was an interesting survey","I enjoy this","Whichever PHD student is doing this research is absolutely nuts and I love them, I've laughed so much before work. Thank you :)","good","If it helps in cataloguing data, I've been diagnosed with ASD and ADHD, and I know those can also alter an individual's ability to feel or sense various things; I hope that helps with data collection, genuinely.","it was interesting to do!","It was a fantastic study.","most of attention check here is very confusing","Interesting questions","Very interesting questions","THE STUDY IS OK AND I LEARNT ALOT FROM IT","I was not aroused during this study. ","should be a sensitive content warning prominent","no not at all ","I have really learnt a lot from this research ","Good study, cheers.","Some of the wording for the questions related to seeing if we are paying attention is kind of strange.","I lost my job yesterday so a lot of these questions around feeling different in my body at important moments of my life were incredibly relevant to my current situation","It is always good and healthy to be conscious of how we feel and react to things ","great survey thank you.","Great Topic","Really interesting to see and think about, I often wish I was more in tune with myself and my body - this definitely helped me think more about it!","It was confusing. I tried to answer the best I can but even then for some questions I was confused","This is the best study I have ever undertaken - please create more.","the prolific page suggests the time taken is 15 minutes but on the actual questionnaire it states 30 minutes. it would be good to be accurate. ","great study","Some of the attention checks were a bit ambiguous e.g. I can always accurately answer to the left on this question to show that I am reading it.","pretty aware of the genital stuff, not so much the heart or the breathing I guess.  Interesting!","the study was nice and i really understood how i relate to my body","It was good fun, however with the attention question 'I always accurately pay attention to studies' (or however it was written), I didnt think this was a very good question - someone may be confused into thinking that you are asking them if they always pay attention, so they could answer 3 (if they think they are prone to losing concentration), when in fact they are paying attention to this specific study"]},"columns":[{"id":"Comments","name":"Comments","type":"character","style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Really made me think about how I perceive my body during certain moments. When anxious I tend to focus on things that can be noticeable to others when in public and when in private I focus on more internal things (like heartbeat). So, I think a good thing to add as a measurement is how we perceive our body in specific circumstances.","It’s good as people would like to know more about their body and how to improve the functionalities. ","All good","WELL DONE GUYS ONE OF THE BETTER STUDIES  IVE DONE INTERESTIN QUESTIONED KEEP THE GOOD WORK UP","It was very helpful because it's like a self check-up ","I found this engaging and fun.","The questions given got me actually wondering about things going on in my body I previously never paid much attention to, those things are important. I enjoyed talking part in this experiment.","Quite an interesting study as it made me think about what I consider to be fairly subconcious thoughts. Thank you for the involvement.","interesting result, i like learning about myself","This was interesting, I'd love to see more of your research!","interesting study and i liked how it connected it all together","these were interesting questions to ask myself, thanks!","I enjoyed the survey because I learned along the survey ","thank you so much.","I think i am more aware of my heart because i have an irregular heart beat. I feel i have to be aware of what my heart is doing, to be safe. ","Nothing.","this experiment is very helpful and good","very interesting and informative study.","very interesting!","the attention checks was a bit trickish and hard to answer.","This study is very amazing.","I would appreciate what would be the outcome of the research as this is interesting! Thank you for the study.","This is a great way to know more about people, glad to share my opnion","Thanks! I thought this was very interesting.","\nI think it’s important to acknowledge how much our feelings and bodily experiences can influence each other. Reflecting on this relationship during the study has been insightful, as it’s not something we often stop to think about in our daily lives.\n\nFor example, I noticed that when I’m feeling positive or relaxed, my body tends to feel lighter and more at ease. On the flip side, stress or anxiety can manifest physically, making me feel tense or fatigued. Recognizing these patterns helps me better understand how to care for both my mental and physical health.\n\nI appreciate how this study encouraged me to take a moment to explore these connections. It’s a valuable reminder of how intertwined our emotional and physical well-being truly are.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","Thank you, all questions were understandable.","Some of the questions regarding how I felt about whether I wanted to answer all the way to the right or left were a little confusing and I didn't see the purpose.","Am interesting studies","if i got one of the attention questions wrong its not because i wasn't paying attention its became i forgot my left from my right. haha. thankyou","Thank you for the opportunity to participate in your survey, good luck with your research!","This is an interesting study! I think some people don't really consider how other people feel things. It was cool to see the graph of what sensations I'm the most connected to at the end. I haven't really considered it before, but I'd be curious to see how I compare to other people's perception of skin sensitivity.","This is great experiment, and would be interesting to take this again at different times of the year to see if there are seasonal variations.\nThere may also be difference with people  with autism or diabetes or other conditions and treatments and illnesses that can cause neuropathy.","fun!","Might do with a medical warning for the survey. Also, some people have illnesses which affect their perception of their body processes e.g known bowel problems make you notice what your tummy does way more than most.","I'm not sure if this is relevant, but just in case: I have allergy-induced asthma so I feel like that automatically makes me more attentive to my breath and my sneezing.","The survey was very insightful. I made sure I focused throughout and I answered accordingly so the researcher obtains optimum results. ","fingers crossed i clock if i have a heart attack. Also is it possible to have my graph sent to me please?","i enjoyed leaning more about myself from this","It made me think more about my body parts so I appreciate the survey.","The attention check questions were not accurate because the answers weren't clear. For example \"I can always accurately answer to the left on this question to show that I am reading it\" was not clear, because you could agree or disagree. I didn't realise some questions were attention check questions so I may have answered a couple incorrectly in the beginning","I notice changes in my breathing when I'm trying to get to sleep. sometimes it feels like I've stopped breathing and I gasp for breathe. My heartbeat often feels irregular when I'm trying to sleep too. I have to make myself relax","Smooth study, no issues :)","This felt a bit creepy","it said thirty minutes but didnt take that long, hope it was ok, the study was interesting and the way the questions were poised was clever, was a good study to do. ","Enjoyable study. Thank you for the opportunity to be apart of your work.","This was enjoyable!  Thank you for this :)","Nothing except I liked it ","very complicated nature of questions ","Scoring high for heartrate is not surprising, I have high anxiety and it is always the first thing i notice before a panic attack.","Sometimes I like feeling extremely tired or wanting to take another step even though I am exhausted, but I do not know why. Maybe I like that I am telling my body I can do that.","none, but an interesting experiment ","good study","I enjoyed the experiment. It was different and interesting. Thank you. ","It was fun, it felt good to reflect on a personal level about my body :)","I found the study interesting as it really made me think about things.","very interesting seeing how connected i am to certain parts and functions of my body. I had never really thought about it until this study so it was kind of eye opening, so thank you for that and best of luck with your research :)","some of the quality check question are worded oddly for me. Hopefully i have answered them properly ","I'd do this sorta thing again","it was a great survey","Very interesting survey and questions. Thank you for providing that graph at the end it was insightful to know the level to which I find connectivity with my body!","I suffer from IBS so that may be reflected in the answers I gave.","I found that study quite interesting","it was a nice study","Very interesting to see the graph at the end!","it was a great one ","really interesting study, thank you for the chance to participate!","This study was nice.  Made me think a lot about how I should be in touch more with my body as a whole.  ","It was an interesting survey.","This was an insightful Survey and i would like to know the results","It was interesting, but some of the questions seemed repetitive or just worded differently. ","I'm on the autism spectrum so the questions about interception could be useful for measuring functional capacity, sensory profiling and interventions etc. The visual diagram is more useful for lay people than the jargon that normal sensory profiles spit out! Good work!","It was very interesting and engaging, I sincerely appreciate my participation in this study.","I found the questions very interesting as not many people would ask something like this. Really enlightening!","I don't think I realised the first attention check was an attention check, the one about concentrating on studies - I thought it was about concentration and distraction! Sorry.","I thought it was cool to see the connection you have with your body. Surprisingly, I have around a 40-50% connection with everything in my body. It would be interesting to connect that to Alexithymia. The study mentioned that everyone has their own connections though and more and less in others. One thing I think this study needs to address is the heart stuff. I have a smart watch that tells me my heartrate all the time, so it was pretty easy to be connected with my heart. Maybe ask users if they have a smartwatch??","It was fun","really really good thank you in the most","good survey, but I think im much more in tune than that chart is showing. for example I can actually only smell and eat certain foods without getting nauseas","the study was educative and fun ","I enjoy this","This was a nice content of survey and i really enjoyed it.","Different but still interesting.  ","lots of spelling and grammer errors","I felt like i learned things about myself I never thought to question","none..very cool!","its was a great one. thank you.","This was interesting - thanks! ","annoying attention checks which effectively ask you to agree by clicking on disagree...","maybe put some more situation specific examples in ","Thanks - fun study!","Very interesting","Those were some interesting questions haha! Best of luck with your research  :).","I really enjoyed doing this one. It made me think about the way I feel at different times so I did enjoy this survey..","Very engaging","Great experiment, I enjoyed finding this out about myself.","I believe it is essential to pay close attention to our body sensation because it is a good indicator pointing out the state of our body at all times. ","I was ambivalent about some of the questions, but I answered as best as I could.","I really like the fact that the study gave me the avenue to reflect and ask my body some questions.","I am neurodivergent, so I may skew your results slightly! ","Good luck with the data:)","I answered highly agree to all the breathing questions - there is relevant context to this. I have asthma so people with asthma have to pay close attention to breathing and air intake. However, if I didn't have this medical condition, I probably wouldn't think much of my breathing.","nothing else","Thank you for the opportunity.","It was an interesting survey","I enjoy this","Whichever PHD student is doing this research is absolutely nuts and I love them, I've laughed so much before work. Thank you :)","good","If it helps in cataloguing data, I've been diagnosed with ASD and ADHD, and I know those can also alter an individual's ability to feel or sense various things; I hope that helps with data collection, genuinely.","it was interesting to do!","It was a fantastic study.","most of attention check here is very confusing","Interesting questions","Very interesting questions","THE STUDY IS OK AND I LEARNT ALOT FROM IT","I was not aroused during this study. ","should be a sensitive content warning prominent","no not at all ","I have really learnt a lot from this research ","Good study, cheers.","Some of the wording for the questions related to seeing if we are paying attention is kind of strange.","I lost my job yesterday so a lot of these questions around feeling different in my body at important moments of my life were incredibly relevant to my current situation","It is always good and healthy to be conscious of how we feel and react to things ","great survey thank you.","Great Topic","Really interesting to see and think about, I often wish I was more in tune with myself and my body - this definitely helped me think more about it!","It was confusing. I tried to answer the best I can but even then for some questions I was confused","This is the best study I have ever undertaken - please create more.","the prolific page suggests the time taken is 15 minutes but on the actual questionnaire it states 30 minutes. it would be good to be accurate. ","great study","Some of the attention checks were a bit ambiguous e.g. I can always accurately answer to the left on this question to show that I am reading it.","pretty aware of the genital stuff, not so much the heart or the breathing I guess.  Interesting!","the study was nice and i really understood how i relate to my body","It was good fun, however with the attention question 'I always accurately pay attention to studies' (or however it was written), I didnt think this was a very good question - someone may be confused into thinking that you are asking them if they always pay attention, so they could answer 3 (if they think they are prone to losing concentration), when in fact they are paying attention to this specific study"],"html":true,"align":"left","headerStyle":{"font-weight":"normal"}}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"striped":true,"compact":true,"showSortable":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"#F4F4F4","style":{"fontFamily":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"},"headerStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#0076BA","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#0076BA"}},"elementId":"rfsmrzyfro","dataKey":"da4443e932b69db324c64454480ba5c3"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
+<div id="cpcagnammf" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="cpcagnammf">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Comments":["Really made me think about how I perceive my body during certain moments. When anxious I tend to focus on things that can be noticeable to others when in public and when in private I focus on more internal things (like heartbeat). So, I think a good thing to add as a measurement is how we perceive our body in specific circumstances.","It’s good as people would like to know more about their body and how to improve the functionalities. ","All good","WELL DONE GUYS ONE OF THE BETTER STUDIES  IVE DONE INTERESTIN QUESTIONED KEEP THE GOOD WORK UP","It was very helpful because it's like a self check-up ","I found this engaging and fun.","The questions given got me actually wondering about things going on in my body I previously never paid much attention to, those things are important. I enjoyed talking part in this experiment.","Quite an interesting study as it made me think about what I consider to be fairly subconcious thoughts. Thank you for the involvement.","interesting result, i like learning about myself","This was interesting, I'd love to see more of your research!","interesting study and i liked how it connected it all together","these were interesting questions to ask myself, thanks!","I enjoyed the survey because I learned along the survey ","thank you so much.","I think i am more aware of my heart because i have an irregular heart beat. I feel i have to be aware of what my heart is doing, to be safe. ","Nothing.","this experiment is very helpful and good","very interesting and informative study.","very interesting!","the attention checks was a bit trickish and hard to answer.","This study is very amazing.","I would appreciate what would be the outcome of the research as this is interesting! Thank you for the study.","This is a great way to know more about people, glad to share my opnion","Thanks! I thought this was very interesting.","\nI think it’s important to acknowledge how much our feelings and bodily experiences can influence each other. Reflecting on this relationship during the study has been insightful, as it’s not something we often stop to think about in our daily lives.\n\nFor example, I noticed that when I’m feeling positive or relaxed, my body tends to feel lighter and more at ease. On the flip side, stress or anxiety can manifest physically, making me feel tense or fatigued. Recognizing these patterns helps me better understand how to care for both my mental and physical health.\n\nI appreciate how this study encouraged me to take a moment to explore these connections. It’s a valuable reminder of how intertwined our emotional and physical well-being truly are.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","Thank you, all questions were understandable.","Some of the questions regarding how I felt about whether I wanted to answer all the way to the right or left were a little confusing and I didn't see the purpose.","Am interesting studies","if i got one of the attention questions wrong its not because i wasn't paying attention its became i forgot my left from my right. haha. thankyou","Thank you for the opportunity to participate in your survey, good luck with your research!","This is an interesting study! I think some people don't really consider how other people feel things. It was cool to see the graph of what sensations I'm the most connected to at the end. I haven't really considered it before, but I'd be curious to see how I compare to other people's perception of skin sensitivity.","This is great experiment, and would be interesting to take this again at different times of the year to see if there are seasonal variations.\nThere may also be difference with people  with autism or diabetes or other conditions and treatments and illnesses that can cause neuropathy.","fun!","Might do with a medical warning for the survey. Also, some people have illnesses which affect their perception of their body processes e.g known bowel problems make you notice what your tummy does way more than most.","I'm not sure if this is relevant, but just in case: I have allergy-induced asthma so I feel like that automatically makes me more attentive to my breath and my sneezing.","The survey was very insightful. I made sure I focused throughout and I answered accordingly so the researcher obtains optimum results. ","fingers crossed i clock if i have a heart attack. Also is it possible to have my graph sent to me please?","i enjoyed leaning more about myself from this","It made me think more about my body parts so I appreciate the survey.","The attention check questions were not accurate because the answers weren't clear. For example \"I can always accurately answer to the left on this question to show that I am reading it\" was not clear, because you could agree or disagree. I didn't realise some questions were attention check questions so I may have answered a couple incorrectly in the beginning","I notice changes in my breathing when I'm trying to get to sleep. sometimes it feels like I've stopped breathing and I gasp for breathe. My heartbeat often feels irregular when I'm trying to sleep too. I have to make myself relax","Smooth study, no issues :)","This felt a bit creepy","it said thirty minutes but didnt take that long, hope it was ok, the study was interesting and the way the questions were poised was clever, was a good study to do. ","Enjoyable study. Thank you for the opportunity to be apart of your work.","This was enjoyable!  Thank you for this :)","Nothing except I liked it ","very complicated nature of questions ","Scoring high for heartrate is not surprising, I have high anxiety and it is always the first thing i notice before a panic attack.","Sometimes I like feeling extremely tired or wanting to take another step even though I am exhausted, but I do not know why. Maybe I like that I am telling my body I can do that.","none, but an interesting experiment ","good study","I enjoyed the experiment. It was different and interesting. Thank you. ","It was fun, it felt good to reflect on a personal level about my body :)","I found the study interesting as it really made me think about things.","very interesting seeing how connected i am to certain parts and functions of my body. I had never really thought about it until this study so it was kind of eye opening, so thank you for that and best of luck with your research :)","some of the quality check question are worded oddly for me. Hopefully i have answered them properly ","I'd do this sorta thing again","it was a great survey","Very interesting survey and questions. Thank you for providing that graph at the end it was insightful to know the level to which I find connectivity with my body!","I suffer from IBS so that may be reflected in the answers I gave.","I found that study quite interesting","it was a nice study","Very interesting to see the graph at the end!","it was a great one ","really interesting study, thank you for the chance to participate!","This study was nice.  Made me think a lot about how I should be in touch more with my body as a whole.  ","It was an interesting survey.","This was an insightful Survey and i would like to know the results","It was interesting, but some of the questions seemed repetitive or just worded differently. ","I'm on the autism spectrum so the questions about interception could be useful for measuring functional capacity, sensory profiling and interventions etc. The visual diagram is more useful for lay people than the jargon that normal sensory profiles spit out! Good work!","It was very interesting and engaging, I sincerely appreciate my participation in this study.","I found the questions very interesting as not many people would ask something like this. Really enlightening!","I don't think I realised the first attention check was an attention check, the one about concentrating on studies - I thought it was about concentration and distraction! Sorry.","I thought it was cool to see the connection you have with your body. Surprisingly, I have around a 40-50% connection with everything in my body. It would be interesting to connect that to Alexithymia. The study mentioned that everyone has their own connections though and more and less in others. One thing I think this study needs to address is the heart stuff. I have a smart watch that tells me my heartrate all the time, so it was pretty easy to be connected with my heart. Maybe ask users if they have a smartwatch??","It was fun","really really good thank you in the most","good survey, but I think im much more in tune than that chart is showing. for example I can actually only smell and eat certain foods without getting nauseas","the study was educative and fun ","I enjoy this","This was a nice content of survey and i really enjoyed it.","Different but still interesting.  ","lots of spelling and grammer errors","I felt like i learned things about myself I never thought to question","none..very cool!","its was a great one. thank you.","This was interesting - thanks! ","annoying attention checks which effectively ask you to agree by clicking on disagree...","maybe put some more situation specific examples in ","Thanks - fun study!","Very interesting","Those were some interesting questions haha! Best of luck with your research  :).","I really enjoyed doing this one. It made me think about the way I feel at different times so I did enjoy this survey..","Very engaging","Great experiment, I enjoyed finding this out about myself.","I believe it is essential to pay close attention to our body sensation because it is a good indicator pointing out the state of our body at all times. ","I was ambivalent about some of the questions, but I answered as best as I could.","I really like the fact that the study gave me the avenue to reflect and ask my body some questions.","I am neurodivergent, so I may skew your results slightly! ","Good luck with the data:)","I answered highly agree to all the breathing questions - there is relevant context to this. I have asthma so people with asthma have to pay close attention to breathing and air intake. However, if I didn't have this medical condition, I probably wouldn't think much of my breathing.","nothing else","Thank you for the opportunity.","It was an interesting survey","I enjoy this","Whichever PHD student is doing this research is absolutely nuts and I love them, I've laughed so much before work. Thank you :)","good","If it helps in cataloguing data, I've been diagnosed with ASD and ADHD, and I know those can also alter an individual's ability to feel or sense various things; I hope that helps with data collection, genuinely.","it was interesting to do!","It was a fantastic study.","most of attention check here is very confusing","Interesting questions","Very interesting questions","THE STUDY IS OK AND I LEARNT ALOT FROM IT","I was not aroused during this study. ","should be a sensitive content warning prominent","no not at all ","I have really learnt a lot from this research ","Good study, cheers.","Some of the wording for the questions related to seeing if we are paying attention is kind of strange.","I lost my job yesterday so a lot of these questions around feeling different in my body at important moments of my life were incredibly relevant to my current situation","It is always good and healthy to be conscious of how we feel and react to things ","great survey thank you.","Great Topic","Really interesting to see and think about, I often wish I was more in tune with myself and my body - this definitely helped me think more about it!","It was confusing. I tried to answer the best I can but even then for some questions I was confused","This is the best study I have ever undertaken - please create more.","the prolific page suggests the time taken is 15 minutes but on the actual questionnaire it states 30 minutes. it would be good to be accurate. ","great study","Some of the attention checks were a bit ambiguous e.g. I can always accurately answer to the left on this question to show that I am reading it.","pretty aware of the genital stuff, not so much the heart or the breathing I guess.  Interesting!","the study was nice and i really understood how i relate to my body","It was good fun, however with the attention question 'I always accurately pay attention to studies' (or however it was written), I didnt think this was a very good question - someone may be confused into thinking that you are asking them if they always pay attention, so they could answer 3 (if they think they are prone to losing concentration), when in fact they are paying attention to this specific study"]},"columns":[{"id":"Comments","name":"Comments","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"borderless":true,"striped":true,"compact":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"#F4F4F4","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#0076BA"},"headerStyle":{"fontWeight":"normal","backgroundColor":"#FFFFFF","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#0076BA"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"#FFFFFF","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#0076BA"},"cellStyle":{"fontWeight":"normal"}},"elementId":"cpcagnammf","dataKey":"549b920481b73f9829199d2f39b18485"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -870,8 +857,6 @@ div.csl-indent {
 </div>
 </div>
 <p><strong>TODO: describe OPTICS</strong>.</p>
-<p>Mahalanobis distance <span class="citation" data-cites="demaesschalck2000">(<a href="#ref-demaesschalck2000" role="doc-biblioref">De Maesschalck, Jouan-Rimbaud, and Massart 2000</a>)</span> is commonly used to detect multivariate outliers, which are data points with unusual combinations of scores on two or more variables <span class="citation" data-cites="filzmoser2016">(<a href="#ref-filzmoser2016" role="doc-biblioref">Filzmoser 2016</a>)</span>. This distance is calculated relative to the centroid—a central point where the means of all variables intersect—with larger distances indicating greater deviation from the center.</p>
-<p>This measure takes into account correlations within the dataset, which is especially useful when trying to refine and validate a questionnaire with overlapping items.</p>
 <p>We removed 10 (1.32%) participants based on multivariate distance.</p>
 <div class="cell">
 <details class="code-fold">
@@ -1037,23 +1022,23 @@ div.csl-indent {
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="cgjljqamiv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cgjljqamiv table {
+<div id="zplqdrwekl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zplqdrwekl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cgjljqamiv thead, #cgjljqamiv tbody, #cgjljqamiv tfoot, #cgjljqamiv tr, #cgjljqamiv td, #cgjljqamiv th {
+#zplqdrwekl thead, #zplqdrwekl tbody, #zplqdrwekl tfoot, #zplqdrwekl tr, #zplqdrwekl td, #zplqdrwekl th {
   border-style: none;
 }
 
-#cgjljqamiv p {
+#zplqdrwekl p {
   margin: 0;
   padding: 0;
 }
 
-#cgjljqamiv .gt_table {
+#zplqdrwekl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1079,12 +1064,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_caption {
+#zplqdrwekl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cgjljqamiv .gt_title {
+#zplqdrwekl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1096,7 +1081,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#cgjljqamiv .gt_subtitle {
+#zplqdrwekl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1108,7 +1093,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#cgjljqamiv .gt_heading {
+#zplqdrwekl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1120,13 +1105,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_bottom_border {
+#zplqdrwekl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_col_headings {
+#zplqdrwekl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1141,7 +1126,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_col_heading {
+#zplqdrwekl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1161,7 +1146,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cgjljqamiv .gt_column_spanner_outer {
+#zplqdrwekl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1173,15 +1158,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#cgjljqamiv .gt_column_spanner_outer:first-child {
+#zplqdrwekl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cgjljqamiv .gt_column_spanner_outer:last-child {
+#zplqdrwekl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cgjljqamiv .gt_column_spanner {
+#zplqdrwekl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1193,11 +1178,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#cgjljqamiv .gt_spanner_row {
+#zplqdrwekl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cgjljqamiv .gt_group_heading {
+#zplqdrwekl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1223,7 +1208,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#cgjljqamiv .gt_empty_group_heading {
+#zplqdrwekl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1238,15 +1223,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#cgjljqamiv .gt_from_md > :first-child {
+#zplqdrwekl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cgjljqamiv .gt_from_md > :last-child {
+#zplqdrwekl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cgjljqamiv .gt_row {
+#zplqdrwekl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1265,7 +1250,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cgjljqamiv .gt_stub {
+#zplqdrwekl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1278,7 +1263,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cgjljqamiv .gt_stub_row_group {
+#zplqdrwekl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1292,15 +1277,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#cgjljqamiv .gt_row_group_first td {
+#zplqdrwekl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cgjljqamiv .gt_row_group_first th {
+#zplqdrwekl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cgjljqamiv .gt_summary_row {
+#zplqdrwekl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1310,16 +1295,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cgjljqamiv .gt_first_summary_row {
+#zplqdrwekl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_first_summary_row.thick {
+#zplqdrwekl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cgjljqamiv .gt_last_summary_row {
+#zplqdrwekl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1329,7 +1314,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_grand_summary_row {
+#zplqdrwekl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1339,7 +1324,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cgjljqamiv .gt_first_grand_summary_row {
+#zplqdrwekl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1349,7 +1334,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_last_grand_summary_row_top {
+#zplqdrwekl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1359,11 +1344,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_striped {
+#zplqdrwekl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cgjljqamiv .gt_table_body {
+#zplqdrwekl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1372,7 +1357,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_footnotes {
+#zplqdrwekl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1386,7 +1371,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_footnote {
+#zplqdrwekl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1395,7 +1380,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cgjljqamiv .gt_sourcenotes {
+#zplqdrwekl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1409,7 +1394,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cgjljqamiv .gt_sourcenote {
+#zplqdrwekl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1417,68 +1402,77 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cgjljqamiv .gt_left {
+#zplqdrwekl .gt_left {
   text-align: left;
 }
 
-#cgjljqamiv .gt_center {
+#zplqdrwekl .gt_center {
   text-align: center;
 }
 
-#cgjljqamiv .gt_right {
+#zplqdrwekl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cgjljqamiv .gt_font_normal {
+#zplqdrwekl .gt_font_normal {
   font-weight: normal;
 }
 
-#cgjljqamiv .gt_font_bold {
+#zplqdrwekl .gt_font_bold {
   font-weight: bold;
 }
 
-#cgjljqamiv .gt_font_italic {
+#zplqdrwekl .gt_font_italic {
   font-style: italic;
 }
 
-#cgjljqamiv .gt_super {
+#zplqdrwekl .gt_super {
   font-size: 65%;
 }
 
-#cgjljqamiv .gt_footnote_marks {
+#zplqdrwekl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cgjljqamiv .gt_asterisk {
+#zplqdrwekl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cgjljqamiv .gt_indent_1 {
+#zplqdrwekl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cgjljqamiv .gt_indent_2 {
+#zplqdrwekl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cgjljqamiv .gt_indent_3 {
+#zplqdrwekl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cgjljqamiv .gt_indent_4 {
+#zplqdrwekl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cgjljqamiv .gt_indent_5 {
+#zplqdrwekl .gt_indent_5 {
   text-indent: 25px;
+}
+
+#zplqdrwekl .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zplqdrwekl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_col_headings">
 <th id="Var1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Var1</th>
@@ -1545,17 +1539,9 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df, <span class="st">"../data/data_participants.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-demaesschalck2000" class="csl-entry" role="listitem">
-De Maesschalck, R., D. Jouan-Rimbaud, and D. L. Massart. 2000. <span>“The Mahalanobis Distance.”</span> <em>Chemometrics and Intelligent Laboratory Systems</em> 50 (1): 1–18. <a href="https://doi.org/10.1016/s0169-7439(99)00047-7">https://doi.org/10.1016/s0169-7439(99)00047-7</a>.
-</div>
-<div id="ref-filzmoser2016" class="csl-entry" role="listitem">
-Filzmoser, Peter. 2016. <span>“Identification of Multivariate Outliers: A Performance Study.”</span> <em>Austrian Journal of Statistics</em> 34 (2). <a href="https://doi.org/10.17713/ajs.v34i2.406">https://doi.org/10.17713/ajs.v34i2.406</a>.
-</div>
-</div></section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1592,18 +1578,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1635,7 +1610,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1670,7 +1685,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

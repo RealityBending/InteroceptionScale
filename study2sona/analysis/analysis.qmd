@@ -110,8 +110,6 @@ modelbased::estimate_means(m1, by="Condition", keep_iterations=10) |>
 modelbased::estimate_contrasts(m1)
 ```
 
-
-
 ### Number
 
 ```{r}
@@ -128,6 +126,7 @@ m3 <- glmmTMB::glmmTMB(TotalFailed ~ Condition,
 compare_performance(m1, m2, m3)
 test_performance(m1, m2, m3)
 
+modelbased::estimate_contrasts(m1)
 modelbased::estimate_means(m1, by="Condition") |> 
   plot()
 ```

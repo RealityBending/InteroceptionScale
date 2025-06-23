@@ -40,7 +40,9 @@ df <- read.csv("../data/data_participants.csv")
 ```{r}
 #| code-fold: false
 
-items <- filter(df, !is.na(MINT_Awareness_ExAc_35)) 
+items <- df |> 
+   filter(!is.na(MINT_Awareness_ExAc_35)) |> 
+  select(starts_with("MINT_")) 
 names(items) <- str_remove(names(items), "MINT_")
 
 colors <- c(MINT="#00BCD4", MINTi="#00838F", IAS="#F44336", MAIA="#FF9800", MAIAi="#EF6C00", MAIAmin="#E65100", BPQ="#795548")
@@ -204,6 +206,7 @@ itemstability <- EGAnet::itemStability(ega2, IS.plot=FALSE)
 plot(itemstability)
 ```
 
+
 #### Item Table 
 
 
@@ -224,27 +227,20 @@ make_loadingtable <- function(x) {
 }
 
 dimensions <- list(
-  C08 = "CaCo",       # Cardiorespiratory Confusion
-  C01 = "UrIn",       # Urointestinal Inaccuracy
-  C02 = "Derm",       # Dermatoception
-  C10 = "CaNo",       # Cardiorespiratory Noticing
-  C13 = "Sati",       # Satiety Noticing
-  
-  C14 = "SexS",       # Sexual Arousal Sensitivity
-  C07 = "StaS",       # State Specificity
-  C09 = "SexO",       # Sexual Organs Sensitivity
-  C03 = "ExAc",       # Expulsion Accuracy
-  C06 = "RelA",       # Relaxation Awareness
-  
-  C05 = "Resp",       # Respiroception
-  C11 = "Card",       # Cardioception
-  C12 = "Gast",       # Gastroception
-  C04 = "Olfa"       # Olfactory Compensation
-  
-  # C04 = "SexA",       # Sexual Arousal Awareness
-  # C08 = "UrSe",       # Urointestinal Sensitivity
-  # C12 = "Sign",       # Signalling
-  # C07 = "SexC"        # Sexual Arousal Changes  
+  C01 = "SexS",       # Sexual Arousal Sensitivity
+  C02 = "SexO",       # Sexual Organs Sensitivity
+  C03 = "Derm",       # Dermatoception
+  C04 = "StaS",       # State Specificity
+  C05 = "Card",       # Cardioception
+  C06 = "Sati",       # Satiety Noticing
+  C07 = "Gast",       # Gastroception
+  C08 = "Olfa",       # Olfactory Compensation
+  C09 = "Resp",       # Respiroception
+  C10 = "RelA",       # Relaxation Awareness
+  C11 = "Urin",       # Urointestinal Inaccuracy
+  C12 = "ExAc",       # Expulsion Accuracy
+  C13 = "CaCo",       # Cardiorespiratory Confusion
+  C14 = "CaNo"        # Cardiorespiratory Noticing
 )
 
 
@@ -298,51 +294,83 @@ rbind(higher, select(lower, -ID)) |>
   gt::tab_header(
     title = gt::md("**Item Loadings**"),
     subtitle = "Node centrality"
+  ) |> 
+  # Metacluster 1
+  gt::tab_style(
+    style = gt::cell_fill(color = "#B39DDB"),
+    locations = list(
+      gt::cells_column_labels(columns = 3),
+      gt::cells_body(columns="Item", rows=c(4:6))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#9FA8DA"),
+    locations = list(
+      gt::cells_column_labels(columns = 4),
+      gt::cells_body(columns="Item", rows=c(7:9))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#90CAF9"),
+    locations = list(
+      gt::cells_column_labels(columns = 5),
+      gt::cells_body(columns="Item", rows=c(1, 10:12))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81D4FA"),
+    locations = list(
+      gt::cells_column_labels(columns = 6),
+      gt::cells_body(columns="Item", rows=c(13:15))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#80DEEA"),
+    locations = list(
+      gt::cells_column_labels(columns = 7),
+      gt::cells_body(columns="Item", rows=c(16:18))
+    )
   ) 
 ```
+
+
+
 
 
 ### Score Extraction
 
 ```{r}
-df$MINT_Deficit_CaCo <- rowMeans(select(df, starts_with("MINT_Deficit_CaCo_")), na.rm = TRUE)
-df$MINT_Deficit_Urin <- rowMeans(select(df, starts_with("MINT_Deficit_Urin_")), na.rm = TRUE)
-# df$MINT_Deficit <- rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin))
-
-df$MINT_Sensitivity_Derm <- rowMeans(select(df, starts_with("MINT_Sensitivity_Derm_")), na.rm = TRUE)
-df$MINT_Deficit_Sati <- rowMeans(select(df, starts_with("MINT_Deficit_Sati")), na.rm = TRUE)
-df$MINT_Deficit_CaNo <- rowMeans(select(df, starts_with("MINT_Deficit_CaNo")), na.rm = TRUE)
-# df$MINT_LackSensitivity <- rowMeans(select(df, MINT_Sensitivity_Derm, MINT_Deficit_Sati, MINT_Deficit_CaNo))
-
-
 df$MINT_Awareness_SexS <- rowMeans(select(df, starts_with("MINT_Awareness_SexS")), na.rm = TRUE)
 df$MINT_Awareness_StaS <- rowMeans(select(df, starts_with("MINT_Awareness_StaS")), na.rm = TRUE)
 df$MINT_Awareness_SexO <- rowMeans(select(df, starts_with("MINT_Awareness_SexO")), na.rm = TRUE)
 df$MINT_Awareness_ExaC <- rowMeans(select(df, starts_with("MINT_Awareness_ExaC")), na.rm = TRUE)
 df$MINT_Awareness_RelA <- rowMeans(select(df, starts_with("MINT_Awareness_RelA")), na.rm = TRUE)
-df$MINT_Awareness <- rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, MINT_Awareness_SexO, MINT_Awareness_ExaC, MINT_Awareness_RelA))
 
-df$MINT_Interoception_Card <- rowMeans(select(df, starts_with("MINT_Sensitivity_Card")), na.rm = TRUE)
-df$MINT_Interoception_Resp <- rowMeans(select(df, starts_with("MINT_Sensitivity_Resp")), na.rm = TRUE)
-df$MINT_Interoception_Gast <- rowMeans(select(df, starts_with("MINT_Sensitivity_Gast")), na.rm = TRUE)
-df$MINT_Interoception <- rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
-
+df$MINT_Deficit_CaCo <- rowMeans(select(df, starts_with("MINT_Deficit_CaCo_")), na.rm = TRUE)
+df$MINT_Deficit_Urin <- rowMeans(select(df, starts_with("MINT_Deficit_Urin_")), na.rm = TRUE)
+df$MINT_Deficit_Sati <- rowMeans(select(df, starts_with("MINT_Deficit_Sati")), na.rm = TRUE)
+df$MINT_Deficit_Derm <- rowMeans(select(df, starts_with("MINT_Sensitivity_Derm_")), na.rm = TRUE)
+df$MINT_Deficit_CaNo <- rowMeans(select(df, starts_with("MINT_Deficit_CaNo")), na.rm = TRUE)
 df$MINT_Deficit_Olfa <- rowMeans(select(df, starts_with("MINT_Deficit_Olfa")), na.rm = TRUE)
-# df$MINT_Awareness_UrSe <- rowMeans(select(df, starts_with("MINT_Awareness_UrSe")), na.rm = TRUE)
 
-
-
-# df$MINT_Awareness <- rowMeans(select(df, starts_with("MINT_Awareness"), -matches("[[:digit:]]")))
-
+df$MINT_Interoception_Resp <- rowMeans(select(df, starts_with("MINT_Sensitivity_Resp")), na.rm = TRUE)
+df$MINT_Interoception_Card <- rowMeans(select(df, starts_with("MINT_Sensitivity_Card")), na.rm = TRUE)
+df$MINT_Interoception_Gast <- rowMeans(select(df, starts_with("MINT_Sensitivity_Gast")), na.rm = TRUE)
 
 df <- df[names(df)[!grepl("MINT_.*[0-9]$", names(df))]]
-
-
-minti <- data.frame(
-  # MINT_Deficit = df$MINT_Deficit,
-  MINT_Awareness = df$MINT_Awareness,
-  MINT_Interoception = df$MINT_Interoception
-)
+# df$MINT_Awareness <- rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, 
+#                                      MINT_Awareness_SexO, MINT_Awareness_ExaC, MINT_Awareness_RelA))
+# df$MINT_Deficit <- rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, 
+#                                    MINT_Deficit_CaNo, MINT_Deficit_Sati, MINT_Sensitivity_Derm))
+# df$MINT_Interoception <- rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, 
+#                                          MINT_Interoception_Gast))
+# 
+# 
+# minti <- data.frame(
+#   MINT_Deficit = df$MINT_Deficit,
+#   MINT_Awareness = df$MINT_Awareness,
+#   MINT_Interoception = df$MINT_Interoception
+# )
 ```
 
 
@@ -378,13 +406,58 @@ make_cor <- function(df1, df2=NULL) {
 }
 
 make_cor(select(df, starts_with("MINT"))) +
-  labs(x="", y="", title="Correlation between MINT dimensions") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1, 
-                                   face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
-                                          "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
-                                          "plain", "plain")))
+  labs(x="", y="", title="Correlation between MINT dimensions") 
+  # theme(axis.text.x = element_text(angle = 45, hjust=1, 
+  #                                  face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
+  #                                         "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
+  #                                         "plain", "plain")))
 ```
 
+
+
+
+
+
+### Short Version
+
+#### Unicity
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+
+mintg <- data.frame(
+  MINT_Awareness = rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, MINT_Awareness_SexO, 
+                                   MINT_Awareness_ExaC, MINT_Awareness_RelA)),
+  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_CaNo, 
+                                 MINT_Deficit_Sati, MINT_Deficit_Derm, MINT_Deficit_Olfa)),
+  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp,
+                                       MINT_Interoception_Gast))
+)
+
+
+mintmin <- data.frame(
+  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_Sati)),
+  MINT_Awareness = rowMeans(select(df, MINT_Awareness_RelA, MINT_Awareness_ExaC, MINT_Awareness_StaS)),
+  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
+)
+
+mint6 <- data.frame(
+  MINT_Sexs = df$MINT_Awareness_SexS,
+  MINT_Derm = df$MINT_Deficit_Derm,
+  MINT_Olfa = df$MINT_Deficit_Olfa,
+  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_Sati)),
+  MINT_Awareness = rowMeans(select(df, MINT_Awareness_RelA, MINT_Awareness_ExaC, MINT_Awareness_StaS)),
+  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
+)
+
+# fa <- parameters::factor_analysis(features, n = 3, rotation = "oblimin", sort = TRUE) 
+# plot(fa)  
+# 
+# fa |> 
+#   select(Variable, Uniqueness) |> 
+#   arrange(desc(Uniqueness))
+```
 
 
 ## Convegent Validity
@@ -397,22 +470,6 @@ make_cor(select(df, starts_with("MINT"))) +
 ```{r}
 #| warning: false
 
-make_cor <- function(df1, df2) {
-  df1 |> 
-    correlation::correlation(df2, p_adjust="none") |> 
-    correlation::cor_sort() |>
-    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
-           Parameter1 = cleanlabels(Parameter1, qname=FALSE),
-           Parameter2 = cleanlabels(Parameter2, qname=TRUE)) |> 
-    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
-    geom_tile() +
-    geom_text(aes(label=label), size=3) +
-    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust=1),
-          legend.position = "none")
-}
-
 make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")),
          select(df, starts_with("MAIA"), IAS, BPQ)) +
   labs(x="MINT", y="", title="Correlations between the MINT and other Interoception Questionnaires") +
@@ -422,11 +479,15 @@ make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")),
                                           "plain", "plain")))
 ```
 
-```{r}
-select(df, starts_with("MINT"), starts_with("MAIA"), IAS, BPQ) |> 
-  parameters::factor_analysis(n=4, rotation="oblimin") |> 
-  plot()
-```
+Most correlated dimensions:
+- IAS: ExAc
+- Trusting: RelA
+- Noticing: Resp
+- Emotional Awareness; Resp
+- Body Listening: Gast
+- SelfRegulation: RelA
+- AttentionRegulation: RelA
+- BPQ: Card
 
 
 
@@ -434,12 +495,12 @@ select(df, starts_with("MINT"), starts_with("MAIA"), IAS, BPQ) |>
 # library(umap)
 # 
 # items_intero <- select(df, starts_with("MINT"), -matches("[[:digit:]]"), starts_with("MAIA"), IAS, BPQ)
-# rez <- umap::umap(datawizard::data_transpose(items_intero[complete.cases(items_intero),]))
+# rez <- umap::umap(t(items_intero[complete.cases(items_intero),]))
 # 
 # rez
-# as.data.frame(rez$layout) |> 
-#   rownames_to_column(var="Variable") |> 
-#   separate(Variable, into=c("Questionnaire", "Dimension", "Sub"), fill="right") |> 
+# as.data.frame(rez$layout) |>
+#   rownames_to_column(var="Variable") |>
+#   separate(Variable, into=c("Questionnaire", "Dimension", "Sub"), fill="right") |>
 #   ggplot(aes(x=V1, y=V2, color=Questionnaire)) +
 #   geom_point(size=3) +
 #   scale_color_manual(values=colors)
@@ -460,7 +521,7 @@ table_models <- function(models) {
     x <- names(sort(abs(coef(m)[-1]), decreasing=TRUE))
     preds <- c(preds, paste0(cleanlabels(x), collapse = ", "))
   }
-  test$Predictors <- preds
+  # test$Predictors <- preds
   format(test, zap_small = TRUE)
 }
 
@@ -513,35 +574,42 @@ compare_models <- function(outcome="TAS_DIF") {
   
   # Full Questionnaires
   m_mint <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$"))) |> 
-    step(direction = "both", trace=0)
-  m_minti <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(minti, df[outcome])) |> 
-    step(direction = "both", trace=0)
+              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$"))) # |> 
+    # step(direction = "both", trace=0)
+  m_mintg <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(mintg, df[outcome])) # |> 
+    # step(direction = "both", trace=0)
+  m_mintmin <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(mintmin, df[outcome])) # |> 
+    # step(direction = "both", trace=0)
+  m_mint6 <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(mint6, df[outcome])) # |> 
+    # step(direction = "both", trace=0)
   m_ias <- lm(as.formula(paste0(outcome, " ~ IAS")),
               data = df)
   m_maia <- lm(as.formula(paste0(outcome, " ~ .")),
-                data = select(df, all_of(outcome), starts_with("MAIA"))) |> 
-    step(direction = "both", trace=0)
+                data = select(df, all_of(outcome), starts_with("MAIA"))) # |> 
+    # step(direction = "both", trace=0)
   m_maiai <- lm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome), 
                               starts_with("MAIA"), 
                               -contains("NotWorrying"),
-                              -contains("NotDistracting"))) |> 
-    step(direction = "both", trace=0)
+                              -contains("NotDistracting"))) # |> 
+    # step(direction = "both", trace=0)
   m_maiamin <- lm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome),
-                              MAIA_AttentionRegulation, # remove?
-                              MAIA_SelfRegulation, # remove?
+                              # MAIA_AttentionRegulation, # remove?
+                              # MAIA_SelfRegulation, # remove?
                               # MAIA_Trusting, # remove?
                               MAIA_BodyListening, 
                               MAIA_EmotionalAwareness,
-                              MAIA_Noticing)) |> 
-    step(direction = "both", trace=0)
+                              MAIA_Noticing)) # s|> 
+    # step(direction = "both", trace=0)
   m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
                 data = df)
   
-  models_full <- list(m_mint=m_mint, m_minti=m_minti, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq)
+  models_full <- list(m_mint=m_mint, m_mintg=m_mintg, m_mintmin=m_mintmin, m_mint6=m_mint6, m_maia=m_maia, 
+                      m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq)
   test_all <- table_models(models_full)
   
   list(test=test,  test_all=test_all, p=p, models_full=models_full)

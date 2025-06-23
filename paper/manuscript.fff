@@ -1,0 +1,65 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{fig-one}The Beta-Gate Distribution is a reparametrized
+ordered Beta model (Kubinec, 2023) that is governed by 4 parameters.
+`Mu' and `phi' correspond to the mean and precision of the continuous
+part of the distribution (between 0 and 1), and `pex' (propensity of
+extremes) and `bex' (balance of extremes) indirectly control the
+proportion of zeros and ones by specifying the location of the
+``gates'', past which the latent response process is likely to generate
+extreme values. Specifically, `pex' defines the total distance of both
+gates from the extremes (in yellow), and `bex' determines the proportion
+of the right gate distance relative to the left. In this example, the
+total distance from the extremes is `pex' = 0.1, with 40\% (`bex' = 0.4)
+of that distance being on the right (and 60\% on the left). The left
+gate is thus located at 0.6, and the right at 1-0.04 = 0.96.}
+
+\centering{
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{./figures/fig1.png}
+
+}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{fig-two}The CHOCO Model uses a mixture of Beta-Gate
+distributions to model separately the right and left sides of the scale
+(e.g., a rating of whether a statement was `Truth' vs.~`Lie'), as well
+as their relative proportion. In this example, the participants are more
+likely overall (p = 60\%) to select the right side of the scale (`Lie')
+than the left (`Truth'). They are also more confident in their choice
+(confright = 0.6 vs.~confleft = 0.3). Extreme values (zeros and ones)
+are governed by the same mechanism as for Beta-Gate models.}
+
+\centering{
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{./figures/fig2.png}
+
+}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[!htbp]
+
+{\caption{{TODO.}{\label{fig-three}}}}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{./figures/fig3.png}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[!htbp]
+
+{\caption{{TODO.}{\label{fig-four}}}}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{./figures/fig4.png}
+
+\end{figure*}

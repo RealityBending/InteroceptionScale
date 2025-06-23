@@ -187,7 +187,7 @@ We removed `r length(outliers$duration)` (`r insight::format_percent(length(outl
 # Compute distance
 dfoutlier <- performance::check_outliers(select(df, contains("MAIA_")), 
                                          method=c("optics"),
-                                         threshold=list(optics=2.5, optics_xi=0.03)) |> 
+                                         threshold=list(optics=2.5, optics_xi=0.01)) |> 
   as.data.frame() |> 
   mutate(Participant = fct_reorder(df$Participant, Distance_OPTICS),
          Outlier_AttentionCheck = ifelse(Participant %in% outliers$attentionchecks, 1, 0),
@@ -196,14 +196,14 @@ dfoutlier <- performance::check_outliers(select(df, contains("MAIA_")),
          Outlier = ifelse(Outlier == "Passed" & Outlier_Duration == 1, "Duration", Outlier))
 
 
-outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 3, "Participant"])
+outliers$distance <- as.character(dfoutlier[dfoutlier$Distance_OPTICS < 3.3, "Participant"])
 outliers$distance <- outliers$distance[!outliers$distance %in% c(outliers$attentionchecks, outliers$duration)]
 
 
 p1 <- dfoutlier |> 
   ggplot(aes(x=Participant, y=Distance_OPTICS)) +
   geom_bar(aes(fill=Outlier), stat="identity") +
-  geom_hline(yintercept = 3, linetype="dashed", color="red") +
+  geom_hline(yintercept = 3.3, linetype="dashed", color="red") +
   labs(fill = "Status") +
   scale_fill_manual(values=c("Duration" = "purple", "Failed Attention Checks"="red", "Passed"="grey")) +
   theme_minimal() +
@@ -217,7 +217,8 @@ p2 <- estimate_relation(m, length=30) |>
   ggplot(aes(x=Distance_OPTICS, y=Predicted)) +
   geom_ribbon(aes(ymin=CI_low, ymax=CI_high), alpha=0.2) +
   geom_line() +
-  geom_vline(xintercept=3, linetype="dashed", color="red") +
+  geom_vline(xintercept=3.3, linetype="dashed", color="red") +
+  geom_hline(yintercept=1/3, linetype="dashed", color="black") +
   theme_minimal() 
 
 p1 | p2

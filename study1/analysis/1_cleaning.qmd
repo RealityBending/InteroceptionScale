@@ -27,6 +27,8 @@ library(ggdist)
 df <- read.csv("../data/rawdata_participants.csv")
 ```
 
+The initial sample included `r report::report_participants(df, age = "Age", sex = NA, gender = "Gender")`.
+
 ## Feedback
 
 ### Experiment Enjoyment
@@ -193,9 +195,6 @@ p1 | p2
 
 **TODO: describe OPTICS**.
 
-Mahalanobis distance [@demaesschalck2000] is commonly used to detect multivariate outliers, which are data points with unusual combinations of scores on two or more variables [@filzmoser2016]. This distance is calculated relative to the centroid—a central point where the means of all variables intersect—with larger distances indicating greater deviation from the center.
-
-This measure takes into account correlations within the dataset, which is especially useful when trying to refine and validate a questionnaire with overlapping items.
 
 We removed `r length(outliers$distance)` (`r insight::format_percent(length(outliers$distance) / nrow(df))`) participants based on multivariate distance.
 

@@ -1,5 +1,5 @@
 ---
-title: "InteroceptionScale - Data Analysis"
+title: "InteroceptionScale - Study 1: Data Analysis"
 editor: source
 editor_options: 
   chunk_output_type: console
@@ -11,6 +11,16 @@ format:
 execute: 
   cache: true
 ---
+
+## Original Items
+
+```{r}
+#| message: false
+#| warning: false
+#| out-width: "100%"
+
+knitr::include_graphics("figures/table_originalitems.png")
+```
 
 ## Data Preparation
 
@@ -239,6 +249,26 @@ bootstrap_similarity <- function(df) {
 rez <- bootstrap_similarity(df)
 ```
 
+
+```{r}
+
+rez[rez$Comparison ==  "Random vs. Facet",  "d_PSI"] |> 
+  pd()
+rez[rez$Comparison ==  "Random vs. Facet" & rez$Sample == "Random",  "d_PSI"] |> 
+  pd()
+
+
+rez |> 
+  summarize(PSI = mean(PSI),
+            p_PSI = as.numeric(bayestestR::pd(d_PSI, as_p=TRUE)),
+            RVadj = mean(RVadj),
+            p_RVadj = as.numeric(bayestestR::pd(d_RVadj, as_p=TRUE)),
+            SMI = mean(SMI),
+            p_SMI = as.numeric(bayestestR::pd(d_SMI, as_p=TRUE)),
+            .by = "Comparison")
+```
+
+
 ```{r}
 #| fig-width: 10
 #| fig-height: 10
@@ -266,14 +296,18 @@ p_sim <- rez |>
   pivot_longer(-c("Comparison", "Sample", "Iteration")) |>
   filter(str_detect(name, "d_") & str_detect(Comparison, "Facet")) |>
   filter(Sample == "Random") |>
+  mutate(name = str_remove(name, "d_"), value = -value) |> # Reverse score for figure aesthetics
   ggplot(aes(x=value, y=name)) +
   ggdist::stat_eye(aes(fill = after_stat(x < 0))) +
   geom_vline(xintercept=0, linetype="dashed") +
   labs(x="Similarity Difference", y="Indices of pattern difference",
-       title="To which matrix is the random one more similar?",
+       title="Which matrix is the above more similar to?",
        fill="More similar to") +
   theme_minimal() +
-  scale_fill_manual(values=c("TRUE"="#2196F3", "FALSE"="#4CAF50"), labels = c("By modality", "By facet"))
+  scale_fill_manual(values=c("TRUE"="#4CAF50", "FALSE"="#2196F3"), 
+                    labels = c("By facet", "By modality"),
+                    guide = guide_legend(reverse = TRUE)) +
+  theme(plot.title = element_text(hjust = 0.5, face="italic"))
 
 
 r <- correlation::cor_sort(cor(byrandom))
@@ -305,14 +339,32 @@ p2 <- make_corplot(byfacet, order) +
 p3 <- make_corplot(bymodality, order) +
   ggtitle("Grouped by modality")
 
-p1 / (p2 | p_sim | p3) +
+fig1 <- p1 / (p3 | p_sim | p2) +
   patchwork::plot_layout(heights=c(3, 1)) +
   patchwork::plot_annotation(
-    title="Effect of Item-presentation Grouping",
+    title="Effect of Item Grouping",
     theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
+fig1
+
+ggsave("figures/fig1_correlations.png", fig1, scale = 1.25, width=2100, height=2100, dpi=300, units = "px")
 ```
 
 ## Item Selection
+
+### Distributions
+
+```{r}
+items |> 
+  bayestestR::estimate_density(method="kernSmooth") |> 
+  separate(Parameter, into=c("Facet", "Modality", "Item"), sep="_") |>
+  ggplot(aes(x=x, y=y)) +
+  geom_line(aes(color=Facet, group=interaction(Facet, Item)), linewidth=1, alpha=0.9) +
+  facet_wrap(~Modality) +
+  theme_minimal() +
+  scale_color_material_d(palette = "rainbow") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
+```
 
 ### Unique Variable Analysis (UVA)
 

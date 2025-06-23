@@ -6,8 +6,8 @@ options(warn = 2) # Stop on warnings
 
 # path <- "C:/Users/maisi/Box/InteroceptionScale/
 # path <- "C:/Users/dmm56/Box/Data/InteroceptionScale/"
-# path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
-path <- "C:/Users/asf25/Box/InteroceptionScale/"
+path <- "C:/Users/domma/Box/Data/InteroceptionScale/"
+# path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 
 
@@ -15,6 +15,7 @@ path <- "C:/Users/asf25/Box/InteroceptionScale/"
 
 convert_feet_to_meters <- function(height) {
   height[height == "I'm 5ft8"] <- "5'8"
+  height[height == "5 feet 9inch"] <- "5'9"
   height <- gsub("ft ", "'", tolower(height))
   height <- gsub("ft", "'", tolower(height))
   height <- gsub(" feet ", "'", tolower(height))
@@ -156,7 +157,8 @@ for (file in files) {
   # Detect "equivalent to a Bachelors" and "HND (college)" and convert to "Bachelor" and "High school"
   data_ppt$Education <- ifelse(stringr::str_detect(data_ppt$Education, "equivalent to a Bachelors"), "Bachelor", data_ppt$Education)
   data_ppt$Education <- ifelse(data_ppt$Education %in% c("3rd year BSc", "Bachelor non-university", "graduate certificate (Certificate IV)"), "Bachelor", data_ppt$Education)
-  data_ppt$Education <- ifelse(data_ppt$Education %in% c("NVQ 4", "Professional", "Vocational degree.", "level 3 nvq's", "tech college", "College - HND"), "High school", data_ppt$Education)
+  data_ppt$Education <- ifelse(data_ppt$Education %in% c("NVQ 4", "Professional", "Vocational degree.", "level 3 nvq's",
+                                                         "tech college", "College - HND", "Vocational diploma", "Vocational Qualification"), "High school", data_ppt$Education)
 
   data_ppt$Student <- ifelse(!is.null(resp$Student), resp$Student, NA)
   data_ppt$Country <- ifelse(!is.null(resp$Country), resp$Country, NA)
@@ -164,7 +166,7 @@ for (file in files) {
   # Ethnicity
   data_ppt$Ethnicity <- ifelse(!is.null(resp$Ethnicity), resp$Ethnicity, NA)
   data_ppt$Ethnicity <- ifelse(!is.na(resp$Ethnicity) && resp$Ethnicity == "other", resp$`Ethnicity-Comment`, resp$Ethnicity)
-  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Southern European"), "White", data_ppt$Ethnicity)
+  data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Southern European", "White European"), "White", data_ppt$Ethnicity)
   data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("African"), "Black", data_ppt$Ethnicity)
   data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Maori"), "Other", data_ppt$Ethnicity)
   data_ppt$Ethnicity <- ifelse(data_ppt$Ethnicity %in% c("Mixed white black caribbean"), "Mixed", data_ppt$Ethnicity)
@@ -386,7 +388,8 @@ checks <- checks[order(checks$Score, decreasing = TRUE), ]
 
 # Hi, unfortunately, we can't find your data (and Prolific information suggests that you did not finish the experiment?) Did anything go wrong? Sorry for that!
 
-
+# Make sure there are no duplicates
+if(nrow(alldata[duplicated(alldata), ]) > 0) stop("Duplicates deteccted!")
 # Anonymize ---------------------------------------------------------------
 alldata$Prolific_ID <- NULL
 alldata$Reward <- NULL

@@ -1,0 +1,169 @@
+---
+title: "**The MInt Scale: A Fresh Validation of the Multidimensional Interoception Questionnaire Outperforms the MAIA, BPQ and IAS**"
+shorttitle: "MInt Validation"
+author:
+  - name: Dominique Makowski
+    corresponding: true
+    orcid: 0000-0001-5375-9967
+    email: D.Makowski@sussex.ac.uk
+    url: https://realitybending.github.io/
+    roles:
+      - Conceptualization
+      - Data curation
+      - Formal Analysis
+      - Funding acquisition
+      - Investigation
+      - Methodology
+      - Project administration
+      - Resources
+      - Software
+      - Supervision
+      - Validation
+      - Visualization
+      - Writing – original draft
+    affiliations:
+      - id: "id1"
+        name: "University of Sussex"
+        department: "School of Psychology"
+        city: "Brighton"
+        country: "UK"
+        postal-code: "BN1 9RH"
+      - name: "University of Sussex"
+        department:  "Sussex Centre for Consciousness Science"
+  - name: Ana Neves  
+    orcid: 0009-0006-0020-7599
+    role:
+      - Investigation
+      - Methodology
+      - Project administration
+      - Supervision
+      - Writing – original draft
+      - Writing – review & editing
+    affiliations:
+      - ref: "id1"
+  - name: Giulia Poreiro
+    orcid: 0000-0002-2343-5109
+    role:
+      - Investigation
+      - Methodology
+      - Writing – original draft
+      - Writing – review & editing
+    affiliations:
+      - ref: "id1"
+author-note:
+  status-changes: 
+    affiliation-change: ~
+    deceased: ~
+  disclosures:
+    gratitude: |
+      ::: {.callout-note icon=false appearance="simple"}
+      This preprint is a non-peer-reviewed work from the [**Reality Bending Lab**](https://realitybending.github.io/).
+      ![](https://realitybending.github.io/media/ReBeL_LogoOnly_hu11484441381606756729.png){width=20% fig-align="center"}
+      :::
+    study-registration: ~
+    data-sharing: ~
+    related-report: ~
+    conflict-of-interest: ~
+    financial-support: ~
+    authorship-agreements: ~
+abstract: |
+  TO DO.
+#   **Significance Statement**. TODO.
+keywords: "Interoception questionnaire, interoceptive accuracy scale, MAIA, MInt Validation, Body Awareness"
+numbered-lines: false
+floatsintext: true
+mask: false
+bibliography: bibliography.bib
+format:
+  apaquarto-pdf:
+    documentmode: jou
+    keep-tex: true
+  apaquarto-docx: default
+---
+
+# Introduction
+
+
+TODO: write general intro.
+
+Main issues in existing questionnaires: 
+- Either heavily based on theories (e.g., focusing on a specific dimensions), despite shaky evidence for said-theories
+- Do not control for context (which leads to variability in interpretation and occurence)
+- Often quite narrow in the modalities covered
+
+
+# Study 1
+
+TODO: write intro.
+
+Goal of study 1: to generate a lot of items, analyze its structure and reduce them to a balanced set of items.
+
+## Methods
+
+### Participants
+
+We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37 $\pm$ 12.2 [18, 77]; 50.8\% women; Country of residence: 63.86% United Kingdom, 26.65% United States).
+This study was approved by the University of Sussex' Ethics Committee (**NUMBER**).
+
+### Item Generation
+
+Based on the two goals outlined for this scale, namely to include different interoceptive modalities, and to explicitly state the context of the interoceptive experience (e.g., whether negative or positive), we generated items following a combinatorial approach, where each item's category was a combination of a specific modality and context (@fig-one).
+
+```{r}
+#| label: fig-one
+#| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belong both to an interoceptive modalitiy and a facet, with the number of each item per category indicated in the circles. The askterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or entirely randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that 1) the scale's structure is robust to different presentation conditions; 2) modality-grouping might tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more natural)." 
+#| fig-align: "center"
+#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
+#| out-width: "100%"
+
+knitr::include_graphics("../study1/analysis/figures/figure1.png")
+```
+
+We firstly identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature, bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we then settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, namely anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
+
+Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets^[The initial item list at [realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)]. We additionally crafted 8 "attention check" items blending in (and distributed across) each category. 
+ 
+
+### Procedure
+
+Participants were randomly assigned to one of three conditions, driving how items were grouped on the same page: 1) items grouped by modality (i.e., all cardiac items on the first page, all colon & bladder  items on the second, etc.), 2) items grouped by facet, or 3) items presented fully randomly (but balanced randomly across 6 pages). The order of the item on any given page and the order of the modalities/facets were randomized.
+Each participant completed the full set of 120 items, with the attention check items interspersed throughout.
+The online experiment was implemented using JsPsych [@de2015jspsych], and item responses were recorded using 7-points Likert scales (0 = Disagree, 6 = Agree).
+
+### Data Analysis
+
+In order to test whether the grouping condition had an effect on the structure (i.e., how items relate to one-another), we compared the correlation matrix obtained in the random condition to the ones obtained in the modality and facet conditions, focusing on 3 indices of correlation matrix similarity - the Procrustes Similarity Index [PSI, @sibson1978studies], the Adjusted RV [Rvadj, @mayer2011exploratory], and the Similarity of Matrices Index [SMI, @indahl2018similarity]. For each index, we bootstrapped the difference between the similarity with the facet and modality conditions to test whether the correlation matrix in the random-grouping condition is significantly more similar to any of the two other conditions. 
+
+## Results
+
+The correlation matrix similarity analysis yielded no significant differences between the similarity of the random-grouping condition with the modality-grouping and facet-grouping conditions ($PSI_{\text{Random vs. Facet}} = 0.81$, $PSI_{\text{Random vs. Modality}} = 0.82$, $p = .51$; $RVadj_{\text{Random vs. Facet}} = 0.77$, $RVadj_{\text{Random vs. Modality}} = 0.78$, $p = .78$; $SMI_{\text{Random vs. Facet}} = 0.49$, $SMI_{\text{Random vs. Modality}} = 0.51$, $p = .55$).
+
+
+
+## Discussion
+
+Consistent bias across indices in favour of a greater similarity with the modality-grouping condition.
+
+# Study 2
+
+TODO: write intro.
+Goal of study 2: to validate the MInt scale against other interoception scales.
+
+
+# Data Availability
+
+Data, code, and all materials are available at https://github.com/RealityBending/InteroceptionScale.
+
+# Acknowledgements
+
+
+We would like to thank the dissertation students from the University of Sussex for their help in data collection.
+DM would also like to thank ... for the motivation provided to write this paper.
+
+# References
+
+<!-- References will auto-populate in the refs div below -->
+
+::: {#refs}
+:::
+
