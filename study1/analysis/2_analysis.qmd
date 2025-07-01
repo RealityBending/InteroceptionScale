@@ -37,6 +37,8 @@ library(tidygraph)
 library(ggraph)
 
 set.seed(42)
+
+Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
 ```
 
 ```{r}
@@ -218,7 +220,7 @@ make_heatmap(items, title="Full Sample")
 
 bootstrap_similarity <- function(df) {
   rez <- data.frame()
-  for(i in 1:200) {
+  for(i in 1:500) {
     idx <- sample(1:nrow(df), nrow(df), replace=TRUE)
     newdata <- df[idx,]
     items <- select(df, contains("_Q"))
@@ -251,13 +253,6 @@ rez <- bootstrap_similarity(df)
 
 
 ```{r}
-
-rez[rez$Comparison ==  "Random vs. Facet",  "d_PSI"] |> 
-  pd()
-rez[rez$Comparison ==  "Random vs. Facet" & rez$Sample == "Random",  "d_PSI"] |> 
-  pd()
-
-
 rez |> 
   summarize(PSI = mean(PSI),
             p_PSI = as.numeric(bayestestR::pd(d_PSI, as_p=TRUE)),
@@ -342,7 +337,7 @@ p3 <- make_corplot(bymodality, order) +
 fig1 <- p1 / (p3 | p_sim | p2) +
   patchwork::plot_layout(heights=c(3, 1)) +
   patchwork::plot_annotation(
-    title="Effect of Item Grouping",
+    title="Item Correlation Matrix Similarity",
     theme = theme(plot.title = element_text(hjust = 0.5, face="bold")))
 fig1
 
@@ -398,6 +393,8 @@ bymodality <- select(bymodality, -all_of(toremove1))
 byrandom <- select(byrandom, -all_of(toremove1))
 ```
 
+We removed `r length(toremove1)` items (`r paste(toremove1, collapse=", ")`) based on Unique Variable Analysis (UVA).
+
 ### Cluster Stability
 
 ```{r}
@@ -446,13 +443,22 @@ itemstability_table <- make_loadingtable(itemstability$lower_order$item.stabilit
 
 # Remove items
 toremove2 <- filter(itemstability_table, Max < 0.8)$Item
-toremove2 <- itemstability_table |> 
+```
+
+We removed `r length(toremove2)` items (`r paste(toremove2, collapse=", ")`) that had a low stability (< 0.8).
+
+
+```{r}
+toremove2b <- itemstability_table |> 
   filter(!Item %in% toremove2) |>
   mutate(Item, n=n(), .by="Cluster", .keep="used") |> 
   filter(n < 3) |>  # Remove small clusters
-  pull(Item) |> 
-  c(toremove2)
+  pull(Item)
+
+toremove2 <- c(toremove2, toremove2b)
 ```
+
+We removed `r length(toremove2b)` items (`r paste(toremove2b, collapse=", ")`) that were in clusters with less than 3 items after the first removal.
 
 
 ```{r}
@@ -549,7 +555,11 @@ bymodality <- select(bymodality, -all_of(toremove3))
 byrandom <- select(byrandom, -all_of(toremove3))
 ```
 
-## Structure Analysis
+We kept the 3 items with the highest loading in their lower-level structure, removing `r length(toremove3)` items (`r paste(toremove3, collapse=", ")`).
+
+## Structure Analysis (Final Selection)
+
+### EGA
 
 ```{r}
 #| eval: false
@@ -569,6 +579,7 @@ ega3 <- bootEGA(
 save(ega3, file="models/ega3.RData")
 ```
 
+
 ```{r}
 #| fig-width: 12
 #| fig-height: 14
@@ -579,10 +590,18 @@ load("models/ega3.RData")
 plot(itemStability(ega3))
 ```
 
+
+```{r}
+EGAnet::genTEFI(ega3$EGA)
+# cfa <- EGAnet::CFA(ega3$EGA, 
+#             items[colnames(ega3$lower_order$boot.wc)],
+#             estimator = "WLSMV")
+```
+
 ### Item Table 
 
 ```{r}
-#| message: false
+#| code-fold: false
 
 dimensions <- list(
   C01 = "UrIn",       # Urointestinal Inaccuracy
@@ -604,6 +623,10 @@ dimensions <- list(
   C11 = "Derm",       # Dermatoception
   C07 = "SexC"        # Sexual Arousal Changes
 )
+
+``` 
+```{r}
+#| message: false
 
 higher <- make_loadingtable(t(net.loads(ega3$EGA$higher_order, loading.method="revised")$std))
 cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
@@ -790,11 +813,9 @@ tab1 <- rbind(higher, select(lower, -ID)) |>
   gt::cols_width(Label ~ gt::pct(66),
                  `|` ~ gt::pct(1))
 
-gt::gtsave(gt::cols_hide(tab1, `|`), "table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
+gt::gtsave(gt::cols_hide(tab1, `|`), "figures/table1.html", inline_css = TRUE) # Save it and reload it otherwise formatting not ideal
 
-Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
-
-gt::gtsave(tab1, "table1.png", vwidth=1660, expand=0, quiet=TRUE)
+gt::gtsave(tab1, "figures/table1.png", vwidth=1660, expand=0, quiet=TRUE)
 ```
 
 
@@ -983,8 +1004,10 @@ ggraph(layout) +
 #| eval: false
 
 # EGAnet::EGM(items[, 1:60])
-EGAnet::EGM.compare(items, model = "glasso", algorithm = "leiden")
-rez <- EGAnet::network.compare(byfacet, bymodality, model = "glasso", seed=3)
+# EGAnet::EGM.compare(items, model = "glasso", algorithm = "leiden")
+rez <- EGAnet::network.compare(byfacet[colnames(ega3$lower_order$boot.wc)], 
+                               bymodality[colnames(ega3$lower_order$boot.wc)], 
+                               model = "glasso", seed=3)
 
 plot(rez)
 ```

@@ -27,12 +27,62 @@ library(tidygraph)
 library(ggraph)
 
 set.seed(42)
+
+Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
 ```
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
-df <- read.csv("../data/data_participants.csv")
+df <- read.csv("../data/data_participants.csv") |> 
+  rename(MINT_Urin_1 = MINT_Deficit_Urin_1,
+         MINT_Urin_2 = MINT_Deficit_Urin_2,
+         MINT_Urin_3 = MINT_Deficit_Urin_3,
+         MINT_CaCo_1 = MINT_Deficit_CaCo_4,
+         MINT_CaCo_2 = MINT_Deficit_CaCo_5,
+         MINT_CaCo_3 = MINT_Deficit_CaCo_6,
+         MINT_CaNo_1 = MINT_Deficit_CaNo_7,
+         MINT_CaNo_2 = MINT_Deficit_CaNo_8,
+         MINT_CaNo_3 = MINT_Deficit_CaNo_9,
+         MINT_Olfa_1 = MINT_Deficit_Olfa_10,
+         MINT_Olfa_2 = MINT_Deficit_Olfa_11,
+         MINT_Olfa_3 = MINT_Deficit_Olfa_12,
+         MINT_Sati_1 = MINT_Deficit_Sati_13,
+         MINT_Sati_2 = MINT_Deficit_Sati_14,
+         MINT_Sati_3 = MINT_Deficit_Sati_15,
+         MINT_SexS_1 = MINT_Awareness_SexS_19,
+         MINT_SexS_2 = MINT_Awareness_SexS_20,
+         MINT_SexS_3 = MINT_Awareness_SexS_21,
+         MINT_SexO_1 = MINT_Awareness_SexO_22,
+         MINT_SexO_2 = MINT_Awareness_SexO_23,
+         MINT_SexO_3 = MINT_Awareness_SexO_24,
+         MINT_UrSe_1 = MINT_Awareness_UrSe_25,
+         MINT_UrSe_2 = MINT_Awareness_UrSe_26,
+         MINT_UrSe_3 = MINT_Awareness_UrSe_27,
+         MINT_RelA_1 = MINT_Awareness_RelA_28,
+         MINT_RelA_2 = MINT_Awareness_RelA_29,
+         MINT_RelA_3 = MINT_Awareness_RelA_30,
+         MINT_StaS_1 = MINT_Awareness_StaS_31,
+         MINT_StaS_2 = MINT_Awareness_StaS_32,
+         MINT_StaS_3 = MINT_Awareness_StaS_33,
+         MINT_ExAc_1 = MINT_Awareness_ExAc_34,
+         MINT_ExAc_2 = MINT_Awareness_ExAc_35,
+         MINT_ExAc_3 = MINT_Awareness_ExAc_36,
+         MINT_Card_1 = MINT_Sensitivity_Card_37,
+         MINT_Card_2 = MINT_Sensitivity_Card_38,
+         MINT_Card_3 = MINT_Sensitivity_Card_39,
+         MINT_Resp_1 = MINT_Sensitivity_Resp_40,
+         MINT_Resp_2 = MINT_Sensitivity_Resp_41,
+         MINT_Resp_3 = MINT_Sensitivity_Resp_42,
+         MINT_Gast_1 = MINT_Sensitivity_Gast_46,
+         MINT_Gast_2 = MINT_Sensitivity_Gast_47,
+         MINT_Gast_3 = MINT_Sensitivity_Gast_48,
+         MINT_Derm_1 = MINT_Sensitivity_Derm_49,
+         MINT_Derm_2 = MINT_Sensitivity_Derm_50,
+         MINT_Derm_3 = MINT_Sensitivity_Derm_51)
+
+colors <- c(Mint="#00BCD4", metaMint="#673AB7", miniMint="#26A36C", microMint="#8BC34A", 
+            IAS="#F44336", MAIA="#FFAD04",  iMAIA="#FF7811", BPQ="#795548")
 ```
 
 ## Structure Validation
@@ -40,71 +90,67 @@ df <- read.csv("../data/data_participants.csv")
 ```{r}
 #| code-fold: false
 
-items <- df |> 
-   filter(!is.na(MINT_Awareness_ExAc_35)) |> 
-  select(starts_with("MINT_")) 
+items <- select(df, starts_with("MINT_"))
 names(items) <- str_remove(names(items), "MINT_")
-
-colors <- c(MINT="#00BCD4", MINTi="#00838F", IAS="#F44336", MAIA="#FF9800", MAIAi="#EF6C00", MAIAmin="#E65100", BPQ="#795548")
 ```
 
 
 ```{r}
 labels <- list(
-  MINT_Deficit_Urin_1 = "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I produce less than I expected",
-  MINT_Deficit_Urin_2 = "I often feel the need to urinate even when my bladder is not full",
-  MINT_Deficit_Urin_3 = "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
-  MINT_Deficit_CaCo_4 = "Sometimes my breathing becomes erratic or shallow and I often don't know why",
-  MINT_Deficit_CaCo_5 = "I often feel like I can't get enough oxygen by breathing normally",
-  MINT_Deficit_CaCo_6 = "Sometimes my heart starts racing and I often don't know why",
-  MINT_Deficit_CaNo_7 = "I often only notice how I am breathing when it becomes loud",
-  MINT_Deficit_CaNo_8 = "I only notice my heart when it is thumping in my chest",
-  MINT_Deficit_CaNo_9 = "I often only notice how I am breathing when my breathing becomes shallow or irregular",
-  MINT_Deficit_Olfa_10 = "I often check the smell of my armpits",
-  MINT_Deficit_Olfa_11 = "I often check the smell of my own breath",
-  MINT_Deficit_Olfa_12 = "I often check the smell of my farts",
-  MINT_Deficit_Sati_13 = "I don't always feel the need to eat until I am really hungry",
-  MINT_Deficit_Sati_14 = "Sometimes I don't realise I was hungry until I ate something",
-  MINT_Deficit_Sati_15 = "I don't always feel the need to drink until I am really thirsty",
-  # MINT_Awareness_SexA_16 = "I always feel in my body if I am sexually aroused",
-  # MINT_Awareness_SexA_17 = "I can always tell that I am sexually aroused from the way I feel inside",
-  # MINT_Awareness_SexA_18 = "I always know when I am sexually aroused",
-  MINT_Awareness_SexS_19 = "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
-  MINT_Awareness_SexS_20 = "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
-  MINT_Awareness_SexS_21 = "My genital organs are very sensitive to pleasant stimulations",
-  MINT_Awareness_SexO_22 = "In general, I am very sensitive to changes in my genital organs",
-  MINT_Awareness_SexO_23 = "I can notice even very subtle changes in the state of my genital organs",
-  MINT_Awareness_SexO_24 = "I am always very aware of the state of my genital organs, even when I am calm",
-  MINT_Awareness_UrSe_25 = "In general, I am very aware of the sensations that are happening when I am urinating",
-  MINT_Awareness_UrSe_26 = "In general, I am very aware of the sensations that are happening when I am defecating",
-  MINT_Awareness_UrSe_27 = "I often experience a pleasant sensation when relieving myself when urinating or defecating)",
-  MINT_Awareness_RelA_28 = "I always know when I am relaxed",
-  MINT_Awareness_RelA_29 = "I always feel in my body if I am relaxed",
-  MINT_Awareness_RelA_30 = "My body is always in the same specific state when I am relaxed",
-  MINT_Awareness_StaS_31 = "Being relaxed is a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after exercise)",
-  MINT_Awareness_StaS_32 = "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)",
-  MINT_Awareness_StaS_33 = "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after exercise)",
-  MINT_Awareness_ExAc_34 = "I can always accurately feel when I am about to burp",
-  MINT_Awareness_ExAc_35 = "I can always accurately feel when I am about to fart",
-  MINT_Awareness_ExAc_36 = "I can always accurately feel when I am about to sneeze",
-  MINT_Sensitivity_Card_37 = "In general, I am very sensitive to changes in my heart rate",
-  MINT_Sensitivity_Card_38 = "I can notice even very subtle changes in the way my heart beats",
-  MINT_Sensitivity_Card_39 = "I often notice changes in my heart rate",
-  MINT_Sensitivity_Resp_40 = "I can notice even very subtle changes in my breathing",
-  MINT_Sensitivity_Resp_41 = "I am always very aware of how I am breathing, even when I am calm",
-  MINT_Sensitivity_Resp_42 = "In general, I am very sensitive to changes in my breathing",
-  # MINT_Sensitivity_Sign_43 = "When something important is happening in my life, I can feel immediately feel changes in my heart rate",
-  # MINT_Sensitivity_Sign_44 = "When something important is happening in my life, I can immediately feel changes in my breathing",
-  # MINT_Sensitivity_Sign_45 = "When something important is happening in my life, I can feel it in my body",
-  MINT_Sensitivity_Gast_46 = "I can notice even very subtle changes in what my stomach is doing",
-  MINT_Sensitivity_Gast_47 = "In general, I am very sensitive to what my stomach is doing",
-  MINT_Sensitivity_Gast_48 = "I am always very aware of what my stomach is doing, even when I am calm",
-  MINT_Sensitivity_Derm_49 = "In general, my skin is very sensitive",
-  MINT_Sensitivity_Derm_50 = "My skin is susceptible to itchy fabrics and materials",
-  MINT_Sensitivity_Derm_51 = "I can notice even very subtle stimulations to my skin (e.g., very light touches)"
-  # MINT_Sensitivity_SexC_52 = "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
-  # MINT_Sensitivity_SexC_53 = "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
-  # MINT_Sensitivity_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)"
+  MINT_Urin_1 = "I sometimes feel like I need to urinate or defecate but when I go to the bathroom I produce less than I expected",
+  MINT_Urin_2 = "I often feel the need to urinate even when my bladder is not full",
+  MINT_Urin_3 = "Sometimes I am not sure whether I need to go to the toilet or not (to urinate or defecate)",
+  MINT_CaCo_1 = "Sometimes my breathing becomes erratic or shallow and I often don't know why",
+  MINT_CaCo_2 = "I often feel like I can't get enough oxygen by breathing normally",
+  MINT_CaCo_3 = "Sometimes my heart starts racing and I often don't know why",
+  MINT_CaNo_1 = "I often only notice how I am breathing when it becomes loud",
+  MINT_CaNo_2 = "I only notice my heart when it is thumping in my chest",
+  MINT_CaNo_3 = "I often only notice how I am breathing when my breathing becomes shallow or irregular",
+  MINT_Olfa_1 = "I often check the smell of my armpits",
+  MINT_Olfa_2 = "I often check the smell of my own breath",
+  MINT_Olfa_3 = "I often check the smell of my farts",
+  MINT_Sati_1 = "I don't always feel the need to eat until I am really hungry",
+  MINT_Sati_2 = "Sometimes I don't realise I was hungry until I ate something",
+  MINT_Sati_3 = "I don't always feel the need to drink until I am really thirsty",
+  # MINT_SexA_16 = "I always feel in my body if I am sexually aroused",
+  # MINT_SexA_17 = "I can always tell that I am sexually aroused from the way I feel inside",
+  # MINT_SexA_18 = "I always know when I am sexually aroused",
+  MINT_SexS_1 = "During sex or masturbation, I often feel very strong sensations coming from my genital areas",
+  MINT_SexS_2 = "When I am sexually aroused, I often notice specific sensations in my genital area (e.g., tingling, warmth, wetness, stiffness, pulsations)",
+  MINT_SexS_3 = "My genital organs are very sensitive to pleasant stimulations",
+  MINT_SexO_1 = "In general, I am very sensitive to changes in my genital organs",
+  MINT_SexO_2 = "I can notice even very subtle changes in the state of my genital organs",
+  MINT_SexO_3 = "I am always very aware of the state of my genital organs, even when I am calm",
+  MINT_UrSe_1 = "In general, I am very aware of the sensations that are happening when I am urinating",
+  MINT_UrSe_2 = "In general, I am very aware of the sensations that are happening when I am defecating",
+  MINT_UrSe_3 = "I often experience a pleasant sensation when relieving myself when urinating or defecating)",
+  MINT_RelA_1 = "I always know when I am relaxed",
+  MINT_RelA_2 = "I always feel in my body if I am relaxed",
+  MINT_RelA_3 = "My body is always in the same specific state when I am relaxed",
+  MINT_StaS_1 = "Being relaxed is a very different bodily feeling compared to other states (e.g., feeling anxious, sexually aroused or after exercise)",
+  MINT_StaS_2 = "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)",
+  MINT_StaS_3 = "Being anxious is a very different bodily feeling compared to other states (e.g., feeling sexually aroused, relaxed or after exercise)",
+  MINT_ExAc_1 = "I can always accurately feel when I am about to burp",
+  MINT_ExAc_2 = "I can always accurately feel when I am about to fart",
+  MINT_ExAc_3 = "I can always accurately feel when I am about to sneeze",
+  MINT_Card_1 = "In general, I am very sensitive to changes in my heart rate",
+  MINT_Card_2 = "I can notice even very subtle changes in the way my heart beats",
+  MINT_Card_3 = "I often notice changes in my heart rate",
+  MINT_Resp_1 = "I can notice even very subtle changes in my breathing",
+  MINT_Resp_2 = "I am always very aware of how I am breathing, even when I am calm",
+  MINT_Resp_3 = "In general, I am very sensitive to changes in my breathing",
+  # MINT_Sign_43 = "When something important is happening in my life, I can feel immediately feel changes in my heart rate",
+  # MINT_Sign_44 = "When something important is happening in my life, I can immediately feel changes in my breathing",
+  # MINT_Sign_45 = "When something important is happening in my life, I can feel it in my body",
+  MINT_Gast_1 = "I can notice even very subtle changes in what my stomach is doing",
+  MINT_Gast_2 = "In general, I am very sensitive to what my stomach is doing",
+  MINT_Gast_3 = "I am always very aware of what my stomach is doing, even when I am calm",
+  MINT_Derm_1 = "In general, my skin is very sensitive",
+  MINT_Derm_2 = "My skin is susceptible to itchy fabrics and materials",
+  MINT_Derm_3 = "I can notice even very subtle stimulations to my skin (e.g., very light touches)"
+  # MINT_SexC_52 = "When I am sexually aroused, I often feel changes in the way my heart beats (e.g., faster or stronger)",
+  # MINT_SexC_53 = "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
+  # MINT_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)"
 )
 
 
@@ -119,8 +165,7 @@ cleanlabels <- function(x, qname=FALSE) {
   x <- x |> 
     str_replace("MINT_", ifelse(qname, "MINT - ", "")) |> 
     str_replace("MAIA_", ifelse(qname, "MAIA - ", "")) |> 
-    str_replace("_", " (") 
-  x <- ifelse(str_detect(x, "\\("), paste0(x, ")"), x)
+    str_replace("_", " - ") 
   
   if(is_factor) {
     levels(vec) <- x
@@ -130,9 +175,9 @@ cleanlabels <- function(x, qname=FALSE) {
 }
 ```
 
-### Cluster Stability
+### Full
 
-#### Full
+#### EGA
 
 ```{r}
 #| eval: false
@@ -142,6 +187,7 @@ ega1 <- bootEGA(
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "leiden",
+  allow.singleton = TRUE,
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
@@ -163,16 +209,233 @@ itemstability <- EGAnet::itemStability(ega1, IS.plot=FALSE)
 plot(itemstability)
 ```
 
-#### Final
+#### Hierarchical Clustering
 
 ```{r}
 #| fig-width: 12
 #| fig-height: 14
+#| warning: false
+
+hclust <- pvclust::pvclust(items,
+                 method.hclust = "ward.D2",
+                 method.dist = "correlation",
+                 nboot = 1000, quiet=TRUE, parallel=TRUE)
+plot(hclust, hang = -1, cex = 0.5)
+pvclust::pvrect(hclust, alpha=0.95, max.only=TRUE)
+```
+
+### Item Reduction
+
+::: {.panel-tabset}
+
+```{r}
+features <- data.frame(
+  SexS = rowMeans(select(df, starts_with("MINT_SexS_")), na.rm = TRUE),
+  StaS = rowMeans(select(df, starts_with("MINT_StaS_")), na.rm = TRUE),
+  SexO = rowMeans(select(df, starts_with("MINT_SexO_")), na.rm = TRUE),
+  ExaC = rowMeans(select(df, starts_with("MINT_ExAc_")), na.rm = TRUE),
+  RelA = rowMeans(select(df, starts_with("MINT_RelA_")), na.rm = TRUE),
+  UrSe = rowMeans(select(df, starts_with("MINT_UrSe_")), na.rm = TRUE),
+  CaCo = rowMeans(select(df, starts_with("MINT_CaCo_")), na.rm = TRUE),
+  Urin = rowMeans(select(df, starts_with("MINT_Urin_")), na.rm = TRUE),
+  Sati = rowMeans(select(df, starts_with("MINT_Sati_")), na.rm = TRUE),
+  Derm = rowMeans(select(df, starts_with("MINT_Derm_")), na.rm = TRUE),
+  CaNo = rowMeans(select(df, starts_with("MINT_CaNo_")), na.rm = TRUE),
+  Olfa = rowMeans(select(df, starts_with("MINT_Olfa_")), na.rm = TRUE),
+  Resp = rowMeans(select(df, starts_with("MINT_Resp_")), na.rm = TRUE),
+  Card = rowMeans(select(df, starts_with("MINT_Card_")), na.rm = TRUE),
+  Gast = rowMeans(select(df, starts_with("MINT_Gast_")), na.rm = TRUE)
+)
+
+features$CardGast = rowMeans(select(features, Card, Gast), na.rm = TRUE)
+features$CardResp = rowMeans(select(features, Card, Resp), na.rm = TRUE)
+features$CardRespGast = rowMeans(select(features, Card, Resp, Gast), na.rm = TRUE)
+
+rez <- data.frame()
+for(outcome_group in c("Interoception", "Alexithymia", "Mood", "Mental", "Physical", "Biofeedback", "Dissociative", "ER", "Primals", "Lifestyle")) {
+  if(outcome_group == "Interoception") {
+    outcomes <- c("IAS", "BPQ", "MAIA_EmotionalAwareness", 
+                  "MAIA_BodyListening", "MAIA_SelfRegulation",
+                  "MAIA_AttentionRegulation", "MAIA_Trusting")
+  } else if(outcome_group == "Alexithymia") {
+    outcomes <- c("TAS_EOT", "TAS_DDF", "TAS_DIF")
+  } else if(outcome_group == "Mood") {
+    outcomes <- c("LifeSatisfaction", "PHQ4_Anxiety", "PHQ4_Depression", "ERS_Arousal", "ERS_Sensitivity", "ERS_Persistence")
+  } else if (outcome_group == "Mental") {
+    outcomes <- c("Disorders_Psychiatric_MoodTreatment", "Disorders_Psychiatric_AnxietyTreatment",
+                  "Disorders_Psychiatric_Eating", "Disorders_Psychiatric_Addiction",
+                  "Disorders_Psychiatric_Borderline", "Disorders_Psychiatric_Autism",
+                  "Disorders_Psychiatric_ADHD")
+  } else if (outcome_group == "Physical") {
+    outcomes <- c("Disorders_Somatic_AfferentSensitivity", "Disorders_Somatic_CentralSensitization_N",
+                  "Disorders_Somatic_AutonomicDysfunction", "Disorders_Somatic_ImmuneInflammatory")
+  } else if (outcome_group == "Biofeedback") {
+    outcomes <- c("Wearables_HeartImportance", "Wearables_StepsImportance", 
+                  "Wearables_SleepImportance", "Wearables_CalorieIntakeImportance",
+                  "Wearables_WeightImportance")
+  } else if (outcome_group == "Dissociative") {
+    outcomes <- names(select(df, starts_with("CEFSA_")))
+  } else if (outcome_group == "ER") {
+    outcomes <- names(select(df, starts_with("CERQ_"))) 
+  } else if (outcome_group == "Primals") {
+    outcomes <- names(select(df, starts_with("PI_")))
+  } else if (outcome_group == "Lifestyle") {
+    outcomes <- c("Physical_Active", "BMI")
+  } 
+  
+  out_group <- data.frame()
+  for(outcome in outcomes) {
+    
+    out <- data.frame()
+    for(feature in names(features)) {
+      
+      dat <- data.frame(Participant = df$Participant)
+      dat[[outcome]] <- df[[outcome]]
+      dat[[feature]] <- features[[feature]]
+      dat <- dat[!is.na(dat[[outcome]]) & !is.na(dat[[feature]]), ]
+    
+      f <- as.formula(paste0(outcome, " ~ ", feature))
+      if(length(unique(dat[[outcome]])) > 2) {
+        m <- lm(f, data = dat)
+      } else {
+        m <- glm(f, data = dat, family = "binomial")
+      }
+      out <- rbind(out, data.frame(
+        Group = outcome_group,
+        Outcome = outcome,
+        Dimension = feature,
+        R2 = as.numeric(r2(m))[1]
+      ))
+    }
+    
+    out$R2 <- as.numeric(normalize(out$R2))
+    out$Rank <- datawizard::ranktransform(1 - out$R2)
+    out_group <- rbind(out_group, out)
+  }
+  
+  ave <- summarize(out_group, R2 = median(R2), Rank = min(Rank), .by="Dimension") |> 
+    mutate(Group = outcome_group, Outcome = outcome_group)
+  
+  rez <- rbind(rez, out_group, ave)
+}
+
+grandave <- rez |> 
+  filter(Group != Outcome) |> 
+  summarize(R2 = mean(R2), Rank = min(Rank), .by="Dimension") |> 
+  mutate(Group = "Average", Outcome = "Average")
+```
+
+
+
+
+#### R2
+
+```{r}
+rbind(rez, grandave) |> 
+  select(-Group, -Rank) |> 
+  pivot_wider(names_from = "Outcome", values_from = "R2") |> 
+  mutate(Group = case_when(
+    Dimension %in% c("Card", "Resp", "Gast", "CardRespGast", "CardResp", "CardGast") ~ "Visceral", 
+    Dimension %in% c("RelA", "SexS", "ExaC", "StaS", "SexO", "UrSe") ~ "sensitivity", 
+    Dimension %in% c("CaCo", "Urin", "Derm", "Olfa", "Sati", "CaNo") ~ "Deficit", 
+    .default = "Other")) |> 
+  select(Group, Dimension, Average, Interoception, Biofeedback, ER, 
+         Primals, Alexithymia, Dissociative, Mood, 
+         Physical, Mental, Lifestyle) |>
+  arrange(Group, desc(Average)) |> 
+  # select(-Group) |> 
+  gt::gt() |> 
+  gt::data_color(
+    columns = -c(Dimension, Group),
+    palette = c("white", "green"),
+    domain = c(0, 1)
+  ) |>
+  gt::fmt_number() |>
+  gt::tab_header(
+    title = "Variable Importance",
+    subtitle = "Normalized Predictive Power (R2)"
+  ) |> 
+  gt::tab_row_group(
+    label = "Sensitivity",
+    rows = Group == "sensitivity"
+  )  |> 
+  gt::tab_row_group(
+    label = "Interoception",
+    rows = Group == "Visceral"
+  ) |> 
+  gt::tab_row_group(
+    label = "Deficit",
+    rows = Group == "Deficit"
+  ) |> 
+  gt::cols_hide(Group)
+```
+
+#### Rank
+
+```{r}
+rbind(rez, grandave) |> 
+  select(-Group, -R2) |> 
+  pivot_wider(names_from = "Outcome", values_from = "Rank") |> 
+  mutate(Group = case_when(
+    Dimension %in% c("Card", "Resp", "Gast", "CardRespGast", "CardResp", "CardGast") ~ "Visceral", 
+    Dimension %in% c("RelA", "SexS", "ExaC", "StaS", "SexO", "UrSe") ~ "sensitivity", 
+    Dimension %in% c("CaCo", "Urin", "Derm", "Olfa", "Sati", "CaNo") ~ "Deficit", 
+    .default = "Other")) |> 
+  datawizard::data_relocate(select=c("Group", "Dimension", "Average", "Interoception")) |>
+  arrange(Group, Average) |> 
+  gt::gt() |> 
+  # gt::fmt_number(columns = "Average") |>
+  gt::data_color(
+    columns = -c(Dimension, Group),
+    palette = c("green", "white"),
+    domain = c(1, 18)
+  ) |> 
+  gt::opt_interactive(page_size_default=20)
+```
+
+#### Clusters
+
+```{r}
+hclust2 <- rez |>
+  filter(Group != Outcome) |>
+  select(-Group, -Rank) |>
+  pivot_wider(names_from = "Dimension", values_from = "R2") |>
+  select(-Outcome) |>
+  pvclust::pvclust(
+     method.hclust = "average",
+     method.dist = "correlation",
+     nboot = 1000, quiet=TRUE, parallel=TRUE)
+
+plot(hclust2, hang = -1, cex = 0.5)
+pvclust::pvrect(hclust2, alpha=0.95, max.only=TRUE)
+```
+
+:::
+
+### Final
+
+
+```{r}
+#| fig-width: 10
+#| fig-height: 8
 #| fig-keep: "first"
+#| code-fold: false
 
 items <- items |> 
-  select(-contains("UrSe"))
+  select(
+    -contains("UrSe"), # Unstable item
+    -contains("StaS"), # Too vague and overlapping
+    -contains("SexO"), # Overalapping with SexS
+    
+    -contains("CaNo") # Overlap with CaCo
+    # -contains("Olfa"), # Unstable metacluster
+    # -contains("Sati")
+  )
 ```
+
+::: {.panel-tabset}
+
+#### EGA
 
 
 ```{r}
@@ -183,6 +446,8 @@ ega2 <- bootEGA(
   EGA.type = "hierEGA",
   model = "glasso",  # BGGM
   algorithm = "leiden",
+  # consensus.method = "lowest_tefi",
+  allow.singleton = TRUE,
   type="resampling",
   plot.itemStability=FALSE,
   typicalStructure=TRUE,
@@ -203,7 +468,8 @@ load("models/ega2.RData")
 
 # EGAnet::dimensionStability(ega)
 itemstability <- EGAnet::itemStability(ega2, IS.plot=FALSE)
-plot(itemstability)
+p_stab <- plot(itemstability)
+p_stab
 ```
 
 
@@ -228,23 +494,33 @@ make_loadingtable <- function(x) {
 
 dimensions <- list(
   C01 = "SexS",       # Sexual Arousal Sensitivity
-  C02 = "SexO",       # Sexual Organs Sensitivity
-  C03 = "Derm",       # Dermatoception
-  C04 = "StaS",       # State Specificity
-  C05 = "Card",       # Cardioception
-  C06 = "Sati",       # Satiety Noticing
-  C07 = "Gast",       # Gastroception
-  C08 = "Olfa",       # Olfactory Compensation
-  C09 = "Resp",       # Respiroception
-  C10 = "RelA",       # Relaxation Awareness
-  C11 = "Urin",       # Urointestinal Inaccuracy
-  C12 = "ExAc",       # Expulsion Accuracy
-  C13 = "CaCo",       # Cardiorespiratory Confusion
-  C14 = "CaNo"        # Cardiorespiratory Noticing
+  C02 = "Derm",       # Dermal Hypersensitivity
+  C03 = "Card",       # Cardioception
+  C04 = "Sati",       # Satiety Awareness
+  C05 = "Gast",       # Gastroception
+  C06 = "Olfa",       # Olfactory Compensation
+  C07 = "Resp",       # Respiroception
+  C08 = "RelA",       # Relaxation Awareness
+  C09 = "Urin",       # Urointestinal Inaccuracy
+  C10 = "ExAc",       # Expulsion Accuracy
+  C11 = "CaCo"       # Cardiorespiratory Confusion
+  # C01 = "C01",
+  # C02 = "C02",
+  # C03 = "C03",
+  # C04 = "C04",
+  # C05 = "C05",
+  # C06 = "C06",
+  # C07 = "C07",
+  # C08 = "C08",
+  # C09 = "C09",
+  # C10 = "C10",
+  # C11 = "C11",
+  # C12 = "C12"
 )
 
 
-higher <- make_loadingtable(t(net.loads(ega2$EGA$higher_order, loading.method="revised")$std))
+higher <- make_loadingtable(t(net.loads(ega2$EGA$higher_order, loading.method="revised")$std)) |> 
+  arrange(Item)
 cluster_order <- names(higher)[!names(higher) %in% c("Item", "Cluster", "Max")]
 
 
@@ -252,17 +528,19 @@ lower <- make_loadingtable(net.loads(ega2$EGA$lower_order, loading.method="revis
   select(names(higher)) |>
   mutate(Cluster = fct_relevel(Cluster, cluster_order)) |>
   arrange(Cluster, desc(Max))
+dimensions <- dimensions[names(dimensions) %in% names(lower)]
 
 higher$Item <- paste0("M", higher$Item)
 # higher$Label <- c("Interoceptive Deficit", "Interoceptive Awareness", "Interoceptive Sensitivity")
-higher$Label <- ""
-# higher$ID  <- ""
+higher$Label <- c("Interoceptive Awareness", "Interoceptive Deficit", "Visceroception")
+higher$ID  <- ""
+
 lower <- mutate(lower, Label = labels[paste0("MINT_", Item)], ID=Item, Item = 1:n())
 
-rbind(higher, select(lower, -ID)) |>
-# rbind(higher, lower) |>
+tab1 <- rbind(higher, lower) |>
+  select(-ID) |>
   datawizard::data_relocate("Label", after = "Item") |>
-  datawizard::data_rename(names(dimensions), dimensions) |>
+  datawizard::data_rename(names(dimensions), dimensions[names(dimensions)]) |>
   select(-Cluster, -Max) |> 
   mutate(`|` = "") |> 
   gt::gt() |>
@@ -280,7 +558,7 @@ rbind(higher, select(lower, -ID)) |>
                  domain = c(-1, 1)) |>
   gt::tab_style(
     style = gt::cell_text(size="small", style="italic"),
-    locations = gt::cells_body(columns="Label", rows=c(4:45))
+    locations = gt::cells_body(columns="Label", rows=c(4:36))
   ) |>
   gt::tab_style(
     style = list(gt::cell_text(weight="bold"),
@@ -297,172 +575,388 @@ rbind(higher, select(lower, -ID)) |>
   ) |> 
   # Metacluster 1
   gt::tab_style(
-    style = gt::cell_fill(color = "#B39DDB"),
+    style = gt::cell_fill(color = "#81C784"),
+    locations = list(
+      gt::cells_body(columns="Item", rows=c(1))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81C784"),
     locations = list(
       gt::cells_column_labels(columns = 3),
       gt::cells_body(columns="Item", rows=c(4:6))
     )
   ) |>
   gt::tab_style(
-    style = gt::cell_fill(color = "#9FA8DA"),
+    style = gt::cell_fill(color = "#AED581"),
     locations = list(
       gt::cells_column_labels(columns = 4),
       gt::cells_body(columns="Item", rows=c(7:9))
     )
   ) |>
   gt::tab_style(
-    style = gt::cell_fill(color = "#90CAF9"),
+    style = gt::cell_fill(color = "#DCE775"),
     locations = list(
       gt::cells_column_labels(columns = 5),
-      gt::cells_body(columns="Item", rows=c(1, 10:12))
+      gt::cells_body(columns="Item", rows=c(10:12))
     )
-  ) |>
+  ) |> 
   gt::tab_style(
-    style = gt::cell_fill(color = "#81D4FA"),
+    style = gt::cell_fill(color = "#BA68C8"),
+    locations = list(
+      gt::cells_body(columns="Item", rows=c(2))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#BA68C8"),
     locations = list(
       gt::cells_column_labels(columns = 6),
       gt::cells_body(columns="Item", rows=c(13:15))
     )
   ) |>
   gt::tab_style(
-    style = gt::cell_fill(color = "#80DEEA"),
+    style = gt::cell_fill(color = "#9575CD"),
     locations = list(
       gt::cells_column_labels(columns = 7),
       gt::cells_body(columns="Item", rows=c(16:18))
     )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#7986CB"),
+    locations = list(
+      gt::cells_column_labels(columns = 8),
+      gt::cells_body(columns="Item", rows=c(19:21))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#64B5F6"),
+    locations = list(
+      gt::cells_column_labels(columns = 9),
+      gt::cells_body(columns="Item", rows=c(22:24))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#4DD0E1"),
+    locations = list(
+      gt::cells_column_labels(columns = 10),
+      gt::cells_body(columns="Item", rows=c(25:27))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FF7811"),
+    locations = list(
+      gt::cells_body(columns="Item", rows=c(3))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFB74D"),
+    locations = list(
+      gt::cells_column_labels(columns = 11),
+      gt::cells_body(columns="Item", rows=c(28:30))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#E57373"),
+    locations = list(
+      gt::cells_column_labels(columns = 12),
+      gt::cells_body(columns="Item", rows=c(31:33))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#A1887F"),
+    locations = list(
+      gt::cells_column_labels(columns = 13),
+      gt::cells_body(columns="Item", rows=c(34:36))
+    )
   ) 
+tab1
+```
+
+```{r}
+#| eva: false
+
+gt::gtsave(tab1, "figures/table1.png", vwidth=1660, expand=0, quiet=TRUE)
 ```
 
 
 
-
-
-### Score Extraction
+#### Hierarchical Clustering
 
 ```{r}
-df$MINT_Awareness_SexS <- rowMeans(select(df, starts_with("MINT_Awareness_SexS")), na.rm = TRUE)
-df$MINT_Awareness_StaS <- rowMeans(select(df, starts_with("MINT_Awareness_StaS")), na.rm = TRUE)
-df$MINT_Awareness_SexO <- rowMeans(select(df, starts_with("MINT_Awareness_SexO")), na.rm = TRUE)
-df$MINT_Awareness_ExaC <- rowMeans(select(df, starts_with("MINT_Awareness_ExaC")), na.rm = TRUE)
-df$MINT_Awareness_RelA <- rowMeans(select(df, starts_with("MINT_Awareness_RelA")), na.rm = TRUE)
-
-df$MINT_Deficit_CaCo <- rowMeans(select(df, starts_with("MINT_Deficit_CaCo_")), na.rm = TRUE)
-df$MINT_Deficit_Urin <- rowMeans(select(df, starts_with("MINT_Deficit_Urin_")), na.rm = TRUE)
-df$MINT_Deficit_Sati <- rowMeans(select(df, starts_with("MINT_Deficit_Sati")), na.rm = TRUE)
-df$MINT_Deficit_Derm <- rowMeans(select(df, starts_with("MINT_Sensitivity_Derm_")), na.rm = TRUE)
-df$MINT_Deficit_CaNo <- rowMeans(select(df, starts_with("MINT_Deficit_CaNo")), na.rm = TRUE)
-df$MINT_Deficit_Olfa <- rowMeans(select(df, starts_with("MINT_Deficit_Olfa")), na.rm = TRUE)
-
-df$MINT_Interoception_Resp <- rowMeans(select(df, starts_with("MINT_Sensitivity_Resp")), na.rm = TRUE)
-df$MINT_Interoception_Card <- rowMeans(select(df, starts_with("MINT_Sensitivity_Card")), na.rm = TRUE)
-df$MINT_Interoception_Gast <- rowMeans(select(df, starts_with("MINT_Sensitivity_Gast")), na.rm = TRUE)
-
-df <- df[names(df)[!grepl("MINT_.*[0-9]$", names(df))]]
-# df$MINT_Awareness <- rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, 
-#                                      MINT_Awareness_SexO, MINT_Awareness_ExaC, MINT_Awareness_RelA))
-# df$MINT_Deficit <- rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, 
-#                                    MINT_Deficit_CaNo, MINT_Deficit_Sati, MINT_Sensitivity_Derm))
-# df$MINT_Interoception <- rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, 
-#                                          MINT_Interoception_Gast))
-# 
-# 
-# minti <- data.frame(
-#   MINT_Deficit = df$MINT_Deficit,
-#   MINT_Awareness = df$MINT_Awareness,
-#   MINT_Interoception = df$MINT_Interoception
-# )
-```
-
-
-Most correlated dims:
-- CaCo x8
-- Urin x4
-- Rela x4
-- Derm x3
-- Sati
-- Olfa
-- StaS
-- ExaC
-- Resp
-
-
-```{r}
+#| fig-width: 12
+#| fig-height: 14
 #| warning: false
 
-make_cor <- function(df1, df2=NULL) {
-  df1 |> 
-    correlation::correlation(data2=df2, p_adjust="none", redundant=ifelse(is.null(df2), TRUE, FALSE)) |> 
-    correlation::cor_sort() |>
-    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
-           Parameter1 = cleanlabels(Parameter1, qname=FALSE),
-           Parameter2 = cleanlabels(Parameter2, qname=TRUE)) |> 
-    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
-    geom_tile() +
-    geom_text(aes(label=label), size=3) +
-    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust=1),
-          legend.position = "none")
-}
-
-make_cor(select(df, starts_with("MINT"))) +
-  labs(x="", y="", title="Correlation between MINT dimensions") 
-  # theme(axis.text.x = element_text(angle = 45, hjust=1, 
-  #                                  face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
-  #                                         "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
-  #                                         "plain", "plain")))
+rez <- pvclust::pvclust(items,
+                 method.hclust = "ward.D2",
+                 method.dist = "correlation",
+                 nboot = 1000, quiet=TRUE, parallel=TRUE)
+plot(rez, hang = -1, cex = 0.5)
+pvclust::pvrect(rez, alpha=0.95, max.only=FALSE)
 ```
 
 
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| warning: false
+
+dendrogram <- as.dist(1 - cor(items, use = "pairwise.complete.obs")) |> 
+  hclust(method = "ward.D2") |> 
+  tidygraph::as_tbl_graph() 
 
 
+# Process Nodes
+nodes <- as.list(dendrogram)$nodes |> 
+  mutate(Group = case_when(str_detect(label, "Card") ~ "Card", 
+                           str_detect(label, "Resp") ~ "Resp",
+                           str_detect(label, "Gast") ~ "Gast",
+                           str_detect(label, "SexS") ~ "SexS",
+                           str_detect(label, "RelA") ~ "RelA",
+                           str_detect(label, "ExAc") ~ "ExAc",
+                           str_detect(label, "Urin") ~ "Urin",
+                           str_detect(label, "CaCo") ~ "CaCo",
+                           str_detect(label, "Derm") ~ "Derm",
+                           str_detect(label, "Olfa") ~ "Olfa",
+                           str_detect(label, "Sati") ~ "Sati",
+                           label == "" ~ "NA",
+                           .default = "Other"),
+         Size = setNames(lower$Max, lower$ID)[label],
+         item = label)
+nodes$idx <- 1:nrow(nodes)
+
+# Rename accoring to table
+items_newnames <- lower |>
+  separate(ID, into = c("Group", "Item"), sep = "_", remove = FALSE) |>
+  mutate(Name = paste0(Group, "-", 1:nrow(lower)))
+items_newnames <- setNames(items_newnames$Name, items_newnames$ID)
+  
+nodes$label <- items_newnames[nodes$label]
+nodes$label <- ifelse(is.na(nodes$label), "", nodes$label)
+
+# Central node 
+max_size  <- max(nodes$Size, na.rm = TRUE)
+nodes[nodes$height == max(nodes$height), c("Group", "Size")] <- data.frame(Group="Central", Size=2 * max_size)
+# Metaclusters
+nodes[17, c("Group", "Size")] <- data.frame(Group="Awareness", Size=1.5 * max_size)
+nodes[34, c("Group", "Size")] <- data.frame(Group="Visceroception", Size=1.5 * max_size)
+nodes[63, c("Group", "Size")] <- data.frame(Group="Deficit", Size=1.5 * max_size)
 
 
-### Short Version
+# Process Edges
+edges <- as.list(dendrogram)$edges
+edges$linewidth = datawizard::rescale(nodes[edges$from, ]$height, to = c(0.1, 1))
 
-#### Unicity
+p_hclust <- tbl_graph(nodes = nodes, edges = edges) |> 
+  ggraph(layout = "dendrogram", circular = TRUE) +
+  # geom_edge_diagonal(strength = 0.7, linewidth = 1) +
+  geom_edge_elbow2(aes(edge_width=linewidth), color="darkgrey") +
+  geom_node_point(aes(filter=Group %in% c("Central"), size = Size), color="darkgrey") +
+  geom_node_point(aes(filter=Group %in% c("Visceroception", "Awareness", "Deficit"), color=Group, size = Size)) +
+  geom_node_text(aes(
+    label = ifelse(label != "NA", label, NA),
+    x = x * 1.05,
+    y = y * 1.05,
+    filter = label != "",
+    angle = ifelse(
+      x >= 0,
+      asin(y) * 360 / 2 / pi,
+      360 - asin(y) * 360 / 2 / pi
+    ),
+    hjust = ifelse(
+      x >= 0, 0, 1
+    ))) +
+  geom_node_point(aes(filter = label != "", color=Group, size=Size), alpha = 1) +
+  # geom_node_text(aes(label=idx)) +  # Debug
+  scale_edge_width_continuous(range=c(1, 3), guide = "none") +
+  scale_size_continuous(range=c(3, 11), guide = "none") +
+  scale_color_manual(values = c(
+    "Visceroception" = "#FF7811", "Card" = "#F44336", "Resp"="#FF9800", "Gast"="#795548",
+    "Awareness" = "#4CAF50", "ExAc"="#4CAF50", "RelA"="#8BC34A", "SexS" = "#CDDC39",
+    "Deficit" = "#9C27B0", "CaCo"="#9C27B0", "Urin" = "#673AB7", "Derm"="#3F51B5",
+    "Sati" = "#2196F3", "Olfa" = "#00BCD4"),
+                     breaks = c(
+                       "Awareness", "ExAc", "RelA", "SexS",
+                       "Deficit", "CaCo", "Urin", "Derm", "Sati", "Olfa",
+                       "Visceroception", "Resp", "Card", "Gast"
+                       ),
+                     labels=c(
+                       "***Awareness***", "ExAc", "RelA", "SexS",
+                       "***Deficit***", "CaCo", "Urin", "Derm", "Sati", "Olfa",
+                       "***Visceroception***", "Resp", "Card", "Gast"
+                       )) +
+  ggtitle("Hierarchical Clustering", subtitle = "Method = Correlation") +
+  coord_equal(clip = "off", xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25)) +
+  theme_void() + 
+  guides(color = guide_legend(override.aes = list(size = c(7.5, 5, 5, 3.5, 7.5, 5, 5, 3.5, 3.5, 3.5, 7.5, 5, 5, 3.5)))) +
+  theme(legend.text = ggtext::element_markdown(),
+        legend.title = element_blank(),
+        plot.title = element_blank(),  #element_text(face="bold")
+        plot.subtitle = element_blank())
+p_hclust
+```
+
+```{r}
+#| eval: FALSE
+
+ggsave("figures/fig1a.png", p_stab, width=10, height=10*0.8, dpi=300)
+ggsave("figures/fig1b.png", p_hclust, width=12, height=8, dpi=300)
+```
+
+#### EFA
 
 ```{r}
 #| fig-width: 12
 #| fig-height: 14
 
-mintg <- data.frame(
-  MINT_Awareness = rowMeans(select(df, MINT_Awareness_SexS, MINT_Awareness_StaS, MINT_Awareness_SexO, 
-                                   MINT_Awareness_ExaC, MINT_Awareness_RelA)),
-  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_CaNo, 
-                                 MINT_Deficit_Sati, MINT_Deficit_Derm, MINT_Deficit_Olfa)),
-  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp,
-                                       MINT_Interoception_Gast))
-)
+n <- parameters::n_factors(items)
+plot(n)
 
+fa <- parameters::factor_analysis(items, n = 9, rotation = "varimax", sort = TRUE)
+plot(fa)
 
-mintmin <- data.frame(
-  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_Sati)),
-  MINT_Awareness = rowMeans(select(df, MINT_Awareness_RelA, MINT_Awareness_ExaC, MINT_Awareness_StaS)),
-  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
-)
-
-mint6 <- data.frame(
-  MINT_Sexs = df$MINT_Awareness_SexS,
-  MINT_Derm = df$MINT_Deficit_Derm,
-  MINT_Olfa = df$MINT_Deficit_Olfa,
-  MINT_Deficit = rowMeans(select(df, MINT_Deficit_CaCo, MINT_Deficit_Urin, MINT_Deficit_Sati)),
-  MINT_Awareness = rowMeans(select(df, MINT_Awareness_RelA, MINT_Awareness_ExaC, MINT_Awareness_StaS)),
-  MINT_Interoception = rowMeans(select(df, MINT_Interoception_Card, MINT_Interoception_Resp, MINT_Interoception_Gast))
-)
-
-# fa <- parameters::factor_analysis(features, n = 3, rotation = "oblimin", sort = TRUE) 
-# plot(fa)  
-# 
-# fa |> 
-#   select(Variable, Uniqueness) |> 
-#   arrange(desc(Uniqueness))
+# fa |>
+#   select(Variable, Uniqueness) |>
+#   mutate(Group = str_extract(Variable, "^[A-Z][a-z]+")) |>
+#   mutate(Average = mean(Uniqueness), .by = "Group") |> 
+#   arrange(desc(Average), desc(Uniqueness)) |> 
+#   select(-Average, -Group) |> 
+#   gt::gt() |> 
+#   gt::data_color(
+#     columns = "Uniqueness",
+#     palette = c("red", "white", "green"),
+#     domain = c(0, 1) 
+#   ) 
 ```
+
+:::
+
+### Score Extraction
+
+```{r}
+# Awareness
+df$MINT_SexS <- rowMeans(select(df, starts_with("MINT_SexS_")), na.rm = TRUE)
+df$MINT_ExaC <- rowMeans(select(df, starts_with("MINT_ExaC_")), na.rm = TRUE)
+df$MINT_RelA <- rowMeans(select(df, starts_with("MINT_RelA_")), na.rm = TRUE)
+# df$MINT_StaS <- rowMeans(select(df, starts_with("MINT_StaS_")), na.rm = TRUE)
+# df$MINT_SexO <- rowMeans(select(df, starts_with("MINT_SexO_")), na.rm = TRUE)
+# df$MINT_UrSe <- rowMeans(select(df, starts_with("MINT_UrSe_")), na.rm = TRUE)
+
+# Deficit
+df$MINT_Urin <- rowMeans(select(df, starts_with("MINT_Urin_")), na.rm = TRUE)
+df$MINT_CaCo <- rowMeans(select(df, starts_with("MINT_CaCo_")), na.rm = TRUE)
+df$MINT_Derm <- rowMeans(select(df, starts_with("MINT_Derm_")), na.rm = TRUE)
+# df$MINT_CaNo <- rowMeans(select(df, starts_with("MINT_CaNo_")), na.rm = TRUE)
+
+df$MINT_Sati <- rowMeans(select(df, starts_with("MINT_Sati_")), na.rm = TRUE)
+df$MINT_Olfa <- rowMeans(select(df, starts_with("MINT_Olfa_")), na.rm = TRUE)
+
+# Visceral
+df$MINT_Resp <- rowMeans(select(df, starts_with("MINT_Resp_")), na.rm = TRUE)
+df$MINT_Card <- rowMeans(select(df, starts_with("MINT_Card_")), na.rm = TRUE)
+df$MINT_Gast <- rowMeans(select(df, starts_with("MINT_Gast_")), na.rm = TRUE)
+
+df <- df[names(df)[!grepl("MINT_.*[0-9]$", names(df))]]
+```
+
+
+### Mini Versions
+
+```{r}
+mint <- select(df, starts_with("MINT_"))
+
+metamint <- data.frame(
+  MINT_Awareness = rowMeans(select(df, MINT_SexS, MINT_ExaC, MINT_RelA)),
+  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin, MINT_Derm, MINT_Sati, MINT_Olfa)),
+  MINT_Visceroception = rowMeans(select(df, MINT_Card, MINT_Resp, MINT_Gast))
+)
+
+minimint <- data.frame(
+  MINT_Awareness = rowMeans(select(df, MINT_ExaC, MINT_RelA)),
+  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin)),
+  MINT_Visceroception = rowMeans(select(df, MINT_Resp, MINT_Card))
+)
+
+micromint <- data.frame(
+  MINT_ExaC = df$MINT_ExaC,
+  MINT_CaCo = df$MINT_CaCo,
+  MINT_Resp = df$MINT_Resp
+)
+```
+
+
+```{r}
+#| warning: false
+
+make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 2.9, xcol = "#424242", ycol="#424242") {
+  
+  r <- df1 |> 
+    correlation::correlation(data2=df2, p_adjust="none", redundant=ifelse(is.null(df2), TRUE, FALSE)) |> 
+    correlation::cor_sort() |>
+    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
+           Parameter1 = cleanlabels(Parameter1, qname=qname_x),
+           Parameter2 = cleanlabels(Parameter2, qname=qname_y))
+  r[as.character(r$Parameter1) == as.character(r$Parameter2), "label"] <- ""
+  
+  xnames <- levels(r$Parameter1)
+  ynames <- levels(r$Parameter2)
+  
+  xcol <- case_when(
+    str_detect(xnames, "MINT") ~ "#00838F",
+    str_detect(xnames, "MAIA") ~ "#EF6C00",
+    str_detect(xnames, "IAS") ~ "#C62828",
+    str_detect(xnames, "BPQ") ~ "#795548",
+    .default = xcol
+  )
+  ycol <- case_when(
+    str_detect(ynames, "MINT") ~ "#00838F",
+    str_detect(ynames, "MAIA") ~ "#EF6C00",
+    str_detect(ynames, "IAS") ~ "#C62828",
+    str_detect(ynames, "BPQ") ~ "#795548",
+    .default = ycol
+  )
+  xbold <- case_when(
+    xnames %in% c("Awareness", "MINT - Awareness") ~ "bold",
+    str_detect(xnames, "Visceroception") ~ "bold",
+    str_detect(xnames, "Deficit") ~ "bold",
+    .default = "plain"
+  )
+  ybold <- case_when(
+    ynames %in% c("Awareness", "MINT - Awareness") ~ "bold",
+    str_detect(ynames, "Visceroception") ~ "bold",
+    str_detect(ynames, "Deficit") ~ "bold",
+    .default = "plain"
+  )
+  
+  r |> 
+    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+    geom_tile() +
+    geom_text(aes(label=label), size=textsize) +
+    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust=1, color = xcol, face = xbold),
+          axis.text.y = element_text(color = ycol, face = ybold),
+          legend.position = "none",
+          axis.title = element_blank())
+}
+
+
+p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, textsize = 2.5,
+                      xcol = "#00838F", ycol = "#00838F") +
+  labs(title="Correlations between MINT dimensions") +
+  theme(axis.title = element_blank())
+
+p_cormint
+```
+
+
+
+
 
 
 ## Convegent Validity
 
-::: panel-tabset
+::: {.panel-tabset}
 
 ### Interoception 
 
@@ -470,100 +964,95 @@ mint6 <- data.frame(
 ```{r}
 #| warning: false
 
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")),
-         select(df, starts_with("MAIA"), IAS, BPQ)) +
-  labs(x="MINT", y="", title="Correlations between the MINT and other Interoception Questionnaires") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1, 
-                                   face=c("bold", "plain", "plain", "plain", "bold", "bold", "plain", "plain",
-                                          "plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain",
-                                          "plain", "plain")))
+p_corintero <- make_cor(select(df, starts_with("MAIA"), IAS, BPQ),
+                        cbind(mint, metamint), qname_y = FALSE, textsize = 2.5,
+                        ycol = "#00838F") +
+  labs(title="MINT vs. Other Interoception Questionnaires") +
+  theme(axis.title = element_blank())
+p_corintero
 ```
 
 Most correlated dimensions:
 - IAS: ExAc
 - Trusting: RelA
 - Noticing: Resp
-- Emotional Awareness; Resp
+- Emotional Awareness: Resp
 - Body Listening: Gast
 - SelfRegulation: RelA
 - AttentionRegulation: RelA
 - BPQ: Card
 
 
-
-```{r}
-# library(umap)
-# 
-# items_intero <- select(df, starts_with("MINT"), -matches("[[:digit:]]"), starts_with("MAIA"), IAS, BPQ)
-# rez <- umap::umap(t(items_intero[complete.cases(items_intero),]))
-# 
-# rez
-# as.data.frame(rez$layout) |>
-#   rownames_to_column(var="Variable") |>
-#   separate(Variable, into=c("Questionnaire", "Dimension", "Sub"), fill="right") |>
-#   ggplot(aes(x=V1, y=V2, color=Questionnaire)) +
-#   geom_point(size=3) +
-#   scale_color_manual(values=colors)
-```
-
 ### Alexithymia
 
 ```{r}
 table_models <- function(models) {
   test <- test_performance(models)
+  table <- compare_performance(models, metrics=c("R2", "BIC"))
   test$Model <- NULL
   test$Omega2 <- NULL
   test$p_Omega2 <- NULL
-  test$R2 <- compare_performance(models, metrics="R2")$R2
+  test$R2 <- table$R2
+  test$BIC <- table$BIC
   
   preds <- c()
+  coefs <- c()
   for(m in models){
     x <- names(sort(abs(coef(m)[-1]), decreasing=TRUE))
     preds <- c(preds, paste0(cleanlabels(x), collapse = ", "))
+    if(length(coef(m)) == 2) {
+      coefs <- c(coefs, coef(m)[2])
+    }
   }
-  # test$Predictors <- preds
+  
+  if(length(coefs) == length(models)) test$Coefficient <- coefs
   format(test, zap_small = TRUE)
 }
 
-compare_models <- function(outcome="TAS_DIF") {
+# Individual predictors ------------------------------------------------------
+
+compare_predictors <- function(outcome="TAS_DIF", family = "linear") {
   
-  # Individual predictors
   preds <- c("BPQ", "IAS", 
              names(select(df, starts_with("MINT"), -matches("[[:digit:]]"))),
-             names(select(df, starts_with("MAIA"))))
+             names(select(df, starts_with("MAIA"))),
+             names(metamint))
   
   models <- list()
   for(p in preds) {
-    models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=df)
+    if(length(unique(df[[outcome]])) > 2) {
+      if (family == "linear") {
+        models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint))
+      } else {
+        models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint), family=family)
+      }
+    } else {
+      models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=standardize(cbind(df, metamint), exclude=outcome), family="binomial")
+    }
   }
   perf <- compare_performance(models) |> 
-    arrange(desc(R2))
+    arrange(AIC)
   
   best_mint <- perf$Name[str_detect(perf$Name, "MINT_")][1]
   best_maia <- perf$Name[str_detect(perf$Name, "MAIA")][1]
   
-  models <- list()
+  table <- table_models(models[c(best_mint, best_maia, "BPQ", "IAS")])
+  
+  # Make plots --------------------------------------------------
   df_pred <- data.frame()
   for(p in c(best_mint, best_maia, "BPQ", "IAS")) {
-    models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=df)
     pred <- modelbased::estimate_relation(models[[p]], by=p, length=30) 
     names(pred)[1] <- "Value"
     pred$Predictor <- p
     df_pred <- rbind(df_pred, pred)
   }
   
-  test <- table_models(models)
-  test$Predictors <- NULL
-  
   cols <- colors
-  cols[[best_mint]] <- cols["MINT"]
+  cols[[best_mint]] <- cols["Mint"]
   cols[[best_maia]] <- cols["MAIA"]
   
   p <- df_pred |>
-    mutate(Questionnaire = case_when(
-      str_detect(Predictor, "MINT") ~ "MINT", 
-      str_detect(Predictor, "MAIA") ~ "MAIA",
-      .default = Predictor)) |> 
+    mutate(Predictor = fct_rev(Predictor)) |> 
     ggplot(aes(x=Value, y=Predicted)) +
     geom_ribbon(aes(ymin=CI_low, ymax=CI_high, fill=Predictor), alpha=0.3) +
     geom_line(aes(color=Predictor)) +
@@ -572,97 +1061,107 @@ compare_models <- function(outcome="TAS_DIF") {
     facet_wrap(~Predictor, scales="free_x") +
     labs(y=outcome, x="Interoception Index")
   
+  list(table=table, p=p, outcome=outcome)
+}
+
+
+
+
+# Full Models ------------------------------------------------------
+
+compare_models_lm <- function(outcome="TAS_DIF") {
+  
   # Full Questionnaires
   m_mint <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$"))) # |> 
-    # step(direction = "both", trace=0)
-  m_mintg <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(mintg, df[outcome])) # |> 
-    # step(direction = "both", trace=0)
-  m_mintmin <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(mintmin, df[outcome])) # |> 
-    # step(direction = "both", trace=0)
-  m_mint6 <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(mint6, df[outcome])) # |> 
-    # step(direction = "both", trace=0)
+              data = cbind(mint, df[outcome]))
+  m_metamint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(metamint, df[outcome])) 
+  m_minimint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minimint, df[outcome])) 
+  m_micromint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(micromint, df[outcome])) 
   m_ias <- lm(as.formula(paste0(outcome, " ~ IAS")),
               data = df)
   m_maia <- lm(as.formula(paste0(outcome, " ~ .")),
-                data = select(df, all_of(outcome), starts_with("MAIA"))) # |> 
-    # step(direction = "both", trace=0)
-  m_maiai <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), starts_with("MAIA"))) 
+  m_imaia <- lm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome), 
                               starts_with("MAIA"), 
                               -contains("NotWorrying"),
-                              -contains("NotDistracting"))) # |> 
-    # step(direction = "both", trace=0)
-  m_maiamin <- lm(as.formula(paste0(outcome, " ~ .")),
+                              -contains("NotDistracting"))) 
+  m_imaia <- lm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome),
                               # MAIA_AttentionRegulation, # remove?
                               # MAIA_SelfRegulation, # remove?
                               # MAIA_Trusting, # remove?
                               MAIA_BodyListening, 
                               MAIA_EmotionalAwareness,
-                              MAIA_Noticing)) # s|> 
-    # step(direction = "both", trace=0)
+                              MAIA_Noticing))
   m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
                 data = df)
   
-  models_full <- list(m_mint=m_mint, m_mintg=m_mintg, m_mintmin=m_mintmin, m_mint6=m_mint6, m_maia=m_maia, 
-                      m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq)
-  test_all <- table_models(models_full)
-  
-  list(test=test,  test_all=test_all, p=p, models_full=models_full)
+  models_full <- list(m_mint=m_mint, m_metamint=m_metamint,
+                      m_minimint=m_minimint, m_micromint=m_micromint, 
+                      m_maia=m_maia, m_imaia=m_imaia, 
+                      m_ias=m_ias, m_bpq=m_bpq)
+  table_models(models_full)
 }
+```
 
-rez1 <- compare_models("TAS_DIF")
-display(rez1$test, title="DIF")
-rez1$p
-display(rez1$test_all, title="DIF")
 
-rez2 <- compare_models("TAS_DDF")
-display(rez2$test, title="DDF")
-rez2$p
-display(rez2$test_all, title="DDF")
 
-rez3 <- compare_models("TAS_EOT")
-display(rez3$test, title="EOT")
-rez3$p
-display(rez3$test_all, title="EOT")
+
+```{r}
+preds_dif <- compare_predictors("TAS_DIF")
+display(preds_dif$table, title="DIF")
+preds_dif$p
+mods_dif <- compare_models_lm("TAS_DIF")
+display(mods_dif, title="DIF")
+
+preds_ddf <- compare_predictors("TAS_DDF")
+display(preds_ddf$table, title="DDF")
+preds_ddf$p
+mods_ddf <- compare_models_lm("TAS_DDF")
+display(mods_ddf, title="DDF")
+
+preds_eot <- compare_predictors("TAS_EOT")
+display(preds_eot$table, title="EOT")
+preds_eot$p
+mods_eot <- compare_models_lm("TAS_EOT")
+display(mods_eot, title="EOT")
 ```
 
 ```{r}
 make_cor(select(df, starts_with("TAS_")),
-         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
-                starts_with("MAIA"), IAS, BPQ))
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
-
-CaCo and Sati. 
 
 ### Mood
 
 ```{r}
-rez <- compare_models("LifeSatisfaction")
-display(rez$test, title="Life Satisfaction") 
-rez$p
-display(rez$test_all, title="Life Satisfaction")
+preds_ls <- compare_predictors("LifeSatisfaction")
+display(preds_ls$table, title="Life Satisfaction")
+preds_ls$p
+mods_ls <- compare_models_lm("LifeSatisfaction")
+display(mods_ls, title="Life Satisfaction")
 
-rez <- compare_models("PHQ4_Anxiety")
-display(rez$test, title="Anxiety") 
-rez$p
-display(rez$test_all, title="Anxiety")
+preds_anx <- compare_predictors("PHQ4_Anxiety")
+display(preds_anx$table, title="PHQ4 Anxiety")
+preds_anx$p
+mods_anx <- compare_models_lm("PHQ4_Anxiety")
+display(mods_anx, title="PHQ4 Anxiety")
 
-rez <- compare_models("PHQ4_Depression")
-display(rez$test, title="Depression") 
-rez$p
-display(rez$test_all, title="Depression")
+preds_dep <- compare_predictors("PHQ4_Depression")
+display(preds_dep$table, title="PHQ4 Depression")
+preds_dep$p
+mods_dep <- compare_models_lm("PHQ4_Depression")
+display(mods_dep, title="PHQ4 Depression")
 ```
 
 ```{r}
 make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
-         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
-                starts_with("MAIA"), IAS, BPQ))
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 
@@ -671,30 +1170,172 @@ make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
 ### Emotions
 
 ```{r}
-rez <- compare_models("ERS_Arousal")
-display(rez$test, title="Arousal") 
-rez$p
-display(rez$test_all, title="Arousal")
+preds_arou <- compare_predictors("ERS_Arousal")
+display(preds_arou$table, title="ERS Arousal")
+preds_arou$p
+mods_arou <- compare_models_lm("ERS_Arousal")
+display(mods_arou, title="ERS Arousal")
 
-rez <- compare_models("ERS_Sensitivity")
-display(rez$test, title="Sensitivity") 
-rez$p
-display(rez$test_all, title="Sensitivity")
+preds_sens <- compare_predictors("ERS_Sensitivity")
+display(preds_sens$table, title="ERS Sensitivity")
+preds_sens$p
+mods_sens <- compare_models_lm("ERS_Sensitivity")
+display(mods_sens, title="ERS Sensitivity")
 
-rez <- compare_models("ERS_Persistence")
-display(rez$test, title="Persistence") 
-rez$p
-display(rez$test_all, title="Persistence")
+preds_pers <- compare_predictors("ERS_Persistence")
+display(preds_pers$table, title="ERS Persistence")
+preds_pers$p
+mods_pers <- compare_models_lm("ERS_Persistence")
+display(mods_pers, title="ERS Persistence")
 ```
 
 
 ```{r}
 make_cor(select(df, starts_with("ERS_")),
-         select(df, starts_with("MINT"), -matches("[[:digit:]]"), 
-                starts_with("MAIA"), IAS, BPQ))
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 - CaCo
+
+:::
+
+
+
+
+
+## Exploratory
+
+::: {.panel-tabset}
+
+
+### CEFSA
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("CEFSA")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("CEFSA")))
+```
+
+```{r}
+preds_cefsabody <- compare_predictors("CEFSA_Body")
+display(preds_cefsabody$table, title="CEFSA - Body")
+preds_cefsabody$p
+mods_cefsabody <- compare_models_lm("CEFSA_Body")
+display(mods_cefsabody, title="CEFSA - Body")
+
+preds_cefsaself <- compare_predictors("CEFSA_Self")
+display(preds_cefsaself$table, title="CEFSA - Self")
+preds_cefsaself$p
+mods_cefsaself <- compare_models_lm("CEFSA_Self")
+display(mods_cefsaself, title="CEFSA - Self")
+
+preds_cefsaemo <- compare_predictors("CEFSA_Emotion")
+display(preds_cefsaemo$table, title="CEFSA - Emotion")
+preds_cefsaemo$p
+mods_cefsaemo <- compare_models_lm("CEFSA_Emotion")
+display(mods_cefsaemo, title="CEFSA - Emotion")
+
+preds_cefsareal <- compare_predictors("CEFSA_Reality")
+display(preds_cefsareal$table, title="CEFSA - Reality")
+preds_cefsareal$p
+mods_cefsareal <- compare_models_lm("CEFSA_Reality")
+display(mods_cefsareal, title="CEFSA - Reality")
+
+preds_cefsacon <- compare_predictors("CEFSA_Connection")
+display(preds_cefsacon$table, title="CEFSA - Connection")
+preds_cefsacon$p
+mods_cefsacon <- compare_models_lm("CEFSA_Connection")
+display(mods_cefsacon, title="CEFSA - Connection")
+
+preds_cefsagency <- compare_predictors("CEFSA_Agency")
+display(preds_cefsagency$table, title="CEFSA - Agency")
+preds_cefsagency$p
+mods_cefsagency <- compare_models_lm("CEFSA_Agency")
+display(mods_cefsagency, title="CEFSA - Agency")
+```
+
+
+### Emotion Regulation
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("CERQ")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("CERQ")))
+```
+
+```{r}
+preds_cerqreapp <- compare_predictors("CERQ_PositiveReappraisal")
+display(preds_cerqreapp$table, title="CERQ - Positive Reappraisal")
+preds_cerqreapp$p
+mods_cerqreapp <- compare_models_lm("CERQ_PositiveReappraisal")
+display(mods_cerqreapp, title="CERQ - Positive Reappraisal")
+
+preds_cerqrefocus <- compare_predictors("CERQ_PositiveRefocusing")
+display(preds_cerqrefocus$table, title="CERQ - Positive Refocusing")
+preds_cerqrefocus$p
+mods_cerqrefocus <- compare_models_lm("CERQ_PositiveRefocusing")
+display(mods_cerqrefocus, title="CERQ - Positive Refocusing")
+
+preds_cerqpersp <- compare_predictors("CERQ_Perspective")
+display(preds_cerqpersp$table, title="CERQ - Perspective")
+preds_cerqpersp$p
+mods_cerqpersp <- compare_models_lm("CERQ_Perspective")
+display(mods_cerqpersp, title="CERQ - Perspective")
+
+preds_cerqacceptance <- compare_predictors("CERQ_Acceptance")
+display(preds_cerqacceptance$table, title="CERQ - Acceptance")
+preds_cerqacceptance$p
+mods_cerqacceptance <- compare_models_lm("CERQ_Acceptance")
+display(mods_cerqacceptance, title="CERQ - Acceptance")
+```
+
+
+
+
+
+### Primals
+
+```{r}
+make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
+         select(df, starts_with("PI")))
+
+make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
+         select(df, starts_with("PI")))
+```
+
+```{r}
+preds_pialive <- compare_predictors("PI_Alive")
+display(preds_pialive$table, title="Primals - Alive")
+preds_pialive$p
+mods_pialive <- compare_models_lm("PI_Alive")
+display(mods_pialive, title="Primals - Alive")
+
+
+preds_pisafe <- compare_predictors("PI_Safe")
+display(preds_pisafe$table, title="Primals - Safe")
+preds_pisafe$p
+mods_pisafe <- compare_models_lm("PI_Safe")
+display(mods_pisafe, title="Primals - Safe")
+
+
+preds_pient <- compare_predictors("PI_Enticing")
+display(preds_pient$table, title="Primals - Enticing")
+preds_pient$p
+mods_pient <- compare_models_lm("PI_Enticing")
+display(mods_pient, title="Primals - Enticing")
+
+
+preds_pigood <- compare_predictors("PI_Good")
+display(preds_pigood$table, title="Primals - Good")
+preds_pigood$p
+mods_pigood <- compare_models_lm("PI_Good")
+display(mods_pigood, title="Primals - Good")
+```
+
 
 :::
 
@@ -707,146 +1348,191 @@ make_cor(select(df, starts_with("ERS_")),
 #### Mood Disorders
 
 ```{r}
-compare_predictive <- function(outcome="Disorders_Psychiatric_Mood", y = c(0.65, 0.60, 0.50, 0.45, 0.40, 0.30, 0.20)) {
+compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", subtitle = "") {
+  
+  # Full Questionnaires
   m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
-              data = select(df, all_of(outcome), starts_with("MINT"), -matches("[[:digit:]]$")),
-              family = "binomial") |> 
-  step(direction = "both", trace=0)
-  
-  m_minti <- glm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(minti, df[outcome]),
-              family = "binomial") |> 
-    step(direction = "both", trace=0)
-  
+              data = cbind(mint, df[outcome]),
+              family = "binomial")
+  m_metamint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(metamint, df[outcome]),
+              family = "binomial")
+  m_minimint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minimint, df[outcome]),
+              family = "binomial") 
+  m_micromint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(micromint, df[outcome]),
+              family = "binomial") 
   m_ias <- glm(as.formula(paste0(outcome, " ~ IAS")),
               data = df,
               family = "binomial")
-
   m_maia <- glm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome), starts_with("MAIA")),
-                family = "binomial") |> 
-    step(direction = "both", trace=0)
-  
-  m_maiai <- glm(as.formula(paste0(outcome, " ~ .")),
+              family = "binomial") 
+  m_imaia <- glm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome), 
                               starts_with("MAIA"), 
                               -contains("NotWorrying"),
                               -contains("NotDistracting")),
-                family = "binomial") |> 
-    step(direction = "both", trace=0)
-  
-  m_maiamin <- glm(as.formula(paste0(outcome, " ~ .")),
+              family = "binomial")
+  m_imaia <- glm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome),
-                              MAIA_AttentionRegulation, # remove?
-                              MAIA_SelfRegulation, # remove?
+                              # MAIA_AttentionRegulation, # remove?
+                              # MAIA_SelfRegulation, # remove?
                               # MAIA_Trusting, # remove?
                               MAIA_BodyListening, 
                               MAIA_EmotionalAwareness,
                               MAIA_Noticing),
-                family = "binomial") |> 
-    step(direction = "both", trace=0)
-  
+              family = "binomial")
   m_bpq <- glm(as.formula(paste0(outcome, " ~ BPQ")),
-                data = df,
-                family = "binomial")
+               data = df,
+               family = "binomial")
   
-  test <- table_models(list(m_mint=m_mint, m_minti=m_minti, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, m_ias=m_ias, m_bpq=m_bpq))
+  models_full <- list(m_mint=m_mint, m_metamint=m_metamint, 
+                      m_minimint=m_minimint, m_micromint=m_micromint,
+                      m_maia=m_maia, m_imaia=m_imaia, 
+                      m_ias=m_ias, m_bpq=m_bpq)
   
+  table <- table_models(models_full)
+
   get_auc <- function(m) {
     roc <- as.data.frame(performance_roc(m))
     auc <- bayestestR::area_under_curve(roc$Specificity, roc$Sensitivity)
     paste0("AUC = ", insight::format_percent(auc))
   }
   
+  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
+
   p <- rbind(
-    mutate(as.data.frame(performance_roc(m_mint)), Predictor = "MINT"),
-    mutate(as.data.frame(performance_roc(m_minti)), Predictor = "MINTi"),
+    mutate(as.data.frame(performance_roc(m_mint)), Predictor = "Mint"),
+    mutate(as.data.frame(performance_roc(m_metamint)), Predictor = "metaMint"),
+    mutate(as.data.frame(performance_roc(m_minimint)), Predictor = "miniMint"),
+    mutate(as.data.frame(performance_roc(m_micromint)), Predictor = "microMint"),
     mutate(as.data.frame(performance_roc(m_maia)), Predictor = "MAIA"),
-    mutate(as.data.frame(performance_roc(m_maiai)), Predictor = "MAIAi"),
-    mutate(as.data.frame(performance_roc(m_maiamin)), Predictor = "MAIAmin"),
+    mutate(as.data.frame(performance_roc(m_imaia)), Predictor = "iMAIA"),
     mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
     mutate(as.data.frame(performance_roc(m_bpq)), Predictor = "BPQ")
-  ) |> 
-    mutate(Predictor = fct_relevel(Predictor, "MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ")) |> 
-      ggplot(aes(x=Specificity)) +
-      geom_abline(intercept=0, slope=1, color="gray") +
-      geom_line(aes(y=Sensitivity, color=Predictor), linewidth=2, alpha=0.9) +
-      geom_label(data=data.frame(
-        label = c(get_auc(m_mint), get_auc(m_minti), get_auc(m_maia), get_auc(m_maiai), get_auc(m_maiamin), get_auc(m_ias), get_auc(m_bpq)),
-        Predictor = c("MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ"),
-        x = 0.9,
-        y = y), 
-        aes(x=x, y=y, label=label), color=colors[c("MINT", "MINTi", "MAIA", "MAIAi", "MAIAmin", "IAS", "BPQ")]) +
-      labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
-           color="Questionnaire Version") +
-      scale_color_manual(values=colors) +
-      scale_x_continuous(labels=scales::percent) +
-      scale_y_continuous(labels=scales::percent) + 
-      theme_minimal()
+  ) |>
+    mutate(Predictor = fct_relevel(Predictor, mods_order)) |>
+    ggplot(aes(x=Specificity)) +
+    geom_abline(intercept=0, slope=1, color="gray", linewidth=1) +
+    geom_line(aes(y=Sensitivity, color=Predictor), linewidth=1.5, alpha=0.9) +
+    geom_label(data=data.frame(
+      label = c(get_auc(m_mint), get_auc(m_metamint), 
+                get_auc(m_minimint), get_auc(m_micromint), 
+                get_auc(m_maia), get_auc(m_imaia), get_auc(m_ias), get_auc(m_bpq)),
+      Predictor = mods_order,
+      x = 0.8,
+      y = c(0.55, 0.475, 0.425, 0.375, 0.30, 0.25, 0.20, 0.15)),
+      aes(x=x, y=y, label=label), color=colors[mods_order], size=3) +
+    labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
+         color="Questionnaire", title = title, subtitle=subtitle) +
+    scale_color_manual(values=colors) +
+    scale_x_continuous(labels=scales::percent) +
+    scale_y_continuous(labels=scales::percent) +
+    theme_minimal() +
+    theme(plot.title = element_text(face="bold"))
   
-  list(m_mint=m_mint, m_ias=m_ias, m_maia=m_maia, m_maiai=m_maiai, m_maiamin=m_maiamin, test=test, p=p)
+  list(table=table, p=p)
 }
 ```
 
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_Mood")
-rez$p
-display(rez$test, title="Mood")
+preds_mood <- compare_predictors("Disorders_Psychiatric_Mood")
+display(preds_mood$table, title="Mood Disorders")
+preds_mood$p
+mods_mood <- compare_models_glm("Disorders_Psychiatric_Mood")
+display(mods_mood$table, title="Mood Disorders")
+mods_mood$p
 ```
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_MoodTreatment")
-rez$p
-display(rez$test, title="Mood (with Treatment)")
+preds_moodt <- compare_predictors("Disorders_Psychiatric_MoodTreatment")
+display(preds_moodt$table, title="Mood Disorders (with Treatment)")
+preds_moodt$p
+mods_moodt <- compare_models_glm("Disorders_Psychiatric_MoodTreatment",
+                                 title="Mood Disorders", subtitle = "MDD, GAD, Bipolar (with Treatment)")
+display(mods_moodt$table, title="Mood Disorders (with Treatment)")
+mods_moodt$p
 ```
 
 #### Anxiety
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_Anxiety")
-rez$p
+preds_anxdis <- compare_predictors("Disorders_Psychiatric_Anxiety")
+display(preds_anxdis$table, title="Anxiety Disorders")
+preds_anxdis$p
+mods_anxdis <- compare_models_glm("Disorders_Psychiatric_Anxiety")
+display(mods_anxdis$table, title="Anxiety Disorders")
+mods_anxdis$p
 ```
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_AnxietyTreatment")
-rez$p
+preds_anxdist <- compare_predictors("Disorders_Psychiatric_AnxietyTreatment")
+display(preds_anxdist$table, title="Anxiety Disorders (with Treatment)")
+preds_anxdist$p
+mods_anxdist <- compare_models_glm("Disorders_Psychiatric_AnxietyTreatment")
+display(mods_anxdist$table, title="Anxiety Disorders (with Treatment)")
+mods_anxdist$p
 ```
 
 #### Eating
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_Eating")
-rez$p
+preds_eat <- compare_predictors("Disorders_Psychiatric_Eating")
+display(preds_eat$table, title="Eating Disorders")
+preds_eat$p
+mods_eat <- compare_models_glm("Disorders_Psychiatric_Eating")
+display(mods_eat$table, title="Eating Disorders")
+mods_eat$p
 ```
 
 #### Addiction
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_Addiction")
-rez$p
+preds_addict <- compare_predictors("Disorders_Psychiatric_Addiction")
+display(preds_addict$table, title="Addiction")
+preds_addict$p
+mods_addict <- compare_models_glm("Disorders_Psychiatric_Addiction")
+display(mods_addict$table, title="Addiction")
+mods_addict$p
 ```
 
 #### ADHD
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_ADHD")
-rez$p
+preds_adhd <- compare_predictors("Disorders_Psychiatric_ADHD")
+display(preds_adhd$table, title="ADHD")
+preds_adhd$p
+mods_adhd <- compare_models_glm("Disorders_Psychiatric_ADHD",
+                                title = "ADHD", subtitle = "Attention Deficit/Hyperactivity Disorder")
+display(mods_adhd$table, title="ADHD")
+mods_adhd$p
 ```
 
 #### Autism
 
 ```{r}
-rez <- compare_predictive("Disorders_Psychiatric_Autism")
-rez$p
+preds_asd <- compare_predictors("Disorders_Psychiatric_Autism")
+display(preds_asd$table, title="Autism")
+preds_asd$p
+mods_asd <- compare_models_glm("Disorders_Psychiatric_Autism",
+                                title = "ASD", subtitle = "Autism Spectrum Disorder")
+display(mods_asd$table, title="Autism")
+mods_asd$p
 ```
 
 
 #### Borderline
 
 ```{r}
-# rez <- compare_predictive("Disorders_Psychiatric_Borderline")
-# rez$p
+preds_bpd <- compare_predictors("Disorders_Psychiatric_Borderline")
+display(preds_bpd$table, title="Borderline Personality Disorder")
+preds_bpd$p
+mods_bpd <- compare_models_glm("Disorders_Psychiatric_Borderline")
+display(mods_bpd$table, title="Borderline Personality Disorder")
+mods_bpd$p
 ```
 
 
@@ -858,119 +1544,463 @@ rez$p
 
 ::: panel-tabset
 
-#### Autonomic
+#### Afferent Sensitivity
 
 ```{r}
-rez <- compare_predictive("Disorders_Somatic_Autonomic")
-rez$p
+preds_afferent <- compare_predictors("Disorders_Somatic_AfferentSensitivity")
+display(preds_afferent$table, title="Afferent Sensitivity Symptoms")
+preds_afferent$p
+mods_afferent <- compare_models_glm("Disorders_Somatic_AfferentSensitivity",
+                                    title="Afferent Sensitivity Symptoms",
+                                    subtitle = "Migraine, neuropathy, muscle tension, dizziness, ...")
+display(mods_afferent$table, title="Afferent Sensitivity Symptoms")
+mods_afferent$p
 ```
 
-#### Functional
+#### Central Sensitization
 
 ```{r}
-rez <- compare_predictive("Disorders_Somatic_Functional")
-rez$p
+preds_central <- compare_predictors("Disorders_Somatic_CentralSensitization")
+display(preds_central$table, title="Central Sensitization Symptoms")
+preds_central$p
+mods_central <- compare_models_glm("Disorders_Somatic_CentralSensitization",
+                                   title="Central Sensitization Symptoms",
+                                   subtitle = "Fibromyalgia, chronic fatigue, back pain, IBS, ...")
+display(mods_central$table, title="Central Sensitization Symptoms")
+mods_central$p
 ```
 
-#### Hyperreactivity
+#### Autonomic Dysfunction
 
 ```{r}
-rez <- compare_predictive("Disorders_Somatic_Hyperreactivity")
-rez$p
+preds_autonomic <- compare_predictors("Disorders_Somatic_AutonomicDysfunction")
+display(preds_autonomic$table, title="Autonomic Dysfunction")
+preds_autonomic$p
+mods_autonomic <- compare_models_glm("Disorders_Somatic_AutonomicDysfunction",
+                                     title="Autonomic Dysfunction",
+                                     subtitle = "Hypermobility, chest pain, hypo/hypertension, ....")
+display(mods_autonomic$table, title="Autonomic Dysfunction")
+mods_autonomic$p
 ```
 
-#### Immune
+#### Immune-Inflammatory
 
 ```{r}
-rez <- compare_predictive("Disorders_Somatic_Immune")
-rez$p
-```
-
-#### Cardio
-
-```{r}
-rez <- compare_predictive("Disorders_Somatic_Cardio")
-rez$p
-```
-
-
-#### Connective
-
-```{r}
-rez <- compare_predictive("Disorders_Somatic_Connective")
-rez$p
+preds_immune <- compare_predictors("Disorders_Somatic_ImmuneInflammatory")
+display(preds_immune$table, title="Immune-Inflammatory Symptoms")
+preds_immune$p
+mods_immune <- compare_models_glm("Disorders_Somatic_ImmuneInflammatory",
+                                  title="Immune-Inflammatory Symptoms",
+                                  subtitle = "Allergies, asthma, eczema, autoimmune, ...")
+display(mods_immune$table, title="Immune-Inflammatory Symptoms")
+mods_immune$p
 ```
 
 :::
 
 
-### Biofeedback Usage
+### Lifestyle and Demographic
+
+::: {.panel-tabset}
+
+#### Age
 
 ```{r}
-model <- glm(as.formula(paste0("Wearables_Number ~ .")),
-              data = select(df, Wearables_Number, starts_with("MINT"), -matches("[[:digit:]]")),
-              family = "poisson") |> 
-  step(direction = "both", trace=0)
-parameters::parameters(model)
-
-
-# Heart
-m_owns <- glm(as.formula(paste0("Wearables_Heart ~ .")),
-              data = df |>
-              mutate(Wearables_Heart = Wearables_Heart != "Not owning") |> 
-              select(Wearables_Heart, starts_with("MINT"), -matches("[[:digit:]]")),
-              family = "binomial") |> 
-  step(direction = "both", trace=0, k = log(nrow(df)))
-parameters::parameters(m_owns)
-
-
-
-model <- lm(as.formula(paste0("Wearables_HeartImportance ~ .")),
-              data = df |>
-              filter(!is.na(Wearables_HeartImportance)) |> 
-              select(Wearables_HeartImportance, starts_with("MINT"), -matches("[[:digit:]]"))) |> 
-  step(direction = "both", trace=0, k = log(nrow(filter(df, !is.na(Wearables_HeartImportance)))))
-parameters::parameters(model)
-
-
-lm(Wearables_HeartImportance ~ MINT_Interoception_Card, data=df) |> 
-  estimate_relation() |> 
-  plot()
+preds_age <- compare_predictors("Age")
+display(preds_age$table, title="Age")
+preds_age$p
+mods_age <- compare_models_lm("Age")
+display(mods_age, title="Age")
 ```
 
-
-
-## Exploratory
-
-### CEFSA
+#### Sex
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("CEFSA")))
+df$Sex <- ifelse(df$Gender == "Female", 1, ifelse(df$Gender == "Male", 0, NA))
 
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("CEFSA")))
+preds_sex <- compare_predictors("Sex")
+display(preds_sex$table, title="Sex")
+preds_sex$p
+mods_sex <- compare_models_glm("Sex")
+display(mods_sex$table, title="Sex")
+mods_sex$p
 ```
 
-### Emotion Regulation
+#### BMI
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("CERQ")))
-
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("CERQ")))
+preds_bmi <- compare_predictors("BMI")
+display(preds_bmi$table, title="BMI")
+preds_bmi$p
+mods_bmi <- compare_models_lm("BMI")
+display(mods_bmi, title="BMI")
 ```
 
-
-
-### Primals
+#### Physical Activity
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("PI")))
+preds_physactiv <- compare_predictors("Physical_Active")
+display(preds_physactiv$table, title="Physical Activity")
+preds_physactiv$p
+mods_physactiv <- compare_models_lm("Physical_Active")
+display(mods_physactiv, title="Physical Activity")
+```
 
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("PI")))
+:::
+
+### Biofeedback Usage (Wearables)
+
+::: {.panel-tabset}
+
+#### Number of Wearables
+
+```{r}
+preds_wearN <- compare_predictors("Wearables_Number", family = "poisson")
+display(preds_wearN$table, title="Wearables Number")
+preds_wearN$p
+```
+
+#### Heart
+
+```{r}
+df$Wearables_HeartOwn <- ifelse(df$Wearables_Heart == "Not owning", 0, 1) 
+preds_wearHeartOwn <- compare_predictors("Wearables_HeartOwn")
+display(preds_wearHeartOwn$table, title="Wearables Heart Ownership")
+preds_wearHeartOwn$p
+mods_wearHeartOwn <- compare_models_glm("Wearables_HeartOwn")
+display(mods_wearHeartOwn$table, title="Wearables Heart Ownership")
+mods_wearHeartOwn$p
+
+preds_wearHeartImp <- compare_predictors("Wearables_HeartImportance")
+display(preds_wearHeartImp$table, title="Wearables Heart Importance")
+preds_wearHeartImp$p
+mods_wearHeartImp <- compare_models_lm("Wearables_HeartImportance")
+display(mods_wearHeartImp, title="Wearables Heart Importance")
+```
+
+#### Sleep
+
+```{r}
+df$Wearables_SleepOwn <- ifelse(df$Wearables_Sleep == "Not owning", 0, 1)
+preds_wearSleepOwn <- compare_predictors("Wearables_SleepOwn")
+display(preds_wearSleepOwn$table, title="Wearables Sleep Ownership")
+preds_wearSleepOwn$p
+mods_wearSleepOwn <- compare_models_glm("Wearables_SleepOwn")
+display(mods_wearSleepOwn$table, title="Wearables Sleep Ownership")
+
+preds_wearSleepImp <- compare_predictors("Wearables_SleepImportance")
+display(preds_wearSleepImp$table, title="Wearables Sleep Importance")
+preds_wearSleepImp$p
+mods_wearSleepImp <- compare_models_lm("Wearables_SleepImportance")
+display(mods_wearSleepImp, title="Wearables Sleep Importance")
+```
+
+#### Steps
+
+```{r}
+df$Wearables_StepsOwn <- ifelse(df$Wearables_Steps == "Not owning", 0, 1)
+preds_wearStepsOwn <- compare_predictors("Wearables_StepsOwn")
+display(preds_wearStepsOwn$table, title="Wearables Steps Ownership")
+preds_wearStepsOwn$p
+mods_wearStepsOwn <- compare_models_glm("Wearables_StepsOwn")
+display(mods_wearStepsOwn$table, title="Wearables Steps Ownership")
+
+preds_wearStepsImp <- compare_predictors("Wearables_StepsImportance")
+display(preds_wearStepsImp$table, title="Wearables Steps Importance")
+preds_wearStepsImp$p
+mods_wearStepsImp <- compare_models_lm("Wearables_StepsImportance")
+display(mods_wearStepsImp, title="Wearables Steps Importance")
+```
+
+#### Weight
+
+```{r}
+df$Wearables_WeightOwn <- ifelse(df$Wearables_Weight == "Not owning", 0, 1)
+preds_wearWeightOwn <- compare_predictors("Wearables_WeightOwn")
+display(preds_wearWeightOwn$table, title="Wearables Weight Ownership")
+preds_wearWeightOwn$p
+mods_wearWeightOwn <- compare_models_glm("Wearables_WeightOwn")
+display(mods_wearWeightOwn$table, title="Wearables Weight Ownership")
+
+preds_wearWeightImp <- compare_predictors("Wearables_WeightImportance")
+display(preds_wearWeightImp$table, title="Wearables Weight Importance")
+preds_wearWeightImp$p
+mods_wearWeightImp <- compare_models_lm("Wearables_WeightImportance")
+display(mods_wearWeightImp, title="Wearables Weight Importance")
+```
+
+:::
+
+
+## Summary Table 
+
+```{r}
+make_table1 <- function(preds=preds_dif, mods=mods_dif, group = "Alexithymia", outcome = "TAS - DIF") {
+  yvar <- preds$outcome
+  preds <- preds$table
+  
+  best_pred_mint <- preds[str_detect(preds$Name, "MINT"), ]
+  best_pred_nonmint <- preds[!str_detect(preds$Name, "MINT"), ]
+  best_pred_nonmint <- best_pred_nonmint[best_pred_nonmint$R2 == max(best_pred_nonmint$R2), ][1,]
+  best_models_R2 <- str_remove(arrange(mods, desc(as.numeric(R2)))$Name, "m_")
+  best_model_BIC <- str_remove(arrange(mods, as.numeric(BIC))$Name, "m_")
+  
+  if(length(unique(df[[yvar]])) > 2) {
+    # LMs - display correlation
+    r_mint <- cor.test(cbind(df, metamint)[[best_pred_mint$Name[1]]], df[[yvar]])
+    r_mint <- paste0(insight::format_value(r_mint$estimate, zap_small = TRUE))
+    r_nonmint <- cor.test(df[[best_pred_nonmint$Name[1]]], df[[yvar]])
+    r_nonmint <- paste0(insight::format_value(r_nonmint$estimate, zap_small = TRUE))
+  } else {
+    # GLMs - display log-odds
+    r_mint <- best_pred_mint$Coefficient
+    r_nonmint <- best_pred_nonmint$Coefficient
+  }
+  
+  # Format
+  best_models_R2[str_detect(best_models_R2, "mint")] <- paste0("<b>", best_models_R2[str_detect(best_models_R2, "mint")], "</b>")
+  best_model_BIC[str_detect(best_model_BIC, "mint")] <- paste0("<b>", best_model_BIC[str_detect(best_model_BIC, "mint")], "</b>")
+  best_models_R2 <- paste0("<small>", paste0(best_models_R2, collapse = " > "), "</small>")
+  best_model_BIC <- paste0("<small>", paste0(best_model_BIC, collapse = " > "), "</small>")
+  
+  
+  data.frame(
+    Group = group,
+    Outcome = outcome, 
+    Best_MINT_Predictor = paste0(str_remove(best_pred_mint$Name[1], "MINT_"), "<br><small><i>(", r_mint, ")</i></small>"),
+    Best_NonMINT_Predictor = paste0(str_replace(best_pred_nonmint$Name[1], "_", " - "), "<br><small><i>(",  r_nonmint, ")</i></small>"),
+    Best_Models_R2 = best_models_R2,
+    Best_Models_BIC = best_model_BIC
+    )
+}
+
+rez <- rbind(
+  make_table1(preds_dif, mods_dif, group = "Alexithymia", outcome = "Difficulty Identifying Feelings (DIF)<small><p align='right'><i>TAS-20</i></small><p>"),
+  make_table1(preds_ddf, mods_ddf, group = "Alexithymia", outcome = "Difficulty Describing Feelings (DDF)<small><p align='right'><i>TAS-20</i></small><p>"),
+  make_table1(preds_eot, mods_eot, group = "Alexithymia", outcome = "Externally Oriented Thinking (EOT)<small><p align='right'><i>TAS-20</i></small><p>"),
+  
+  make_table1(preds_arou, mods_arou, group = "Emotion Reactivity", outcome = "Arousal<small><p align='right'><i>ERS</i></small><p>"),
+  make_table1(preds_sens, mods_sens, group = "Emotion Reactivity", outcome = "Sensitivity<small><p align='right'><i>ERS</i></small><p>"),
+  make_table1(preds_pers, mods_pers, group = "Emotion Reactivity", outcome = "Persistence<small><p align='right'><i>ERS</i></small><p>"),
+  
+  make_table1(preds_ls, mods_ls, group = "Mood", outcome = "Life Satisfaction"),
+  make_table1(preds_anx, mods_anx, group = "Mood", outcome = "Anxiety<small><p align='right'><i>PHQ-4</i></small><p>"),
+  make_table1(preds_dep, mods_dep, group = "Mood", outcome = "Depression<small><p align='right'><i>PHQ-4</i></small><p>"),
+  
+  make_table1(preds_moodt, mods_moodt$table, group = "Mental Health", outcome = "Mood Disorder"),
+  make_table1(preds_adhd, mods_adhd$table, group = "Mental Health", outcome = "ADHD"),
+  make_table1(preds_asd, mods_asd$table, group = "Mental Health", outcome = "Autism"),
+  
+  make_table1(preds_afferent, mods_afferent$table, group = "Somatic Health", outcome = "Afferent Sensitivity<small><small><p align='right'><i>Migraine, neuropathy, muscle tension, dizziness, ...</i></small></small><p>"),
+  make_table1(preds_central, mods_central$table, group = "Somatic Health", outcome = "Central Sensitization<small><small><p align='right'><i>Fibromyalgia, chronic fatigue, back pain, IBS, ...</i></small></small><p>"),
+  make_table1(preds_autonomic, mods_autonomic$table, group = "Somatic Health", outcome = "Autonomic Dysfunction<small><small><p align='right'><i>Hypermobility, chest pain, hypo/hypertension, ...</i></small></small><p>"),
+  make_table1(preds_immune, mods_immune$table, group = "Somatic Health", outcome = "Immune-Inflammatory<small><small><p align='right'><i>Allergies, eczema, autoimmune, ...</i></small></small><p>"),
+  
+  make_table1(preds_cefsabody, mods_cefsabody, group = "Dissociative Symptoms", outcome = "Body<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsaself, mods_cefsaself, group = "Dissociative Symptoms", outcome = "Self<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsaemo, mods_cefsaemo, group = "Dissociative Symptoms", outcome = "Emotions<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsareal, mods_cefsareal, group = "Dissociative Symptoms", outcome = "Reality<small><p align='right'><i>CEFSA</i></small><p>"),
+  
+  # make_table1(preds_pialive, mods_pialive, group = "Primals", outcome = "Alive<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pisafe, mods_pisafe, group = "Primals", outcome = "Safe<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pient, mods_pient, group = "Primals", outcome = "Enticing<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pigood, mods_pigood, group = "Primals", outcome = "Good<small><p align='right'><i>PI-18</i></small><p>")
+  
+  make_table1(preds_bmi, mods_bmi, group = "Lifestyle", outcome = "BMI"),
+  make_table1(preds_physactiv, mods_physactiv, group = "Lifestyle", outcome = "Physical Activity"),
+  # make_table1(preds_age, mods_age, group = "Lifestyle", outcome = "Age"),
+  make_table1(preds_wearHeartImp, mods_wearHeartImp, group = "Lifestyle", outcome = "Cardiac Monitoring"),
+  make_table1(preds_wearSleepImp, mods_wearSleepImp, group = "Lifestyle", outcome = "Sleep Monitoring"),
+  make_table1(preds_wearStepsImp, mods_wearStepsImp, group = "Lifestyle", outcome = "Steps Monitoring")
+  # make_table1(preds_wearWeightImp, mods_wearWeightImp, group = "Lifestyle", outcome = "Weight Monitoring")
+)
+
+tab2 <- rez |> 
+  gt::gt() |> 
+  gt::tab_header(
+    title = gt::md("**Interoceptive Questionnaires Comparison**"),
+    subtitle = "MINT vs. MAIA, IAS, BPQ"
+  ) |> 
+  gt::cols_width(
+    Outcome ~ gt::pct(23),
+    Best_MINT_Predictor ~ gt::pct(12),
+    Best_NonMINT_Predictor ~ gt::pct(15),
+    Best_Models_R2 ~ gt::pct(25),
+    Best_Models_BIC ~ gt::pct(25)
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_text(weight="bold", v_align = "middle"),
+    locations = gt::cells_column_labels()
+  )  |>
+  gt::tab_style(
+    style = gt::cell_text(align = "center", v_align = "middle"),
+    locations = gt::cells_body(columns=c("Best_MINT_Predictor", "Best_NonMINT_Predictor"))
+  )  |>
+  gt::tab_row_group(
+    label = "Lifestyle",
+    rows = Group == "Lifestyle"
+  ) |> 
+  gt::tab_row_group(
+    label = "Dissociative Symptoms",
+    rows = Group == "Dissociative Symptoms"
+  ) |> 
+  gt::tab_row_group(
+    label = "Primal World Beliefs",
+    rows = Group == "Primals"
+  ) |> 
+  gt::tab_row_group(
+    label = "Somatic Health",
+    rows = Group == "Somatic Health"
+  ) |> 
+  gt::tab_row_group(
+    label = "Mental Health",
+    rows = Group == "Mental Health"
+  ) |>
+  gt::tab_row_group(
+    label = "Mood",
+    rows = Group == "Mood"
+  ) |> 
+  gt::tab_row_group(
+    label = "Emotional Reactivity",
+    rows = Group == "Emotion Reactivity"
+  ) |> 
+  gt::tab_row_group(
+    label = "Alexithymia",
+    rows = Group == "Alexithymia"
+  ) |> 
+  gt::tab_style(
+    style = list(
+      gt::cell_fill(color = "gray85"),
+      gt::cell_text(weight="bold", style="italic")),
+    locations = gt::cells_row_groups()
+  )  |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81C784"),
+    locations = list(
+      gt::cells_body(columns="Best_MINT_Predictor", rows=c(1:4, 11:18, 20:21, 24))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFB74D"),
+    locations = list(
+      gt::cells_body(columns="Best_MINT_Predictor", rows=c(5:9, 10, 19, 22))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#EF9A9A"),
+    locations = list(
+      gt::cells_body(columns="Best_MINT_Predictor", rows=c(23, 25))
+    )
+  ) |> 
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81C784"),
+    locations = list(
+      gt::cells_body(columns="Best_Models_R2", rows=c(1:3, 11:13, 15:21, 23:25))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFB74D"),
+    locations = list(
+      gt::cells_body(columns="Best_Models_R2", rows=c(4:10, 14, 22))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#81C784"),
+    locations = list(
+      gt::cells_body(columns="Best_Models_BIC", rows=c(1:3, 11:20, 25))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#FFB74D"),
+    locations = list(
+      gt::cells_body(columns="Best_Models_BIC", rows=c(4:10, 22))
+    )
+  ) |>
+  gt::tab_style(
+    style = gt::cell_fill(color = "#EF9A9A"),
+    locations = list(
+      gt::cells_body(columns="Best_Models_BIC", rows=c(21, 23, 24))
+    )
+  ) |>
+  gt::cols_label(
+    Best_MINT_Predictor = "Best Predictor\n(MINT)",
+    Best_NonMINT_Predictor = "Best Predictor\n(Non-MINT)",
+    Best_Models_R2 = "Best Models (R2)",
+    Best_Models_BIC = "Best Models (BIC)"
+  ) |> 
+  gt::cols_hide(Group) |> 
+  gt::fmt_markdown() |> 
+  gt::tab_options(
+    table.font.size = gt::pct(125)
+  )
+
+
+tab2 |> 
+  gt::tab_options(
+    table.font.size = gt::pct(50)
+  ) |> 
+  gt::opt_interactive()
+
+gt::gtsave(tab2, "figures/table2.png", vwidth=1400, expand=0, quiet=TRUE)
+```
+
+## Figures
+
+```{r}
+#| warning: false
+#| eval: false
+
+
+
+fig1a <- patchwork::wrap_elements(
+  patchwork::wrap_elements(grid::rasterGrob(png::readPNG("figures/fig1a.png"))) +
+  patchwork::plot_annotation(title = "Exploratory Graphical Analysis (EGA)",
+                             subtitle = "Bootstrapped replication of hierarchical clusters (Methhod = leiden)",
+                             theme = theme(plot.title = element_text(face="bold", hjust = 0, size = rel(1.4)),
+                                           plot.subtitle = element_text(hjust = 0, size = rel(1)))))
+fig1b <- patchwork::wrap_elements(
+  patchwork::wrap_elements(grid::rasterGrob(png::readPNG("figures/fig1b.png"))) +
+  patchwork::plot_annotation(title = "Hierarchical Clustering",
+                             subtitle = "Method = Correlation",
+                             theme = theme(plot.title = element_text(face="bold", hjust = 0, size = rel(1.4)),
+                                           plot.subtitle = element_text(hjust = 0, size = rel(1)))))
+ggsave("figures/fig1.png", fig1a / fig1b, width=8, height=12, dpi=300)
+
+
+
+
+p_cor <- df |> 
+  select(starts_with("TAS_"), LifeSatisfaction, starts_with("PHQ4_"), starts_with("CEFSA"), starts_with("PI"), starts_with("ERS_")) |> 
+  mutate(LifeSatisfaction = datawizard::reverse_scale(LifeSatisfaction),
+         PI_Safe = datawizard::reverse_scale(PI_Safe),
+         PI_Good = datawizard::reverse_scale(PI_Good),
+         PI_Enticing = datawizard::reverse_scale(PI_Enticing)) |>
+  rename(`Life Satisfaction*` = LifeSatisfaction,
+         `Primals - Alive` = PI_Alive,
+         `Primals - Safe*` = PI_Safe,
+         `Primals - Good*` = PI_Good,
+         `Primals - Enticing*` = PI_Enticing) |>
+  make_cor(cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ))) +
+  labs(title="Correlates of Interoception") 
+p_cor
+
+fig2 <- (p_cormint | p_corintero) / p_cor + plot_layout(heights = c(0.4, 0.6))
+ggsave("figures/fig2.png", fig2, width=10, height=12, dpi=300)
+
+
+
+
+
+fig3 <- (mods_moodt$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank()) | 
+    mods_adhd$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank()) | 
+    mods_asd$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank())) / 
+  (mods_central$p | mods_autonomic$p | mods_immune$p) +
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Predictive Performance of Interoceptive Questionnaires", 
+       subtitle = "ROC Curves",
+       theme = theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(1.4)),
+                     plot.subtitle = element_text(hjust = 0.5, size = rel(1.25))))
+fig3
+ggsave("figures/fig3.png", fig3, width=13, height=9, dpi=300)
 ```
 

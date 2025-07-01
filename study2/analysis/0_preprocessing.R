@@ -69,6 +69,7 @@ convert_stones_to_kg <- function(weight) {
   weight[weight == "64"] <- "6'4"
   weight[weight == "135"] <- "13'5"
   weight[weight == "125"] <- "12'5"
+  weight[weight == "205"] <- "20'5"
   weight <- trimws(gsub("\"", "", weight))
 
   # Handle integer input like "6" (assume stones only, zero pounds)
@@ -158,7 +159,8 @@ for (file in files) {
   data_ppt$Education <- ifelse(stringr::str_detect(data_ppt$Education, "equivalent to a Bachelors"), "Bachelor", data_ppt$Education)
   data_ppt$Education <- ifelse(data_ppt$Education %in% c("3rd year BSc", "Bachelor non-university", "graduate certificate (Certificate IV)"), "Bachelor", data_ppt$Education)
   data_ppt$Education <- ifelse(data_ppt$Education %in% c("NVQ 4", "Professional", "Vocational degree.", "level 3 nvq's",
-                                                         "tech college", "College - HND", "Vocational diploma", "Vocational Qualification"), "High school", data_ppt$Education)
+                                                         "tech college", "College - HND", "Vocational diploma", "Vocational Qualification",
+                                                         "Professional qualification"), "High school", data_ppt$Education)
 
   data_ppt$Student <- ifelse(!is.null(resp$Student), resp$Student, NA)
   data_ppt$Country <- ifelse(!is.null(resp$Country), resp$Country, NA)
@@ -350,12 +352,12 @@ for (file in files) {
   alldata <- merge(data_ppt, alldata, all = TRUE)
 }
 
-unique(alldata$Disorders_Psychiatric)
-unique(alldata$Disorders_PsychiatricTreatment)
-unique(alldata$Disorders_Somatic)
-unique(alldata$Education)
-unique(alldata$Ethnicity)
-unique(alldata$Recruitment)
+# unique(alldata$Disorders_Psychiatric)
+# unique(alldata$Disorders_PsychiatricTreatment)
+# unique(alldata$Disorders_Somatic)
+# table(alldata$Education)
+# table(alldata$Ethnicity)
+# table(alldata$Recruitment)
 
 # Attention checks --------------------------------------------------------
 checks <- data.frame(
@@ -374,7 +376,7 @@ checks$Reward <- alldata$Reward
 checks <- checks[!is.na(checks$ID), ]
 checks <- checks[order(checks$Score, decreasing = TRUE), ]
 # checks
-# checks[checks$Prolific_ID=="5e736c9f4e8cdf034bdfa5c3", ]
+# checks[checks$ID=="5ff454f2f0b5ed607169fba6", ]
 
 
 # MINT: "I can always accurately answer to the extreme left on this question to show that I am reading it"

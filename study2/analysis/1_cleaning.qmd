@@ -55,9 +55,9 @@ df |>
 summarize(df, N = n(), .by=c("Recruitment")) |> 
   arrange(desc(N)) |> 
   gt::gt() |> 
-  gt::opt_stylize() |> 
-  gt::opt_interactive(use_compact_mode = TRUE) |> 
-  gt::tab_header("Number of participants per recruitment source")
+  gt::grand_summary_rows(columns = "N", fns = Total ~ sum(.)) |> 
+  gt::opt_stylize(style = 2, color = "gray") |> 
+  gt::tab_header("Number of participants per recruitment source") 
 ```
 
 ## Feedback
@@ -317,7 +317,7 @@ df <- select(df, -starts_with("PI18_"))
 
 ## Final Sample
 
-::: panel-tabset
+::: {.panel-tabset}
 
 ### Summary
 
@@ -507,7 +507,7 @@ p_bmi / (p_bmi_a | p_bmi_b | p_bmi_c)
 
 
 ```{r}
-df$Disorders_Psychiatric_Mood <- ifelse(str_detect(df$Disorders_Psychiatric, "GAD|Bipolar"), TRUE, FALSE)
+df$Disorders_Psychiatric_Mood <- ifelse(str_detect(df$Disorders_Psychiatric, "MDD|GAD|Bipolar"), TRUE, FALSE)
 df$Disorders_Psychiatric_MoodTreatment <- ifelse(
   df$Disorders_Psychiatric_Mood & !is.na(df$Disorders_PsychiatricTreatment) & str_detect(df$Disorders_PsychiatricTreatment, "Mood|Antidepressant|Anxiolytic|Psychotherapy"), TRUE, FALSE)
 
@@ -585,7 +585,7 @@ somatic <- data.frame(
   Dizziness = ifelse(str_detect(df$Disorders_Somatic, "Dizziness/Lightheadedness"), TRUE, FALSE),
   Migraine = ifelse(str_detect(df$Disorders_Somatic, "Migraine"), TRUE, FALSE),
   Neuropathy = ifelse(str_detect(df$Disorders_Somatic, "Neuropathy"), TRUE, FALSE),
-  # Epilepsy = ifelse(str_detect(df$Disorders_Somatic, "Epilepsy"), TRUE, FALSE),
+  Epilepsy = ifelse(str_detect(df$Disorders_Somatic, "Epilepsy"), TRUE, FALSE),
   MS = ifelse(str_detect(df$Disorders_Somatic, "Multiple Sclerosis"), TRUE, FALSE),
   FrequentUrination = ifelse(str_detect(df$Disorders_Somatic, "Frequent Urination"), TRUE, FALSE),
   Endometriosis = ifelse(str_detect(df$Disorders_Somatic, "Endometriosis"), TRUE, FALSE),
@@ -636,52 +636,41 @@ somatic |>
 #     seed=42)
 ```
 
+To facilitate mechanistic interpretation and reduce redundancy, self-reported somatic symptoms were grouped into four non-overlapping clusters based on shared physiological pathways and known etiological mechanisms. The **Afferent Sensitivity** cluster included conditions associated with heightened interoceptive awareness and neurogenic excitability, such as migraine, neuropathy, dizziness, nausea, muscle tension, epilepsy, and frequent urination. The **Central Sensitization** cluster comprised syndromes characterized by chronic pain and fatigue, likely reflecting central amplification of sensory signals and HPA-axis dysregulation; this included fibromyalgia, chronic fatigue syndrome, chronic pain, back pain, pelvic pain, endometriosis, irritable bowel syndrome (IBS), and interstitial cystitis. The **Autonomic Dysfunction** cluster captured disorders linked to dysregulation of the autonomic and cardiopulmonary systems, including joint hypermobility, cardiac arrhythmia, chest pain, shortness of breath, hypo-/hypertension, sleep apnea, chronic obstructive pulmonary disease (COPD), and chronic bronchitis. Finally, the **Immune-Inflammatory** cluster encompassed conditions associated with immune dysregulation, barrier dysfunction, and gut-brain axis disturbance, such as eczema, psoriasis, skin rashes, asthma, celiac disease, gluten and lactose sensitivity, inflammatory bowel diseases (Crohn’s disease and ulcerative colitis), gastroesophageal reflux disease (GERD), multiple sclerosis, and Sjögren’s syndrome. Each symptom was assigned to a single cluster to preserve orthogonality and support subsequent analyses linking symptom profiles to interoceptive processes.
+
 ```{r}
 # df$Disorders_Somatic_Number <- ifelse(df$Disorders_Somatic == "", 0, str_count(df$Disorders_Somatic, ";")+1)
 
-# 1. Autonomic Dysfunction & Anxiety-Somatic Symptoms
-# Mechanism: Dysregulated autonomic nervous system (e.g., panic disorder, dysautonomia, hyperventilation).
-df$Disorders_Somatic_Autonomic_N <- somatic |> 
-  select(Dizziness, ChestPain, ShortBreath, Arrhythmia, Nausea, Hypotension, Hypertension, MuscleTension) |> 
-  rowSums()
-df$Disorders_Somatic_Autonomic <- ifelse(df$Disorders_Somatic_Autonomic_N >= 1, TRUE, FALSE)
+# Cluster A: Afferent Sensitivity (neurogenic excitability, interoceptive hypervigilance)
+df$Disorders_Somatic_AfferentSensitivity_N <- rowSums(somatic[, c(
+  "Migraine", "Neuropathy", "MuscleTension", "Dizziness", 
+  "Nausea", "Epilepsy", "FrequentUrination"
+)])
+df$Disorders_Somatic_AfferentSensitivity <- df$Disorders_Somatic_AfferentSensitivity_N >= 1
 
-# 2. Functional Somatic Syndromes (Pain, Fatigue, GI Symptoms, and Anxiety)
-# Mechanism: Central sensitization, stress-induced HPA axis dysregulation, visceral hypersensitivity.
-df$Disorders_Somatic_Functional_N <- somatic |> 
-  select(Fibromyalgia, Neuropathy, Migraine, ChronicFatigue, ChronicPain, IBS, BackPain, PelvicPain, FrequentUrination) |> 
-  rowSums()
-df$Disorders_Somatic_Functional <- ifelse(df$Disorders_Somatic_Functional_N >= 1, TRUE, FALSE)
+# Cluster B: Central Sensitization (pain and fatigue syndromes)
+df$Disorders_Somatic_CentralSensitization_N <- rowSums(somatic[, c(
+  "Fibromyalgia", "ChronicPain", "ChronicFatigue", "BackPain", 
+  "PelvicPain", "Endometriosis", "IBS", "Cystitis"
+)])
+df$Disorders_Somatic_CentralSensitization <- df$Disorders_Somatic_CentralSensitization_N >= 1
 
-# 3. Hypervigilance, Mast Cell Dysfunction & Multi-System Reactivity
-# Mechanism: Mast cell activation, histamine intolerance, neuroinflammation, heightened interoception.
-df$Disorders_Somatic_Hyperreactivity_N <- somatic |> 
-  select(Migraine, SkinRashes, Nausea, FrequentUrination, Dizziness, MuscleTension, Endometriosis) |> 
-  rowSums()
-df$Disorders_Somatic_Hyperreactivity <- ifelse(df$Disorders_Somatic_Hyperreactivity >= 1, TRUE, FALSE)
+# Cluster C: Autonomic Dysfunction (dysautonomia and cardiorespiratory instability)
+df$Disorders_Somatic_AutonomicDysfunction_N <- rowSums(somatic[, c(
+  "Hypermobility", "Arrhythmia", "ChestPain", "ShortBreath", 
+  "Hypotension", "Hypertension", "SleepApnea", "COPD", "Bronchitis"
+)])
+df$Disorders_Somatic_AutonomicDysfunction <- df$Disorders_Somatic_AutonomicDysfunction_N >= 1
 
-# 4. Immune-Inflammatory & Gut-Brain Axis Dysregulation
-# Conditions: Celiac disease, gluten sensitivity, lactose intolerance, MS, neuropathy, eczema, asthma, IBS.
-# Mechanism: Leaky gut, immune activation, microbiome imbalance, chronic low-grade inflammation.
-df$Disorders_Somatic_Immune_N <- somatic |> 
-  select(Celiac, Gluten, Lactose, MS, Eczema, Asthma, IBS) |> 
-  rowSums()
-df$Disorders_Somatic_Immune <- ifelse(df$Disorders_Somatic_Immune_N >= 1, TRUE, FALSE)
+# Cluster D: Immune-Inflammatory (gut-brain axis, autoimmune and barrier-related conditions)
+df$Disorders_Somatic_ImmuneInflammatory_N <- rowSums(somatic[, c(
+  "SkinRashes", "Eczema", "Psoriasis", "Sjogrens", "Asthma", 
+  "Celiac", "Gluten", "Lactose", "Crohn", "UlcerativeColitis", 
+  "GERD", "MS"
+)])
+df$Disorders_Somatic_ImmuneInflammatory <- df$Disorders_Somatic_ImmuneInflammatory_N >= 1
 
-# 5. Cardiopulmonary & Stress-Linked Disorders
-# Mechanism: Vascular and respiratory dysregulation, autonomic instability, stress-exacerbated cardiovascular symptoms.
-df$Disorders_Somatic_Cardio_N <- somatic |> 
-  select(Arrhythmia, COPD, ChestPain, ShortBreath, Hypertension, SleepApnea) |> 
-  rowSums()
-df$Disorders_Somatic_Cardio <- ifelse(df$Disorders_Somatic_Cardio_N >= 1, TRUE, FALSE)
 
-# 6. Connective Tissue & Dysautonomia-Linked Disorders
-# Conditions: Hypermobility, Sjogren’s syndrome, hypotension, chronic fatigue, dizziness.
-# Mechanism: Connective tissue laxity affecting autonomic function (e.g., Ehlers-Danlos syndrome, POTS).
-df$Disorders_Somatic_Connective_N <- somatic |> 
-  select(Hypermobility, Hypotension, Sjogrens, Hypotension, ChronicFatigue, Dizziness) |> 
-  rowSums()
-df$Disorders_Somatic_Connective <- ifelse(df$Disorders_Somatic_Connective_N >= 1, TRUE, FALSE)
 
 
 p2 <- df |> 

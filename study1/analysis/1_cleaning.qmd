@@ -40,12 +40,16 @@ df |>
   mutate(n = n / sum(n),
          Experiment_Enjoyment = fct_rev(as.factor(Experiment_Enjoyment)),
          .by="Condition") |>
+  mutate(Condition = str_replace(Condition, "Domains", "By Modality"),
+         Condition = str_replace(Condition, "Dimensions", "By Facet"),
+         Condition = str_replace(Condition, "Random", "Randomly")) |>
   ggplot(aes(y = Condition, x = n, fill = Experiment_Enjoyment)) +
   geom_bar(stat="identity", position="stack") +
   scale_fill_manual(values=c("green", "yellowgreen",  "yellow", "orange", "red")) +
   scale_x_continuous(expand=c(0, 0))  +
   labs(title="Experiment Enjoyment",
-       subtitle="Proportion of participants by condition") + 
+       subtitle="Proportion of participants by condition", 
+       y = "Items presented grouped...") + 
   guides(fill = guide_legend(reverse=TRUE)) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
