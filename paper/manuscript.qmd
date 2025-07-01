@@ -103,7 +103,7 @@ Goal of study 1: to generate a lot of items, analyze its structure and reduce th
 ### Participants
 
 We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37.0 $\pm$ 12.2 [18, 77]; 50.8\% women; Country of residence: 63.86% UK, 26.65% USA).
-This study was approved by the University of Sussex' Ethics Committee (**NUMBER**).
+This study was approved by the University of Sussex' Ethics Committee (ER/MB2021/1).
 
 ### Item Generation
 
@@ -111,7 +111,7 @@ Based on the two goals outlined for this scale, namely to include different inte
 
 ```{r}
 #| label: fig-one
-#| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belong both to an interoceptive modalitiy and a facet, with the number of each item per category indicated in the circles. The askterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or entirely randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that 1) the scale's structure is robust to different presentation conditions; 2) modality-grouping might tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more natural)." 
+#| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belong both to an interoceptive modalitiy and a facet, with the number of each item per category indicated in the circles. The askterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or entirely randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that 1) the scale's structure is robust to different presentation conditions; 2) modality-grouping might tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more natural)."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -195,7 +195,7 @@ Goal of study 2: to validate the Mint scale against other interoception scales.
 We recruited 921 English-speaking participants via Prolific\textcopyright and SONA, from which 118 were excluded for failing at least one attention check and 6 based on multivariate distance (using the same procedure as for study 1). 
 60 participants were further excluded due to missing data following a technical error.
 The final sample includes 737 participants (age = 36.8 $\pm$ 14.7 [18, 87]; 57.3\% women; Country of residence: 75.17% United Kingdom, 24.83% other).
-This study was approved by the University of Sussex' Ethics Committee (**NUMBER**).
+This study was approved by the University of Sussex' Ethics Committee (ER/EB672/2).
 
 
 ### Procedure
@@ -209,50 +209,48 @@ The experiment included the following questionnaires.
 
 The 45 items of the Mint scale were presented in a random order, with the same 7-point Likert scale as in study 1 (0 = Disagree, 6 = Agree).
 
-##### Multidimensional Assessment of Interoceptive Awareness (MAIA)
+##### Multidimensional Assessment of Interoceptive Awareness - Second Version (MAIA-2)
 
-The X items of the MAIA...
+The 37 items of the MAIA-2 [@mehling2018multidimensional] on a 7-point Likert scale from *Never* (0) to *Always* (6). The MAIA-2 consists of 8 scales: Noticing, Not-Distracting, Not-Worrying, Attention Regulation, Emotional Awareness, Self-Regulation, Body Listening and Trust. The scales address 5 dimensions of body awareness: Awareness of Body Sensations, Emotional Reaction and Attentional Response to Sensations, Capacity to Regulate Attention, Awareness of Mind-Body Integration, Trusting Body Sensations. 
 
-##### The Body Perception Questionnaire (BPQ)
+##### The Body Perception Questionnaire - Very Short Form (BPQ- VSF)
 
-**TODO**
+The 12 item BPQ-VSF [@cabrera2018assessing] related to bodily awareness on a 5-point Likert scale from *Never* (0) to *Always* (5). 
 
-##### The Interoceptive Awareness Scale (IAS)
+##### The Interoceptive Accuracy Scale (IAS)
 
-**TODO**
+The 21 items of the IAS [@murphy2020testing] assessing interoceptive accuracy to physical sensations on a 5-point Likert scale ranging from *Disagree Strongly* (1) to *Strongly Agree*. 
 
 #### Emotions and Cognition
 
 ##### Toronto Alexithymia Scale (TAS-20)
 
-**TODO**
+The 20-items TAS [@leising2009toronto] assessing Alexithymia traits grouped into three dimensions: Difficulty Identifying Feelings, Difficulty Describing Feelings, and Externally Oriented Thinking. Items are rated in a 5-point Likert scale from *Strongly Disagree* (1) to *Strongly Agree*(5). 
 
-##### Emotion Reactivity Scale (ERS)
+##### Emotion Reactivity Scale - Brief Version (B-ERS)
 
-**TODO**
+The 6-item B-ERS [@veilleux2024development] assessing emotional sensitivity on a 5-point Likert scale from *Not like me at all* (0) to *Extremely like me* (4). 
 
-##### Cognitive Emotion Regulation Questionnaire (CERQ)
+##### Cognitive Emotion Regulation Questionnaire-short (CERQ-short)
 
-**TODO**
+The 18 items CERQ-short [@garnefski2006cognitive] on a 5-point Likert scale ranging from *Almost Never* (1) to *Almost Always* (5). This questionnaire measures eight cognitive responses to threatening or stressful events, including: Self-blame, Other-blame, Rumination, Catastrophizing, Putting into Perspective, Positive Refocusing, Positive Reappraisal, Acceptance, and Planning.
 
+##### Černis Felt Sense of Anomaly scale - short-form (CEFSA-14)
 
-##### TODO (CEFSA)
-
-**TODO**
+The 14 item CEFSA [@vcernis2024measuring] assessing a specific sub-type of dissociative experiences in adolescence and adulthood - i.e., felt sense of anomaly-type
+dissociation. the items are rated ON A 5-point Likert scale from *Never* (0) to *Always* (4), forming seven factors: Anomalous Experience of the Self, Anomalous Experience of the Body , Anomalous Experiences of Emotion , Altered Sense of Familiarity , Altered Sense of Connection, Altered Sense of Agency , and Altered Sense of Reality 
 
 ##### Primal World Beliefs (PI-18)
 
-**TODO**
+the 18 items PI [@clifton2021brief] measuring highest-order primal world beliefs - i.e., beliefs about the basic character of the world: Good, Safe, Enticing, Alive. Responses are scored on a 6-point Likert scale from *Strongly Disagree* (0) to *Strongly Agree* (5).
 
 #### Health and Wellbeing
 
 ##### Life Satisfaction, Depression and Anxiety (PHQ-4)
 
-**TODO**
+The 4 item scale of the PHQ [@kroenke2009ultra] assessing depression and anxiety, with responses scored as *Not at all* (0), *Once or twice* (0.5), *Several days* (1), *More than half of the days* (2), *nearly every day* (3). This revised version added as a response option (i.e., Once or twice) as a way to improve the scale's sensitivity to milder mood fluctuations [@makowskimeasuring]. 
 
 <!-- PHQ-4 + LS: presented together -->
-
-
 
 ##### Mental Health
 
@@ -265,15 +263,15 @@ To facilitate mechanistic interpretation and reduce redundancy, answers were gro
 <!-- Each symptom was assigned to a single cluster to preserve orthogonality and support subsequent analyses linking symptom profiles to interoceptive processes. -->
 We scored each cluster as a binary variable based on whether the participant selected at least one symptom from that cluster. 
 
+##### Patient Health Questionnaire - Somatic Symptoms (PHQ-15)
+
+The PHQ-15 [@kroenke2002phq] is comprised of 15 somatic symptoms, with responses scored as *Not at all* (0), *Bothered a little* (1) and *bothered a lot* (2). 
 
 #### Lifestyle
 
-**TODO**
+Participants were asked to report on their use of wearable devices to monitor several health indices: heart rate, number of steps, calories burned, sleep quality, and weight (including via a regular scale). For each selected index, a question appeared asking them to rate how often they check that index; responses were scored as *Never*, *Very rarely*, *A few times per week*, *Once a day*, *A few times per day*, and *A few times per hour*. Additionally, participants were asked to rate how important this information was to them on an 8-point Likert scale ranging from *Not at all* (0) to *Very much* (7).
 
-Physical activity.
-
-Wearables.
-
+Questions regarding physical activity were also included. Participants were asked to rate how physically active they consider themselves on an 8-point Likert scale, from *Not at all* (0) to *Very much* (7), and to self-report how many hours of active workout they engage in per week.
 
 
 #### Randomization
@@ -286,14 +284,12 @@ In order to make the experiment more enjoyable, the experiment ended with a rada
 
 We will start by confirming and further refining the structure of the Mint scale using the same EGA model as in Study 1. The convergent validity of the final set of items will be assessed by computing the correlations between the Mint scale and the other interoception questionnaires (MAIA, BPQ, IAS).
 Then, we will test the predictive power of the Mint scale (relative to the other interoception questionnaires) on various measures.
-We will start by fitting regression (linear for continuous measures - e.g., depression score - and logistic for binary 
-
-
+We will start by fitting regression (linear for continuous measures - e.g., depression score - and logistic for binary...)
 
 
 ```{r}
 #| label: fig-two
-#| fig-cap: "TODO." 
+#| fig-cap: "TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -306,7 +302,7 @@ knitr::include_graphics("../study2/analysis/figures/fig1.png")
 
 ```{r}
 #| label: fig-three
-#| fig-cap: "TODO." 
+#| fig-cap: "TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -316,7 +312,7 @@ knitr::include_graphics("../study2/analysis/figures/table1.png")
 
 ```{r}
 #| label: fig-four
-#| fig-cap: "TODO." 
+#| fig-cap: "TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -326,7 +322,7 @@ knitr::include_graphics("../study2/analysis/figures/fig2.png")
 
 ```{r}
 #| label: fig-five
-#| fig-cap: "TODO." 
+#| fig-cap: "TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -337,7 +333,7 @@ knitr::include_graphics("../study2/analysis/figures/fig3.png")
 
 ```{r}
 #| label: fig-six
-#| fig-cap: "TODO." 
+#| fig-cap: "TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
