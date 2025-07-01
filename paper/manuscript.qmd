@@ -203,9 +203,7 @@ This study was approved by the University of Sussex' Ethics Committee (ER/EB672/
 
 ### Procedure
 
-The experiment included the following questionnaires.
-
-**TODO: What about attention checks?**
+The experiment included the following questionnaires. The procedure included a total of seven attention checks, each embedded within a different questionnaire. For example, the MINT questionnaire included an item such as: *"I can always accurately answer to the extreme left on this question to show that I am reading it."*
 
 #### Interoception Questionnaires
 
@@ -216,6 +214,9 @@ The 45 items of the Mint scale were presented in a random order, with the same 7
 ##### Multidimensional Assessment of Interoceptive Awareness - Second Version (MAIA-2)
 
 The 37 items of the MAIA-2 [@mehling2018multidimensional] on a 7-point Likert scale from *Never* (0) to *Always* (6). The MAIA-2 consists of 8 scales: Noticing, Not-Distracting, Not-Worrying, Attention Regulation, Emotional Awareness, Self-Regulation, Body Listening and Trust. The scales address 5 dimensions of body awareness: Awareness of Body Sensations, Emotional Reaction and Attentional Response to Sensations, Capacity to Regulate Attention, Awareness of Mind-Body Integration, Trusting Body Sensations. 
+
+The scale includes both high-level interoceptive dimensions - such as Body Listening, Noticing, and Emotional Awareness - and low-level dimensions, including Attention Regulation, Trust, and Self-Regulation [**ref**]. It also features dimensions whose relationship to interoception remains debated, and which tend to show weak or non-existent correlations with the other MAIA subscales -namely, Not-Distracting and Not-Worrying [@ferentzi2021examining].
+
 
 ##### The Body Perception Questionnaire - Very Short Form (BPQ- VSF)
 
