@@ -470,6 +470,8 @@ load("models/ega2.RData")
 itemstability <- EGAnet::itemStability(ega2, IS.plot=FALSE)
 p_stab <- plot(itemstability)
 p_stab
+
+ega2$EGA
 ```
 
 
@@ -1369,12 +1371,6 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
   m_maia <- glm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome), starts_with("MAIA")),
               family = "binomial") 
-  m_imaia <- glm(as.formula(paste0(outcome, " ~ .")),
-                data = select(df, all_of(outcome), 
-                              starts_with("MAIA"), 
-                              -contains("NotWorrying"),
-                              -contains("NotDistracting")),
-              family = "binomial")
   m_imaia <- glm(as.formula(paste0(outcome, " ~ .")),
                 data = select(df, all_of(outcome),
                               # MAIA_AttentionRegulation, # remove?

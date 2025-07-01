@@ -87,9 +87,10 @@ format:
 TODO: write general intro.
 
 Main issues in existing questionnaires: 
-- Either heavily based on theories (e.g., focusing on a specific dimensions), despite shaky evidence for said-theories
+
+- Either heavily based on theories (e.g., focusing on specific "alleged" dimensions), despite shaky evidence for said-theories
 - Do not control for context (which leads to variability in interpretation and occurence)
-- Often quite narrow in the modalities covered
+- Often quite narrow in the modalities covered (or scattered, like the IAS)
 
 
 # Study 1: Item Selection
@@ -182,6 +183,8 @@ To further reduce and balance the remaining items, we collectively decided on re
 
 Possible (although not at all significant) bias consistent across indices in favour of a greater similarity with the modality-grouping condition. 
 
+We grouped some of the dimensions under "Awareness", despite being similar to items included in the IAS typically conceptualized as "Accuracy". However, we believe that subjective scales cannot be pure measures of accuracy, as they are inherently subjective and thus reflect a degree of awareness (of one's accurate noticing or sensation).
+
 # Study 2: Validation
 
 TODO: write intro.
@@ -202,6 +205,7 @@ This study was approved by the University of Sussex' Ethics Committee (**NUMBER*
 
 The experiment included the following questionnaires.
 
+**TODO: What about attention checks?**
 
 #### Interoception Questionnaires
 
@@ -278,18 +282,15 @@ Wearables.
 
 #### Randomization
 
-In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned them into three groups (and randomized their order within them): (1) interoception questionnaires (MAIA, IAS, BPQ), (2) emotions (TAS, CERQ, ERS, PI-18), and (3) pathology (somatic health, mental health, LS + PHQ-4, CEFSA). 
+In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned them into three groups (and randomized their order within them): (1) interoception questionnaires (MAIA, IAS, BPQ), (2) emotions (TAS, CERQ, ERS, PI-18), and (3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
 After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups.
 In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on https://github.com/RealityBending/InteroceptionScale].
 
 ### Data Analysis
 
-We will start by confirming and further refining the structure of the Mint scale using the same EGA model as in Study 1. The convergent validity of the final set of items will be assessed by computing the correlations between the Mint scale and the other interoception questionnaires (MAIA, BPQ, IAS).
-Then, we will test the predictive power of the Mint scale (relative to the other interoception questionnaires) on various measures.
-We will start by fitting regression (linear for continuous measures - e.g., depression score - and logistic for binary 
-
-
-
+We will start by confirming and further refining the structure of the Mint scale (see @fig-two) using the same EGA model as in Study 1. 
+We will then compute the lower-level dimensions as well as the higher-level metaclusters' scores by averaging the items in each cluster.
+The convergent validity of the final set of items will be assessed by computing the correlations between the Mint scale and the other interoception questionnaires (MAIA, BPQ, IAS).
 
 ```{r}
 #| label: fig-two
@@ -301,9 +302,22 @@ We will start by fitting regression (linear for continuous measures - e.g., depr
 knitr::include_graphics("../study2/analysis/figures/fig1.png")
 ```
 
+Then, we will test the predictive power of the Mint scale relative to the other interoception questionnaires.
+We will first assess the importance of each interoceptive dimension (from all the scales) as a unique predictor by fitting regression models (linear for continuous measures - e.g., depression score - and logistic for binary variables - e.g., presence *vs.* absence of mood disorders) to predict various outcomes, and compare the best between the 4 interoception scales (based on the R2).
+We will then assess the predictive performance of each scale as a whole by comparing regression models with all the dimensions entered as predictors (note that the IAS and BPQ only have one total score variable). We will evaluate models based on their total explained variance (R2), as well as on the Bayesian Information Criterion (BIC), which penalizes for predictor numbers, thus offering a balance between model parsimony and predictive power. For the logistic model, we will quantify the discriminative power by computing the Area Under the Curve (AUC) of the Receiver Operating Characteristic (ROC) curve, which assesses the model's discriminative power (the combination of sensitivity and specificity).
 
-##  Results
+In order to evaluate the potential of a short version of our scale, we will compare 4 variants of the Mint models: the (full) Mint (including all lower-level dimensions), the "metaMint" (only including the metaclusters), the "miniMint" (including the metaclusters computed from a reduced number of items), and the "microMint" (including only the most representative dimension of each metacluster).
+Moreover, we will also include an alternative "interoception-only" version of the MAIA ("iMAIA") that only includes the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness). 
 
+**TODO: Ana: do you think that this selection of dims for the iMAIA is fair? Or should I include other dimensions that you think are also very low-level and interoceptive?**
+
+## Results
+
+The first application of EGA to the initial set of 42 items, which reproduced the expected 14 lower-level clusters of triplets and 3 higher-order metaclusters, with the exception of the *UrSe* (Urointestinal Sensitivity), for which one item moved to the *Olfa* (Olfactory Compensation) cluster.
+In order to further balance and reduce the items, we removedt the *UrSe* cluster, as well as *StaS* (State Specificity; which in comparison to the other items stood out as containing vague and overlapping items (e.g., "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)"); *SexO* (Sexual Organs Sensitivity), which overlapped with the *SexS* (Sexual Arousal Sensitivity) cluster; and *CaNo* (Cardiorespiratory Noticing), which overlapped with the *CaCo* (Cardiorespiratory Confusion) cluster.
+
+The final set of 36 items yielded a good fit (Generalized Total Entropy Fit Index = -77.23), with all items showing high cluster stability (> 90\%), with the exception of *Olfa*. The final structure included 11 lower-level clusters, grouped into 3 higher-order metaclusters: "Interoceptive Deficit" (containing *CaCo*, *UrIn*, *Derm*, *Sati*, *Olfa*), "Interoceptive Awareness" (containing *ExAc*, *RelA*, *SexS*), and "Visceroception" (containing *Card*, *Resp*, *Gast*). Item centrality (intepretable as loadings) are shown in @fig-three. Additionally, we also ran a hierarchical clustering analysis which replicated this structure (see @fig-two).
+    
 ```{r}
 #| label: fig-three
 #| fig-cap: "TODO." 
@@ -313,6 +327,11 @@ knitr::include_graphics("../study2/analysis/figures/fig1.png")
 
 knitr::include_graphics("../study2/analysis/figures/table1.png")
 ```
+
+The correlation matrix of the Mint dimensions (i.e., clusters) 
+
+
+
 
 ```{r}
 #| label: fig-four
@@ -326,7 +345,7 @@ knitr::include_graphics("../study2/analysis/figures/fig2.png")
 
 ```{r}
 #| label: fig-five
-#| fig-cap: "TODO." 
+#| fig-cap: "Stars indicate dimensions that have been score-reversed for better in-context interpretation." 
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
