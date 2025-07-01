@@ -88,12 +88,11 @@ colors <- c(Mint="#00BCD4", metaMint="#673AB7", miniMint="#26A36C", microMint="#
 ## Structure Validation
 
 ```{r}
-#| code-fold: false
-
 items <- select(df, starts_with("MINT_"))
 names(items) <- str_remove(names(items), "MINT_")
 ```
 
+See the list of item labels in the code below.
 
 ```{r}
 labels <- list(
@@ -152,8 +151,9 @@ labels <- list(
   # MINT_SexC_53 = "When I am sexually aroused, I often feel changes in my breathing (e.g., faster, shallower, or less regular)",
   # MINT_SexC_54 = "When I am sexually aroused, I often feel changes in my temperature (e.g., feeling warm or cold)"
 )
+```
 
-
+```{r}
 cleanlabels <- function(x, qname=FALSE) {
   is_factor <- FALSE
   if(is.factor(x)) {
@@ -175,7 +175,10 @@ cleanlabels <- function(x, qname=FALSE) {
 }
 ```
 
+
 ### Full
+
+Additionally to EGA, we explored Hierarchical Clustering to see if the results are consistent.
 
 #### EGA
 
@@ -225,6 +228,9 @@ pvclust::pvrect(hclust, alpha=0.95, max.only=TRUE)
 ```
 
 ### Item Reduction
+
+To help us in confirming which clusters to keep or to remove, we empirically tested the "importance" (normalized R2) of each cluster in predicting various outcomes present in our dataset, and aggregating the average importance of each cluster different categories of outcomes. 
+This approach yielded patterns which highlighted some clusters as providing a unique contribution (e.g., Olfa and Sati).
 
 ::: {.panel-tabset}
 
@@ -414,6 +420,7 @@ pvclust::pvrect(hclust2, alpha=0.95, max.only=TRUE)
 
 ### Final
 
+Initially, we fought about also removing Olfa and Sati to provide a more parsimonious and balanced final set, but they seem to withhold interesting value.
 
 ```{r}
 #| fig-width: 10
@@ -994,6 +1001,8 @@ table_models <- function(models) {
   test$Model <- NULL
   test$Omega2 <- NULL
   test$p_Omega2 <- NULL
+  test$LR <- NULL
+  test$p_LR <- NULL
   test$R2 <- table$R2
   test$BIC <- table$BIC
   
@@ -1007,10 +1016,32 @@ table_models <- function(models) {
     }
   }
   
+  test <- datawizard::data_select(test, c("Name", "R2", "BIC", "BF"))
+  
   if(length(coefs) == length(models)) test$Coefficient <- coefs
-  format(test, zap_small = TRUE)
+  
+  test
 }
 
+
+display_models <- function(table, title = "", subtitle = "") {
+  numcols <- c("R2", "BIC", "Coefficient")[c("R2", "BIC", "Coefficient") %in% names(table)]
+  table |> 
+    mutate(BF = format_bf(BF, name = NULL, stars = TRUE)) |> 
+    gt::gt() |> 
+    gt::fmt_number(columns = numcols, decimals = 3) |>
+    gt::tab_header(title = title, subtitle = subtitle) |>
+    gt::data_color(
+      columns = c("R2"),
+      palette = c("white", "green")
+    ) |> 
+    gt::data_color(
+      columns = c("BIC"),
+      palette = c("green", "white")
+    ) |> 
+    gt::opt_interactive(use_compact_mode=TRUE)
+  
+}
 # Individual predictors ------------------------------------------------------
 
 compare_predictors <- function(outcome="TAS_DIF", family = "linear") {
@@ -1115,22 +1146,22 @@ compare_models_lm <- function(outcome="TAS_DIF") {
 
 ```{r}
 preds_dif <- compare_predictors("TAS_DIF")
-display(preds_dif$table, title="DIF")
+display_models(preds_dif$table, title="Best Predictor", subtitle = "TAS - DIF")
 preds_dif$p
 mods_dif <- compare_models_lm("TAS_DIF")
-display(mods_dif, title="DIF")
+display_models(mods_dif, title="Best Model", subtitle = "DIF")
 
 preds_ddf <- compare_predictors("TAS_DDF")
-display(preds_ddf$table, title="DDF")
+display_models(preds_ddf$table, title="Best Predictor", subtitle = "DDF")
 preds_ddf$p
 mods_ddf <- compare_models_lm("TAS_DDF")
-display(mods_ddf, title="DDF")
+display_models(mods_ddf, title="Best Model", subtitle = "DDF")
 
 preds_eot <- compare_predictors("TAS_EOT")
-display(preds_eot$table, title="EOT")
+display_models(preds_eot$table, title="Best Predictor", subtitle = "EOT")
 preds_eot$p
 mods_eot <- compare_models_lm("TAS_EOT")
-display(mods_eot, title="EOT")
+display_models(mods_eot, title="Best Model", subtitle = "EOT")
 ```
 
 ```{r}
@@ -1143,22 +1174,22 @@ make_cor(select(df, starts_with("TAS_")),
 
 ```{r}
 preds_ls <- compare_predictors("LifeSatisfaction")
-display(preds_ls$table, title="Life Satisfaction")
+display_models(preds_ls$table, title="Best Predictor", subtitle = "Life Satisfaction")
 preds_ls$p
 mods_ls <- compare_models_lm("LifeSatisfaction")
-display(mods_ls, title="Life Satisfaction")
+display_models(mods_ls, title="Best Model", subtitle = "Life Satisfaction")
 
 preds_anx <- compare_predictors("PHQ4_Anxiety")
-display(preds_anx$table, title="PHQ4 Anxiety")
+display_models(preds_anx$table, title="Best Predictor", subtitle = "PHQ4 Anxiety")
 preds_anx$p
 mods_anx <- compare_models_lm("PHQ4_Anxiety")
-display(mods_anx, title="PHQ4 Anxiety")
+display_models(mods_anx, title="Best Model", subtitle = "PHQ4 Anxiety")
 
 preds_dep <- compare_predictors("PHQ4_Depression")
-display(preds_dep$table, title="PHQ4 Depression")
+display_models(preds_dep$table, title="Best Predictor", subtitle = "PHQ4 Depression")
 preds_dep$p
 mods_dep <- compare_models_lm("PHQ4_Depression")
-display(mods_dep, title="PHQ4 Depression")
+display_models(mods_dep, title="Best Model", subtitle = "PHQ4 Depression")
 ```
 
 ```{r}
@@ -1173,22 +1204,22 @@ make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
 
 ```{r}
 preds_arou <- compare_predictors("ERS_Arousal")
-display(preds_arou$table, title="ERS Arousal")
+display_models(preds_arou$table, title="Best Predictor", subtitle = "ERS Arousal")
 preds_arou$p
 mods_arou <- compare_models_lm("ERS_Arousal")
-display(mods_arou, title="ERS Arousal")
+display_models(mods_arou, title="Best Model", subtitle = "ERS Arousal")
 
 preds_sens <- compare_predictors("ERS_Sensitivity")
-display(preds_sens$table, title="ERS Sensitivity")
+display_models(preds_sens$table, title="Best Predictor", subtitle = "ERS Sensitivity")
 preds_sens$p
 mods_sens <- compare_models_lm("ERS_Sensitivity")
-display(mods_sens, title="ERS Sensitivity")
+display_models(mods_sens, title="Best Model", subtitle = "ERS Sensitivity")
 
 preds_pers <- compare_predictors("ERS_Persistence")
-display(preds_pers$table, title="ERS Persistence")
+display_models(preds_pers$table, title="Best Predictor", subtitle = "ERS Persistence")
 preds_pers$p
 mods_pers <- compare_models_lm("ERS_Persistence")
-display(mods_pers, title="ERS Persistence")
+display_models(mods_pers, title="Best Model", subtitle = "ERS Persistence")
 ```
 
 
@@ -1213,86 +1244,84 @@ make_cor(select(df, starts_with("ERS_")),
 ### CEFSA
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("CEFSA")))
+#| warning: false
 
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("CEFSA")))
+make_cor(select(df, starts_with("CEFSA")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
 preds_cefsabody <- compare_predictors("CEFSA_Body")
-display(preds_cefsabody$table, title="CEFSA - Body")
+display_models(preds_cefsabody$table, title="Best Predictor", subtitle = "CEFSA - Body")
 preds_cefsabody$p
 mods_cefsabody <- compare_models_lm("CEFSA_Body")
-display(mods_cefsabody, title="CEFSA - Body")
+display_models(mods_cefsabody, title="Best Model", subtitle = "CEFSA - Body")
 
 preds_cefsaself <- compare_predictors("CEFSA_Self")
-display(preds_cefsaself$table, title="CEFSA - Self")
+display_models(preds_cefsaself$table, title="Best Predictor", subtitle = "CEFSA - Self")
 preds_cefsaself$p
 mods_cefsaself <- compare_models_lm("CEFSA_Self")
-display(mods_cefsaself, title="CEFSA - Self")
+display_models(mods_cefsaself, title="Best Model", subtitle = "CEFSA - Self")
 
 preds_cefsaemo <- compare_predictors("CEFSA_Emotion")
-display(preds_cefsaemo$table, title="CEFSA - Emotion")
+display_models(preds_cefsaemo$table, title="Best Predictor", subtitle = "CEFSA - Emotion")
 preds_cefsaemo$p
 mods_cefsaemo <- compare_models_lm("CEFSA_Emotion")
-display(mods_cefsaemo, title="CEFSA - Emotion")
+display_models(mods_cefsaemo, title="Best Model", subtitle = "CEFSA - Emotion")
 
 preds_cefsareal <- compare_predictors("CEFSA_Reality")
-display(preds_cefsareal$table, title="CEFSA - Reality")
+display_models(preds_cefsareal$table, title="Best Predictor", subtitle = "CEFSA - Reality")
 preds_cefsareal$p
 mods_cefsareal <- compare_models_lm("CEFSA_Reality")
-display(mods_cefsareal, title="CEFSA - Reality")
+display_models(mods_cefsareal, title="Best Model", subtitle = "CEFSA - Reality")
 
 preds_cefsacon <- compare_predictors("CEFSA_Connection")
-display(preds_cefsacon$table, title="CEFSA - Connection")
+display_models(preds_cefsacon$table, title="Best Predictor", subtitle = "CEFSA - Connection")
 preds_cefsacon$p
 mods_cefsacon <- compare_models_lm("CEFSA_Connection")
-display(mods_cefsacon, title="CEFSA - Connection")
+display_models(mods_cefsacon, title="Best Model", subtitle = "CEFSA - Connection")
 
 preds_cefsagency <- compare_predictors("CEFSA_Agency")
-display(preds_cefsagency$table, title="CEFSA - Agency")
+display_models(preds_cefsagency$table, title="Best Predictor", subtitle = "CEFSA - Agency")
 preds_cefsagency$p
 mods_cefsagency <- compare_models_lm("CEFSA_Agency")
-display(mods_cefsagency, title="CEFSA - Agency")
+display_models(mods_cefsagency, title="Best Model", subtitle = "CEFSA - Agency")
 ```
 
 
 ### Emotion Regulation
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("CERQ")))
+#| warning: false
 
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("CERQ")))
+make_cor(select(df, starts_with("CERQ")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
 preds_cerqreapp <- compare_predictors("CERQ_PositiveReappraisal")
-display(preds_cerqreapp$table, title="CERQ - Positive Reappraisal")
+display_models(preds_cerqreapp$table, title="Best Predictor", subtitle = "CERQ - Positive Reappraisal")
 preds_cerqreapp$p
 mods_cerqreapp <- compare_models_lm("CERQ_PositiveReappraisal")
-display(mods_cerqreapp, title="CERQ - Positive Reappraisal")
+display_models(mods_cerqreapp, title="Best Model", subtitle = "CERQ - Positive Reappraisal")
 
 preds_cerqrefocus <- compare_predictors("CERQ_PositiveRefocusing")
-display(preds_cerqrefocus$table, title="CERQ - Positive Refocusing")
+display_models(preds_cerqrefocus$table, title="Best Predictor", subtitle = "CERQ - Positive Refocusing")
 preds_cerqrefocus$p
 mods_cerqrefocus <- compare_models_lm("CERQ_PositiveRefocusing")
-display(mods_cerqrefocus, title="CERQ - Positive Refocusing")
+display_models(mods_cerqrefocus, title="Best Model", subtitle = "CERQ - Positive Refocusing")
 
 preds_cerqpersp <- compare_predictors("CERQ_Perspective")
-display(preds_cerqpersp$table, title="CERQ - Perspective")
+display_models(preds_cerqpersp$table, title="Best Predictor", subtitle = "CERQ - Perspective")
 preds_cerqpersp$p
 mods_cerqpersp <- compare_models_lm("CERQ_Perspective")
-display(mods_cerqpersp, title="CERQ - Perspective")
+display_models(mods_cerqpersp, title="Best Model", subtitle = "CERQ - Perspective")
 
 preds_cerqacceptance <- compare_predictors("CERQ_Acceptance")
-display(preds_cerqacceptance$table, title="CERQ - Acceptance")
+display_models(preds_cerqacceptance$table, title="Best Predictor", subtitle = "CERQ - Acceptance")
 preds_cerqacceptance$p
 mods_cerqacceptance <- compare_models_lm("CERQ_Acceptance")
-display(mods_cerqacceptance, title="CERQ - Acceptance")
+display_models(mods_cerqacceptance, title="Best Model", subtitle = "CERQ - Acceptance")
 ```
 
 
@@ -1302,40 +1331,39 @@ display(mods_cerqacceptance, title="CERQ - Acceptance")
 ### Primals
 
 ```{r}
-make_cor(select(df, starts_with("MINT"), -matches("[[:digit:]]")), 
-         select(df, starts_with("PI")))
+#| warning: false
 
-make_cor(select(df, starts_with("MAIA"), IAS, BPQ), 
-         select(df, starts_with("PI")))
+make_cor(select(df, starts_with("PI")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
 preds_pialive <- compare_predictors("PI_Alive")
-display(preds_pialive$table, title="Primals - Alive")
+display_models(preds_pialive$table, title="Best Predictor", subtitle = "Primals - Alive")
 preds_pialive$p
 mods_pialive <- compare_models_lm("PI_Alive")
-display(mods_pialive, title="Primals - Alive")
+display_models(mods_pialive, title="Best Model", subtitle = "Primals - Alive")
 
 
 preds_pisafe <- compare_predictors("PI_Safe")
-display(preds_pisafe$table, title="Primals - Safe")
+display_models(preds_pisafe$table, title="Best Predictor", subtitle = "Primals - Safe")
 preds_pisafe$p
 mods_pisafe <- compare_models_lm("PI_Safe")
-display(mods_pisafe, title="Primals - Safe")
+display_models(mods_pisafe, title="Best Model", subtitle = "Primals - Safe")
 
 
 preds_pient <- compare_predictors("PI_Enticing")
-display(preds_pient$table, title="Primals - Enticing")
+display_models(preds_pient$table, title="Best Predictor", subtitle = "Primals - Enticing")
 preds_pient$p
 mods_pient <- compare_models_lm("PI_Enticing")
-display(mods_pient, title="Primals - Enticing")
+display_models(mods_pient, title="Best Model", subtitle = "Primals - Enticing")
 
 
 preds_pigood <- compare_predictors("PI_Good")
-display(preds_pigood$table, title="Primals - Good")
+display_models(preds_pigood$table, title="Best Predictor", subtitle = "Primals - Good")
 preds_pigood$p
 mods_pigood <- compare_models_lm("PI_Good")
-display(mods_pigood, title="Primals - Good")
+display_models(mods_pigood, title="Best Model", subtitle = "Primals - Good")
 ```
 
 
@@ -1436,20 +1464,20 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
 
 ```{r}
 preds_mood <- compare_predictors("Disorders_Psychiatric_Mood")
-display(preds_mood$table, title="Mood Disorders")
+display_models(preds_mood$table, title="Best Predictor", subtitle = "Mood Disorders")
 preds_mood$p
 mods_mood <- compare_models_glm("Disorders_Psychiatric_Mood")
-display(mods_mood$table, title="Mood Disorders")
+display_models(mods_mood$table, title="Best Predictor", subtitle = "Mood Disorders")
 mods_mood$p
 ```
 
 ```{r}
 preds_moodt <- compare_predictors("Disorders_Psychiatric_MoodTreatment")
-display(preds_moodt$table, title="Mood Disorders (with Treatment)")
+display_models(preds_moodt$table, title="Best Predictor", subtitle = "Mood Disorders (with Treatment)")
 preds_moodt$p
 mods_moodt <- compare_models_glm("Disorders_Psychiatric_MoodTreatment",
                                  title="Mood Disorders", subtitle = "MDD, GAD, Bipolar (with Treatment)")
-display(mods_moodt$table, title="Mood Disorders (with Treatment)")
+display_models(mods_moodt$table, title="Best Predictor", subtitle = "Mood Disorders (with Treatment)")
 mods_moodt$p
 ```
 
@@ -1457,19 +1485,19 @@ mods_moodt$p
 
 ```{r}
 preds_anxdis <- compare_predictors("Disorders_Psychiatric_Anxiety")
-display(preds_anxdis$table, title="Anxiety Disorders")
+display_models(preds_anxdis$table, title="Best Predictor", subtitle = "Anxiety Disorders")
 preds_anxdis$p
 mods_anxdis <- compare_models_glm("Disorders_Psychiatric_Anxiety")
-display(mods_anxdis$table, title="Anxiety Disorders")
+display_models(mods_anxdis$table, title="Best Model", subtitle = "Anxiety Disorders")
 mods_anxdis$p
 ```
 
 ```{r}
 preds_anxdist <- compare_predictors("Disorders_Psychiatric_AnxietyTreatment")
-display(preds_anxdist$table, title="Anxiety Disorders (with Treatment)")
+display_models(preds_anxdist$table, title="Best Predictor", subtitle = "Anxiety Disorders (with Treatment)")
 preds_anxdist$p
 mods_anxdist <- compare_models_glm("Disorders_Psychiatric_AnxietyTreatment")
-display(mods_anxdist$table, title="Anxiety Disorders (with Treatment)")
+display_models(mods_anxdist$table, title="Best Model", subtitle = "Anxiety Disorders (with Treatment)")
 mods_anxdist$p
 ```
 
@@ -1477,10 +1505,10 @@ mods_anxdist$p
 
 ```{r}
 preds_eat <- compare_predictors("Disorders_Psychiatric_Eating")
-display(preds_eat$table, title="Eating Disorders")
+display_models(preds_eat$table, title="Best Predictor", subtitle = "Eating Disorders")
 preds_eat$p
 mods_eat <- compare_models_glm("Disorders_Psychiatric_Eating")
-display(mods_eat$table, title="Eating Disorders")
+display_models(mods_eat$table, title="Best Model", subtitle = "Eating Disorders")
 mods_eat$p
 ```
 
@@ -1488,10 +1516,10 @@ mods_eat$p
 
 ```{r}
 preds_addict <- compare_predictors("Disorders_Psychiatric_Addiction")
-display(preds_addict$table, title="Addiction")
+display_models(preds_addict$table, title="Best Predictor", subtitle = "Addiction")
 preds_addict$p
 mods_addict <- compare_models_glm("Disorders_Psychiatric_Addiction")
-display(mods_addict$table, title="Addiction")
+display_models(mods_addict$table, title="Best Model", subtitle = "Addiction")
 mods_addict$p
 ```
 
@@ -1499,11 +1527,11 @@ mods_addict$p
 
 ```{r}
 preds_adhd <- compare_predictors("Disorders_Psychiatric_ADHD")
-display(preds_adhd$table, title="ADHD")
+display_models(preds_adhd$table, title="Best Predictor", subtitle = "ADHD")
 preds_adhd$p
 mods_adhd <- compare_models_glm("Disorders_Psychiatric_ADHD",
                                 title = "ADHD", subtitle = "Attention Deficit/Hyperactivity Disorder")
-display(mods_adhd$table, title="ADHD")
+display_models(mods_adhd$table, title="Best Model", subtitle = "ADHD")
 mods_adhd$p
 ```
 
@@ -1511,11 +1539,11 @@ mods_adhd$p
 
 ```{r}
 preds_asd <- compare_predictors("Disorders_Psychiatric_Autism")
-display(preds_asd$table, title="Autism")
+display_models(preds_asd$table, title="Best Predictor", subtitle = "Autism")
 preds_asd$p
 mods_asd <- compare_models_glm("Disorders_Psychiatric_Autism",
                                 title = "ASD", subtitle = "Autism Spectrum Disorder")
-display(mods_asd$table, title="Autism")
+display_models(mods_asd$table, title="Best Model", subtitle = "Autism")
 mods_asd$p
 ```
 
@@ -1524,10 +1552,10 @@ mods_asd$p
 
 ```{r}
 preds_bpd <- compare_predictors("Disorders_Psychiatric_Borderline")
-display(preds_bpd$table, title="Borderline Personality Disorder")
+display_models(preds_bpd$table, title="Best Predictor", subtitle = "Borderline Personality Disorder")
 preds_bpd$p
 mods_bpd <- compare_models_glm("Disorders_Psychiatric_Borderline")
-display(mods_bpd$table, title="Borderline Personality Disorder")
+display_models(mods_bpd$table, title="Best Model", subtitle = "Borderline Personality Disorder")
 mods_bpd$p
 ```
 
@@ -1544,12 +1572,12 @@ mods_bpd$p
 
 ```{r}
 preds_afferent <- compare_predictors("Disorders_Somatic_AfferentSensitivity")
-display(preds_afferent$table, title="Afferent Sensitivity Symptoms")
+display_models(preds_afferent$table, title="Best Predictor", subtitle = "Afferent Sensitivity Symptoms")
 preds_afferent$p
 mods_afferent <- compare_models_glm("Disorders_Somatic_AfferentSensitivity",
                                     title="Afferent Sensitivity Symptoms",
                                     subtitle = "Migraine, neuropathy, muscle tension, dizziness, ...")
-display(mods_afferent$table, title="Afferent Sensitivity Symptoms")
+display_models(mods_afferent$table, title="Best Model", subtitle = "Afferent Sensitivity Symptoms")
 mods_afferent$p
 ```
 
@@ -1557,12 +1585,12 @@ mods_afferent$p
 
 ```{r}
 preds_central <- compare_predictors("Disorders_Somatic_CentralSensitization")
-display(preds_central$table, title="Central Sensitization Symptoms")
+display_models(preds_central$table, title="Best Predictor", subtitle = "Central Sensitization Symptoms")
 preds_central$p
 mods_central <- compare_models_glm("Disorders_Somatic_CentralSensitization",
                                    title="Central Sensitization Symptoms",
                                    subtitle = "Fibromyalgia, chronic fatigue, back pain, IBS, ...")
-display(mods_central$table, title="Central Sensitization Symptoms")
+display_models(mods_central$table, title="Best Model", subtitle = "Central Sensitization Symptoms")
 mods_central$p
 ```
 
@@ -1570,12 +1598,12 @@ mods_central$p
 
 ```{r}
 preds_autonomic <- compare_predictors("Disorders_Somatic_AutonomicDysfunction")
-display(preds_autonomic$table, title="Autonomic Dysfunction")
+display_models(preds_autonomic$table, title="Best Predictor", subtitle = "Autonomic Dysfunction")
 preds_autonomic$p
 mods_autonomic <- compare_models_glm("Disorders_Somatic_AutonomicDysfunction",
                                      title="Autonomic Dysfunction",
                                      subtitle = "Hypermobility, chest pain, hypo/hypertension, ....")
-display(mods_autonomic$table, title="Autonomic Dysfunction")
+display_models(mods_autonomic$table, title="Best Model", subtitle = "Autonomic Dysfunction")
 mods_autonomic$p
 ```
 
@@ -1583,12 +1611,12 @@ mods_autonomic$p
 
 ```{r}
 preds_immune <- compare_predictors("Disorders_Somatic_ImmuneInflammatory")
-display(preds_immune$table, title="Immune-Inflammatory Symptoms")
+display_models(preds_immune$table, title="Best Predictor", subtitle = "Immune-Inflammatory Symptoms")
 preds_immune$p
 mods_immune <- compare_models_glm("Disorders_Somatic_ImmuneInflammatory",
                                   title="Immune-Inflammatory Symptoms",
                                   subtitle = "Allergies, asthma, eczema, autoimmune, ...")
-display(mods_immune$table, title="Immune-Inflammatory Symptoms")
+display_models(mods_immune$table, title="Best Model", subtitle = "Immune-Inflammatory Symptoms")
 mods_immune$p
 ```
 
@@ -1603,10 +1631,10 @@ mods_immune$p
 
 ```{r}
 preds_age <- compare_predictors("Age")
-display(preds_age$table, title="Age")
+display_models(preds_age$table, title="Best Predictor", subtitle = "Age")
 preds_age$p
 mods_age <- compare_models_lm("Age")
-display(mods_age, title="Age")
+display_models(mods_age, title="Best Model", subtitle = "Age")
 ```
 
 #### Sex
@@ -1615,10 +1643,10 @@ display(mods_age, title="Age")
 df$Sex <- ifelse(df$Gender == "Female", 1, ifelse(df$Gender == "Male", 0, NA))
 
 preds_sex <- compare_predictors("Sex")
-display(preds_sex$table, title="Sex")
+display_models(preds_sex$table, title="Best Predictor", subtitle = "Sex")
 preds_sex$p
 mods_sex <- compare_models_glm("Sex")
-display(mods_sex$table, title="Sex")
+display_models(mods_sex$table, title="Best Model", subtitle = "Sex")
 mods_sex$p
 ```
 
@@ -1626,20 +1654,20 @@ mods_sex$p
 
 ```{r}
 preds_bmi <- compare_predictors("BMI")
-display(preds_bmi$table, title="BMI")
+display_models(preds_bmi$table, title="Best Predictor", subtitle = "BMI")
 preds_bmi$p
 mods_bmi <- compare_models_lm("BMI")
-display(mods_bmi, title="BMI")
+display_models(mods_bmi, title="Best Model", subtitle = "BMI")
 ```
 
 #### Physical Activity
 
 ```{r}
 preds_physactiv <- compare_predictors("Physical_Active")
-display(preds_physactiv$table, title="Physical Activity")
+display_models(preds_physactiv$table, title="Best Predictor", subtitle = "Physical Activity")
 preds_physactiv$p
 mods_physactiv <- compare_models_lm("Physical_Active")
-display(mods_physactiv, title="Physical Activity")
+display_models(mods_physactiv, title="Best Model", subtitle = "Physical Activity")
 ```
 
 :::
@@ -1652,7 +1680,7 @@ display(mods_physactiv, title="Physical Activity")
 
 ```{r}
 preds_wearN <- compare_predictors("Wearables_Number", family = "poisson")
-display(preds_wearN$table, title="Wearables Number")
+display_models(preds_wearN$table, title="Best Predictor", subtitle = "Wearables Number")
 preds_wearN$p
 ```
 
@@ -1661,17 +1689,17 @@ preds_wearN$p
 ```{r}
 df$Wearables_HeartOwn <- ifelse(df$Wearables_Heart == "Not owning", 0, 1) 
 preds_wearHeartOwn <- compare_predictors("Wearables_HeartOwn")
-display(preds_wearHeartOwn$table, title="Wearables Heart Ownership")
+display_models(preds_wearHeartOwn$table, title="Best Predictor", subtitle = "Wearables Heart Ownership")
 preds_wearHeartOwn$p
 mods_wearHeartOwn <- compare_models_glm("Wearables_HeartOwn")
-display(mods_wearHeartOwn$table, title="Wearables Heart Ownership")
+display_models(mods_wearHeartOwn$table, title="Best Model", subtitle = "Wearables Heart Ownership")
 mods_wearHeartOwn$p
 
 preds_wearHeartImp <- compare_predictors("Wearables_HeartImportance")
-display(preds_wearHeartImp$table, title="Wearables Heart Importance")
+display_models(preds_wearHeartImp$table, title="Best Predictor", subtitle = "Wearables Heart Importance")
 preds_wearHeartImp$p
 mods_wearHeartImp <- compare_models_lm("Wearables_HeartImportance")
-display(mods_wearHeartImp, title="Wearables Heart Importance")
+display_models(mods_wearHeartImp, title="Best Model", subtitle = "Wearables Heart Importance")
 ```
 
 #### Sleep
@@ -1679,16 +1707,16 @@ display(mods_wearHeartImp, title="Wearables Heart Importance")
 ```{r}
 df$Wearables_SleepOwn <- ifelse(df$Wearables_Sleep == "Not owning", 0, 1)
 preds_wearSleepOwn <- compare_predictors("Wearables_SleepOwn")
-display(preds_wearSleepOwn$table, title="Wearables Sleep Ownership")
+display_models(preds_wearSleepOwn$table, title="Best Predictor", subtitle = "Wearables Sleep Ownership")
 preds_wearSleepOwn$p
 mods_wearSleepOwn <- compare_models_glm("Wearables_SleepOwn")
-display(mods_wearSleepOwn$table, title="Wearables Sleep Ownership")
+display_models(mods_wearSleepOwn$table, title="Best Model", subtitle = "Wearables Sleep Ownership")
 
 preds_wearSleepImp <- compare_predictors("Wearables_SleepImportance")
-display(preds_wearSleepImp$table, title="Wearables Sleep Importance")
+display_models(preds_wearSleepImp$table, title="Best Predictor", subtitle = "Wearables Sleep Importance")
 preds_wearSleepImp$p
 mods_wearSleepImp <- compare_models_lm("Wearables_SleepImportance")
-display(mods_wearSleepImp, title="Wearables Sleep Importance")
+display_models(mods_wearSleepImp, title="Best Model", subtitle = "Wearables Sleep Importance")
 ```
 
 #### Steps
@@ -1696,16 +1724,16 @@ display(mods_wearSleepImp, title="Wearables Sleep Importance")
 ```{r}
 df$Wearables_StepsOwn <- ifelse(df$Wearables_Steps == "Not owning", 0, 1)
 preds_wearStepsOwn <- compare_predictors("Wearables_StepsOwn")
-display(preds_wearStepsOwn$table, title="Wearables Steps Ownership")
+display_models(preds_wearStepsOwn$table, title="Best Predictor", subtitle = "Wearables Steps Ownership")
 preds_wearStepsOwn$p
 mods_wearStepsOwn <- compare_models_glm("Wearables_StepsOwn")
-display(mods_wearStepsOwn$table, title="Wearables Steps Ownership")
+display_models(mods_wearStepsOwn$table, title="Best Model", subtitle = "Wearables Steps Ownership")
 
 preds_wearStepsImp <- compare_predictors("Wearables_StepsImportance")
-display(preds_wearStepsImp$table, title="Wearables Steps Importance")
+display_models(preds_wearStepsImp$table, title="Best Predictor", subtitle = "Wearables Steps Importance")
 preds_wearStepsImp$p
 mods_wearStepsImp <- compare_models_lm("Wearables_StepsImportance")
-display(mods_wearStepsImp, title="Wearables Steps Importance")
+display_models(mods_wearStepsImp, title="Best Model", subtitle = "Wearables Steps Importance")
 ```
 
 #### Weight
@@ -1713,16 +1741,16 @@ display(mods_wearStepsImp, title="Wearables Steps Importance")
 ```{r}
 df$Wearables_WeightOwn <- ifelse(df$Wearables_Weight == "Not owning", 0, 1)
 preds_wearWeightOwn <- compare_predictors("Wearables_WeightOwn")
-display(preds_wearWeightOwn$table, title="Wearables Weight Ownership")
+display_models(preds_wearWeightOwn$table, title="Best Predictor", subtitle = "Wearables Weight Ownership")
 preds_wearWeightOwn$p
 mods_wearWeightOwn <- compare_models_glm("Wearables_WeightOwn")
-display(mods_wearWeightOwn$table, title="Wearables Weight Ownership")
+display_models(mods_wearWeightOwn$table, title="Best Model", subtitle = "Wearables Weight Ownership")
 
 preds_wearWeightImp <- compare_predictors("Wearables_WeightImportance")
-display(preds_wearWeightImp$table, title="Wearables Weight Importance")
+display_models(preds_wearWeightImp$table, title="Best Predictor", subtitle = "Wearables Weight Importance")
 preds_wearWeightImp$p
 mods_wearWeightImp <- compare_models_lm("Wearables_WeightImportance")
-display(mods_wearWeightImp, title="Wearables Weight Importance")
+display_models(mods_wearWeightImp, title="Best Model", subtitle = "Wearables Weight Importance")
 ```
 
 :::

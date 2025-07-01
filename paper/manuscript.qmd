@@ -294,7 +294,7 @@ The convergent validity of the final set of items will be assessed by computing 
 
 ```{r}
 #| label: fig-two
-#| fig-cap: "TODO."
+#| fig-cap: "EGA stability and Hclust. TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -307,7 +307,7 @@ We will first assess the importance of each interoceptive dimension (from all th
 We will then assess the predictive performance of each scale as a whole by comparing regression models with all the dimensions entered as predictors (note that the IAS and BPQ only have one total score variable). We will evaluate models based on their total explained variance (R2), as well as on the Bayesian Information Criterion (BIC), which penalizes for predictor numbers, thus offering a balance between model parsimony and predictive power. For the logistic model, we will quantify the discriminative power by computing the Area Under the Curve (AUC) of the Receiver Operating Characteristic (ROC) curve, which assesses the model's discriminative power (the combination of sensitivity and specificity).
 
 In order to evaluate the potential of a short version of our scale, we will compare 4 variants of the Mint models: the (full) Mint (including all lower-level dimensions), the "metaMint" (only including the metaclusters), the "miniMint" (including the metaclusters computed from a reduced number of items), and the "microMint" (including only the most representative dimension of each metacluster).
-Moreover, we will also include an alternative "interoception-only" version of the MAIA ("iMAIA") that only includes the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness). 
+Moreover, we will also include an alternative "interoception-only" version of the MAIA ("iMAIA") that only includes the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness)^[See correlation results to further justify this selection.]. 
 
 **TODO: Ana: do you think that this selection of dims for the iMAIA is fair? Or should I include other dimensions that you think are also very low-level and interoceptive?**
 
@@ -320,7 +320,7 @@ The final set of 36 items yielded a good fit (Generalized Total Entropy Fit Inde
     
 ```{r}
 #| label: fig-three
-#| fig-cap: "TODO."
+#| fig-cap: "Item loadings. TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -328,14 +328,14 @@ The final set of 36 items yielded a good fit (Generalized Total Entropy Fit Inde
 knitr::include_graphics("../study2/analysis/figures/table1.png")
 ```
 
-The correlation matrix of the Mint dimensions (i.e., clusters) 
+The correlation matrix of the Mint dimensions (i.e., clusters) revealed an interesting and rich pattern of associations (see @fig-four), with some displaying contrasting patterns of associations compared to dimensions from the same clusters. For instance, *Derm* and *Olfa*, despite being positively correlated with the other dimensions from its *Deficit* cluster but contrary to them, were not negatively correlated to the *Awareness* metacluster and its dimensions. Similarly, *Sati*, unlike the other *Deficit* dimensions, was not positively correlated to *Visceroception*. This complex structure suggests that the dimensions indeed capture distinct aspects of interoception, and that the metaclusters, rather than being simple aggregates of rather-redundant elements, might actually capture unique combinations greater than the sum of its part. It also provides evidence against a simplistic adaptive *vs.* maladaptive dichotomy, as the *Deficit* dimensions are not negatively correlated with the *Visceroceptive* dimensions.
 
-
+**TODO: this paragraph probably needs to be rewritten and made clearer**
 
 
 ```{r}
 #| label: fig-four
-#| fig-cap: "TODO."
+#| fig-cap: "Correlation Matrices. TODO. Stars indicate dimensions that have been score-reversed for better in-context interpretation."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -343,20 +343,21 @@ The correlation matrix of the Mint dimensions (i.e., clusters)
 knitr::include_graphics("../study2/analysis/figures/fig2.png")
 ```
 
+The correlation matrix between the Mint and the other interoception scales showed high level of redundancies as well as some unique contributions (see @fig-four).
+The BPQ was positively correlated with most Mint dimensions (the highest with *Visceroception*, $r = .46$). The IAS was positively correlated with *Visceroception* and *Awareness* dimensions (the highest with *Awareness*, $r = .63$), but negatively with most *Deficit* dimensions (with the exception of *Olfa* and *Derm*). In turn, the *Visceroception* metacluster most strongly correlated with MAIA's Noticing ($r = .55$). Interestingly, MAIA's TTrusting correlated selectively with *Awareness*, and negatively with *Deficit* dimensions, but not with *Visceroceptive* dimensions (underlining its high-level metacognitive nature). MAIA's Emotional Awareness and Body Listening displayed a similar pattern to Noticing, and Attention Regulation and Self Regulation positively correlated with *Awareness* and *Visceroception* dimensions, but negatively with some *Deficit* dimensions (*CaCo* and *UrIn*). Not-distracting only yielded mild negative associations with *Sati* and *Olfa*. Overall, the Mint dimensions were able to capture most of the (relevant) variance and intricacies present in the other interoception scales.
+
+
+Exploratory correlations with the emotion regulation (CERQ) dimensions revealed stronger associations with most of the MAIA dimensions (supporting its proximity with emotion regulation). Interestingly, Rumination (and Self-Blame) stood out as selectively related to the Mint's *Visceroception* and *Deficit* dimensions (note that Rumination was also related to the MAIA's interoceptive dimensions, namely Noticing, Emotional Awareness and Body Listening).
+The only primal world belief that correlated particuarly with the Mint's *Visceroception* and the MAIA's interoceptive dimension was the belief that the world was alive (**Ana maybe throw in a couple more words about what this belief means and is defined**).
+
+Most of the target outcomes measured in the study to assess validity were best predicted by one of the Mint dimension (see @fig-five).
+This included Alexithymia (best predicted by *Deficit*); ERS' Arousal (best predicted by *Deficit*); CEFSA's anomalous experiences of the body (best predicted by *CaCo*), Self and Reality (best predicted by *Deficit*); ADHD and Autism (best predicted by *Deficit*), Somatic symptoms (best predicted by *Deficit*); BMI (best predicted by *Sati*).
+Most of the exceptions showed an advantage for MAIA dimensions, in particular Not-worrying (which best predicted ERS' Sensitivity and Persistence) and Trusting (which best predicted LS, Depression and Anxiety, CEFSA's Emotion and Connection, and self-reported physical activity). 
+
+
 ```{r}
 #| label: fig-five
-#| fig-cap: "Stars indicate dimensions that have been score-reversed for better in-context interpretation." 
-#| fig-align: "center"
-#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
-#| out-width: "100%"
-
-knitr::include_graphics("../study2/analysis/figures/fig3.png")
-```
-
-
-```{r}
-#| label: fig-six
-#| fig-cap: "TODO."
+#| fig-cap: "Best model table. TODO."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -365,9 +366,39 @@ knitr::include_graphics("../study2/analysis/figures/table2.png")
 ```
 
 
+Model comparison included 4 variants of the Mint scale, the full *Mint* (including all lower-level clusters - 33 items), the *metaMint* (including only the 3 metaclusters based on all items), the *miniMint* (including the 3 metaclusters computed from 2 of its most loading triplets - 18 items), and the *microMint* (including only the most representative dimension of each metacluster - 9 items).
+This analysis confirmed the clear advantage for the Mint over the other interoception scales. The full *Mint* model was typically the best model based on R2, and the *metaMint* was the best model when parsimony was taken into account (i.e., based on BIC). Moreover, most of the instances were the *MAIA* was the best model were explainable by the inclusion of Trusting, and the interoception-only version *iMAIA* typically yielded worse performance than the Mint. In many instances, the *miniMint* yielded reasonable performance, although the *microMint* was typically less promising.
+
+The predictive performance for the mental health outcomes (see @fig-six) displayed a consistent pattern, with an advantage for the *MAIA* for depression and anxiety which dropped below the *Mint* versions for its *iMAIA* variant. The *Mint*, however, displayed a clear advantage for the prediction of autism, ADHD, and all somatic groups of symptoms (with the exception of Central Sensitization, which was best predicted by the *MAIA*).
+
+Finally, the importance of heart monitoring (for owners of such wearable) was best predicted by MAIA's body listening ($r = .36$), followed the *Card* dimension of the Mint ($r = .31$). The importance of sleep monitoring importance was best predicted by *RelA* ($r = .22$), followed by MAIA's not worrying ($r = -.219$). Daily activity via steps monitoring was best predicted by MAIA's Noticing ($r = .28$), folowed by *Awareness* ($r = .26$).
+
+ 
+```{r}
+#| label: fig-six
+#| fig-cap: "Predictive Performance (ROC curves). TODO." 
+#| fig-align: "center"
+#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
+#| out-width: "100%"
+
+knitr::include_graphics("../study2/analysis/figures/fig3.png")
+```
+
+
+
 ## Discussion
 
+
+
+Main contender is MAIA. But its most sensitive dimensions seem to be the least related to interoception, which is dangerous as it might lead to findings with associations misattributed to "Interoception" (just because it correlate with some MAIA dimensions), but it might have nothing to do with interoception per se and more with emotion regulation. 
+
+Basically the pattern is clear: everything high-level, metacognitive and highly subjective related to wellbeing and general affective state is the most strongly related to the MAIA through some of its Emotion regulation dimensions. All the other outcomes actually related to interoceptive processes are most strongly predicted by the Mint.
+
 # General Discussion
+
+Future directions: needs to test relationship with physiological measures of interoception.
+
+Also, the structure might still require a bit of deeper investigation, in particular with some of its facets (*Olfa* and *Derm*) which might display different associations depending on the context or the population.
 
 
 # Data Availability
