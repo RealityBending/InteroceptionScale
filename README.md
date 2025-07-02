@@ -16,4 +16,5 @@
 - [**Cleaning**](https://realitybending.github.io/InteroceptionScale/study2/analysis/1_cleaning.html)
 
 
-![](https://realitybending.github.io/InteroceptionScale/study1/analysis/table1.png)
+![](https://realitybending.github.io/InteroceptionScale/study1/analysis/figures/figure1.png)
+![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/table1.png)

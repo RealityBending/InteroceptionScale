@@ -80,7 +80,7 @@ abstract: |
   TO DO.
 #   **Significance Statement**. TODO.
 keywords: "Interoception questionnaire, interoceptive accuracy scale, MAIA, Mint Validation, Body Awareness"
-numbered-lines: false
+numbered-lines: true
 floatsintext: true
 mask: false
 bibliography: bibliography.bib
