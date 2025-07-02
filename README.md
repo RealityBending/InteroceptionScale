@@ -21,7 +21,7 @@
 
 ![](https://realitybending.github.io/InteroceptionScale/study1/analysis/figures/figure1.png)
 ![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/table1.png)
-![](https://realitybending.github.io/InteroceptionScale/study1/analysis/figures/fig1.png)
-![](https://realitybending.github.io/InteroceptionScale/study1/analysis/figures/fig2.png)
+![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/fig1.png)
+![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/fig2.png)
 ![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/table2.png)
-![](https://realitybending.github.io/InteroceptionScale/study1/analysis/figures/fig3.png)
+![](https://realitybending.github.io/InteroceptionScale/study2/analysis/figures/fig3.png)
