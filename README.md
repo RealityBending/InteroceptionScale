@@ -4,6 +4,8 @@
 
 ## Content
 
+- [**Preprint**](https://realitybending.github.io/InteroceptionScale/paper/manuscript.pdf)
+
 ### Study 1
 
 - [**Try the experiment**](https://realitybending.github.io/InteroceptionScale/study1/experiment/?exp=README)
