@@ -272,7 +272,7 @@ In order to make the experiment more enjoyable, the experiment ended with a rada
 
 ```{r}
 #| label: fig-three
-#| fig-cap: "Item loadings. The table shows each item of the Mint with its cluster centrality, which is the EGA equivalent (in terms of interpretation) of factor loadings. It also shows how each lower-level cluster is related to higher-order metaclusters."
+#| fig-cap: "Item loadings. The table shows each item of the Mint with its cluster centrality, which is the EGA equivalent (in terms of interpretation) of factor loadings. It also shows how each lower-level cluster is related to higher-order metaclusters. The lower-level clusters are Expulsion Accuracy (ExAc), Relaxation Awareness (RelA), Sexual Arousal Sensitivity (SexS), Cardiorespiratory Confusion (CaCo), Urointestinal Inaccuracy (UrIn), Dermal Hypersensitivity (Derm), Satiety Noticing (Sati), Olfactory Compensation (Olfa), Respiroception (Resp), Cardioception (Card),  Gastroception (Gast)."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
