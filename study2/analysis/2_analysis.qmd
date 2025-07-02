@@ -476,7 +476,7 @@ load("models/ega2.RData")
 # EGAnet::dimensionStability(ega)
 itemstability <- EGAnet::itemStability(ega2, IS.plot=FALSE)
 p_stab <- plot(itemstability)
-p_stab
+p_stab 
 
 ega2$EGA
 ```
@@ -764,8 +764,8 @@ p_hclust <- tbl_graph(nodes = nodes, edges = edges) |>
   geom_node_point(aes(filter=Group %in% c("Visceroception", "Awareness", "Deficit"), color=Group, size = Size)) +
   geom_node_text(aes(
     label = ifelse(label != "NA", label, NA),
-    x = x * 1.05,
-    y = y * 1.05,
+    x = x * 1.07,
+    y = y * 1.07,
     filter = label != "",
     angle = ifelse(
       x >= 0,
@@ -809,7 +809,7 @@ p_hclust
 #| eval: FALSE
 
 ggsave("figures/fig1a.png", p_stab, width=10, height=10*0.8, dpi=300)
-ggsave("figures/fig1b.png", p_hclust, width=12, height=8, dpi=300)
+ggsave("figures/fig1b.png", p_hclust, width=8, height=8*0.8, dpi=300)
 ```
 
 #### EFA
@@ -1777,8 +1777,8 @@ make_table1 <- function(preds=preds_dif, mods=mods_dif, group = "Alexithymia", o
     r_nonmint <- paste0(insight::format_value(r_nonmint$estimate, zap_small = TRUE))
   } else {
     # GLMs - display log-odds
-    r_mint <- best_pred_mint$Coefficient
-    r_nonmint <- best_pred_nonmint$Coefficient
+    r_mint <- insight::format_value(best_pred_mint$Coefficient)
+    r_nonmint <- insight::format_value(best_pred_nonmint$Coefficient)
   }
   
   # Format
@@ -1842,7 +1842,7 @@ rez <- rbind(
 tab2 <- rez |> 
   gt::gt() |> 
   gt::tab_header(
-    title = gt::md("**Interoceptive Questionnaires Comparison**"),
+    title = gt::md("**Interoception Questionnaires Comparison**"),
     subtitle = "MINT vs. MAIA, IAS, BPQ"
   ) |> 
   gt::cols_width(
@@ -1965,7 +1965,18 @@ tab2 |>
   ) |> 
   gt::opt_interactive()
 
-gt::gtsave(tab2, "figures/table2.png", vwidth=1400, expand=0, quiet=TRUE)
+# gt::gtsave(tab2, "figures/table2.png", vwidth=1400, expand=0, quiet=TRUE)
+# gt::gtsave(tab2, "figures/table2b.png", vwidth=1600, expand=0, quiet=TRUE)
+
+tab2 |> 
+  gt::cols_width(
+    Outcome ~ gt::pct(21),
+    Best_MINT_Predictor ~ gt::pct(17),
+    Best_NonMINT_Predictor ~ gt::pct(18),
+    Best_Models_R2 ~ gt::pct(22),
+    Best_Models_BIC ~ gt::pct(22)
+  ) |> 
+  gt::gtsave("figures/table2.png", vwidth=1700, expand=0, quiet=TRUE)
 ```
 
 ## Figures
@@ -1979,7 +1990,7 @@ gt::gtsave(tab2, "figures/table2.png", vwidth=1400, expand=0, quiet=TRUE)
 fig1a <- patchwork::wrap_elements(
   patchwork::wrap_elements(grid::rasterGrob(png::readPNG("figures/fig1a.png"))) +
   patchwork::plot_annotation(title = "Exploratory Graphical Analysis (EGA)",
-                             subtitle = "Bootstrapped replication of hierarchical clusters (Methhod = leiden)",
+                             subtitle = "Bootstrapped replication of clusters (Method = Leiden)",
                              theme = theme(plot.title = element_text(face="bold", hjust = 0, size = rel(1.4)),
                                            plot.subtitle = element_text(hjust = 0, size = rel(1)))))
 fig1b <- patchwork::wrap_elements(

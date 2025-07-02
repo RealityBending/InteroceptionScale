@@ -41,6 +41,16 @@ author:
       - Writing – review & editing
     affiliations:
       - ref: "id1"
+  - name: Emma Benn 
+    role:
+      - Investigation
+    affiliations:
+      - ref: "id1"
+  - name: Maisie Bennett
+    role:
+      - Investigation
+    affiliations:
+      - ref: "id1"
   - name: Giulia Poreiro
     orcid: 0000-0002-2343-5109
     role:
@@ -84,8 +94,6 @@ format:
 # Introduction
 
 
-TODO: write general intro.
-
 Main issues in existing questionnaires: 
 
 - Either heavily based on theories (e.g., focusing on specific "alleged" dimensions), despite shaky evidence for said-theories
@@ -97,22 +105,22 @@ Main issues in existing questionnaires:
 
 TODO: write intro.
 
-Goal of study 1: to generate a lot of items, analyze its structure and reduce them to a balanced set of items.
+- Goal of study 1: to generate a lot of items, analyze its structure and reduce them to a balanced set of items.
 
 ## Methods
 
 ### Participants
 
-We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37.0 $\pm$ 12.2 [18, 77]; 50.8\% women; Country of residence: 63.86% UK, 26.65% USA).
+We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37.0 $\pm$ 12.2 [18, 77]; 50.8\% women; country of residence: 63.86% UK, 26.65% USA).
 This study was approved by the University of Sussex' Ethics Committee (ER/MB2021/1).
 
 ### Item Generation
 
-Based on the two goals outlined for this scale, namely to include different interoceptive modalities, and to explicitly state the context of the interoceptive experience (e.g., whether negative or positive), we generated items in a systematic way following a combinatory approach, where each item's category corresponds to the combination of a specific modality and context (@fig-one).
+Based on the two goals outlined for this scale, namely to include different interoceptive modalities, and to explicitly state the context of the interoceptive experience (e.g., whether negative or positive), we generated items in a systematic way following a combinatory approach, where each item's category corresponds to the union of a specific modality and context (@fig-one).
 
 ```{r}
 #| label: fig-one
-#| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belong both to an interoceptive modalitiy and a facet, with the number of each item per category indicated in the circles. The askterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or entirely randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that 1) the scale's structure is robust to different presentation conditions; 2) modality-grouping might tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more natural)."
+#| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belongs both to an interoceptive modality (vertical) and a facet (horizontal), with the number of each item per category indicated in the circles. The asterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that the scale's structure is robust to different presentation conditions, and that the modality-grouping might potentially tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more \"natural\")."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -120,7 +128,7 @@ Based on the two goals outlined for this scale, namely to include different inte
 knitr::include_graphics("../study1/analysis/figures/figure1.png")
 ```
 
-We identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature, bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, namely anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
+We identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature (thermoregulation), bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, e.g., anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
 
 Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets^[The initial item list is available at [realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)]. We additionally crafted 8 "attention check" items blending in (and distributed across) each category. 
  
@@ -128,27 +136,27 @@ Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we ge
 ### Procedure
 
 To avoid presenting all the 120 items on a single long and discouraging page, we split them into different pages.
-Participants were randomly assigned to one of three conditions, driving how items were grouped on the same page: 1) items grouped by modality (i.e., all cardiac items on the first page, all colon & bladder  items on the second, etc.), 2) items grouped by facet, or 3) items presented fully randomly (but balanced randomly across 6 pages). The order of the item on any given page and the order of the modalities/facets were randomized.
-Each participant completed the full set of 120 items, with the 8 attention check items interspersed throughout.
+Participants were randomly assigned to one of three conditions, driving how items were grouped on the same page: 1) items grouped by modality (i.e., all cardiac items on the first page, all colon & bladder items on the second, etc.), 2) items grouped by facet, or 3) items presented fully randomly (but with their number balanced across 6 pages). The order of the item on any given page and the order of the modalities/facets was randomized.
+Each participant completed the full set of 120 items, with 8 attention check items interspersed throughout.
 The online experiment was implemented using JsPsych [@de2015jspsych], and item responses were recorded using 7-points Likert scales (0 = Disagree, 6 = Agree).
 
 ### Data Analysis
 
 In order to test whether the grouping condition had an effect on the structure (i.e., how items relate to one-another), we compared the correlation matrix obtained in the random condition to the ones obtained in the modality and facet conditions, focusing on 3 indices of correlation matrix similarity - the Procrustes Similarity Index [PSI, @sibson1978studies], the Adjusted RV [Rvadj, @mayer2011exploratory], and the Similarity of Matrices Index [SMI, @indahl2018similarity]. For each index, we bootstrapped the difference between the similarity with the facet and modality conditions to test whether the correlation matrix in the random-grouping condition is significantly more similar to any of the two other conditions.
 
-Items deemed "redundant" (which can distort the item structure estimation by introducing multicollinearity or local dependencies) will be identified (using the recommended threshold of 0.25) using Unique Variable Analysis [UVA, @christensen2023unique], a novel and principled method derived from network psychometrics.
+Items deemed "redundant" (which can distort the item structure estimation by introducing multicollinearity or local dependencies) were identified (using the recommended threshold of 0.25) using Unique Variable Analysis [UVA, @christensen2023unique], a novel and principled method derived from network psychometrics.
 
-The structure of the items will be analyzed using the recently-developed Exploratory Graph Analysis [EGA, @golino2017exploratory] framework, which allows to jointly estimate the number of dimensions (i.e., clusters of items), the structure, as well as its stability using bootstrapping [@golino2020investigating]. At a fundamental level, EGA conceptualizes variables as nodes in a network, with connections (edges) reflecting associations between them. Evidence has underlined its suitability as an alternative to traditional factor analysis, addressing some of its limitations such as the assumption of a "latent" source of variability, issues in estimation of the optimal factor numbers, and poor performance in complex population structures, while remaining comparable and interpretable [@christensen2021equivalency; @jimenez2023dimensionality]. In particular, nodes communities (i.e., clusters of items) can be in practice interpreted as distinct "dimensions", similarly to traditional latent factors - but without explicitly assuming their existence [@christensen2021equivalency]. 
+The structure of the items was analyzed using the recently-developed Exploratory Graph Analysis [EGA, @golino2017exploratory] framework, which allows to jointly estimate the number of dimensions (i.e., clusters of items), the structure, as well as its stability using bootstrapping [@golino2020investigating]. At a fundamental level, EGA conceptualizes variables as nodes in a network, with connections (edges) reflecting associations between them. Evidence has underlined its suitability as an alternative to traditional factor analysis, addressing some of its limitations such as the assumption of a "latent" source of variability, issues in estimation of the optimal factor numbers, and poor performance in complex population structures, while remaining comparable and interpretable [@christensen2021equivalency; @jimenez2023dimensionality]. In particular, nodes communities (i.e., clusters of items) can be in practice interpreted as distinct "dimensions", similarly to traditional latent factors - but without explicitly assuming their existence [@christensen2021equivalency].
 
-After removing redundant items using UVA, we will iteratively fit hierarchical EGA models (which additionally estimates higher-order "meta" clusters) using "glasso" [**REF**] and the "leiden" algorithm [**REF**] for community detection, refining the item pool at each step. We will start by removing items with a low (< 80%) cluster stability (i.e., volatile items which jump between clusters across bootstrapped samples), followed by odd items belonging to no clusters or pairs of items (i.e., we keep items belonging to clusters of more than 2 items). Finally, for each lower-level cluster, we will select the 3 items with the highest node centrality (i.e., the highest loading in the cluster).
+After removing redundant items using UVA, we iteratively fitted hierarchical EGA models (which additionally estimates higher-order "meta" clusters) using "glasso" [@friedman2008sparse] and the "Leiden" algorithm [@traag2019louvain] for community detection, refining the item pool at each step. We started by removing items with a low (< 80%) cluster stability (i.e., volatile items which jump between clusters across bootstrapped samples), followed by odd items belonging to no clusters or pairs of items (i.e., we keep items belonging to clusters of more than 2 items). Finally, for each lower-level cluster, we selected the 3 items with the highest node centrality (i.e., the highest loading in the cluster).
 
 
 
 ## Results
 
-The correlation matrix similarity analysis yielded no significant differences between the similarity of the random-grouping condition with the modality-grouping and facet-grouping conditions ($PSI_{\text{Random vs. Facet}} = 0.81$, $PSI_{\text{Random vs. Modality}} = 0.82$, $p = .45$; $RVadj_{\text{Random vs. Facet}} = 0.77$, $RVadj_{\text{Random vs. Modality}} = 0.78$, $p = .74$; $SMI_{\text{Random vs. Facet}} = 0.49$, $SMI_{\text{Random vs. Modality}} = 0.51$, $p = .52$).
+The correlation matrix similarity analysis yielded no significant differences between the similarity of the random-grouping condition with the modality-grouping and facet-grouping conditions ($PSI_{\text{Random vs. Facet}} = 0.81$, $PSI_{\text{Random vs. Modality}} = 0.82$, $p = .45$; $RVadj_{\text{Random vs. Facet}} = 0.77$, $RVadj_{\text{Random vs. Modality}} = 0.78$, $p = .74$; $SMI_{\text{Random vs. Facet}} = 0.49$, $SMI_{\text{Random vs. Modality}} = 0.51$, $p = .52$), despite a consistent bias in favour of the modality-grouping condition.
 
-From the 120 initial items, UVA flagged 4 redundant items that we removed. We then removed 40 items that showed low cluster stability, and 9 items that were part of clusters with less than 3 items. Finally, We kept the 3 items with the highest loading in their lower-level structure (removing 13 items in the process), resulting in 54 items in the final item pool.
+From the 120 initial items, 4 redundant items were flagged by UVA. We then removed 40 items that showed low cluster stability, and 9 items that were part of clusters with less than 3 items. Finally, We kept the 3 items with the highest loading in their lower-level structure (removing 13 items in the process), resulting in 54 items in the final item pool.
 
 The final hierarchical EGA model (Generalized Total Entropy Fit Index = -119.18) - in which all 54 items yielded a high cluster stability (> 90%) suggested 3 metaclusters and 15 lower-level clusters (each containing 3 items): "Interoceptive Deficits" (containing 5 clusters: *Urointestinal Inaccuracy* - UrIn; *Cardiorespiratory Confusion* - CaCo; *Cardiorespiratory Noticing* - CaNo; *Olfactory Compensation* - Olfa; *Satiety Noticing* - Sati), "Interoceptive Awareness" (containing 7 clusters: *Sexual Arousal Awareness* - SexA; *Sexual Arousal Sensitivity* - SexS; *Sexual Organs Sensitivity* - SexO; *Urointestinal Sensitivity* - UrSe; *Relaxation Awareness* - RelA; *State Specificity* - StaS; *Expulsion Accuracy* - ExAc), and "Interoceptive Sensitivity" (containing 6 clusters: *Cardioception* - Card; *Respiroception* - Resp; *Signalling* - Sign; *Gastroception* - Gast; *Dermal Hypersensitivity* - Derm; *Sexual Arousal Changes* - SexC). 
 
@@ -181,147 +189,90 @@ To further reduce and balance the remaining items, we collectively decided on re
 
 ## Discussion
 
-Possible (although not at all significant) bias consistent across indices in favour of a greater similarity with the modality-grouping condition. 
-
-We grouped some of the dimensions under "Awareness", despite being similar to items included in the IAS typically conceptualized as "Accuracy". However, we believe that subjective scales cannot be pure measures of accuracy, as they are inherently subjective and thus reflect a degree of awareness (of one's accurate noticing or sensation).
+- Possible (although not at all significant) bias consistent across indices in favour of a greater similarity with the modality-grouping condition. Futher research with more data (here we only had ~200 observation per condition) might be able to yield more conclusive results. In general, testing the presentation mode is a novel approach which should be more widely applied to psychometric validations.
+- We grouped some of the dimensions under "Awareness", despite being similar to items included in the IAS typically conceptualized as "Accuracy". However, we believe that subjective scales cannot be pure measures of accuracy, as they are inherently subjective and thus reflect a degree of awareness (of one's accurate noticing or sensation).
+- Olfactory compensation: pseudo-interoceptive pathway whereby people with interoceptive deficits would compensate by gathering evidence about their internal state externally (e.g., via smell).
+- The metacluster "Sensitivity" seems to be grouping iterms related to visceropcetion and (hyper)sensitivity (Derm).
 
 # Study 2: Validation
 
-TODO: write intro.
-Goal of study 2: to validate the Mint scale against other interoception scales.
+- Goal of study 2: to validate the Mint scale against other interoception scales.
 
 
 ## Methods
 
 ### Participants
 
-We recruited 921 English-speaking participants via Prolific\textcopyright and SONA, from which 118 were excluded for failing at least one attention check and 6 based on multivariate distance (using the same procedure as for study 1). 
-60 participants were further excluded due to missing data following a technical error.
+We recruited 921 English-speaking participants via SONA and Prolific\textcopyright, from which 118 were excluded for failing at least one attention check and 6 based on multivariate distance (using the same procedure as for study 1). 
+60 participants were further excluded due to missing data following a technical issue.
 The final sample includes 737 participants (age = 36.8 $\pm$ 14.7 [18, 87]; 57.3\% women; Country of residence: 75.17% United Kingdom, 24.83% other).
 This study was approved by the University of Sussex' Ethics Committee (ER/EB672/2).
 
 
-### Procedure
+### Measures
 
-The experiment included the following questionnaires. The procedure included a total of seven attention checks, each embedded within a different questionnaire. For example, the MINT questionnaire included an item such as: *"I can always accurately answer to the extreme left on this question to show that I am reading it."*
+
+```{r}
+#| label: fig-two
+#| fig-cap: "Structure analysis of the final set of 33 Mint items. Hierarchical Exploratory Graph Analysis (EGA) was applied to jointly identify clusters of items, as well as higher-order metaclusters. The reliability of each item can be quantified by the proportion of structure replication across bootstrapped samples, with high values indicative of high structural stability. The Mint scale displayed an excellent structural consistency, with the exception of the *Olfa* cluster which belonging to the *Deficit* metaclusters warrants further research. Bottom plot shows the result of hierarchical clustering, providing evidence for structure statbility across methods, and allowing for more granular understanding of the relationships between variables."
+#| fig-align: "center"
+#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
+#| out-width: "80%"
+
+knitr::include_graphics("../study2/analysis/figures/fig1.png")
+```
+
 
 #### Interoception Questionnaires
 
-##### The Multimodal Interoception Questionnaire (Mint)
+The 45 items of the Multimodal Interoception Questionnaire (Mint) scale were presented in a random order, with the same 7-point Likert scale as in study 1 (0 = *Disagree*, 6 = *Agree*).
 
-The 45 items of the Mint scale were presented in a random order, with the same 7-point Likert scale as in study 1 (0 = Disagree, 6 = Agree).
+The Multidimensional Assessment of Interoceptive Awareness [MAIA-2, @mehling2018multidimensional] measures 8 dimensions with 37 items presented on a 7-point Likert scale (0 = *Never*, 6 = *Always*). It includes bodily dimensions such as Body Listening, Noticing, Emotional Awareness, dimensions related to emotion regulation, such as Trust, Not-worrying, and Self-Regulation, as well as dimensions related to attention, such as Attention Regulation and Not-Distracting. The relationship of some of these dimensions to interoception remains debated, particularly Not-Distracting and Not-Worrying, which tend to show weak or non-existent correlations with the other MAIA subscales [@ferentzi2021examining].
 
-##### Multidimensional Assessment of Interoceptive Awareness - Second Version (MAIA-2)
+The Body Perception Questionnaire - Very Short Form [BPQ-VSF, @cabrera2018assessing]  measures a general score of bodily awareness with 12 items presented on 5-point Likert scale (0 = *Never*, 5 = *Always*). 
 
-The 37 items of the MAIA-2 [@mehling2018multidimensional] on a 7-point Likert scale from *Never* (0) to *Always* (6). The MAIA-2 consists of 8 scales: Noticing, Not-Distracting, Not-Worrying, Attention Regulation, Emotional Awareness, Self-Regulation, Body Listening and Trust. The scales address 5 dimensions of body awareness: Awareness of Body Sensations, Emotional Reaction and Attentional Response to Sensations, Capacity to Regulate Attention, Awareness of Mind-Body Integration, Trusting Body Sensations. 
-
-The scale includes both high-level interoceptive dimensions - such as Body Listening, Noticing, and Emotional Awareness - and low-level dimensions, including Attention Regulation, Trust, and Self-Regulation [**ref**]. It also features dimensions whose relationship to interoception remains debated, and which tend to show weak or non-existent correlations with the other MAIA subscales -namely, Not-Distracting and Not-Worrying [@ferentzi2021examining].
-
-
-##### The Body Perception Questionnaire - Very Short Form (BPQ- VSF)
-
-The 12 item BPQ-VSF [@cabrera2018assessing] related to bodily awareness on a 5-point Likert scale from *Never* (0) to *Always* (5). 
-
-##### The Interoceptive Accuracy Scale (IAS)
-
-The 21 items of the IAS [@murphy2020testing] assessing interoceptive accuracy to physical sensations on a 5-point Likert scale ranging from *Disagree Strongly* (1) to *Strongly Agree*. 
+The Interoceptive Accuracy Scale [IAS, @murphy2020testing] measures a general score of interoceptive accuracy to physical sensations with 21 items presented on a 5-point Likert scale (1 = *Disagree Strongly*, 5 = *Strongly Agree*). 
 
 #### Emotions and Cognition
 
-##### Toronto Alexithymia Scale (TAS-20)
+The Toronto Alexithymia Scale TAS [TAS-20, @leising2009toronto] measures 3 Alexithymia dimensions with 20 items 5-point Likert scale (1 = *Strongly Disagree*, 5 = *Strongly Agree*: Difficulty Identifying Feelings (DIF), Difficulty Describing Feelings (DDF), and Externally Oriented Thinking (EOR).
 
-The 20-items TAS [@leising2009toronto] assessing Alexithymia traits grouped into three dimensions: Difficulty Identifying Feelings, Difficulty Describing Feelings, and Externally Oriented Thinking. Items are rated in a 5-point Likert scale from *Strongly Disagree* (1) to *Strongly Agree*(5). 
+The Emotion Reactivity Scale - Brief Version [B-ERS, @veilleux2024development] measures 3 dimensions with 6 items on a 5-point Likert scale (0 = *Not like me at all*, 4 = *Extremely like me*): Arousal (*"My moods are very strong and powerful"*), Sensitivity (*"I tend to get very emotional very easily"*), and Persistence (*"When I am angry/upset, it takes me much longer than most people to calm down"*).
 
-##### Emotion Reactivity Scale - Brief Version (B-ERS)
+The Cognitive Emotion Regulation Questionnaire [CERQ-short, @garnefski2006cognitive] measures 9 adaptive and maladaptive emotion regulation strategies with 18 items (1 = *Almost Never*, 5 = *Almost Always*). The strategies include Self-blame, Other-blame, Rumination, Catastrophizing, Putting into Perspective, Positive Refocusing, Positive Reappraisal, Acceptance, and Planning. 
 
-The 6-item B-ERS [@veilleux2024development] assessing emotional sensitivity on a 5-point Likert scale from *Not like me at all* (0) to *Extremely like me* (4). 
+The Černis Felt Sense of Anomaly scale - short form [CEFSA-14, @vcernis2024measuring] measures 7 dissociative experiences with 14 items on a 5-point Likert scale (0 = *Never*, 4 = *Always*). This scale is designed to measure dissociative experiences in adolescence and adulthood, specifically focusing on the felt sense of anomaly-type dissociation. It includes Anomalous Experience of the Self, Anomalous Experience of the Body, Anomalous Experiences of Emotion, Altered Sense of Familiarity, Altered Sense of Connection, Altered Sense of Agency, and Altered Sense of Reality.
 
-##### Cognitive Emotion Regulation Questionnaire-short (CERQ-short)
-
-The 18 items CERQ-short [@garnefski2006cognitive] on a 5-point Likert scale ranging from *Almost Never* (1) to *Almost Always* (5). This questionnaire measures eight cognitive responses to threatening or stressful events, including: Self-blame, Other-blame, Rumination, Catastrophizing, Putting into Perspective, Positive Refocusing, Positive Reappraisal, Acceptance, and Planning.
-
-##### Černis Felt Sense of Anomaly scale - short-form (CEFSA-14)
-
-The 14 item CEFSA [@vcernis2024measuring] assessing a specific sub-type of dissociative experiences in adolescence and adulthood - i.e., felt sense of anomaly-type
-dissociation. the items are rated ON A 5-point Likert scale from *Never* (0) to *Always* (4), forming seven factors: Anomalous Experience of the Self, Anomalous Experience of the Body , Anomalous Experiences of Emotion , Altered Sense of Familiarity , Altered Sense of Connection, Altered Sense of Agency , and Altered Sense of Reality 
-
-##### Primal World Beliefs (PI-18)
-
-the 18 items PI [@clifton2021brief] measuring highest-order primal world beliefs - i.e., beliefs about the basic character of the world: Good, Safe, Enticing, Alive. Responses are scored on a 6-point Likert scale from *Strongly Disagree* (0) to *Strongly Agree* (5).
+The Primal World Beliefs Inventory [PI-18, @clifton2021brief] measures higher-order beliefs about the basic character of the world: Good, Safe, Enticing, and Alive. The 18 items are presented on a 6-point Likert scale (0 = *Strongly Disagree*, 5 = *Strongly Agree*).
 
 #### Health and Wellbeing
 
-##### Life Satisfaction, Depression and Anxiety (PHQ-4)
-
-The 4 item scale of the PHQ [@kroenke2009ultra] assessing depression and anxiety, with responses scored as *Not at all* (0), *Once or twice* (0.5), *Several days* (1), *More than half of the days* (2), *nearly every day* (3). This revised version added as a response option (i.e., Once or twice) as a way to improve the scale's sensitivity to milder mood fluctuations [@makowskimeasuring]. 
-
-<!-- PHQ-4 + LS: presented together -->
-
-##### Mental Health
+The Single Item Life Satisfaction scale [SILS, @jovanovic2020longer] was followed by the PHQ-4 [@kroenke2009ultra] assessing depression and anxiety symptoms with 4 items. We used the refined version of the PHQ-4 [@makowski2025measuring], which adds an additional response option ("Once or twice"), increasing sensitivity to subclinical fluctuations.
 
 Participants were asked to self-report any current, medically diagnosed psychiatric disorders using a checklist based on DSM-5 categories. If one or more conditions were endorsed, participants were asked to indicate any current treatments, including pharmacological (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers), psychological (e.g., psychotherapy, mindfulness), or lifestyle interventions. Binary variables (0 = absent, 1 = present) were created to identify participants reporting mood disorders (MDD, GAD, Bipolar Disorder; with a stricter subgroup of participants undergoing a pharma- or psychological treatment), anxiety-centred disorders (GAD, Panic Disorder, Social Anxiety Disorder, Specific Phobias), eating disorders, addiction-related disorders, borderline personality disorder, autism spectrum disorder (ASD), and ADHD.
 
-##### Somatic Health
 
 Participants were asked to select somatic symptoms or conditions they experienced from a list of 36 options.
 To facilitate mechanistic interpretation and reduce redundancy, answers were grouped into four non-overlapping clusters based on shared physiological pathways and known etiological mechanisms. The *Afferent Sensitivity* cluster included conditions associated with heightened interoceptive awareness and neurogenic excitability, such as migraine, neuropathy, dizziness, nausea, muscle tension, epilepsy, and frequent urination. The *Central Sensitization* cluster comprised syndromes characterized by chronic pain and fatigue, likely reflecting central amplification of sensory signals and HPA-axis dysregulation, such as fibromyalgia, chronic fatigue syndrome, chronic pain, back pain, pelvic pain, irritable bowel syndrome (IBS). The *Autonomic Dysfunction* cluster captured disorders linked to dysregulation of the autonomic and cardiopulmonary systems, including joint hypermobility, cardiac arrhythmia, chest pain, shortness of breath, hypo-/hypertension, sleep apnea, chronic obstructive pulmonary disease (COPD), and chronic bronchitis. Finally, the *Immune-Inflammatory* cluster encompassed conditions associated with immune dysregulation, barrier dysfunction, and gut-brain axis disturbance, such as eczema, psoriasis, skin rashes, asthma, celiac disease, gluten and lactose sensitivity, inflammatory bowel diseases (Crohn’s disease and ulcerative colitis), gastroesophageal reflux disease (GERD), multiple sclerosis, and Sjögren’s syndrome. 
 <!-- Each symptom was assigned to a single cluster to preserve orthogonality and support subsequent analyses linking symptom profiles to interoceptive processes. -->
 We scored each cluster as a binary variable based on whether the participant selected at least one symptom from that cluster. 
 
-##### Patient Health Questionnaire - Somatic Symptoms (PHQ-15)
-
-The PHQ-15 [@kroenke2002phq] is comprised of 15 somatic symptoms, with responses scored as *Not at all* (0), *Bothered a little* (1) and *bothered a lot* (2). 
-
 #### Lifestyle
 
-Participants were asked to report on their use of wearable devices to monitor several health indices: heart rate, number of steps, calories burned, sleep quality, and weight (including via a regular scale). For each selected index, a question appeared asking them to rate how often they check that index; responses were scored as *Never*, *Very rarely*, *A few times per week*, *Once a day*, *A few times per day*, and *A few times per hour*. Additionally, participants were asked to rate how important this information was to them on an 8-point Likert scale ranging from *Not at all* (0) to *Very much* (7).
+Participants reported about owning any wearable devices to monitor health indices such as heart rate, number of steps, calories burned, sleep quality, and weight. For each selected device, a follow-up question inquired about the frequency of usage and subjective importance of that measure. 
 
-Questions regarding physical activity were also included. Participants were asked to rate how physically active they consider themselves on an 8-point Likert scale, from *Not at all* (0) to *Very much* (7), and to self-report how many hours of active workout they engage in per week.
+Participants were asked to rate how physically active they consider themselves and how many hours of active workout they engage in per week. Participant's BMI was computed using height and weight.
 
 
-#### Randomization
+### Procedure
 
-In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned them into three groups (and randomized their order within them): (1) interoception questionnaires (MAIA, IAS, BPQ), (2) emotions (TAS, CERQ, ERS, PI-18), and (3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
-After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups.
+In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned the measures into three groups (and randomized the order within them): 1) interoception questionnaires (MAIA, IAS, BPQ), 2) emotions (TAS, CERQ, ERS, PI-18), and 3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
+After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups. 7 attention checks were embedded throughout (one within each major questionnaire).
 In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on https://github.com/RealityBending/InteroceptionScale].
 
-### Data Analysis
-
-
-We will start by confirming and further refining the structure of the Mint scale (see @fig-two) using the same EGA model as in Study 1. 
-We will then compute the lower-level dimensions as well as the higher-level metaclusters' scores by averaging the items in each cluster.
-The convergent validity of the final set of items will be assessed by computing the correlations between the Mint scale and the other interoception questionnaires (MAIA, BPQ, IAS).
-
-
-```{r}
-#| label: fig-two
-#| fig-cap: "EGA stability and Hclust. TODO."
-#| fig-align: "center"
-#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
-#| out-width: "100%"
-
-knitr::include_graphics("../study2/analysis/figures/fig1.png")
-```
-
-Next, we will test the predictive power of the Mint scale relative to the other interoception questionnaires.
-We will first assess the importance of each interoceptive dimension (from all the scales) as a unique predictor by fitting regression models (linear for continuous measures - e.g., depression score - and logistic for binary variables - e.g., presence *vs.* absence of mood disorders) to predict various outcomes, and compare the best between the 4 interoception scales (based on the R2).
-We will then assess the predictive performance of each scale as a whole by comparing regression models with all the dimensions entered as predictors (note that the IAS and BPQ only have one total score variable). We will evaluate models based on their total explained variance (R2), as well as on the Bayesian Information Criterion (BIC), which penalizes for predictor numbers, thus offering a balance between model parsimony and predictive power. For the logistic model, we will quantify the discriminative power by computing the Area Under the Curve (AUC) of the Receiver Operating Characteristic (ROC) curve, which assesses the model's discriminative power (the combination of sensitivity and specificity).
-
-In order to evaluate the potential of a short version of our scale, we will compare 4 variants of the Mint models: the (full) Mint (including all lower-level dimensions), the "metaMint" (only including the metaclusters), the "miniMint" (including the metaclusters computed from a reduced number of items), and the "microMint" (including only the most representative dimension of each metacluster).
-Moreover, we will also include an alternative "interoception-only" version of the MAIA ("iMAIA") that only includes the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness)^[See correlation results to further justify this selection.]. 
-
-**TODO: Ana: do you think that this selection of dims for the iMAIA is fair? Or should I include other dimensions that you think are also very low-level and interoceptive?**
-
-## Results
-
-The first application of EGA to the initial set of 42 items, which reproduced the expected 14 lower-level clusters of triplets and 3 higher-order metaclusters, with the exception of the *UrSe* (Urointestinal Sensitivity), for which one item moved to the *Olfa* (Olfactory Compensation) cluster.
-In order to further balance and reduce the items, we removedt the *UrSe* cluster, as well as *StaS* (State Specificity; which in comparison to the other items stood out as containing vague and overlapping items (e.g., "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)"); *SexO* (Sexual Organs Sensitivity), which overlapped with the *SexS* (Sexual Arousal Sensitivity) cluster; and *CaNo* (Cardiorespiratory Noticing), which overlapped with the *CaCo* (Cardiorespiratory Confusion) cluster.
-
-The final set of 36 items yielded a good fit (Generalized Total Entropy Fit Index = -77.23), with all items showing high cluster stability (> 90\%), with the exception of *Olfa*. The final structure included 11 lower-level clusters, grouped into 3 higher-order metaclusters: "Interoceptive Deficit" (containing *CaCo*, *UrIn*, *Derm*, *Sati*, *Olfa*), "Interoceptive Awareness" (containing *ExAc*, *RelA*, *SexS*), and "Visceroception" (containing *Card*, *Resp*, *Gast*). Item centrality (intepretable as loadings) are shown in @fig-three. Additionally, we also ran a hierarchical clustering analysis which replicated this structure (see @fig-two).
-    
 ```{r}
 #| label: fig-three
-#| fig-cap: "Item loadings. TODO."
+#| fig-cap: "Item loadings. The table shows each item of the Mint with its cluster centrality, which is the EGA equivalent (in terms of interpretation) of factor loadings. It also shows how each lower-level cluster is related to higher-order metaclusters."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -329,14 +280,35 @@ The final set of 36 items yielded a good fit (Generalized Total Entropy Fit Inde
 knitr::include_graphics("../study2/analysis/figures/table1.png")
 ```
 
-The correlation matrix of the Mint dimensions (i.e., clusters) revealed an interesting and rich pattern of associations (see @fig-four), with some displaying contrasting patterns of associations compared to dimensions from the same clusters. For instance, *Derm* and *Olfa*, despite being positively correlated with the other dimensions from its *Deficit* cluster but contrary to them, were not negatively correlated to the *Awareness* metacluster and its dimensions. Similarly, *Sati*, unlike the other *Deficit* dimensions, was not positively correlated to *Visceroception*. This complex structure suggests that the dimensions indeed capture distinct aspects of interoception, and that the metaclusters, rather than being simple aggregates of rather-redundant elements, might actually capture unique combinations greater than the sum of its part. It also provides evidence against a simplistic adaptive *vs.* maladaptive dichotomy, as the *Deficit* dimensions are not negatively correlated with the *Visceroceptive* dimensions.
-
-**TODO: this paragraph probably needs to be rewritten and made clearer**
+### Data Analysis
 
 
+We started by confirming and further refining the structure of the Mint scale (see @fig-two) using the same EGA model as in Study 1. 
+We then computed the lower-level dimensions and the higher-level metaclusters' scores by averaging their corresponding items.
+The convergent validity of the final set of items was assessed by computing the correlations between the Mint scale and the other interoception questionnaires (MAIA, BPQ, IAS).
+  
+
+Next, we tested the predictive power of the Mint scale relative to other interoception questionnaires.
+We will assessed the importance of each interoceptive dimension (from all the scales) as a unique predictor by fitting regression models (linear for continuous measures - e.g., depression score - and logistic for binary variables - e.g., presence *vs.* absence of mood disorders) to predict different outcomes, and compare the best between the 4 interoception scales (based on the R2).
+We then evaluated the predictive performance of each scale as a whole by comparing regression models with all the dimensions entered as predictors (note that the IAS and BPQ only have one total score variable). We assessed the models based on their total explained variance (R2), as well as on the Bayesian Information Criterion (BIC), which penalizes for predictor number, thus offering a balance between model parsimony and predictive power. For the logistic models, we quantified the discriminative power by computing the Area Under the Curve (AUC) of the Receiver Operating Characteristic (ROC) curve, which assesses the model's discriminative power (the combination of sensitivity and specificity).
+
+In order to evaluate the potential for a short version of our scale, we compared 4 variants of the Mint: the (full) *Mint* (including all lower-level dimensions), the *metaMint* (only including the metaclusters), the *miniMint* (including the metaclusters computed from a reduced number of items), and the *microMint* (including only the most representative dimension of each metacluster).
+Moreover, we also included an alternative "interoception-focused" version of the MAIA (*iMAIA*) that only contains the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness)^[See correlation results to further justify this selection.]. 
+
+         
+
+## Results
+
+The application of EGA to the initial set of 42 items reproduced the expected 14 lower-level clusters of triplets and 3 higher-order metaclusters, with the exception of the *UrSe* (Urointestinal Sensitivity), for which one item moved to the *Olfa* (Olfactory Compensation) cluster.
+In order to further balance and reduce the items, we removed the *UrSe* cluster, as well as *StaS* (State Specificity), which in comparison to the other items stood out as containing vague and overlapping items
+<!-- ; e.g., "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)" -->
+; *SexO* (Sexual Organs Sensitivity), which overlapped with the *SexS* (Sexual Arousal Sensitivity) cluster; and *CaNo* (Cardiorespiratory Noticing), which overlapped with the *CaCo* (Cardiorespiratory Confusion) cluster.
+
+The final set of 33 items yielded a good fit (Generalized Total Entropy Fit Index = -77.23), with all items showing high cluster stability (> 90\%), with the exception of *Olfa*. The final structure included 11 lower-level clusters, grouped into 3 higher-order metaclusters: "Interoceptive Deficit" (containing *CaCo*, *UrIn*, *Derm*, *Sati*, *Olfa*), "Interoceptive Awareness" (containing *ExAc*, *RelA*, *SexS*), and "Visceroception" (containing *Card*, *Resp*, *Gast*). Item centrality (intepretable as loadings in traditional factor analysis frameworks) are shown in @fig-three. Additionally, we applied hierarchical clustering analysis which replicated this structure (see @fig-two), suggesting consistency across methods.
+    
 ```{r}
 #| label: fig-four
-#| fig-cap: "Correlation Matrices. TODO. Stars indicate dimensions that have been score-reversed for better in-context interpretation."
+#| fig-cap: "Correlation Matrices between the Mint dimensions (upper-left), and between the Mint and other interoception questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows the relationships between interoception and other measures included in the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4), emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA), and Primal World Beliefs. Stars indicate dimensions that have been score-reversed for better in-context interpretation. Correlation coefficients are shown for significant correlations."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -344,27 +316,30 @@ The correlation matrix of the Mint dimensions (i.e., clusters) revealed an inter
 knitr::include_graphics("../study2/analysis/figures/fig2.png")
 ```
 
-The correlation matrix between the Mint and the other interoception scales showed high level of redundancies as well as some unique contributions (see @fig-four).
+The correlation matrix of the Mint dimensions revealed an interesting and rich tapestry of relationships (see @fig-four), with contrasting patterns of associations with dimensions from the same group. For instance, *Derm* and *Olfa*, despite being positively correlated with the other dimensions from the *Deficit* cluster, 
+were not negatively correlated to *Awareness* and its dimensions. Similarly, *Sati*, unlike the other *Deficit* dimensions, was not positively correlated to *Visceroception*. This complex structure suggests that the dimensions indeed capture distinct aspects of interoception, and that the metaclusters, rather than being simple aggregates of rather-redundant elements, might actually capture unique combinations (greater than the sum of their parts). It also provides evidence against a simplistic adaptive *vs.* maladaptive dichotomy, as *Deficit* was not negatively bit positively correlated with *Visceroception*. Interestingly, while *Awareness* was also positively correlated with *Visceroception*, it yielded an insignificant negative correlation with *Deficit* (this finding was also aligned with the hierarchical clustering results, showing a greater proximity between *Deficit* and *Visceroception* than with *Awareness*), underlining again the complex web of relationships captured by the Mint. 
+
+The correlation matrix between the Mint and the other interoception scales revealed high levels of overlap, as well as some unique contributions (see @fig-four).
 The BPQ was positively correlated with most Mint dimensions (the highest with *Visceroception*, $r = .46$). The IAS was positively correlated with *Visceroception* and *Awareness* dimensions (the highest with *Awareness*, $r = .63$), but negatively with most *Deficit* dimensions (with the exception of *Olfa* and *Derm*). In turn, the *Visceroception* metacluster most strongly correlated with MAIA's Noticing ($r = .55$). Interestingly, MAIA's TTrusting correlated selectively with *Awareness*, and negatively with *Deficit* dimensions, but not with *Visceroceptive* dimensions (underlining its high-level metacognitive nature). MAIA's Emotional Awareness and Body Listening displayed a similar pattern to Noticing, and Attention Regulation and Self Regulation positively correlated with *Awareness* and *Visceroception* dimensions, but negatively with some *Deficit* dimensions (*CaCo* and *UrIn*). Not-distracting only yielded mild negative associations with *Sati* and *Olfa*. Overall, the Mint dimensions were able to capture most of the (relevant) variance and intricacies present in the other interoception scales.
 
 
 Exploratory correlations with the emotion regulation (CERQ) dimensions revealed stronger associations with most of the MAIA dimensions (supporting its proximity with emotion regulation). Interestingly, Rumination (and Self-Blame) stood out as selectively related to the Mint's *Visceroception* and *Deficit* dimensions (note that Rumination was also related to the MAIA's interoceptive dimensions, namely Noticing, Emotional Awareness and Body Listening).
-The only primal world belief that correlated particuarly with the Mint's *Visceroception* and the MAIA's interoceptive dimension was the belief that the world was alive (**Ana maybe throw in a couple more words about what this belief means and is defined**).
-
-Most of the target outcomes measured in the study to assess validity were best predicted by one of the Mint dimension (see @fig-five).
-This included Alexithymia (best predicted by *Deficit*); ERS' Arousal (best predicted by *Deficit*); CEFSA's anomalous experiences of the body (best predicted by *CaCo*), Self and Reality (best predicted by *Deficit*); ADHD and Autism (best predicted by *Deficit*), Somatic symptoms (best predicted by *Deficit*); BMI (best predicted by *Sati*).
-Most of the exceptions showed an advantage for MAIA dimensions, in particular Not-worrying (which best predicted ERS' Sensitivity and Persistence) and Trusting (which best predicted LS, Depression and Anxiety, CEFSA's Emotion and Connection, and self-reported physical activity). 
+The only primal world belief that correlated particularly with the Mint's *Visceroception* and the MAIA's interoceptive dimension was the belief that the world was alive (**TODO: Ana maybe throw in a couple more words about what this belief means and is defined**).
 
 
 ```{r}
 #| label: fig-five
-#| fig-cap: "Best model table. TODO."
+#| fig-cap: "Summary table of the comparison between interoception questionnaires (Mint, MAIA, BPQ and IAS). For various outcomes included the study, we tested the Mint and Non-Mint dimension that had the strongest link (as a unique predictor). Values in parenthesis represents correlation coefficient for continuous variables and log-odds ratios for binary variables (the occurrence of mental and somatic health conditions). We also compared the predictive performance of regression models including multiple predictors, and present their ranking based on raw predictive power (R2) and BIC, which favours more parsimonious models (with less predictors). Green background indicates an advantage for the Mint, while red backgrounds indicate an advantage for another interoception scale. Orange backgrounds indicate an advantage for the MAIA driven by its emotion-regulation dimensions (Trusting and Not-Worrying)."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
-#| out-width: "100%"
+#| out-width: "82%"
 
 knitr::include_graphics("../study2/analysis/figures/table2.png")
 ```
+
+Most of the target outcomes measured in the study to assess validity were best predicted by one of the Mint dimension (see @fig-five).
+This included Alexithymia (best predicted by *Deficit*); ERS' Arousal (best predicted by *Deficit*); CEFSA's anomalous experiences of the body (best predicted by *CaCo*), Self and Reality (best predicted by *Deficit*); ADHD and Autism (best predicted by *Deficit*), Somatic symptoms (best predicted by *Deficit*); BMI (best predicted by *Sati*).
+Most of the exceptions showed an advantage for MAIA dimensions, in particular Not-worrying (which best predicted ERS' Sensitivity and Persistence) and Trusting (which best predicted LS, Depression and Anxiety, CEFSA's Emotion and Connection, and self-reported physical activity). 
 
 
 Model comparison included 4 variants of the Mint scale, the full *Mint* (including all lower-level clusters - 33 items), the *metaMint* (including only the 3 metaclusters based on all items), the *miniMint* (including the 3 metaclusters computed from 2 of its most loading triplets - 18 items), and the *microMint* (including only the most representative dimension of each metacluster - 9 items).
@@ -372,12 +347,12 @@ This analysis confirmed the clear advantage for the Mint over the other interoce
 
 The predictive performance for the mental health outcomes (see @fig-six) displayed a consistent pattern, with an advantage for the *MAIA* for depression and anxiety which dropped below the *Mint* versions for its *iMAIA* variant. The *Mint*, however, displayed a clear advantage for the prediction of autism, ADHD, and all somatic groups of symptoms (with the exception of Central Sensitization, which was best predicted by the *MAIA*).
 
-Finally, the importance of heart monitoring (for owners of such wearable) was best predicted by MAIA's body listening ($r = .36$), followed the *Card* dimension of the Mint ($r = .31$). The importance of sleep monitoring importance was best predicted by *RelA* ($r = .22$), followed by MAIA's not worrying ($r = -.219$). Daily activity via steps monitoring was best predicted by MAIA's Noticing ($r = .28$), folowed by *Awareness* ($r = .26$).
+Finally, the importance of heart monitoring (for owners of such wearable) was best predicted by MAIA's Body listening ($r = .36$), followed the *Card* dimension of the Mint ($r = .31$). The importance of sleep monitoring importance was best predicted by *RelA* ($r = .22$), followed by MAIA's not worrying ($r = -.219$). Daily activity via steps monitoring was best predicted by MAIA's Noticing ($r = .28$), followed by *Awareness* ($r = .26$).
 
  
 ```{r}
 #| label: fig-six
-#| fig-cap: "Predictive Performance (ROC curves). TODO." 
+#| fig-cap: "Predictive performance of interoception questionnaires for various self-reported mental health conditions (mood disorders with psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The Receiver Operating Characteristic (ROC) curves are shown for the logistic regression models for various questionnaires and versions. A high Area Under the Curve (AUC) indicates a good discriminative power of the model (i.e., a strong combination of sensitivity and specificity). The Mint scale (in blue-green) consistently outperformed the other interoception scales, with the exception of the MAIA which, driven by its emotion-regulation dimensions (Trusting and Not-worrying), performed better for mood disorders and central sensitization symptoms. In several instances, the short versions of the Mint scale (miniMint and microMint) yielded reasonable performance, still outperforming other measures."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -386,20 +361,16 @@ knitr::include_graphics("../study2/analysis/figures/fig3.png")
 ```
 
 
-
 ## Discussion
 
-
-
-Main contender is MAIA. But its most sensitive dimensions seem to be the least related to interoception, which is dangerous as it might lead to findings with associations misattributed to "Interoception" (just because it correlate with some MAIA dimensions), but it might have nothing to do with interoception per se and more with emotion regulation. 
-
-Basically the pattern is clear: everything high-level, metacognitive and highly subjective related to wellbeing and general affective state is the most strongly related to the MAIA through some of its Emotion regulation dimensions. All the other outcomes actually related to interoceptive processes are most strongly predicted by the Mint.
+- Structure: Low stability of *Olfa* as belonging in the deficit group. More studies are needed to investigate its place and cluster invariance: it is possible that its association might depend on other factors or categories.
+- Main contender is MAIA. But its most sensitive dimensions seem to be the least related to interoception, which is dangerous as it might lead to findings with associations misattributed to "Interoception" (just because it correlate with some MAIA dimensions), but it might have nothing to do with interoception per se and more with emotion regulation. 
+- Basically the pattern is clear: everything high-level, metacognitive and highly subjective related to wellbeing and general affective state is the most strongly related to the MAIA through some of its Emotion regulation dimensions. All the other outcomes actually related to interoceptive processes are most strongly predicted by the Mint.
 
 # General Discussion
 
-Future directions: needs to test relationship with physiological measures of interoception.
-
-Also, the structure might still require a bit of deeper investigation, in particular with some of its facets (*Olfa* and *Derm*) which might display different associations depending on the context or the population.
+- Future directions: needs to test relationship with physiological measures of interoception.
+- Also, the structure might still require a bit of deeper investigation, in particular with some of its facets (*Olfa* and *Derm*) which might display different associations depending on the context or the population.
 
 
 # Data Availability

@@ -130,7 +130,7 @@ dfchecks$Total <- rowSums(dfchecks)
 
 
 dfchecks |>
-  mutate(Total = as.factor(paste0(Total, "/8"))) |> 
+  mutate(Total = as.factor(paste0(Total, "/7"))) |> 
   ggplot(aes(x = Total)) +
   geom_bar(aes(fill = Total)) +
   scale_fill_viridis_d(guide = "none") +
@@ -147,7 +147,7 @@ dfchecks |>
 outliers$attentionchecks <- df$Participant[dfchecks$Total >= 1]
 ```
 
-We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 8).
+We removed `r length(outliers$attentionchecks)` (`r insight::format_percent(length(outliers$attentionchecks) / nrow(df))`) participants for having failed at least 1 attention check (out of 7).
 
 ### Experiment Duration
 
