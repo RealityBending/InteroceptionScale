@@ -308,7 +308,7 @@ The final set of 33 items yielded a good fit (Generalized Total Entropy Fit Inde
     
 ```{r}
 #| label: fig-four
-#| fig-cap: "Correlation Matrices between the Mint dimensions (upper-left), and between the Mint and other interoception questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows the relationships between interoception and other measures included in the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4), emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA), and Primal World Beliefs. Stars indicate dimensions that have been score-reversed for better in-context interpretation. Correlation coefficients are shown for significant correlations."
+#| fig-cap: "Correlation Matrices between the Mint dimensions (upper-left), and between the Mint and other interoception questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows the relationships between interoception and other measures included in the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4), emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA), and Primal World Beliefs. Stars indicate dimensions that have been score-reversed for better in-context interpretation. Correlation coefficients are shown only for significant correlations (p < .001)."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"

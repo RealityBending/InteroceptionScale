@@ -897,12 +897,12 @@ micromint <- data.frame(
 ```{r}
 #| warning: false
 
-make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 2.9, xcol = "#424242", ycol="#424242") {
+make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 3, xcol = "#424242", ycol="#424242") {
   
   r <- df1 |> 
     correlation::correlation(data2=df2, p_adjust="none", redundant=ifelse(is.null(df2), TRUE, FALSE)) |> 
     correlation::cor_sort() |>
-    mutate(label = ifelse(p < .001, paste0(insight::format_value(r)), ""),
+    mutate(label = ifelse(p < .001, paste0(insight::format_value(r, lead_zero = FALSE, zap_small = TRUE)), ""),
            Parameter1 = cleanlabels(Parameter1, qname=qname_x),
            Parameter2 = cleanlabels(Parameter2, qname=qname_y))
   r[as.character(r$Parameter1) == as.character(r$Parameter2), "label"] <- ""
@@ -950,7 +950,7 @@ make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 2.9, 
 }
 
 
-p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, textsize = 2.5,
+p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, textsize = 2.8,
                       xcol = "#00838F", ycol = "#00838F") +
   labs(title="Correlations between MINT dimensions") +
   theme(axis.title = element_blank())
@@ -974,7 +974,7 @@ p_cormint
 #| warning: false
 
 p_corintero <- make_cor(select(df, starts_with("MAIA"), IAS, BPQ),
-                        cbind(mint, metamint), qname_y = FALSE, textsize = 2.5,
+                        cbind(mint, metamint), qname_y = FALSE, textsize = 2.8,
                         ycol = "#00838F") +
   labs(title="MINT vs. Other Interoception Questionnaires") +
   theme(axis.title = element_blank())
@@ -1983,7 +1983,7 @@ tab2 |>
 
 ```{r}
 #| warning: false
-#| eval: false
+#| eval: true
 
 
 
