@@ -335,7 +335,7 @@ The BPQ was positively correlated with most Mint dimensions (the highest with *V
 
 
 Exploratory correlations with the emotion regulation (CERQ) dimensions revealed stronger associations with most of the MAIA dimensions (supporting its proximity with emotion regulation). Interestingly, Rumination (and Self-Blame) stood out as selectively related to the Mint's *Visceroception* and *Deficit* dimensions (note that Rumination was also related to the MAIA's interoceptive dimensions, namely Noticing, Emotional Awareness and Body Listening).
-The only primal world belief that correlated particularly with the Mint's *Visceroception* and the MAIA's interoceptive dimension was the belief that the world was alive (**TODO: Ana maybe throw in a couple more words about what this belief means and is defined**).
+The only primal world belief that correlated particularly with the Mint's *Visceroception* and the MAIA's interoceptive dimension was the belief that the world was alive [i.e., the belief that the universe is conscious, purposeful, and in active relationship with oneself, @clifton2021brief].
 
 
 ```{r}
