@@ -135,8 +135,6 @@
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 
-\usepackage[nolongtablepatch]{lineno}
-\linenumbers
 
 
 
@@ -189,20 +187,18 @@ Consciousness Science, University of Sussex}}
 \abstract{TO DO. }
 
 \keywords{Interoception questionnaire, interoceptive accuracy scale,
-MAIA, Mint Validation, Body Awareness}
+MAIA, Mint Validation, Body Awareness, Health}
 
 \authornote{\par{\addORCIDlink{Dominique
 Makowski}{0000-0001-5375-9967}}\par{\addORCIDlink{Ana
 Neves}{0009-0006-0020-7599}}\par{\addORCIDlink{Giulia
 Poreiro}{0000-0002-2343-5109}} 
 \par{ }
-\par{     \begin{tcolorbox}[enhanced jigsaw, left=2mm, arc=.35mm, bottomrule=.15mm, leftrule=.75mm, rightrule=.15mm, colback=white, breakable, opacityback=0, colframe=quarto-callout-note-color-frame, toprule=.15mm]
+\par{     \begin{tcolorbox}[enhanced jigsaw, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, opacityback=0, colback=white]
 
 This preprint is a non-peer-reviewed work from the
 \href{https://realitybending.github.io/}{\textbf{Reality Bending Lab}}.
-\begin{center}
 \includegraphics[width=0.2\linewidth,height=\textheight,keepaspectratio]{manuscript_files/mediabag/ReBeL_LogoOnly_hu114.png}
-\end{center}
 
 \end{tcolorbox}  Author roles were classified using the Contributor Role
 Taxonomy (CRediT; https://credit.niso.org/) as follows:  Dominique
@@ -363,37 +359,162 @@ Makowski, Email: \href{mailto:D.Makowski@sussex.ac.uk}{D.Makowski@sussex.ac.uk}}
 
 \setlength\LTleft{0pt}
 
-\resetlinenumber[1]
 
 
 
 \section{Introduction}\label{introduction}
 
-Main issues in existing questionnaires:
+Interoception - the sensing and interpretation of the body's internal
+physiological signals - plays a fundamental role in processes ranging
+from homeostatic regulation to emotion, decision-making, and mental
+health (\citeproc{ref-craig2002how}{Craig, 2002};
+\citeproc{ref-critchley2017interoception}{Critchley \& Garfinkel,
+2017}). Despite its growing recognition, the field is hindered by
+inconsistent definitions and fragmented measurement approaches
+(\citeproc{ref-desmedt2022measures}{Desmedt et al., 2022},
+\citeproc{ref-desmedt2025discrepancies}{2025};
+\citeproc{ref-khalsa2018interoception}{Khalsa et al., 2018}). Available
+tools include ``objective'' physiological tasks (e.g., heartbeat
+counting or tracking) and ``subjective'' self-reports, and encompass
+both ``explicit'' paradigms that direct participants' attention and
+consciousness to internal sensations and ``implicit'' paradigms that do
+not (e.g., heartbeat evoked potentials recorded during rest). These
+assessments are often targeted at only one of several interoceptive
+modalities (e.g., cardioception, respiroception, gastroception), and are
+mapped onto theoretical dimensions (e.g., accuracy, sensitivity,
+awareness, \citeproc{ref-garfinkel2015knowing}{Garfinkel et al., 2015})
+within a rapidly evolving theoretical scaffolding. However, no consensus
+exists on a gold-standard measure, and each approach has distinct
+limitations: physiological tasks often require specialised equipment and
+expertise, are time-consuming, and are challenging to administer at
+scale, whereas questionnaires are constrained by their inherent
+subjectivity. Crucially, the psychometric quality of many of these
+measures is questionable (e.g., see criticism about the heartbeat
+counting task, \citeproc{ref-zamariola2018interoceptive}{Zamariola et
+al., 2018}), yielding low inter-task correlations
+(\citeproc{ref-murphy2018classifying}{Murphy et al., 2018}), raising
+serious concerns about their reliability and validity (e.g., measures
+presented as measuring one theoretical dimension but likely measuring
+something else). This measurement conundrum hinders progress in
+comparing, replicating, and interpreting interoception-related findings,
+underscoring the need to develop improved tools that align with modern
+psychometric standards.
 
-\begin{itemize}
-\tightlist
-\item
-  Either heavily based on theories (e.g., focusing on specific
-  ``alleged'' dimensions), despite shaky evidence for said-theories
-\item
-  Do not control for context (which leads to variability in
-  interpretation and occurence)
-\item
-  Often quite narrow in the modalities covered (or scattered, like the
-  IAS)
-\end{itemize}
+The present work focuses on self-report questionnaires, which offer a
+scalable and accessible tool complementing physiological tasks. Among
+the numerous questionnaires available, a handful seem to dominate the
+literature (\citeproc{ref-desmedt2022measures}{Desmedt et al., 2022}),
+including the Body Perception Questionnaire (BPQ,
+\citeproc{ref-kolacz2018body}{Kolacz et al., 2018}), the
+Multidimensional Assessment of Interoceptive Awareness (MAIA,
+\citeproc{ref-mehling2018multidimensional}{Mehling et al., 2018}), and
+the Interoceptive Accuracy Scale (IAS,
+\citeproc{ref-murphy2018classifying}{Murphy et al., 2018}). These tools
+were developed in different eras of a rapidly evolving field, each with
+its own objectives and philosophies. The BPQ, one of the earliest
+measures, emphasizes the assessment of body awareness and autonomic
+nervous system (ANS) reactivity, focusing on subjective experiences of
+physiological stress reactions in organs innervated by the ANS, such as
+those triggered by stress or trauma
+(\citeproc{ref-porges1993body}{\textbf{porges1993body?}}). The MAIA
+incorporated ideas from the then-booming emotion regulation and
+mindfulness fields, including subscales assessing adaptive coping
+strategies and metacognitive insights about the body. By contrast, the
+IAS was recently crafted to sidestep such high-level - possibly
+tangential - constructs and instead capture subjective reports of
+concrete bodily events (e.g., coughing, sneezing) as proxies for
+interoceptive accuracy.
+
+These differing philosophies have practical consequences, leading to
+poor convergence between scales that are assumed to measure the same
+construct (\citeproc{ref-vig2022questionnaires}{Vig et al., 2022}) - a
+classic example of the ``jingle fallacy'' where the shared label of
+``interoception'' can mask underlying measurand differences, which in
+turn hinders replication and theoretical integration. Recent work has
+been focused on aligning subjective measures and facets with theoretical
+models, debating whether they measure interoceptive ``sensitivity'' or
+other dimensions (accuracy, attention, deficits). However, this focus on
+a theory-driven approach might be premature when theoretical models are
+in flux, and when a topographic mapping to self-report dimensions is not
+guaranteed (e.g.~distinctions that are relevant at a neuroanatomical or
+cognitive level might not necessarily translate into the same structural
+landscape of subjective experiences). More fundamentally, existing
+questionnaires suffer from two major structural blind spots. First, they
+are often narrow or unsystematic in their coverage of bodily
+\emph{modalities}, with a heavy bias towards cardio-respiratory
+sensations and a neglect of others like gastric, urogenital, or
+thermoregulatory signals. Second, and perhaps most critically, they fail
+to control for the \emph{context} in which an interoceptive experience
+occurs, introducing significant variability in how participants
+interpret and respond to items. For example, an item about ``feeling
+your heart beat'' is ambiguous; its frequency, experience and its
+interpretation differ vastly depending on whether it occurs during
+physical exercise, a moment of anxiety, or quiet rest (e.g., someone who
+exercises regularly, or is anxious, might more easily recall an instance
+of occurrence of feeling their heart beating and respond based on that
+contextual saliency).
+
+To address these gaps, we introduce the Multimodal Interoception
+Questionnaire (Mint). The overarching aim of this work is to develop and
+validate a new questionnaire that systematically addresses these
+limitations. In Study 1, we detail the bottom-up development of the
+Mint, using a ``modality-by-context'' framework to generate a
+comprehensive item pool, which is then refined using cutting-edge
+psychometric network analysis. In Study 2, we validate the final version
+of the Mint against the established interoception questionnaires,
+demonstrating its robust structure and predictive validity for a range
+of clinically-relevant outcomes.
 
 \section{Study 1: Item Selection}\label{study-1-item-selection}
 
-TODO: write intro.
+The primary goal of Study 1 was to develop a new interoception
+questionnaire by generating a comprehensive item pool and refining it
+into a psychometrically robust scale. To overcome the limitations of
+existing measures, we adopted a bottom-up, theoretically agnostic
+approach. Instead of imposing a pre-defined theoretical structure, we
+focused on two tangible and systematically controllable aspects of
+interoceptive experience: the \emph{modality} of the sensation and the
+\emph{context} in which it occurs. The objective was not to create
+\emph{yet another scale} measuring an alleged distinct construct or
+variation, but rather to synthesize existing ideas and frameworks into a
+comprehensive and modern tool that captures the richness of
+interoceptive experiences and encompasses the most relevant facets of
+interoception.
 
-\begin{itemize}
-\tightlist
-\item
-  Goal of study 1: to generate a lot of items, analyze its structure and
-  reduce them to a balanced set of items.
-\end{itemize}
+Our item generation process was guided by a ``modality-by-context'' grid
+designed to overcome the limitations of existing scales. For
+\emph{modalities}, we expanded beyond the typical cardio-respiratory
+focus to include a broader range of bodily systems: cardiac,
+respiratory, gastric, genital, bladder \& colon, and skin \& temperature
+(the latter of which being increasingly recognized as a key
+interoceptive channel, \citeproc{ref-crucianelli2023role}{Crucianelli \&
+Ehrsson, 2023}). We also included a ``general state'' category to
+capture the integrated sense of the body's overall physiological
+condition (\citeproc{ref-craig2002how}{Craig, 2002};
+\citeproc{ref-craig2003interoception}{Craig, 2003}). For
+\emph{contexts}, we designed facets to capture specific situational
+contexts like negative (anxious) and positive (sexual) arousal, which
+reflect distinct bodily states with differing interoceptive signatures,
+as well as other experiential qualities tapping into elaboration and
+threshold of perception, such as sensitivity, accuracy, and confusion.
+To maintain continuity with established work while making targeted
+improvements, we purposefully adapted items from existing questionnaires
+(e.g., IAS-like items related to observable behaviors). This systematic
+framework yielded a diverse pool of 120 initial items, ensuring
+comprehensive coverage while minimizing the ambiguity inherent in
+context-free questions.
+
+The final step involved a data-driven reduction of this item pool. We
+employed cutting-edge psychometric network-based techniques to identify
+and remove redundant items and to uncover the most stable and coherent
+dimensional structure. Additionally, we designed the study so that we
+could explore an often overlooked psychometric quality: the invariance
+of the structure to the presentation format (how items are grouped
+together on the screen, whether by modality, facet, or randomly)
+influences the resulting psychometric structure. This rigorous,
+multi-stage process was designed to produce a subset of items with a
+clear, stable, and theoretically rich hierarchical structure, ready for
+formal validation.
 
 \subsection{Methods}\label{methods}
 
@@ -522,7 +643,7 @@ existence (\citeproc{ref-christensen2021equivalency}{Christensen \&
 Golino, 2021}).
 
 After removing redundant items using UVA, we iteratively fitted
-hierarchical EGA models (which additionally estimates higher-order
+hierarchical EGA models (which additionally estimate higher-order
 ``meta'' clusters) using ``glasso''
 (\citeproc{ref-friedman2008sparse}{Friedman et al., 2008}) and the
 ``Leiden'' algorithm (\citeproc{ref-traag2019louvain}{Traag et al.,
@@ -583,40 +704,67 @@ set included 45 items.
 
 \subsection{Discussion}\label{discussion}
 
-\begin{itemize}
-\tightlist
-\item
-  Possible (although not at all significant) bias consistent across
-  indices in favour of a greater similarity with the modality-grouping
-  condition. Futher research with more data (here we only had
-  \textasciitilde200 observation per condition) might be able to yield
-  more conclusive results. In general, testing the presentation mode is
-  a novel approach which should be more widely applied to psychometric
-  validations.
-\item
-  We grouped some of the dimensions under ``Awareness'', despite being
-  similar to items included in the IAS typically conceptualized as
-  ``Accuracy''. However, we believe that subjective scales cannot be
-  pure measures of accuracy, as they are inherently subjective and thus
-  reflect a degree of awareness (of one's accurate noticing or
-  sensation).
-\item
-  Olfactory compensation: pseudo-interoceptive pathway whereby people
-  with interoceptive deficits would compensate by gathering evidence
-  about their internal state externally (e.g., via smell).
-\item
-  The metacluster ``Sensitivity'' seems to be grouping iterms related to
-  visceropcetion and (hyper)sensitivity (Derm).
-\end{itemize}
+The primary aim of Study 1 was to develop and refine a large,
+systematically generated pool of interoceptive items into a
+psychometrically sound and structurally coherent questionnaire. Starting
+with 120 items derived from a modality-by-context grid, we employed a
+multi-step, data-driven reduction process using cutting-edge structure
+analysis methods. This rigorous procedure yielded a final, balanced set
+of 45 items, organized within a stable hierarchical structure comprising
+three higher-order dimensions (Interoceptive Deficits, Interoceptive
+Awareness, Interoceptive Sensitivity) and 12 distinct lower-level
+facets.
+
+One innovation of this study was to test the effect of item presentation
+by comparing structures across different grouping conditions. While the
+analysis revealed no significant effect, a consistent (though
+non-significant) trend suggested that grouping items by modality may be
+slightly more conducive to revealing the underlying psychometric
+structure than grouping by facet or randomly. This finding, while
+preliminary due to the sample size per condition (\(N \pm 200\)),
+highlights a potentially important and under-investigated aspect of
+questionnaire design that warrants future research.
+
+The resulting hierarchical structure offers novel yet interpretable
+insights into self-reported interoception, with flexible degrees of
+granularity. Notably, we categorised several facets (typically related
+to objective external behaviours, like coughing or sneezing) under the
+label ``Awareness'', that might traditionally be named ``Accuracy'' in
+other scales. Our rationale is that subjective self-report, by its very
+nature, cannot be a pure measure of objective accuracy, but at best a
+proxy of an individual's subjective certainty or awareness of their
+interoceptive processes. Furthermore, our bottom-up approach revealed
+intriguing facets, such as ``Olfactory Compensation''. This finding
+provide further evidence for a pseudo-interoceptive pathway, whereby
+individuals with potentially poorer access to internal signals may
+compensate by relying on external cues (e.g., odours) to infer their
+bodily state. The ``Sensitivity'' metacluster also grouped core
+visceroceptive facets (e.g., ``Cardioception'', ``Gastroception'') with
+``Dermal Hypersensitivity'', pointing to a potential common dimension of
+heightened perceptual sensitivity to bodily sensations.
+
+In summary, Study 1 successfully leveraged a systematic item generation
+process and modern analytical techniques to produce a 45-item
+questionnaire with a clear, stable, and theoretically rich hierarchical
+structure. The next crucial step is to formally validate this new
+instrument by examining its psychometric properties and its relationship
+with existing measures in a new, independent sample, which is the
+objective of Study 2.
 
 \section{Study 2: Validation}\label{study-2-validation}
 
-\begin{itemize}
-\tightlist
-\item
-  Goal of study 2: to validate the Mint scale against other
-  interoception scales.
-\end{itemize}
+Following the generation and selection of a set of 45 interoceptive
+items, the next objective is to formally validate this new instrument in
+a large, independent sample, a crucial step for establishing the
+psychometric soundness and unique contribution of the Mint scale to the
+field of interoception research. To this end, we sought to 1) re-assess
+the structure of the shorter version and 2) establish its convergent
+validity by examining the correlations with other established and
+popular interoception questionnaires (namely the MAIA-2, BPQ, and IAS),
+as well as other related measures (e.g., alexithymia). Finally, we
+assessed its criterion validity by directly comparing the predictive
+power of the interoceptive scales across a broad range of outcomes,
+including emotional, cognitive, and clinical variables.
 
 \subsection{Methods}\label{methods-1}
 
@@ -1065,41 +1213,133 @@ measures.}{\label{fig-six}}}}
 
 \subsection{Discussion}\label{discussion-1}
 
-\begin{itemize}
-\tightlist
-\item
-  Structure: Low stability of \emph{Olfa} as belonging in the deficit
-  group. More studies are needed to investigate its place and cluster
-  invariance: it is possible that its association might depend on other
-  factors or categories.
-\item
-  Main contender is MAIA. But its most sensitive dimensions seem to be
-  the least related to interoception, which is dangerous as it might
-  lead to findings with associations misattributed to ``Interoception''
-  (just because it correlate with some MAIA dimensions), but it might
-  have nothing to do with interoception per se and more with emotion
-  regulation.
-\item
-  Basically the pattern is clear: everything high-level, metacognitive
-  and highly subjective related to wellbeing and general affective state
-  is the most strongly related to the MAIA through some of its Emotion
-  regulation dimensions. All the other outcomes actually related to
-  interoceptive processes are most strongly predicted by the Mint.
-\end{itemize}
+The primary goal of Study 2 was to validate the items selected in Study
+1. This involved re-assessing its structure in a new, large sample, and
+establishing its convergent and criterion validity against other
+established interoception questionnaires. The analysis led to a final,
+refined 33-item Mint scale with a stable and theoretically coherent
+hierarchical structure, which demonstrated substantial predictive power
+across a range of outcomes.
+
+Re-validating the structure after item selection is a crucial step in
+questionnaire development. When a large item pool is reduced, the
+context changes, which can alter the perceived meaning and relationships
+between the remaining items. For instance, a questionnaire with many
+items suggesting abnormality or pathology might colour other neutral
+items with a negative connotation. While the original structure was
+mostly replicated, the re-validation allowed for a clarification of some
+of the higher-order dimensions (for instance, the ``Sensitivity''
+metacluster became more clearly defined around core interoceptive
+clusters). The final structure, comprising 11 facets and 3 metaclusters,
+showed excellent structural consistency and stability, providing a solid
+foundation for the scale. However, the \emph{Olfa} (Olfactory
+Compensation) cluster showed lower stability in its placement within the
+\emph{Deficit} metacluster. This suggests its role may be more complex,
+and future studies are needed to investigate its place and invariance
+across different populations and contexts.
+
+The criterion validity analysis revealed a clear and compelling pattern
+of results. The Mint scale, particularly its \emph{Deficit} metacluster,
+consistently outperformed other scales in predicting outcomes directly
+related to alterations in bodily experience and self-regulation, such as
+alexithymia, dissociative experiences, ADHD, autism, and various somatic
+symptoms. The main contender, the MAIA-2, showed an advantage primarily
+for outcomes related to general well-being, such as life satisfaction,
+depression, and anxiety. However, this advantage was almost entirely
+driven by dimensions highly related to emotion regulation abilities,
+namely \emph{Trusting} and \emph{Not-Worrying}, whose inclusion as core
+interoceptive facets has been questioned
+(\citeproc{ref-ferentzi2021examining}{Ferentzi et al., 2021}). When
+these dimensions were removed (in the \emph{iMAIA} version), the
+MAIA-2's predictive power for these outcomes dropped considerably, often
+below that of the Mint.
+
+This highlights a crucial issue in the field: the potential for
+misattributing findings to ``interoception'' when they may be driven by
+broader emotion regulation capacities
+(\citeproc{ref-murphy2020testing}{Murphy et al., 2020}). While valuable,
+the MAIA-2's most predictive subscales appear less related to core
+interoceptive processing and more to metacognitive beliefs about one's
+body and emotional coping. The Mint, in contrast, appears to tap more
+directly into distinct facets of interoceptive experience, from visceral
+sensitivity to perceived deficits. The pattern is clear: for high-level,
+metacognitive aspects of affective state and well-being, the MAIA-2's
+emotion regulation facets are highly relevant. For outcomes tied more
+specifically to bodily processes, clinical conditions characterized by
+sensory dysregulation, and nuanced interoceptive experiences, the Mint
+offers superior predictive validity and specificity.
 
 \section{General Discussion}\label{general-discussion}
 
-\begin{itemize}
-\tightlist
-\item
-  Future directions: needs to test relationship with physiological
-  measures of interoception.
-\item
-  Also, the structure might still require a bit of deeper investigation,
-  in particular with some of its facets (\emph{Olfa} and \emph{Derm})
-  which might display different associations depending on the context or
-  the population.
-\end{itemize}
+Across two studies, we developed and validated the Multimodal
+Interoception Questionnaire (Mint), a new 33-item self-report measure of
+interoception. Our approach addressed key limitations of existing scales
+by starting with a systematically generated, broad item pool that
+explicitly controlled for context and modality, and then using a
+data-driven reduction process. The result is a psychometrically robust
+instrument with a stable, hierarchical structure comprising three
+higher-order metaclusters, namely \emph{Interoceptive Deficit},
+\emph{Interoceptive Awareness}, and \emph{Visceroception}, and 11
+distinct lower-level facets. The validation study demonstrated that the
+Mint not only captures variance present in other popular scales (MAIA-2,
+BPQ and IAS) but also offers superior predictive power for a range of
+clinical and cognitive outcomes, particularly those tied to altered
+bodily perception.
+
+A key contribution of the Mint is its potential ability to disentangle
+core interoceptive experiences from more general emotion regulation
+capacities. Our findings show that while the MAIA-2 is a potent
+predictor of general well-being, this is largely driven by its
+\emph{Trusting} and \emph{Not-Worrying} subscales, which heavily tap
+into emotion regulation skills and coping strategies. The Mint,
+conversely, excelled at predicting conditions like alexithymia, ADHD,
+autism, and somatic symptoms, where alterations in bodily sensing are a
+core feature. This suggests the Mint provides a more specific measure of
+interoceptive processing, offering researchers a finer-grained tool to
+probe the role of bodily awareness in health and disease.
+
+Despite these strengths, the present work has limitations that open
+avenues for future research. First, as a self-report measure, the Mint
+captures subjective beliefs about interoceptive abilities, not objective
+accuracy. A crucial next step is to investigate the relationship between
+Mint scores and physiological or behavioural measures of interoception
+(e.g., heartbeat tracking tasks, heartbeat evoked potentials). This
+would help establish the extent to which subjective reports on the Mint
+correspond to objective interoceptive performance. Future research could
+also systematically examine the cost of shorter versions, by
+investigating the tradeoffs incurred by versions with only the one or
+two most central facets per metacluster and their impact on psychometric
+qualities and predictive power.
+
+While the overall structure of the Mint is stable, some facets warrant
+deeper investigation. The \emph{Olfa} (Olfactory Compensation) and
+\emph{Derm} (Dermal Hypersensitivity) clusters, for instance, showed
+more complex patterns of association. Their placement within the
+\emph{Deficit} metacluster is theoretically intriguing but requires
+further validation. The former aligns with predictive coding models
+suggesting that individuals may rely on exteroceptive cues (like odours)
+to infer internal states (\citeproc{ref-paulus2010interoception}{Paulus
+\& Stein, 2010}), a form of pseudo-interoception (or
+extero-interoception). The latter points to a potential link between
+visceral and cutaneous sensitivity, possibly reflecting a general trait
+of heightened bodily awareness or a shared mechanism of central
+sensitization, which has been observed in conditions like chronic pain
+(\citeproc{ref-di2016alexithymia}{Di Tella \& Castelli, 2016}). Future
+studies should examine the invariance of the Mint's structure across
+different populations (e.g., clinical vs.~non-clinical groups) and
+contexts (e.g., heightened arousal vs.~rest) to clarify the role of
+these more nuanced facets. Such work could reveal whether their
+relevance and pattern of associations differs in conditions like anxiety
+disorders, chronic pain, or neurodevelopmental disorders.
+
+In conclusion, the Mint scale represents a significant methodological
+advancement for the field of interoception research. By providing a
+validated, structurally coherent, and nuanced tool, it allows for a more
+precise assessment of self-reported interoceptive experiences. Its
+various forms (full, meta, mini, and micro) offer flexibility for
+researchers and clinicians, paving the way for a deeper understanding of
+the multifaceted role of interoception in human psychology and
+pathophysiology.
 
 \section{Data Availability}\label{data-availability}
 
@@ -1110,7 +1350,7 @@ https://github.com/RealityBending/InteroceptionScale.
 
 We would like to thank the dissertation students from the University of
 Sussex for their help in data collection. DM would also like to thank
-\ldots{} for the motivation provided to write this paper.
+Anastasia for the motivation provided to write this paper.
 
 \section{References}\label{references}
 
@@ -1146,10 +1386,46 @@ Clifton, J. D., \& Yaden, D. B. (2021). Brief measures of the four
 highest-order primal world beliefs. \emph{Psychological Assessment},
 \emph{33}(12), 1267.
 
+\bibitem[\citeproctext]{ref-craig2002how}
+Craig, A. D. (2002). How do you feel? Interoception: The sense of the
+physiological condition of the body. \emph{Nature Reviews Neuroscience},
+\emph{3}(8), 655--666. \url{https://doi.org/10.1038/nrn894}
+
+\bibitem[\citeproctext]{ref-craig2003interoception}
+Craig, A. D. (2003). Interoception: The sense of the physiological
+condition of the body. \emph{Current Opinion in Neurobiology},
+\emph{13}(4), 500--505.
+
+\bibitem[\citeproctext]{ref-critchley2017interoception}
+Critchley, H. D., \& Garfinkel, S. N. (2017). Interoception and emotion.
+\emph{Current Opinion in Psychology}, \emph{17}, 7--14.
+\url{https://doi.org/10.1016/j.copsyc.2017.04.020}
+
+\bibitem[\citeproctext]{ref-crucianelli2023role}
+Crucianelli, L., \& Ehrsson, H. H. (2023). The role of the skin in
+interoception: A neglected organ? \emph{Perspectives on Psychological
+Science}, \emph{18}(1), 224--238.
+
 \bibitem[\citeproctext]{ref-de2015jspsych}
 De Leeuw, J. R. (2015). jsPsych: A JavaScript library for creating
 behavioral experiments in a web browser. \emph{Behavior Research
 Methods}, \emph{47}, 1--12.
+
+\bibitem[\citeproctext]{ref-desmedt2022measures}
+Desmedt, O., Heeren, A., Corneille, O., \& Luminet, O. (2022). What do
+measures of self-report interoception measure? Insights from a
+systematic review, latent factor analysis, and network approach.
+\emph{Biological Psychology}, \emph{169}, 108289.
+
+\bibitem[\citeproctext]{ref-desmedt2025discrepancies}
+Desmedt, O., Luminet, O., Maurage, P., \& Corneille, O. (2025).
+Discrepancies in the definition and measurement of human interoception:
+A comprehensive discussion and suggested ways forward.
+\emph{Perspectives on Psychological Science}, \emph{20}(1), 76--98.
+
+\bibitem[\citeproctext]{ref-di2016alexithymia}
+Di Tella, M., \& Castelli, L. (2016). Alexithymia in chronic pain
+disorders. \emph{Current Rheumatology Reports}, \emph{18}(7), 41.
 
 \bibitem[\citeproctext]{ref-ferentzi2021examining}
 Ferentzi, E., Olaru, G., Geiger, M., Vig, L., Köteles, F., \& Wilhelm,
@@ -1161,6 +1437,13 @@ Personality Assessment}, \emph{103}(5), 675--684.
 Friedman, J., Hastie, T., \& Tibshirani, R. (2008). Sparse inverse
 covariance estimation with the graphical lasso. \emph{Biostatistics},
 \emph{9}(3), 432--441.
+
+\bibitem[\citeproctext]{ref-garfinkel2015knowing}
+Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., \& Critchley,
+H. D. (2015). Knowing your own heart: Distinguishing interoceptive
+accuracy from interoceptive awareness. \emph{Biological Psychology},
+\emph{104}, 65--74.
+\url{https://doi.org/10.1016/j.biopsycho.2014.11.004}
 
 \bibitem[\citeproctext]{ref-garnefski2006cognitive}
 Garnefski, N., \& Kraaij, V. (2006). Cognitive emotion regulation
@@ -1197,6 +1480,17 @@ comparison of the validity of single-item versus multiple-item measures
 of life satisfaction. \emph{Applied Research in Quality of Life},
 \emph{15}, 675--692.
 
+\bibitem[\citeproctext]{ref-khalsa2018interoception}
+Khalsa, S. S., Adolphs, R., Cameron, O. G., Critchley, H. D., Davenport,
+P. W., Feinstein, J. S., \& Zucker, N. (2018). Interoception and mental
+health: A roadmap. \emph{Biological Psychiatry: Cognitive Neuroscience
+and Neuroimaging}, \emph{3}(6), 501--513.
+\url{https://doi.org/10.1016/j.bpsc.2017.12.004}
+
+\bibitem[\citeproctext]{ref-kolacz2018body}
+Kolacz, J., Holmes, L., \& Porges, S. W. (2018). Body perception
+questionnaire (BPQ) manual. \emph{Traumatic Stress Research Consortium}.
+
 \bibitem[\citeproctext]{ref-kroenke2009ultra}
 Kroenke, K., Spitzer, R. L., Williams, J. B., \& Löwe, B. (2009). An
 ultra-brief screening scale for anxiety and depression: The PHQ--4.
@@ -1230,6 +1524,18 @@ G. (2020). Testing the independence of self-reported interoceptive
 accuracy and attention. \emph{Quarterly Journal of Experimental
 Psychology}, \emph{73}(1), 115--133.
 
+\bibitem[\citeproctext]{ref-murphy2018classifying}
+Murphy, J., Catmur, C., \& Bird, G. (2018). Classifying individual
+differences in interoception: Implications for the measurement of
+interoceptive accuracy. \emph{Psychonomic Bulletin \& Review},
+\emph{25}(4), 1424--1431.
+\url{https://doi.org/10.3758/s13423-017-1339-z}
+
+\bibitem[\citeproctext]{ref-paulus2010interoception}
+Paulus, M. P., \& Stein, M. B. (2010). Interoception in anxiety and
+depression. \emph{Brain Structure and Function}, \emph{214}(5),
+451--463.
+
 \bibitem[\citeproctext]{ref-sibson1978studies}
 Sibson, R. (1978). Studies in the robustness of multidimensional
 scaling: Procrustes statistics. \emph{Journal of the Royal Statistical
@@ -1251,6 +1557,17 @@ Veilleux, J. C., Schreiber, R. E., Warner, E. A., \& Brott, K. H.
 (2024). Development and validation of a brief version of the emotion
 reactivity scale: The b-ERS. \emph{Current Psychology}, \emph{43}(14),
 12586--12600.
+
+\bibitem[\citeproctext]{ref-vig2022questionnaires}
+Vig, L., Köteles, F., \& Ferentzi, E. (2022). Questionnaires of
+interoception do not assess the same construct. \emph{PLoS One},
+\emph{17}(8), e0273299.
+
+\bibitem[\citeproctext]{ref-zamariola2018interoceptive}
+Zamariola, G., Maurage, P., Luminet, O., \& Corneille, O. (2018).
+Interoceptive accuracy scores from the heartbeat counting task are
+problematic: Evidence from simple bivariate correlations.
+\emph{Biological Psychology}, \emph{137}, 12--17.
 
 \end{CSLReferences}
 
