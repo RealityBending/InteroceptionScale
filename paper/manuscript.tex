@@ -215,13 +215,11 @@ Makowski}{0000-0001-5375-9967}}\par{\addORCIDlink{Ana
 Neves}{0009-0006-0020-7599}}\par{\addORCIDlink{Giulia
 Poreiro}{0000-0002-2343-5109}} 
 \par{ }
-\par{     \begin{tcolorbox}[enhanced jigsaw, breakable, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, colback=white, toprule=.15mm, bottomrule=.15mm, rightrule=.15mm, opacityback=0, left=2mm]
+\par{     \begin{tcolorbox}[enhanced jigsaw, breakable, opacityback=0, rightrule=.15mm, colback=white, toprule=.15mm, arc=.35mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm]
 
 This preprint is a non-peer-reviewed work from the
 \href{https://realitybending.github.io/}{\textbf{Reality Bending Lab}}.
-\begin{center}
 \includegraphics[width=0.2\linewidth,height=\textheight,keepaspectratio]{manuscript_files/mediabag/ReBeL_LogoOnly_hu114.png}
-\end{center}
 
 \end{tcolorbox}  Author roles were classified using the Contributor Role
 Taxonomy (CRediT; https://credit.niso.org/) as follows:  Dominique
@@ -452,9 +450,9 @@ These differing philosophies have practical consequences, leading to
 poor convergence between scales that are assumed to measure the same
 construct (\citeproc{ref-vig2022questionnaires}{Vig et al., 2022}) - a
 classic example of the ``jingle fallacy'' where the shared label of
-``interoception'' can mask underlying measures and differences,
-hindering replication and theoretical integration. In acknowledgement of
-this issue, efforts have been made to align subjective measures with
+``interoception'' can mask underlying measurand differences, hindering
+replication and theoretical integration. In acknowledgement of this
+issue, efforts have been made to align subjective measures with
 theoretical models that outline different facets of interoception (e.g.,
 accuracy, attention, deficits). However, focusing on developing measures
 that are theory-driven may however be premature when theoretical models
@@ -654,13 +652,13 @@ analysis, addressing some of its limitations such as the assumption of a
 ``latent'' source of variability, issues in estimation of the optimal
 factor numbers, and poor performance in complex population structures,
 while remaining comparable and interpretable
-(\citeproc{ref-christensen2021equivalency}{Christensen \& Golino, 2021};
-\citeproc{ref-jimenez2023dimensionality}{Jiménez et al., 2023}). In
-particular, nodes communities (i.e., clusters of items) can be in
+(\citeproc{ref-christensen2021equivalency}{Christensen \& Golino,
+2021b}; \citeproc{ref-jimenez2023dimensionality}{Jiménez et al., 2023}).
+In particular, nodes communities (i.e., clusters of items) can be in
 practice interpreted as distinct ``dimensions'', similarly to
 traditional latent factors - but without explicitly assuming their
 existence (\citeproc{ref-christensen2021equivalency}{Christensen \&
-Golino, 2021}).
+Golino, 2021b}).
 
 After removing redundant items using UVA, we iteratively fitted
 hierarchical EGA models (which additionally estimate higher-order
@@ -675,6 +673,15 @@ pairs of items (i.e., we keep items belonging to clusters of more than 2
 items). Finally, for each lower-level cluster, we selected the 3 items
 with the highest node centrality (i.e., the highest loading in the
 cluster).
+
+For both studies, data analysis was carried out using R (4.4.3,
+\citeproc{ref-Rcoreteam}{R Core Team, 2025}), leveraging the
+\emph{easystats} ecosystem (\citeproc{ref-ludecke2019insight}{Lüdecke et
+al., 2019}, \citeproc{ref-ludecke2020extracting}{2020}) and the
+\emph{EGAnet} package
+(\citeproc{ref-christensen2021estimating}{Christensen \& Golino,
+2021a}). The reproducible code and additional details are available at
+https://github.com/RealityBending/InteroceptionScale.
 
 \subsection{Results}\label{results}
 
@@ -1006,17 +1013,18 @@ fitting regression models (linear for continuous measures - e.g.,
 depression score - and logistic for binary variables - e.g., presence
 \emph{vs.} absence of mood disorders) to predict different outcomes, and
 compare the best between the 4 interoception scales based on the total
-explained variance (R2). We then evaluated the predictive performance of
-each scale as a whole by comparing regression models with all the
-dimensions entered as predictors (note that the IAS and BPQ only have
-one total score variable). We assessed the models based on their R2, as
-well as on the Bayesian Information Criterion (BIC), which penalizes for
-predictor number, thus offering a balance between model parsimony and
-predictive power. For the logistic models, we quantified the
-discriminative power by computing the Area Under the Curve (AUC) of the
-Receiver Operating Characteristic (ROC) curve, which assesses the
-model's discriminative power (the combination of sensitivity and
-specificity).
+explained variance (R2 or pseudo-R2 for logistic models,
+\citeproc{ref-ludecke2021performance}{Lüdecke et al., 2021}). We then
+evaluated the predictive performance of each scale as a whole by
+comparing regression models with all the dimensions entered as
+predictors (note that the IAS and BPQ only have one total score
+variable). We assessed the models based on their R2, as well as on the
+Bayesian Information Criterion (BIC), which penalizes for predictor
+number, thus offering a balance between model parsimony and predictive
+power. For the logistic models, we quantified the discriminative power
+by computing the Area Under the Curve (AUC) of the Receiver Operating
+Characteristic (ROC) curve, which assesses the model's discriminative
+power (the combination of sensitivity and specificity).
 
 In order to evaluate the potential for a short version of our scale, we
 compared 4 variants of the Mint: the (full) \emph{Mint} (including all
@@ -1392,8 +1400,14 @@ variable analysis: A network psychometrics method to detect local
 dependence. \emph{Multivariate Behavioral Research}, \emph{58}(6),
 1165--1182.
 
+\bibitem[\citeproctext]{ref-christensen2021estimating}
+Christensen, A. P., \& Golino, H. (2021a). Estimating the stability of
+psychological dimensions via bootstrap exploratory graph analysis: A
+monte carlo simulation and tutorial. \emph{Psych}, \emph{3}(3),
+479--500.
+
 \bibitem[\citeproctext]{ref-christensen2021equivalency}
-Christensen, A. P., \& Golino, H. (2021). On the equivalency of factor
+Christensen, A. P., \& Golino, H. (2021b). On the equivalency of factor
 and network loadings. \emph{Behavior Research Methods}, \emph{53}(4),
 1563--1580.
 
@@ -1517,6 +1531,22 @@ Leising, D., Grande, T., \& Faber, R. (2009). The toronto alexithymia
 scale (TAS-20): A measure of general psychological distress.
 \emph{Journal of Research in Personality}, \emph{43}(4), 707--710.
 
+\bibitem[\citeproctext]{ref-ludecke2020extracting}
+Lüdecke, D., Ben-Shachar, M. S., Patil, I., \& Makowski, D. (2020).
+Extracting, computing and exploring the parameters of statistical models
+using r. \emph{Journal of Open Source Software}, \emph{5}(53), 2445.
+
+\bibitem[\citeproctext]{ref-ludecke2021performance}
+Lüdecke, D., Ben-Shachar, M. S., Patil, I., Waggoner, P., \& Makowski,
+D. (2021). Performance: An r package for assessment, comparison and
+testing of statistical models. \emph{Journal of Open Source Software},
+\emph{6}(60).
+
+\bibitem[\citeproctext]{ref-ludecke2019insight}
+Lüdecke, D., Waggoner, P. D., \& Makowski, D. (2019). Insight: A unified
+interface to access information from model objects in r. \emph{Journal
+of Open Source Software}, \emph{4}(38), 1412.
+
 \bibitem[\citeproctext]{ref-makowski2025measuring}
 Makowski, D., Te, A., Neves, A., \& Chen, S. A. (2025). \emph{Measuring
 depression and anxiety with 4 items? Adaptation of the PHQ-4 to increase
@@ -1551,6 +1581,11 @@ interoceptive accuracy. \emph{Psychonomic Bulletin \& Review},
 Paulus, M. P., \& Stein, M. B. (2010). Interoception in anxiety and
 depression. \emph{Brain Structure and Function}, \emph{214}(5),
 451--463.
+
+\bibitem[\citeproctext]{ref-Rcoreteam}
+R Core Team. (2025). \emph{R: A language and environment for statistical
+computing}. R Foundation for Statistical Computing.
+\url{https://www.R-project.org/}
 
 \bibitem[\citeproctext]{ref-sibson1978studies}
 Sibson, R. (1978). Studies in the robustness of multidimensional
