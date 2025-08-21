@@ -51,7 +51,7 @@ author:
       - Investigation
     affiliations:
       - ref: "id1"
-  - name: Giulia Poreiro
+  - name: Giulia Poerio
     orcid: 0000-0002-2343-5109
     role:
       - Investigation
@@ -139,7 +139,10 @@ knitr::include_graphics("../study1/analysis/figures/figure1.png")
 
 We identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature (thermoregulation), bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, e.g., anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
 
-Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets^[The initial item list is available at [realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)]. We additionally crafted 8 "attention check" items blending in (and distributed across) each category. 
+Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets^[The initial item list is available at
+[realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)]
+<!-- *[MASKED FOR REVIEW]* -->
+. We additionally crafted 8 "attention check" items blending in (and distributed across) each category. 
  
 
 ### Procedure
@@ -159,7 +162,9 @@ The structure of the items was analyzed using the recently-developed Exploratory
 
 After removing redundant items using UVA, we iteratively fitted hierarchical EGA models (which additionally estimate higher-order "meta" clusters) using "glasso" [@friedman2008sparse] and the "Leiden" algorithm [@traag2019louvain] for community detection, refining the item pool at each step. We started by removing items with a low (< 80%) cluster stability (i.e., volatile items which jump between clusters across bootstrapped samples), followed by odd items belonging to no clusters or pairs of items (i.e., we keep items belonging to clusters of more than 2 items). Finally, for each lower-level cluster, we selected the 3 items with the highest node centrality (i.e., the highest loading in the cluster).
 
-For both studies, data analysis was carried out using R [4.4.3, @Rcoreteam], leveraging the *easystats* ecosystem [@ludecke2019insight; @ludecke2020extracting] and the *EGAnet* package [@christensen2021estimating]. The reproducible code and additional details are available at https://github.com/RealityBending/InteroceptionScale.
+For both studies, data analysis was carried out using R [4.4.3, @Rcoreteam], leveraging the *easystats* ecosystem [@ludecke2019insight; @ludecke2020extracting] and the *EGAnet* package [@christensen2021estimating]. The reproducible code and additional details are available at 
+<!-- *[MASKED FOR REVIEW]*. -->
+https://github.com/RealityBending/InteroceptionScale.
 
 ## Results
 
@@ -282,7 +287,9 @@ Participants were asked to rate how physically active they consider themselves a
 
 In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned the measures into three groups (and randomized the order within them): 1) interoception questionnaires (MAIA, IAS, BPQ), 2) emotions (TAS, CERQ, ERS, PI-18), and 3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
 After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups. 7 attention checks were embedded throughout (one within each major questionnaire).
-In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on https://github.com/RealityBending/InteroceptionScale].
+In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on 
+<!-- *[MASKED FOR REVIEW]*. -->
+https://github.com/RealityBending/InteroceptionScale].
 
 ```{r}
 #| label: fig-three
@@ -398,10 +405,11 @@ In conclusion, the Mint scale represents a fresh take on interoception questionn
 
 # Data Availability
 
-Data, code, and all materials are available at https://github.com/RealityBending/InteroceptionScale.
+Data, code, and all materials are available at 
+<!-- *[MASKED FOR REVIEW]*. -->
+https://github.com/RealityBending/InteroceptionScale.
 
 # Acknowledgements
-
 
 We would like to thank Hugo Critchley for his valuable feedback on the manuscript.
 DM would also like to thank Anastasia for the motivation provided to write this paper.
