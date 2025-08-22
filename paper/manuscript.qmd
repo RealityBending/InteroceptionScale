@@ -80,9 +80,9 @@ abstract: |
   Interoception, the sensing of the body's internal state, is an important component of homeostatic and allostatic regulation with wide-ranging implications for mental and physical health, yet its measurement is hindered by tools with conceptual and psychometric issues. To address these limitations, we developed and validated the Multimodal Interoception Questionnaire (Mint). In Study 1 (N=559), a comprehensive item pool using a novel "modality-by-context" framework was generated and then reduced using psychometric network analysis. In Study 2 (N=737), we validated the Mint in an independent sample, establishing its structure,  comparing its predictive power against established interoception questionnaires (MAIA-2, BPQ, IAS), and across a wide range of clinical and cognitive outcomes. This rigorous process yielded a 33-item scale with a stable hierarchical structure comprising three metaclusters (Interoceptive Deficit, Interoceptive Awareness, Visceroception) and 11 distinct facets. The Mint demonstrated superior criterion validity, consistently outperforming existing scales in predicting outcomes tied to altered bodily perception, including alexithymia, ADHD, autism, and somatic symptom clusters. The Mint offers a psychometrically robust and nuanced measure of self-reported interoception that integrates and extends existing scales, providing researchers and clinicians with a practical and readily usable tool to investigate the role of bodily sensations in health and disease.
 #   **Significance Statement**. TODO.
 keywords: "Interoception questionnaire, interoceptive accuracy scale, MAIA, Mint Validation, Body Awareness, Health"
-numbered-lines: false
+numbered-lines: true
 floatsintext: true
-mask: false
+mask: true
 bibliography: bibliography.bib
 format:
   apaquarto-pdf:
@@ -140,8 +140,8 @@ knitr::include_graphics("../study1/analysis/figures/figure1.png")
 We identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature (thermoregulation), bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, e.g., anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
 
 Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets^[The initial item list is available at
-[realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)]
-<!-- *[MASKED FOR REVIEW]* -->
+<!-- [realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)] -->
+*[MASKED FOR REVIEW]*
 . We additionally crafted 8 "attention check" items blending in (and distributed across) each category. 
  
 
@@ -163,8 +163,8 @@ The structure of the items was analyzed using the recently-developed Exploratory
 After removing redundant items using UVA, we iteratively fitted hierarchical EGA models (which additionally estimate higher-order "meta" clusters) using "glasso" [@friedman2008sparse] and the "Leiden" algorithm [@traag2019louvain] for community detection, refining the item pool at each step. We started by removing items with a low (< 80%) cluster stability (i.e., volatile items which jump between clusters across bootstrapped samples), followed by odd items belonging to no clusters or pairs of items (i.e., we keep items belonging to clusters of more than 2 items). Finally, for each lower-level cluster, we selected the 3 items with the highest node centrality (i.e., the highest loading in the cluster).
 
 For both studies, data analysis was carried out using R [4.4.3, @Rcoreteam], leveraging the *easystats* ecosystem [@ludecke2019insight; @ludecke2020extracting] and the *EGAnet* package [@christensen2021estimating]. The reproducible code and additional details are available at 
-<!-- *[MASKED FOR REVIEW]*. -->
-https://github.com/RealityBending/InteroceptionScale.
+*[MASKED FOR REVIEW]*.
+<!-- https://github.com/RealityBending/InteroceptionScale. -->
 
 ## Results
 
@@ -288,8 +288,8 @@ Participants were asked to rate how physically active they consider themselves a
 In order to avoid the repetition of similar types of questions and and balance longer and shorter questionnaires, we partitioned the measures into three groups (and randomized the order within them): 1) interoception questionnaires (MAIA, IAS, BPQ), 2) emotions (TAS, CERQ, ERS, PI-18), and 3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
 After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups. 7 attention checks were embedded throughout (one within each major questionnaire).
 In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on 
-<!-- *[MASKED FOR REVIEW]*. -->
-https://github.com/RealityBending/InteroceptionScale].
+*[MASKED FOR REVIEW]*.
+<!-- https://github.com/RealityBending/InteroceptionScale]. -->
 
 ```{r}
 #| label: fig-three
@@ -406,13 +406,13 @@ In conclusion, the Mint scale represents a fresh take on interoception questionn
 # Data Availability
 
 Data, code, and all materials are available at 
-<!-- *[MASKED FOR REVIEW]*. -->
-https://github.com/RealityBending/InteroceptionScale.
+*[MASKED FOR REVIEW]*.
+<!-- https://github.com/RealityBending/InteroceptionScale. -->
 
-# Acknowledgements
+<!-- # Acknowledgements -->
 
-We would like to thank Hugo Critchley for his valuable feedback on the manuscript.
-DM would also like to thank Anastasia for the motivation provided to write this paper.
+<!-- We would like to thank Hugo Critchley for his valuable feedback on the manuscript. -->
+<!-- DM would also like to thank Anastasia for the motivation provided to write this paper. -->
 
 # References
 
