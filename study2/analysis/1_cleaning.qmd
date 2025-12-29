@@ -234,6 +234,41 @@ We removed `r length(outliers$distance)` (`r insight::format_percent(length(outl
 df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration, outliers$distance))
 ```
 
+## Internal Consistency
+
+- MAIA [x]
+- MINT []
+- BPQ []
+- IAS []
+- TAS-20 []
+- B-ERS []
+- CERQ-Short []
+- CEFSA-14 []
+- PI-18 []
+- SILS (only one item)
+- PHQ-4 []
+
+```{r}
+df[grepl("^MAIA_.*_R$", names(df))] <- 6 - df[grepl("^MAIA_.*_R$", names(df))]  # Reverse
+maia_ar <- df[, grepl("^MAIA_AttentionRegulation_", names(df))]
+maia_bl <-  df[, grepl("^MAIA_BodyListening_", names(df))]
+maia_ea <-  df[, grepl("^MAIA_EmotionalAwareness_", names(df))]
+maia_nd <-  df[, grepl("^MAIA_NotDistracting_", names(df))]
+maia_n <-  df[, grepl("^MAIA_Noticing_", names(df))]
+maia_nw <-  df[, grepl("^MAIA_NotWorrying_", names(df))]
+maia_sr <-  df[, grepl("^MAIA_SelfRegulation_", names(df))]
+maia_t <-  df[, grepl("^MAIA_Trusting_", names(df))]
+
+psych::omega(maia_ar, nfactors = 1)
+psych::omega(maia_bl, nfactors = 1)
+psych::omega(maia_ea, nfactors = 1)
+psych::omega(maia_nd, nfactors = 1)
+psych::omega(maia_n, nfactors = 1)
+psych::omega(maia_nw, nfactors = 1)
+psych::omega(maia_sr, nfactors = 1)
+psych::omega(maia_t, nfactors = 1)
+```
+
 
 
 ## Dimension Computation
@@ -312,8 +347,6 @@ df <- compute_and_remove(df, name="PI_Enticing", pattern="PI18_GE", method="mean
 df$PI_Good <- rowMeans(select(df, PI_Safe, PI_Enticing), na.rm=TRUE)
 df <- select(df, -starts_with("PI18_"))
 ```
-
-
 
 ## Final Sample
 
