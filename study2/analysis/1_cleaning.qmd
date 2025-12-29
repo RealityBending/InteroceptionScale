@@ -238,8 +238,8 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration
 
 - MAIA [x]
 - MINT []
-- BPQ []
-- IAS []
+- BPQ [x]
+- IAS [x]
 - TAS-20 []
 - B-ERS []
 - CERQ-Short []
@@ -269,6 +269,41 @@ psych::omega(maia_sr, nfactors = 1)
 psych::omega(maia_t, nfactors = 1)
 ```
 
+```{r}
+bpq <- df[,grepl("^BodyAwareness_", names(df))]
+bpq <- bpq[,(names(bpq) != "BodyAwareness_AttentionCheck_1")]
+psych::omega(bpq, nfactors = 1)
+
+```
+
+```{r}
+ias <- df[,grepl("^IAS_", names(df))]
+ias <- ias[,(names(ias) != "IAS_AttentionCheck_1")]
+psych::omega(ias, nfactors = 1)
+
+```
+
+
+```{r}
+df[grepl("^MAIA_.*_R$", names(df))] <- 6 - df[grepl("^MAIA_.*_R$", names(df))]  # Reverse
+maia_ar <- df[, grepl("^MAIA_AttentionRegulation_", names(df))]
+maia_bl <-  df[, grepl("^MAIA_BodyListening_", names(df))]
+maia_ea <-  df[, grepl("^MAIA_EmotionalAwareness_", names(df))]
+maia_nd <-  df[, grepl("^MAIA_NotDistracting_", names(df))]
+maia_n <-  df[, grepl("^MAIA_Noticing_", names(df))]
+maia_nw <-  df[, grepl("^MAIA_NotWorrying_", names(df))]
+maia_sr <-  df[, grepl("^MAIA_SelfRegulation_", names(df))]
+maia_t <-  df[, grepl("^MAIA_Trusting_", names(df))]
+
+psych::omega(maia_ar, nfactors = 1)
+psych::omega(maia_bl, nfactors = 1)
+psych::omega(maia_ea, nfactors = 1)
+psych::omega(maia_nd, nfactors = 1)
+psych::omega(maia_n, nfactors = 1)
+psych::omega(maia_nw, nfactors = 1)
+psych::omega(maia_sr, nfactors = 1)
+psych::omega(maia_t, nfactors = 1)
+```
 
 
 ## Dimension Computation
