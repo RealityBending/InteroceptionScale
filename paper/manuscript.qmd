@@ -254,9 +254,9 @@ The Interoceptive Accuracy Scale [IAS, @murphy2020testing] measures a general sc
 
 #### Emotions and Cognition
 
-The Toronto Alexithymia Scale TAS [TAS-20, @leising2009toronto] measures 3 Alexithymia dimensions with 20 items 5-point Likert scale (1 = *Strongly Disagree*, 5 = *Strongly Agree*: Difficulty Identifying Feelings (DIF), Difficulty Describing Feelings (DDF), and Externally Oriented Thinking (EOR).
+The Toronto Alexithymia Scale TAS [TAS-20, @leising2009toronto] measures 3 Alexithymia dimensions with 20 items 5-point Likert scale (1 = *Strongly Disagree*, 5 = *Strongly Agree*: Difficulty Identifying Feelings (DIF), Difficulty Describing Feelings (DDF), and Externally Oriented Thinking (EOT). In this study, the  TAS subscales showed poor to acceptable internal consistency: ωDIF = 0.77, ωDDF = 0.53 and ωEOT = 0.69.  
 
-The Emotion Reactivity Scale - Brief Version [B-ERS, @veilleux2024development] measures 3 dimensions with 6 items on a 5-point Likert scale (0 = *Not like me at all*, 4 = *Extremely like me*): Arousal (*"My moods are very strong and powerful"*), Sensitivity (*"I tend to get very emotional very easily"*), and Persistence (*"When I am angry/upset, it takes me much longer than most people to calm down"*).
+The Emotion Reactivity Scale - Brief Version [B-ERS, @veilleux2024development] measures 3 dimensions with 6 items on a 5-point Likert scale (0 = *Not like me at all*, 4 = *Extremely like me*): Arousal (*"My moods are very strong and powerful"*), Sensitivity (*"I tend to get very emotional very easily"*), and Persistence (*"When I am angry/upset, it takes me much longer than most people to calm down"*). 
 
 The Cognitive Emotion Regulation Questionnaire [CERQ-short, @garnefski2006cognitive] measures 9 adaptive and maladaptive emotion regulation strategies with 18 items (1 = *Almost Never*, 5 = *Almost Always*). The strategies include Self-blame, Other-blame, Rumination, Catastrophizing, Putting into Perspective, Positive Refocusing, Positive Reappraisal, Acceptance, and Planning. 
 

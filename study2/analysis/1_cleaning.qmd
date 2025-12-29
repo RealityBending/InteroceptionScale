@@ -240,7 +240,7 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration
 - MINT []
 - BPQ [x]
 - IAS [x]
-- TAS-20 []
+- TAS-20 [x]
 - B-ERS []
 - CERQ-Short []
 - CEFSA-14 []
@@ -280,30 +280,26 @@ psych::omega(bpq, nfactors = 1)
 ias <- df[,grepl("^IAS_", names(df))]
 ias <- ias[,(names(ias) != "IAS_AttentionCheck_1")]
 psych::omega(ias, nfactors = 1)
-
 ```
-
 
 ```{r}
-df[grepl("^MAIA_.*_R$", names(df))] <- 6 - df[grepl("^MAIA_.*_R$", names(df))]  # Reverse
-maia_ar <- df[, grepl("^MAIA_AttentionRegulation_", names(df))]
-maia_bl <-  df[, grepl("^MAIA_BodyListening_", names(df))]
-maia_ea <-  df[, grepl("^MAIA_EmotionalAwareness_", names(df))]
-maia_nd <-  df[, grepl("^MAIA_NotDistracting_", names(df))]
-maia_n <-  df[, grepl("^MAIA_Noticing_", names(df))]
-maia_nw <-  df[, grepl("^MAIA_NotWorrying_", names(df))]
-maia_sr <-  df[, grepl("^MAIA_SelfRegulation_", names(df))]
-maia_t <-  df[, grepl("^MAIA_Trusting_", names(df))]
+tas <- df |>
+  select(starts_with("TAS_"))|>
+  mutate(TAS_DIF_9 = 6 - TAS_DIF_9,
+         TAS_DIF_13 = 6- TAS_DIF_13 , 
+         TAS_EOT_15 = 6- TAS_EOT_15,
+         TAS_EOT_18 = 6- TAS_EOT_18,
+         TAS_EOT_19 = 6- TAS_EOT_19)
 
-psych::omega(maia_ar, nfactors = 1)
-psych::omega(maia_bl, nfactors = 1)
-psych::omega(maia_ea, nfactors = 1)
-psych::omega(maia_nd, nfactors = 1)
-psych::omega(maia_n, nfactors = 1)
-psych::omega(maia_nw, nfactors = 1)
-psych::omega(maia_sr, nfactors = 1)
-psych::omega(maia_t, nfactors = 1)
+tas_eot <- tas[, grepl("^TAS_EOT_", names(tas))]
+tas_ddf <-  tas[, grepl("^TAS_DDF_", names(tas))]
+tas_dif <-  tas[, grepl("^TAS_DIF_", names(tas))]
+
+psych::omega(tas_eot, nfactors = 1)
+psych::omega(tas_ddf, nfactors = 1)
+psych::omega(tas_dif, nfactors = 1)
 ```
+
 
 
 ## Dimension Computation
@@ -349,6 +345,15 @@ df <- compute_and_remove(df, name="PHQ4_Anxiety", method="sum")
 df <- compute_and_remove(df, name="PHQ4_Depression", method="sum")
 
 # TODO: check if any reversed items in the following questionnaires
+#There are 5 items that are negatively keyed (items 9, 13, 15, 18 and 19) in the TAS
+
+df <- df |>
+  mutate(TAS_DIF_9 = 6 - TAS_DIF_9,
+         TAS_DIF_13 = 6- TAS_DIF_13 , 
+         TAS_EOT_15 = 6- TAS_EOT_15,
+         TAS_EOT_18 = 6- TAS_EOT_18,
+         TAS_EOT_19 = 6- TAS_EOT_19)
+
 df <- compute_and_remove(df, name="TAS_EOT", method="mean")
 df <- compute_and_remove(df, name="TAS_DDF", method="mean")
 df <- compute_and_remove(df, name="TAS_DIF", method="mean")
