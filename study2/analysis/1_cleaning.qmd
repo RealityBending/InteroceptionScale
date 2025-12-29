@@ -300,6 +300,38 @@ psych::omega(tas_ddf, nfactors = 1)
 psych::omega(tas_dif, nfactors = 1)
 ```
 
+```{r}
+ers_a <- df[, grepl("^ERS_Arousal_", names(df))]
+ers_s <-  df[, grepl("^ERS_Sensitivity_", names(df))]
+ers_p <-  df[, grepl("^ERS_Persistence_", names(df))]
+
+psych::omega(ers_a, nfactors = 1)
+psych::omega(tas_ddf, nfactors = 1)
+psych::omega(tas_dif, nfactors = 1)
+
+```
+
+```{r}
+cerq_acept <- df[, grepl("^CERQ_Acceptance_", names(df))]
+cerq_posref <- df[, grepl("^CERQ_PositiveRefocusing_", names(df))]
+cerq_posrea <- df[, grepl("^CERQ_PositiveReappraisal_", names(df))]
+cerq_selfbla <- df[, grepl("^CERQ_SelfBlame_", names(df))]
+cerq_otherbla <- df[, grepl("^CERQ_OtherBlame_", names(df))]
+cerq_rum <- df[, grepl("^CERQ_Rumination_", names(df))]
+cerq_cat <- df[, grepl("^CERQ_Catastrophizing_", names(df))]
+cerq_refopla <- df[, grepl("^CERQ_RefocusPlanning_", names(df))]
+cerq_persp <- df[, grepl("^CERQ_Perspective_", names(df))]
+
+psych::omega(cerq_acept, nfactors = 1)
+psych::omega(cerq_posref, nfactors = 1)
+psych::omega(cerq_posrea, nfactors = 1)
+psych::omega(cerq_selfbla, nfactors = 1)
+psych::omega(cerq_otherbla, nfactors = 1)
+psych::omega(cerq_rum, nfactors = 1)
+psych::omega(cerq_cat, nfactors = 1)
+psych::omega(cerq_refopla, nfactors = 1)
+psych::omega(cerq_persp, nfactors = 1)
+```
 
 
 ## Dimension Computation
