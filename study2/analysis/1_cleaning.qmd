@@ -241,10 +241,10 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration
 - BPQ [x]
 - IAS [x]
 - TAS-20 [x]
-- B-ERS []
-- CERQ-Short []
-- CEFSA-14 []
-- PI-18 []
+- B-ERS [x]
+- CERQ-Short [x]
+- CEFSA-14 [x]
+- PI-18 [x]
 - SILS (only one item)
 - PHQ-4 []
 
@@ -333,6 +333,48 @@ psych::omega(cerq_refopla, nfactors = 1)
 psych::omega(cerq_persp, nfactors = 1)
 ```
 
+```{r}
+cefsa_emo <- df[, grepl("^CEFSA_Emotion_", names(df))]
+cefsa_con <- df[, grepl("^CEFSA_Connection_", names(df))]
+cefsa_body <- df[, grepl("^CEFSA_Body_", names(df))]
+cefsa_rea <- df[, grepl("^CEFSA_Reality_", names(df))]
+cefsa_fam <- df[, grepl("^CEFSA_Familiarity_", names(df))]
+cefsa_age <- df[, grepl("^CEFSA_Agency_", names(df))]
+cefsa_self <- df[, grepl("^CEFSA_Self_", names(df))]
+
+
+psych::omega(cefsa_emo, nfactors = 1)
+psych::omega(cefsa_con, nfactors = 1)
+psych::omega(cefsa_body, nfactors = 1)
+psych::omega(cefsa_rea, nfactors = 1)
+psych::omega(cefsa_fam, nfactors = 1)
+psych::omega(cefsa_age, nfactors = 1)
+psych::omega(cefsa_self, nfactors = 1)
+```
+
+```{r}
+
+df[grepl("^PI18.*_R$", names(df))] <- 6 - df[grepl("^PI18.*_R$", names(df))]  # Reverse
+
+pi_alive <- df[grep("^PI18.*A_", names(df))]
+pi_safe <- df[grep("^PI18.*GS", names(df))]
+pi_enticing <- df[grep("^PI18.*GE", names(df))]
+pi_good <- df[c(grep("^PI18.*GS", names(df)), grep("^PI18.*GE", names(df)))]
+
+psych::omega(pi_alive, nfactors = 1)
+psych::omega(pi_safe, nfactors = 1)
+psych::omega(pi_enticing, nfactors = 1)
+psych::omega(pi_good, nfactors = 1)
+```
+
+```{r}
+phq_a <- df[grep("^PHQ4_Anxiety", names(df))]
+phq_d <- df[grep("^PHQ4_Depression", names(df))]
+
+
+psych::omega(phq_a, nfactors = 1)
+psych::omega(phq_d, nfactors = 1)
+```
 
 ## Dimension Computation
 
@@ -381,7 +423,7 @@ df <- compute_and_remove(df, name="PHQ4_Depression", method="sum")
 
 df <- df |>
   mutate(TAS_DIF_9 = 6 - TAS_DIF_9,
-         TAS_DIF_13 = 6- TAS_DIF_13 , 
+         TAS_DIF_13 = 6- TAS_DIF_13, 
          TAS_EOT_15 = 6- TAS_EOT_15,
          TAS_EOT_18 = 6- TAS_EOT_18,
          TAS_EOT_19 = 6- TAS_EOT_19)
