@@ -120,7 +120,8 @@ The initial pool of 120 was then reduced using cutting-edge psychometric network
 
 ### Participants
 
-We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37.0 $\pm$ 12.2 [18, 77]; 50.8\% women; country of residence: 63.86% UK, 26.65% USA).
+We recruited 760 English-speaking participants using Prolific\textcopyright. We excluded 191 for failing at least one attention check, and 10 based on measures significantly related to the probability of failing attention checks [namely, the multivariate distance obtained with the OPTICS algorithm, @theriault2024check]. The final sample includes 559 participants (age = 37.0 $\pm$ 12.2 [18, 77]; 50.8\% women, 48.1\%  men, 1.07\%  non-binary; country of residence: 63.86\% UK, 26.65\% USA,  9.48\% other). Of the sample, 68.3\% identified as White, 11.3\% as Black, 5.7\% as Mixed ethnicity, and 4.1\% as South Asian. Smaller proportions identified as East Asian (2.5\%), Hispanic/Latino (2.5\%), Southeast Asian (2.0\%), Middle Eastern/North African (1.4\%), or another ethnicity (0.9\%), while 0.7\% preferred not to disclose their ethnicity.
+
 This study was approved by the University of Sussex' Ethics Committee (ER/MB2021/1).
 
 ### Item Generation
@@ -224,7 +225,9 @@ Study 1 successfully leveraged a systematic item generation process and modern a
 
 We recruited 921 English-speaking participants via SONA and Prolific\textcopyright, from which 118 were excluded for failing at least one attention check and 6 based on multivariate distance (using the same procedure as for study 1). 
 60 participants were further excluded due to missing data following a technical issue.
-The final sample includes 737 participants (age = 36.8 $\pm$ 14.7 [18, 87]; 57.3\% women; Country of residence: 75.17% United Kingdom, 24.83% other).
+The final sample includes 737 participants (age = 36.8 $\pm$ 14.7 [18, 87]; 57.3\% women, 41.1\% men, 1.63\% non-binary; Country of residence: 75.17% United Kingdom, 24.83% other).
+Of the sample, 80.3\% identified as White, 6.6\% as Black, 4.9\% as Mixed ethnicity, and 3.0\% as South Asian. Smaller proportions identified as East Asian (1.6\%), Hispanic/Latino (1.1\%), Middle Eastern/North African (0.8\%), or Southeast Asian (0.7\%), while 0.1\% identified as another ethnicity.
+
 This study was approved by the University of Sussex' Ethics Committee (ER/EB672/2).
 
 
