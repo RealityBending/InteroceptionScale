@@ -323,6 +323,7 @@ for(outcome_group in c("Interoception", "Alexithymia", "Mood", "Mental", "Physic
     mutate(Group = outcome_group, Outcome = outcome_group)
   
   rez <- rbind(rez, out_group, ave)
+  
 }
 
 grandave <- rez |> 
@@ -900,8 +901,10 @@ micromint <- data.frame(
 make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 3, xcol = "#424242", ycol="#424242") {
   
   r <- df1 |> 
-    correlation::correlation(data2=df2, p_adjust="none", redundant=ifelse(is.null(df2), TRUE, FALSE)) |> 
-    correlation::cor_sort() |>
+    correlation::correlation(data2=df2, p_adjust="none", ci = 0.95, redundant=ifelse(is.null(df2), TRUE, FALSE)) 
+    print(r)
+    
+  r <- correlation::cor_sort(r) |>
     mutate(label = ifelse(p < .001, paste0(insight::format_value(r, lead_zero = FALSE, zap_small = TRUE)), ""),
            Parameter1 = cleanlabels(Parameter1, qname=qname_x),
            Parameter2 = cleanlabels(Parameter2, qname=qname_y))
@@ -1378,8 +1381,14 @@ display_models(mods_pigood, title="Best Model", subtitle = "Primals - Good")
 #### Mood Disorders
 
 ```{r}
+table(df$Disorders_Psychiatric_MoodTreatment)
+```
+
+
+```{r}
 compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", subtitle = "") {
   
+
   # Full Questionnaires
   m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
               data = cbind(mint, df[outcome]),
@@ -1526,6 +1535,11 @@ mods_addict$p
 #### ADHD
 
 ```{r}
+table(df$Disorders_Psychiatric_ADHD)
+```
+
+
+```{r}
 preds_adhd <- compare_predictors("Disorders_Psychiatric_ADHD")
 display_models(preds_adhd$table, title="Best Predictor", subtitle = "ADHD")
 preds_adhd$p
@@ -1536,6 +1550,11 @@ mods_adhd$p
 ```
 
 #### Autism
+
+```{r}
+table(df$Disorders_Psychiatric_Autism)
+```
+
 
 ```{r}
 preds_asd <- compare_predictors("Disorders_Psychiatric_Autism")
