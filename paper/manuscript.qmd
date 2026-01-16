@@ -330,7 +330,7 @@ Moreover, we also included an alternative "interoception-focused" version of the
 
 ## Results
 
-The application of EGA to the initial set of 42 items reproduced the expected 14 lower-level clusters of triplets and 3 higher-order metaclusters, with the exception of the *UrSe* (Urointestinal Sensitivity), for which one item moved to the *Olfa* (Olfactory Compensation) cluster.
+The application of EGA to the initial set of 45 items reproduced the expected 14 lower-level clusters of triplets and 3 higher-order metaclusters, with the exception of the *UrSe* (Urointestinal Sensitivity), for which one item moved to the *Olfa* (Olfactory Compensation) cluster.
 In order to further balance and reduce the items, we removed the *UrSe* cluster, as well as *StaS* (State Specificity), which in comparison to the other items stood out as containing vague and overlapping items
 <!-- ; e.g., "Being sexually aroused is a very different bodily feeling compared to other states (e.g., feeling anxious, relaxed, or after physical exercise)" -->
 ; *SexO* (Sexual Organs Sensitivity), which overlapped with the *SexS* (Sexual Arousal Sensitivity) cluster; and *CaNo* (Cardiorespiratory Noticing), which overlapped with the *CaCo* (Cardiorespiratory Confusion) cluster.
