@@ -32,7 +32,8 @@ Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Applicat
 ```
 
 ```{r}
-#| code-fold: true
+#| code-fold: tru
+
 
 df <- read.csv("../data/data_participants.csv") |> 
   rename(MINT_Urin_1 = MINT_Deficit_Urin_1,
@@ -253,6 +254,7 @@ features <- data.frame(
   Gast = rowMeans(select(df, starts_with("MINT_Gast_")), na.rm = TRUE)
 )
 
+
 features$CardGast = rowMeans(select(features, Card, Gast), na.rm = TRUE)
 features$CardResp = rowMeans(select(features, Card, Resp), na.rm = TRUE)
 features$CardRespGast = rowMeans(select(features, Card, Resp, Gast), na.rm = TRUE)
@@ -332,8 +334,30 @@ grandave <- rez |>
   mutate(Group = "Average", Outcome = "Average")
 ```
 
+- fake art sample 
+```{r}
+features_art <- data.frame(
+  SexS = rowMeans(select(df_art, starts_with("MINT_SexS_")), na.rm = TRUE),
+  StaS = rowMeans(select(df_art, starts_with("MINT_StaS_")), na.rm = TRUE),
+  SexO = rowMeans(select(df_art, starts_with("MINT_SexO_")), na.rm = TRUE),
+  ExaC = rowMeans(select(df_art, starts_with("MINT_ExAc_")), na.rm = TRUE),
+  RelA = rowMeans(select(df_art, starts_with("MINT_RelA_")), na.rm = TRUE),
+  UrSe = rowMeans(select(df_art, starts_with("MINT_UrSe_")), na.rm = TRUE),
+  CaCo = rowMeans(select(df_art, starts_with("MINT_CaCo_")), na.rm = TRUE),
+  Urin = rowMeans(select(df_art, starts_with("MINT_Urin_")), na.rm = TRUE),
+  Sati = rowMeans(select(df_art, starts_with("MINT_Sati_")), na.rm = TRUE),
+  Derm = rowMeans(select(df_art, starts_with("MINT_Derm_")), na.rm = TRUE),
+  CaNo = rowMeans(select(df_art, starts_with("MINT_CaNo_")), na.rm = TRUE),
+  Olfa = rowMeans(select(df_art, starts_with("MINT_Olfa_")), na.rm = TRUE),
+  Resp = rowMeans(select(df_art, starts_with("MINT_Resp_")), na.rm = TRUE),
+  Card = rowMeans(select(df_art, starts_with("MINT_Card_")), na.rm = TRUE),
+  Gast = rowMeans(select(df_art, starts_with("MINT_Gast_")), na.rm = TRUE)
+)
 
-
+features_art$CardGast = rowMeans(select(features_art, Card, Gast), na.rm = TRUE)
+features_art$CardResp = rowMeans(select(features_art, Card, Resp), na.rm = TRUE)
+features_art$CardRespGast = rowMeans(select(features_art, Card, Resp, Gast), na.rm = TRUE)
+```
 
 #### R2
 
@@ -480,6 +504,105 @@ p_stab <- plot(itemstability)
 p_stab 
 
 ega2$EGA
+```
+
+##### EGA FAKEART
+
+```{r}
+
+df_art <- read.csv("https://raw.githubusercontent.com/RealityBending/FakeArt/refs/heads/main/data/rawdata_participants.csv") |>
+  rename(MINT_Urin_1 = MINT_Urin_13,
+         MINT_Urin_2 = MINT_Urin_14,
+         MINT_Urin_3 = MINT_Urin_15,
+         MINT_CaCo_1 = MINT_CaCo_10,
+         MINT_CaCo_2 = MINT_CaCo_11,
+         MINT_CaCo_3 = MINT_CaCo_12,
+         # MINT_CaNo_1 = MINT_Deficit_CaNo_7,
+         # MINT_CaNo_2 = MINT_Deficit_CaNo_8,
+         # MINT_CaNo_3 = MINT_Deficit_CaNo_9,
+         MINT_Olfa_1 = MINT_Olfa_22,
+         MINT_Olfa_2 = MINT_Olfa_23,
+         MINT_Olfa_3 = MINT_Olfa_24,
+         MINT_Sati_1 = MINT_Sati_19,
+         MINT_Sati_2 = MINT_Sati_20,
+         MINT_Sati_3 = MINT_Sati_21,
+         MINT_SexS_1 = MINT_SexS_7,
+         MINT_SexS_2 = MINT_SexS_8,
+         MINT_SexS_3 = MINT_SexS_9,
+         # MINT_SexO_1 = MINT_Awareness_SexO_22,
+         # MINT_SexO_2 = MINT_Awareness_SexO_23,
+         # MINT_SexO_3 = MINT_Awareness_SexO_24,
+         # MINT_UrSe_1 = MINT_Awareness_UrSe_25,
+         # MINT_UrSe_2 = MINT_Awareness_UrSe_26,
+         # MINT_UrSe_3 = MINT_Awareness_UrSe_27,
+         MINT_RelA_1 = MINT_RelA_4,
+         MINT_RelA_2 = MINT_RelA_5,
+         MINT_RelA_3 = MINT_RelA_6,
+         # MINT_StaS_1 = MINT_Awareness_StaS_31,
+         # MINT_StaS_2 = MINT_Awareness_StaS_32,
+         # MINT_StaS_3 = MINT_Awareness_StaS_33,
+         MINT_ExAc_1 = MINT_ExAc_1,
+         MINT_ExAc_2 = MINT_ExAc_2,
+         MINT_ExAc_3 = MINT_ExAc_3,
+         MINT_Card_1 = MINT_Card_28,
+         MINT_Card_2 = MINT_Card_29,
+         MINT_Card_3 = MINT_Card_30,
+         MINT_Resp_1 = MINT_Resp_25,
+         MINT_Resp_2 = MINT_Resp_26,
+         MINT_Resp_3 = MINT_Resp_27,
+         MINT_Gast_1 = MINT_Gast_31,
+         MINT_Gast_2 = MINT_Gast_32,
+         MINT_Gast_3 = MINT_Gast_33,
+         MINT_Derm_1 = MINT_Derm_16,
+         MINT_Derm_2 = MINT_Derm_17,
+         MINT_Derm_3 = MINT_Derm_18) |>
+  select(-"MINT_AttentionCheck", 
+    -contains("UrSe"), 
+    -contains("StaS"),
+    -contains("SexO"), 
+    -contains("CaNo") 
+  )
+
+items_art <- select(df_art, starts_with("MINT_"))
+names(items_art) <- str_remove(names(items_art), "MINT_")
+```
+
+```
+
+```{r}
+#| eval: false
+
+ega_art <- bootEGA(
+  items_art,
+  EGA.type = "hierEGA",
+  model = "glasso",  # BGGM
+  algorithm = "leiden",
+  # consensus.method = "lowest_tefi",
+  allow.singleton = TRUE,
+  type="resampling",
+  plot.itemStability=FALSE,
+  typicalStructure=TRUE,
+  plot.typicalGraph=FALSE,
+  iter=500,
+  seed=3, ncores = 4)
+
+save(ega_art, file="models/ega_art.RData")
+```
+
+
+```{r}
+#| fig-width: 12
+#| fig-height: 14
+#| fig-keep: "first"
+
+load("models/ega_art.RData")
+
+# EGAnet::dimensionStability(ega)
+itemstability_art <- EGAnet::itemStability(ega_art, IS.plot=FALSE)
+p_stab_art <- plot(itemstability_art)
+p_stab_art 
+
+ega_art$EGA
 ```
 
 
@@ -1326,9 +1449,6 @@ preds_cerqacceptance$p
 mods_cerqacceptance <- compare_models_lm("CERQ_Acceptance")
 display_models(mods_cerqacceptance, title="Best Model", subtitle = "CERQ - Acceptance")
 ```
-
-
-
 
 
 ### Primals
