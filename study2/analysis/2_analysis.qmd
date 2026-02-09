@@ -334,31 +334,6 @@ grandave <- rez |>
   mutate(Group = "Average", Outcome = "Average")
 ```
 
-- fake art sample 
-```{r}
-features_art <- data.frame(
-  SexS = rowMeans(select(df_art, starts_with("MINT_SexS_")), na.rm = TRUE),
-  StaS = rowMeans(select(df_art, starts_with("MINT_StaS_")), na.rm = TRUE),
-  SexO = rowMeans(select(df_art, starts_with("MINT_SexO_")), na.rm = TRUE),
-  ExaC = rowMeans(select(df_art, starts_with("MINT_ExAc_")), na.rm = TRUE),
-  RelA = rowMeans(select(df_art, starts_with("MINT_RelA_")), na.rm = TRUE),
-  UrSe = rowMeans(select(df_art, starts_with("MINT_UrSe_")), na.rm = TRUE),
-  CaCo = rowMeans(select(df_art, starts_with("MINT_CaCo_")), na.rm = TRUE),
-  Urin = rowMeans(select(df_art, starts_with("MINT_Urin_")), na.rm = TRUE),
-  Sati = rowMeans(select(df_art, starts_with("MINT_Sati_")), na.rm = TRUE),
-  Derm = rowMeans(select(df_art, starts_with("MINT_Derm_")), na.rm = TRUE),
-  CaNo = rowMeans(select(df_art, starts_with("MINT_CaNo_")), na.rm = TRUE),
-  Olfa = rowMeans(select(df_art, starts_with("MINT_Olfa_")), na.rm = TRUE),
-  Resp = rowMeans(select(df_art, starts_with("MINT_Resp_")), na.rm = TRUE),
-  Card = rowMeans(select(df_art, starts_with("MINT_Card_")), na.rm = TRUE),
-  Gast = rowMeans(select(df_art, starts_with("MINT_Gast_")), na.rm = TRUE)
-)
-
-features_art$CardGast = rowMeans(select(features_art, Card, Gast), na.rm = TRUE)
-features_art$CardResp = rowMeans(select(features_art, Card, Resp), na.rm = TRUE)
-features_art$CardRespGast = rowMeans(select(features_art, Card, Resp, Gast), na.rm = TRUE)
-```
-
 #### R2
 
 ```{r}
@@ -567,6 +542,28 @@ items_art <- select(df_art, starts_with("MINT_"))
 names(items_art) <- str_remove(names(items_art), "MINT_")
 ```
 
+```{r}
+features_art <- data.frame(
+  SexS = rowMeans(select(df_art, starts_with("MINT_SexS_")), na.rm = TRUE),
+  StaS = rowMeans(select(df_art, starts_with("MINT_StaS_")), na.rm = TRUE),
+  SexO = rowMeans(select(df_art, starts_with("MINT_SexO_")), na.rm = TRUE),
+  ExaC = rowMeans(select(df_art, starts_with("MINT_ExAc_")), na.rm = TRUE),
+  RelA = rowMeans(select(df_art, starts_with("MINT_RelA_")), na.rm = TRUE),
+  UrSe = rowMeans(select(df_art, starts_with("MINT_UrSe_")), na.rm = TRUE),
+  CaCo = rowMeans(select(df_art, starts_with("MINT_CaCo_")), na.rm = TRUE),
+  Urin = rowMeans(select(df_art, starts_with("MINT_Urin_")), na.rm = TRUE),
+  Sati = rowMeans(select(df_art, starts_with("MINT_Sati_")), na.rm = TRUE),
+  Derm = rowMeans(select(df_art, starts_with("MINT_Derm_")), na.rm = TRUE),
+  CaNo = rowMeans(select(df_art, starts_with("MINT_CaNo_")), na.rm = TRUE),
+  Olfa = rowMeans(select(df_art, starts_with("MINT_Olfa_")), na.rm = TRUE),
+  Resp = rowMeans(select(df_art, starts_with("MINT_Resp_")), na.rm = TRUE),
+  Card = rowMeans(select(df_art, starts_with("MINT_Card_")), na.rm = TRUE),
+  Gast = rowMeans(select(df_art, starts_with("MINT_Gast_")), na.rm = TRUE)
+)
+
+features_art$CardGast = rowMeans(select(features_art, Card, Gast), na.rm = TRUE)
+features_art$CardResp = rowMeans(select(features_art, Card, Resp), na.rm = TRUE)
+features_art$CardRespGast = rowMeans(select(features_art, Card, Resp, Gast), na.rm = TRUE)
 ```
 
 ```{r}
