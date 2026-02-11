@@ -185,28 +185,59 @@ labels <- list(
 )
 ```
 
-## FA
+## Factor Analysis 
 
 - optimal number of factors to extract 1, 13 (then 29, 101)
-- 
+
+```{r}
+n <- parameters::n_factors(items, type = "FA")
+plot(n) 
+```
 
 ```{r}
 
+# 1 factor 
 
-n <- parameters::n_factors(items)
-plot(n) 
-
-
-fa <- parameters::factor_analysis(items, n = 1, rotation = "varimax", sort = TRUE)
+fa <- parameters::factor_analysis(items, n = 1, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
 plot(fa)
 
 model_performance(fa) |>display()
 summary(fa) |> display()
-fa |> display(threshold = 0.2, sort = TRUE)
+fa |> display(threshold = 0.3, sort = TRUE)
 
-item_omega(items, n = 4, poly_cor = TRUE) # omega 
-model_parameters(mint_omg) |> display() #view loadings
-summary(mint_omg) |> display() # view reliability estimates
+# item_omega(items, n = 4, poly_cor = TRUE) # omega 
+# model_parameters(mint_omg) |> display() #view loadings
+# summary(mint_omg) |> display() # view reliability estimates
+
+# fa |>
+#   select(Variable, Uniqueness) |>
+#   mutate(Group = str_extract(Variable, "^[A-Z][a-z]+")) |>
+#   mutate(Average = mean(Uniqueness), .by = "Group") |> 
+#   arrange(desc(Average), desc(Uniqueness)) |> 
+#   select(-Average, -Group) |> 
+#   gt::gt() |> 
+#   gt::data_color(
+#     columns = "Uniqueness",
+#     palette = c("red", "white", "green"),
+#     domain = c(0, 1) 
+#   ) 
+
+```
+
+```{r}
+
+# 17 factor 
+
+fa <- parameters::factor_analysis(items, n = 17, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
+plot(fa)
+
+model_performance(fa) |>display()
+summary(fa) |> display()
+fa |> display(threshold = 0.3, sort = TRUE)
+
+# item_omega(items, n = 4, poly_cor = TRUE) # omega 
+# model_parameters(mint_omg) |> display() #view loadings
+# summary(mint_omg) |> display() # view reliability estimates
 
 # fa |>
 #   select(Variable, Uniqueness) |>
@@ -223,6 +254,8 @@ summary(mint_omg) |> display() # view reliability estimates
 
 
 ```
+
+
 
 ## Item Correlation
 
