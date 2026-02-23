@@ -46,7 +46,7 @@ Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Applicat
 
 df <- read.csv("../data/data_participants.csv")
 
-items <- select(df, contains("_Q")) 
+items <- select(df, contains("_Q")) # 120
 byfacet <- items[df$Condition=="Dimensions",]
 bymodality <- items[df$Condition=="Domains",]
 byrandom <- items[df$Condition=="Random",]
@@ -187,10 +187,10 @@ labels <- list(
 
 ## Factor Analysis 
 
-- optimal number of factors to extract 1, 13 (then 29, 101)
+- optimal number of factors to extract 1, 17 (then 29, 101)
 
 ```{r}
-n <- parameters::n_factors(items, type = "FA")
+n <- parameters::n_factors(items, type = "FA", rotation = "oblimin",  package = c("psych"))
 plot(n) 
 ```
 
@@ -205,22 +205,6 @@ model_performance(fa) |>display()
 summary(fa) |> display()
 fa |> display(threshold = 0.3, sort = TRUE)
 
-# item_omega(items, n = 4, poly_cor = TRUE) # omega 
-# model_parameters(mint_omg) |> display() #view loadings
-# summary(mint_omg) |> display() # view reliability estimates
-
-# fa |>
-#   select(Variable, Uniqueness) |>
-#   mutate(Group = str_extract(Variable, "^[A-Z][a-z]+")) |>
-#   mutate(Average = mean(Uniqueness), .by = "Group") |> 
-#   arrange(desc(Average), desc(Uniqueness)) |> 
-#   select(-Average, -Group) |> 
-#   gt::gt() |> 
-#   gt::data_color(
-#     columns = "Uniqueness",
-#     palette = c("red", "white", "green"),
-#     domain = c(0, 1) 
-#   ) 
 
 ```
 
@@ -234,23 +218,6 @@ plot(fa)
 model_performance(fa) |>display()
 summary(fa) |> display()
 fa |> display(threshold = 0.3, sort = TRUE)
-
-# item_omega(items, n = 4, poly_cor = TRUE) # omega 
-# model_parameters(mint_omg) |> display() #view loadings
-# summary(mint_omg) |> display() # view reliability estimates
-
-# fa |>
-#   select(Variable, Uniqueness) |>
-#   mutate(Group = str_extract(Variable, "^[A-Z][a-z]+")) |>
-#   mutate(Average = mean(Uniqueness), .by = "Group") |> 
-#   arrange(desc(Average), desc(Uniqueness)) |> 
-#   select(-Average, -Group) |> 
-#   gt::gt() |> 
-#   gt::data_color(
-#     columns = "Uniqueness",
-#     palette = c("red", "white", "green"),
-#     domain = c(0, 1) 
-#   ) 
 
 
 ```
@@ -459,7 +426,7 @@ correlation::correlation(items[toremove1], items[keep]) |>
 ```
 
 ```{r}
-items <- select(items, -all_of(toremove1))
+items <- select(items, -all_of(toremove1)) # 116
 byfacet <- select(byfacet, -all_of(toremove1))
 bymodality <- select(bymodality, -all_of(toremove1))
 byrandom <- select(byrandom, -all_of(toremove1))
@@ -559,7 +526,7 @@ itemstability_table |>
 ```
 
 ```{r}
-items <- select(items, -all_of(toremove2))
+items <- select(items, -all_of(toremove2)) # 63
 byfacet <- select(byfacet, -all_of(toremove2))
 bymodality <- select(bymodality, -all_of(toremove2))
 byrandom <- select(byrandom, -all_of(toremove2))
@@ -621,7 +588,7 @@ lower |>
 ```
 
 ```{r}
-items <- select(items, -all_of(toremove3))
+items <- select(items, -all_of(toremove3)) # 51
 byfacet <- select(byfacet, -all_of(toremove3))
 bymodality <- select(bymodality, -all_of(toremove3))
 byrandom <- select(byrandom, -all_of(toremove3))
@@ -664,10 +631,13 @@ plot(itemStability(ega3))
 
 
 ```{r}
-EGAnet::genTEFI(ega3$EGA)
+# EGAnet::genTEFI(ega3$EGA)
 # cfa <- EGAnet::CFA(ega3$EGA, 
 #             items[colnames(ega3$lower_order$boot.wc)],
 #             estimator = "WLSMV")
+
+dimensionStability(ega3)
+
 ```
 
 ### Item Table 
@@ -697,6 +667,7 @@ dimensions <- list(
 )
 
 ``` 
+
 ```{r}
 #| message: false
 
