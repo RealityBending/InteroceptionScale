@@ -1625,11 +1625,35 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
   
   table <- table_models(models_full)
 
-  get_auc <- function(m) {
-    roc <- as.data.frame(performance_roc(m))
-    auc <- bayestestR::area_under_curve(roc$Specificity, roc$Sensitivity)
-    paste0("AUC = ", insight::format_percent(auc))
-  }
+  # get_auc <- function(m) {
+  #   roc <- as.data.frame(performance_roc(m))
+  #   auc <- bayestestR::area_under_curve(roc$Specificity, roc$Sensitivity)
+  #   paste0("AUC = ", insight::format_percent(auc))
+  # }
+  # 
+  
+      # SE for AUC
+    get_auc <- function(m, n_boot = 1000) {  
+    
+    probs <- predict(m, type = "response")  
+    outcome_vec <- model.response(model.frame(m))
+    roc_obj <- pROC::roc(outcome_vec, probs, quiet = TRUE)
+    auc_val <- as.numeric(pROC::auc(roc_obj))
+    
+    ci_auc <- pROC::ci.auc(roc_obj, method = "bootstrap",
+                           boot.n = n_boot, quiet = TRUE)
+    
+    se <- round(((ci_auc[3] - ci_auc[1]) / (2 * 1.96) )*100, 1)
+  
+    paste0(
+    "AUC = ",
+    insight::format_percent(auc_val),
+    " (± "  ,
+    sub("^0", "", sprintf("%.1f", se)),
+    ")")
+    }
+    
+  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
   
   mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
 
