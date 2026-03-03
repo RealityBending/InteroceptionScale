@@ -1198,7 +1198,7 @@ Most correlated dimensions:
 ### Alexithymia
 
 ```{r}
-table_models <- function(models) {
+table_models <- function(models, conf.level = 0.95) {
   test <- test_performance(models)
   table <- compare_performance(models, metrics=c("R2", "BIC"))
   test$Model <- NULL
@@ -1211,24 +1211,33 @@ table_models <- function(models) {
   
   preds <- c()
   coefs <- c()
+  ci_low <- c()
+  ci_high <- c()
+  
   for(m in models){
     x <- names(sort(abs(coef(m)[-1]), decreasing=TRUE))
     preds <- c(preds, paste0(cleanlabels(x), collapse = ", "))
     if(length(coef(m)) == 2) {
       coefs <- c(coefs, coef(m)[2])
+      ci <- confint(m, level = conf.level)[2, ]
+      ci_low <- c(ci_low, ci[1])
+      ci_high <- c(ci_high, ci[2])
     }
   }
   
   test <- datawizard::data_select(test, c("Name", "R2", "BIC", "BF"))
   
-  if(length(coefs) == length(models)) test$Coefficient <- coefs
-  
+  if(length(coefs) == length(models)) {
+  test$Coefficient <- coefs
+  test$CI_low <- round(ci_low,2)
+  test$CI_high <- round(ci_high,2)
+  }
   test
 }
 
 
 display_models <- function(table, title = "", subtitle = "") {
-  numcols <- c("R2", "BIC", "Coefficient")[c("R2", "BIC", "Coefficient") %in% names(table)]
+   numcols <- c("R2", "BIC", "Coefficient", "CI_low", "CI_high")[c("R2", "BIC", "Coefficient", "CI_low", "CI_high") %in% names(table)]
   table |> 
     mutate(BF = format_bf(BF, name = NULL, stars = TRUE)) |> 
     gt::gt() |> 
