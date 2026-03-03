@@ -1647,10 +1647,10 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
   
     paste0(
     "AUC = ",
-    insight::format_percent(auc_val),
+    insight::format_percent(auc_val, digits = 1),
     " (± "  ,
     sub("^0", "", sprintf("%.1f", se)),
-    ")")
+    "%)")
     }
     
   mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
