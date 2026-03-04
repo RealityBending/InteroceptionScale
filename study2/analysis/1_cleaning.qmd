@@ -237,7 +237,7 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration
 ## Internal Consistency
 
 - MAIA [x]
-- MINT []
+- MINT [x]
 - BPQ [x]
 - IAS [x]
 - TAS-20 [x]
@@ -247,6 +247,10 @@ df <- filter(df, !Participant %in% c(outliers$attentionchecks, outliers$duration
 - PI-18 [x]
 - SILS (only one item)
 - PHQ-4 []
+
+::: {.panel-tabset}
+
+### MAIA
 
 ```{r}
 df[grepl("^MAIA_.*_R$", names(df))] <- 6 - df[grepl("^MAIA_.*_R$", names(df))]  # Reverse
@@ -268,6 +272,44 @@ psych::omega(maia_nw, nfactors = 1)
 psych::omega(maia_sr, nfactors = 1)
 psych::omega(maia_t, nfactors = 1)
 ```
+### Mint
+
+#### Meta/ full 
+```{r}
+meta_MINT_Awareness <- df[, grepl("^MINT_Awareness_(ExAc|RelA|SexS)_", names(df))]
+meta_MINT_Deficit <- df[, grepl("^MINT_Deficit_(CaCo|Urin|Derm|Sati|Olfa)_", names(df))]
+meta_MINT_Visceroception <- df[, grepl("^MINT_Sensitivity_(Card|Resp|Gast)_", names(df))]
+
+psych::omega(meta_MINT_Awareness, nfactors = 1)
+psych::omega(meta_MINT_Deficit, nfactors = 1)
+psych::omega(meta_MINT_Visceroception, nfactors = 1)
+```
+
+#### Mini
+
+```{r}
+mini_MINT_Awareness <- df[, grepl("^MINT_Awareness_(ExAc|RelA)_", names(df))]
+
+mini_MINT_Deficit <- df[, grepl("^MINT_Deficit_(CaCo|Urin)_", names(df))]
+
+mini_MINT_Visceroception <- df[, grepl("^MINT_Sensitivity_(Card|Resp)_", names(df))]
+
+psych::omega(mini_MINT_Awareness, nfactors = 1)
+psych::omega(mini_MINT_Deficit, nfactors = 1)
+psych::omega(mini_MINT_Visceroception, nfactors = 1)
+```
+
+#### Macro
+- used the 3 items 
+
+```{r}
+Macro_MINT_Awareness <- df[, grepl("^MINT_(Awareness_ExAc|Deficit_CaCo|Sensitivity_Resp)_", names(df))]
+
+psych::omega(Macro_MINT_Awareness, nfactors = 1)
+
+```
+
+### BPQ
 
 ```{r}
 bpq <- df[,grepl("^BodyAwareness_", names(df))]
@@ -276,12 +318,14 @@ psych::omega(bpq, nfactors = 1)
 
 ```
 
+### IAS
 ```{r}
 ias <- df[,grepl("^IAS_", names(df))]
 ias <- ias[,(names(ias) != "IAS_AttentionCheck_1")]
 psych::omega(ias, nfactors = 1)
 ```
 
+### TAS
 ```{r}
 tas <- df |>
   select(starts_with("TAS_"))|>
@@ -300,6 +344,7 @@ psych::omega(tas_ddf, nfactors = 1)
 psych::omega(tas_dif, nfactors = 1)
 ```
 
+### ERS
 ```{r}
 ers_a <- df[, grepl("^ERS_Arousal_", names(df))]
 ers_s <-  df[, grepl("^ERS_Sensitivity_", names(df))]
@@ -311,6 +356,7 @@ psych::omega(tas_dif, nfactors = 1)
 
 ```
 
+### CERQ
 ```{r}
 cerq_acept <- df[, grepl("^CERQ_Acceptance_", names(df))]
 cerq_posref <- df[, grepl("^CERQ_PositiveRefocusing_", names(df))]
@@ -333,6 +379,7 @@ psych::omega(cerq_refopla, nfactors = 1)
 psych::omega(cerq_persp, nfactors = 1)
 ```
 
+### CEFSA
 ```{r}
 cefsa_emo <- df[, grepl("^CEFSA_Emotion_", names(df))]
 cefsa_con <- df[, grepl("^CEFSA_Connection_", names(df))]
@@ -352,6 +399,7 @@ psych::omega(cefsa_age, nfactors = 1)
 psych::omega(cefsa_self, nfactors = 1)
 ```
 
+### PI
 ```{r}
 
 df[grepl("^PI18.*_R$", names(df))] <- 6 - df[grepl("^PI18.*_R$", names(df))]  # Reverse
@@ -367,6 +415,7 @@ psych::omega(pi_enticing, nfactors = 1)
 psych::omega(pi_good, nfactors = 1)
 ```
 
+### PHQ
 ```{r}
 phq_a <- df[grep("^PHQ4_Anxiety", names(df))]
 phq_d <- df[grep("^PHQ4_Depression", names(df))]
@@ -375,6 +424,8 @@ phq_d <- df[grep("^PHQ4_Depression", names(df))]
 psych::omega(phq_a, nfactors = 1)
 psych::omega(phq_d, nfactors = 1)
 ```
+
+:::
 
 ## Dimension Computation
 
