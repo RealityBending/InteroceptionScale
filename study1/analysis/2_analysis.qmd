@@ -186,19 +186,26 @@ labels <- list(
 ```
 
 ## Factor Analysis 
+::: {.panel-tabset}
 
+### Factor Retention 
 - optimal number of factors to extract 1, 17 (then 29, 101)
 
+
 ```{r}
-n <- parameters::n_factors(items, type = "FA", rotation = "oblimin",  package = c("psych"))
+n <- parameters::n_factors(items, type = "FA", rotation = "oblimin")
 plot(n) 
 ```
+
+### Factor Extraction 
+
+#### 1 factor
 
 ```{r}
 
 # 1 factor 
 
-fa <- parameters::factor_analysis(items, n = 1, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
+fa <- parameters::factor_analysis(items, n = 1, rotation = "oblimin", scores = "tenBerge", sort = TRUE)
 plot(fa)
 
 model_performance(fa) |>display()
@@ -207,6 +214,8 @@ fa |> display(threshold = 0.3, sort = TRUE)
 
 
 ```
+
+#### 17 factors
 
 ```{r}
 
@@ -217,11 +226,37 @@ plot(fa)
 
 model_performance(fa) |>display()
 summary(fa) |> display()
-fa |> display(threshold = 0.3, sort = TRUE)
-
+fa |> display(threshold = 0.4, sort = TRUE)
 
 ```
 
+```{r}
+items_fa <- select(items_fa,
+  "Sensitivity_Genital_Q1", "Nociception_Genital_Q1", "Sexual_Genital_Q1",
+  "Accuracy_State_Q2", "Accuracy_SkinThermo_Q2", "Accuracy_State_Q1",
+  "Nociception_Cardiac_Q2", "Nociception_Respiratory_Q1", "Nociception_Respiratory_Q2",
+  "Sensitivity_Respiratory_Q4", "Sensitivity_Respiratory_Q3", "Sensitivity_Respiratory_Q1",
+  "Sensitivity_Gastric_Q1", "Sensitivity_Gastric_Q2", "Sensitivity_Gastric_Q3",
+  "Anxious_Respiratory_Q1", "Anxious_Cardiac_Q1", "Sensitivity_Cardiac_Q7",
+  "Sensitivity_SkinThermo_Q7", "Sensitivity_SkinThermo_Q2", "Sensitivity_SkinThermo_Q1",
+  "Sensitivity_ColonBladder_Q3", "Sensitivity_ColonBladder_Q4", "Sensitivity_Gastric_Q5",
+  "Nociception_ColonBladder_Q1", "Sensitivity_State_Q4", "Sensitivity_State_Q1",
+  "Sexual_ColonBladder_Q2", "Sexual_ColonBladder_Q1", "Sexual_Gastric_Q1",
+  "Sexual_SkinThermo_Q1", "Sexual_Respiratory_Q1", "Sexual_Cardiac_Q1",
+  "Sensitivity_Cardiac_Q1", "Sensitivity_Cardiac_Q3", "Sensitivity_Cardiac_Q4",
+  "Accuracy_ColonBladder_Q1", "Accuracy_ColonBladder_Q5", "Confusion_ColonBladder_Q1",
+  "Accuracy_Gastric_Q4", "Accuracy_Gastric_Q6", "Confusion_Gastric_Q2",
+  "Sensitivity_Respiratory_Q5", "Sensitivity_Cardiac_Q5", "Sensitivity_Respiratory_Q6"
+)
+
+fa <- parameters::factor_analysis(items, n = 17, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
+plot(fa)
+
+model_performance(fa) |>display()
+summary(fa) |> display()
+fa |> display(threshold = 0.4, sort = TRUE)
+
+```
 
 
 ## Item Correlation

@@ -1015,14 +1015,15 @@ ggsave("figures/fig1b.png", p_hclust, width=8, height=8*0.8, dpi=300)
 
 #### FA
 
+- 33 items 
 ```{r}
 #| fig-width: 12
 #| fig-height: 14
 
-n <- parameters::n_factors(items, type = "FA", rotation = "oblimin", package = "psych")
+n <- parameters::n_factors(items, type = "FA", rotation = "oblimin")
 plot(n)
 
-fa <- parameters::factor_analysis(items, n = 11, rotation = "varimax", sort = TRUE, package = "psych")
+fa <- parameters::factor_analysis(items, n = 2, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
 plot(fa)
 
 model_performance(fa) |> display()
@@ -1042,10 +1043,26 @@ fa |> display(threshold= 0.2, sort = TRUE)
 #   ) 
 ```
 
+- 9 factors 
 ```{r}
-fa2 <- parameters::factor_analysis(items,
-  n = 11,rotation = "oblimin",package = "psych"
-)
+fa2 <- parameters::factor_analysis(items, n = 9, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
+plot(fa2)
+
+model_performance(fa2) |> display()
+fa2 |> display(threshold= 0.2, sort = TRUE)
+
+# fa |>
+#   select(Variable, Uniqueness) |>
+#   mutate(Group = str_extract(Variable, "^[A-Z][a-z]+")) |>
+#   mutate(Average = mean(Uniqueness), .by = "Group") |> 
+#   arrange(desc(Average), desc(Uniqueness)) |> 
+#   select(-Average, -Group) |> 
+#   gt::gt() |> 
+#   gt::data_color(
+#     columns = "Uniqueness",
+#     palette = c("red", "white", "green"),
+#     domain = c(0, 1) 
+#   ) 
 ```
 
 :::
@@ -1083,7 +1100,6 @@ df$MINT_Meta_Awareness<- rowMeans(df[, c("MINT_SexS", "MINT_ExaC", "MINT_RelA")]
 df$MINT_Meta_Visceroception <- rowMeans(df[, c("MINT_Resp", "MINT_Card", "MINT_Gast")], na.rm = TRUE)
 df$MINT_Meta_Deficit<- rowMeans(df[, c("MINT_Urin", "MINT_CaCo", "MINT_Derm", "MINT_Sati", "MINT_Olfa")], na.rm = TRUE)
 ```
-
 
 
 ```{r}
@@ -1185,9 +1201,12 @@ final_table |>
       columns = Cluster,
       rows = Cluster %in% c("MINT - Visceroception", "MINT - Deficit", "MINT - Awareness")
     )) |>
+  cols_align( align= c("left")) |>
   cols_label(Cohens_d = "Cohen's d",
              Cluster = "") |>
-  tab_footnote(footnote = "Cohen's d. Significance: *** p < .001, ** p < .01, * p < .05.")
+  tab_footnote(footnote = "Cohen's d. Significance: *** p < .001, ** p < .01, * p < .05.") |>
+  gt::gtsave("figures/cluster_desc.png", vwidth=1700, expand=0, quiet=TRUE)
+
 ```
 
 ### Mini Versions
@@ -1213,7 +1232,6 @@ micromint <- data.frame(
   MINT_Resp = df$MINT_Resp
 )
 ```
-
 
 ```{r}
 #| warning: false
@@ -1281,6 +1299,112 @@ p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, t
 p_cormint
 ```
 
+```{r}
+clusters <- names(df)[grepl("^MINT_", names(df))]
+meta_clusters <- names(df)[grepl("^MINT_Meta_", names(df))]
+all_clusters <- unique(c(clusters, meta_clusters))
+
+desc_clusters <- map_dfr(all_clusters, function(var) {
+  
+  # Compute t-test
+  t <- t.test(as.formula(paste(var, "~ Gender")), data = filter(df, Gender != "Other")) |>
+    broom::tidy() |>
+    mutate(Cluster = var)
+  
+  # Compute Cohen's d
+  d <- effectsize::cohens_d(as.formula(paste(var, "~ Gender")), data = filter(df, Gender != "Other")) |>
+    as.data.frame() |>
+    round(digits = 2) |>
+
+    mutate(Cluster = var)
+  
+  df_cluster <- left_join(t, d, by = "Cluster") |>
+    select(Cohens_d, p.value, Cluster) 
+})
+
+scores_desc <- df |>
+  select(Gender, starts_with("MINT_"), starts_with(("MINT_Meta_"))) |>
+  filter(Gender != "Other") |>
+  pivot_longer( cols = -Gender, names_to = "Cluster", values_to = "Score") |>
+  group_by(Gender, Cluster) |>
+  summarise(
+    Mean = mean(Score, na.rm = TRUE),
+    SD   = sd(Score, na.rm = TRUE),
+    N    = sum(!is.na(Score)),
+    .groups = "drop"
+  ) 
+
+final_table <- scores_desc |>
+  mutate(M_SD = sprintf("%.2f (%.2f)", Mean, SD)) |>
+  select(Gender, Cluster, M_SD) |>
+  pivot_wider(names_from = Gender, values_from = M_SD) |>
+  left_join(desc_clusters,
+            by = "Cluster") |>
+  arrange(desc(Cohens_d)) |>
+  mutate(
+    Cohens_d = case_when(
+      p.value < .001 ~ sprintf("d = %.2f***", Cohens_d),
+      p.value < .01  ~ sprintf("d = %.2f**", Cohens_d ),
+      p.value < .05  ~ sprintf("d = %.2f*", Cohens_d),
+      TRUE           ~ sprintf("d = %.2f", Cohens_d))) |>
+  mutate(
+    # Meta_clusters  = case_when(
+    #   Cluster == "MINT_Meta_Awareness" ~ "MINT - Awareness",
+    #   Cluster == "MINT_Meta_Visceroception"  ~ "MINT - Visceroception",
+    #   Cluster == "MINT_Meta_Deficit" ~  "MINT - Deficit"),
+    Cluster = recode(
+      Cluster,
+      "MINT_SexS" = "MINT - Sexual Sensibility",
+      "MINT_ExaC" = "MINT - Expulsion Accuracy",
+      "MINT_RelA" = "MINT - Relaxation Awareness",
+      "MINT_Urin" = "MINT - Urointestinal Inaccuracy",
+      "MINT_CaCo" = "MINT - Cardiorespiratory Confusion",
+      "MINT_Derm" = "MINT - Dermal Hypersensitivity",
+      "MINT_Sati" = "MINT - Satiety Noticing",
+      "MINT_Olfa" = "MINT - Olfactory Contribution",
+      "MINT_Resp" = "MINT - Respiroception",
+      "MINT_Card" = "MINT - Cardioception",
+      "MINT_Gast" = "MINT - Gastroception" ,
+      "MINT_Meta_Awareness" = "MINT - Awareness",
+      "MINT_Meta_Visceroception"  = "MINT - Visceroception",
+      "MINT_Meta_Deficit" =  "MINT - Deficit"),
+    Cluster = factor(Cluster, levels = c(
+      "MINT - Visceroception",
+      "MINT - Cardioception",
+      "MINT - Respiroception",
+      "MINT - Gastroception",
+      "MINT - Deficit",
+      "MINT - Cardiorespiratory Confusion",
+      "MINT - Dermal Hypersensitivity",
+      "MINT - Urointestinal Inaccuracy",
+      "MINT - Satiety Noticing",
+      "MINT - Olfactory Contribution",
+      "MINT - Awareness",
+      "MINT - Sexual Sensibility",
+      "MINT - Expulsion Accuracy",
+      "MINT - Relaxation Awareness"
+    ))
+    ) |>
+  select(!p.value) |>
+  arrange(Cluster)
+  
+
+
+final_table |>
+  gt() |>
+   tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(
+      columns = Cluster,
+      rows = Cluster %in% c("MINT - Visceroception", "MINT - Deficit", "MINT - Awareness")
+    )) |>
+  cols_align( align= c("left")) |>
+  cols_label(Cohens_d = "Cohen's d",
+             Cluster = "") |>
+  tab_footnote(footnote = "Cohen's d. Significance: *** p < .001, ** p < .01, * p < .05.") |>
+  gt::gtsave("figures/cluster_desc.png", vwidth=1700, expand=0, quiet=TRUE)
+
+```
 
 
 
