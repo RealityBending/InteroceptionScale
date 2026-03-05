@@ -205,7 +205,7 @@ plot(n)
 
 # 1 factor 
 
-fa <- parameters::factor_analysis(items, n = 1, rotation = "oblimin", scores = "tenBerge", sort = TRUE)
+fa <- parameters::factor_analysis(items, n = 1, scores = "tenBerge", sort = TRUE)
 plot(fa)
 
 model_performance(fa) |>display()
@@ -227,6 +227,11 @@ plot(fa)
 model_performance(fa) |>display()
 summary(fa) |> display()
 fa |> display(threshold = 0.4, sort = TRUE)
+# 
+# - removal of items with primary loadings < .40 (31 items)
+# - removal of items with salient cross-loadings (1 item)
+# -  exclusion of factors defined by only two items (4 items)
+# -  retention of the three highest-loading items per factor where applicable (39 items removed)
 
 ```
 
@@ -249,12 +254,12 @@ items_fa <- select(items_fa,
   "Sensitivity_Respiratory_Q5", "Sensitivity_Cardiac_Q5", "Sensitivity_Respiratory_Q6"
 )
 
-fa <- parameters::factor_analysis(items, n = 17, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
+fa <- parameters::factor_analysis(items_fa, n = 15, rotation = "oblimin", scores = "tenBerge", sort = TRUE, cor = "poly")
 plot(fa)
 
 model_performance(fa) |>display()
 summary(fa) |> display()
-fa |> display(threshold = 0.4, sort = TRUE)
+fa |> display(threshold = 0.2, sort = TRUE)
 
 ```
 
