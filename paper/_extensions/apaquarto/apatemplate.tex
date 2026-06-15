@@ -1,7 +1,7 @@
 $doc-class.tex()$
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{setspace}
 $if(docmode)$
 \geometry{inner=1in, outer=1in}
 \fancyhfoffset[LE,RO]{0cm}
@@ -40,6 +40,9 @@ $endif$
 \RequirePackage{longtable}
 \RequirePackage{threeparttablex}
 
+\usepackage{framed}
+
+
 $header.tex()$
 
 $if(highlighting-macros)$
@@ -57,7 +60,14 @@ $citations.tex()$
 
 
 $if(numbered-lines)$
+$if(journalmode)$
 \usepackage[nolongtablepatch]{lineno}
+\setlength\linenumbersep{5pt}
+\setlength\columnsep{25pt}
+$else$
+\usepackage[nolongtablepatch]{lineno}
+$endif$
+
 \linenumbers
 $endif$
 
@@ -234,9 +244,7 @@ $endif$
 $endif$
 
 $if(numbersections)$
-\setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
-$else$
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\setcounter{secnumdepth}{$if(number-depth)$$number-depth$$else$3$endif$}
 $endif$
 
 \setlength\LTleft{0pt}
@@ -249,12 +257,23 @@ $if(first-page)$
 \setcounter{page}{$first-page$}
 $endif$
 
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{snugshade}\begin{singlespace}}{\end{singlespace}\end{snugshade}}\fi
+
+$if(journalmode)$
+$else$
+
+\ifdefined\cslhangindent\else\newlength{\cslhangindent}\fi
+\ifdefined\csllabelwidth\else\newlength{\csllabelwidth}\fi
+\setlength{\cslhangindent}{0.5in}
+
+$endif$
 
 $body$
 
 $before-bib.tex()$
 
-$if(zeroitations)$
+$if(zerocitations)$
+$else$
 $biblio.tex()$
 $endif$
 

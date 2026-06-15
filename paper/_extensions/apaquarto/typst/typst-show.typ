@@ -23,11 +23,13 @@ $if(fontsize)$
 $endif$
 $if(leading)$
   leading: $leading$,
-  spacing: $leading$,
 $endif$
 $if(spacing)$
   spacing: $spacing$,
-  leading: $leading$
+$else$
+$if(leading)$
+  spacing: $leading$,
+$endif$
 $endif$
 $if(lang)$
   lang: "$lang$",
@@ -36,10 +38,16 @@ $if(cols)$
   cols: $cols$,
 $endif$
 $if(toc)$
-  toc: "true",
+  toc: true,
 $endif$
 $if(first-page)$
   first-page: $first-page$,
+$endif$
+$if(numbersections)$
+  numbersections: $numbersections$,
+$endif$
+$if(number-depth)$
+  numberdepth: $number-depth$,
 $endif$
 $if(suppress-title-page)$
   suppresstitlepage: $suppress-title-page$,

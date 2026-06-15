@@ -1,6 +1,6 @@
 title: My Document in APA Style, Seventh Edition
 author: W. Joel Schneider
-version: 5.0.2
+version: 5.0.18
 quarto-required: ">=1.4.549"
 contributes:
   formats:
@@ -16,6 +16,7 @@ contributes:
       toc: false
       fig-width: 6.5
       fig-height: 6.5
+      number-depth: 3
       crossref:
         subref-labels: alpha A
       suppress-title-page: false
@@ -37,6 +38,7 @@ contributes:
       suppress-corresponding-city: false
       suppress-corresponding-region: false
       suppress-corresponding-postal-code: false
+      suppress-corresponding-country: false
       suppress-corresponding-email: false
       suppress-abstract: false
       suppress-impact-statement: false
@@ -55,7 +57,7 @@ contributes:
         title-block-role-introduction: "Author roles were classified using the Contributor Role Taxonomy (CRediT; https://credit.niso.org/) as follows:"
         title-impact-statement: "Impact Statement"
         title-word-count: "Word Count"
-        references-meta-analysis: "Las referencias marcadas con un asterisco indican estudios incluidos en el metanálisis."
+        references-meta-analysis: "References marked with an asterisk indicate studies included in the meta-analysis."
       filters:
         # Sets language defaults other than English
         - at: pre-ast
@@ -69,9 +71,7 @@ contributes:
         # Move figures and tables to end of document
         - at: pre-ast
           path: apafloatstoend.lua
-        # Give error message to early versions of apaquarto
-        - at: pre-ast
-          path: apafgtb.lua
+ 
         # Set latex document mode
         - at: pre-ast
           path: journalmode.lua
@@ -152,6 +152,7 @@ contributes:
       fig-cap-location: top
       html-math-method: katex
       mainfont: Times, Times New Roman, serif
+      monofont: Consolas, Lucida Console, Courier New, monospace
       grid: 
         body-width: "7in"
       css: apa.css
@@ -174,7 +175,6 @@ contributes:
       template-partials:
         - doc-class.tex
         - title.tex
-        - before-body.tex
         - header.tex
       classoption: "colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue"
     docx: 

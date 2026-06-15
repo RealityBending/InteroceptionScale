@@ -69,9 +69,14 @@ div.hanging-indent .csl-entry {margin-left: 0; text-indent: -0.5in;}
 
 blockquote p:nth-child(1) {text-indent: 0}
 
+table {
+    font-variant-numeric: tabular-nums;
+}
+
 .table {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
+  font-variant-numeric: tabular-nums;
 }
 
 .table>thead {
@@ -85,3 +90,8 @@ blockquote p:nth-child(1) {text-indent: 0}
 .tabwid {padding: 0}
 
 .AbstractFirstParagraph p {text-indent: 0}
+
+.sourceCode {
+  font-family: Consolas, "Lucida Console", "Courier New", monospace;
+  font-size: 10pt;
+}
