@@ -10,12 +10,15 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{setspace}
 
 
 
 \RequirePackage{longtable}
 \RequirePackage{threeparttablex}
+
+\usepackage{framed}
+
 
 \makeatletter
 \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
@@ -32,7 +35,11 @@
 
 
 
-\usepackage{longtable, booktabs, multirow, multicol, colortbl, hhline, caption, array, float, xpatch}
+% longtable is already loaded via doc-class.tex (apa7 class option) and
+% apatemplate.tex (\RequirePackage{longtable}). Keep booktabs here so raw
+% LaTeX tables using \toprule/\midrule still render even without Pandoc table
+% nodes.
+\usepackage{booktabs, multirow, multicol, colortbl, hhline, caption, array, float, xpatch}
 \usepackage{subcaption}
 
 
@@ -67,8 +74,7 @@
 
 
 \usepackage{hyperref}
-
-
+\usepackage[protrusion=true]{microtype}
 
 
 \providecommand{\tightlist}{%
@@ -137,6 +143,9 @@
 
 
 \usepackage[nolongtablepatch]{lineno}
+\setlength\linenumbersep{5pt}
+\setlength\columnsep{25pt}
+
 \linenumbers
 
 
@@ -211,7 +220,7 @@ interoception that integrates and extends existing scales, providing
 researchers and clinicians with a practical and readily usable tool to
 investigate the role of bodily sensations in health and disease. }
 
-\keywords{Interoception questionnaire, interoceptive accuracy scale,
+\keywords{Interoception questionnaire, interoceptive accuracy yscale,
 MAIA, Mint Validation, Body Awareness, Health}
 
 \authornote{\par{\addORCIDlink{Dominique
@@ -219,7 +228,7 @@ Makowski}{0000-0001-5375-9967}}\par{\addORCIDlink{Ana
 Neves}{0009-0006-0020-7599}}\par{\addORCIDlink{Giulia
 Poerio}{0000-0002-2343-5109}} 
 \par{ }
-\par{     \begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, leftrule=.75mm, colback=white, bottomrule=.15mm, rightrule=.15mm, arc=.35mm, left=2mm, opacityback=0, colframe=quarto-callout-note-color-frame, breakable]
+\par{     \begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, bottomrule=.15mm, opacityback=0, leftrule=.75mm, breakable, toprule=.15mm, left=2mm, arc=.35mm, rightrule=.15mm, colback=white]
 
 This preprint is a non-peer-reviewed work from the
 \href{https://realitybending.github.io/}{\textbf{Reality Bending Lab}}.
@@ -382,12 +391,13 @@ Makowski, Email: \href{mailto:D.Makowski@sussex.ac.uk}{D.Makowski@sussex.ac.uk}}
 
 
 
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
 \setlength\LTleft{0pt}
 
 \resetlinenumber[1]
 
+
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{snugshade}\begin{singlespace}}{\end{singlespace}\end{snugshade}}\fi
 
 
 \section{Introduction}\label{introduction}
@@ -468,8 +478,6 @@ al., 1981}), the Self-Awareness Questionnaire (SAQ,
 \citeproc{ref-longarzo2015relationships}{Longarzo et al., 2015}), the
 Interoceptive Sensitivity and Attention Questionnaire (ISAQ ,
 \citeproc{ref-bogaerts2022interoceptive}{Bogaerts et al., 2022}), the
-Eating Disorder Inventory (EDI-IA,
-\citeproc{ref-garner1983development}{Garner et al., 1983}) the
 Interoceptive Confusion Questionnaire (ICQ,
 \citeproc{ref-Brewer2016}{Brewer et al., 2016}) and the Interoceptive
 Attention Scale (IATS, \citeproc{ref-GABRIELE2022108243}{Gabriele et
@@ -536,9 +544,9 @@ in which interoceptive experiences occur.
 To address this gap, we developed and \textbf{assessed the Multimodal
 Interoception Questionnaire (Mint)}, a new questionnaire that
 systematically addresses the above limitations. In Study 1, we describe
-the \textbf{XXX} development of the Mint, using a
-``modality-by-context'' framework to generate a comprehensive item pool,
-which was then refined using cutting-edge psychometric network analysis.
+the development of the Mint, using a ``modality-by-context'' framework
+to generate a comprehensive item pool, which was then refined using
+cutting-edge psychometric network analysis.
 
 \textbf{Network psychometrics is an emerging framework for studying
 relationships among psychological variables by representing them as a
@@ -573,27 +581,26 @@ clinically-relevant outcomes.
 The aim of Study 1 was to develop a new interoception questionnaire by
 generating a comprehensive item pool and subsequently refining it into a
 psychometrically robust scale. To overcome the limitations of existing
-questionnaires, we adopted a \textbf{XXX}, theoretically agnostic
-approach. Rather than imposing a pre-defined theoretical structure on
-questionnaire items, we instead focused on two tangible and
-systematically controllable aspects of interoceptive experience: the
-\emph{modality} of the sensation and the \emph{context} in which it
-occurs. Our objective was not to develop a questionnaire measuring a new
-or theoretically distinct facet, but instead build on existing research
-and synthesise existing ideas and frameworks into a comprehensive and
-modern tool that captures both the richness of interoceptive experiences
-and the most prominent facets of interoception.
+questionnaires, we adopted a theoretically agnostic approach. Rather
+than imposing a pre-defined theoretical structure on questionnaire
+items, we instead focused on two tangible and systematically
+controllable aspects of interoceptive experience: the \emph{modality} of
+the sensation and the \emph{context} in which it occurs. Our objective
+was not to develop a questionnaire measuring a new or theoretically
+distinct facet, but instead build on existing research and synthesise
+existing ideas and frameworks into a comprehensive and modern tool that
+captures both the richness of interoceptive experiences and the most
+prominent facets of interoception.
 
-Item generation was guided by a ``modality-by-context'' grid.
-\textbf{Specifically, item development proceeded through a structured
-process aimed at maximising coverage and consistency across
-interoceptive modalities and experiential contexts. Existing
-interoception questionnaires were first systematically reviewed to
-characterise the current measurement landscape, including content
-coverage, item phrasing, and response formats. Insights from this
-review, together with relevant theoretical literature and expert
-knowledge, informed the construction of the modality-by-context grid,
-which was designed to capture core principles of interoceptive
+\textbf{Item development proceeded through a structured process aimed at
+maximising consistency and breadth across interoceptive modalities and
+experiential contexts. Existing interoception questionnaires were first
+systematically reviewed to characterise the current measurement
+landscape, including content scope, item phrasing, and response formats.
+Insights from this stage, together with relevant theoretical literature
+and expert domain knowledge, informed the construction of a
+modality-by-context grid (see item generation section below), which was
+designed to capture and structure core principles of interoceptive
 experience while identifying gaps in existing measures. Items were then
 generated to populate each cell of this grid, using simple, first-person
 statements with a consistent grammatical structure. Where relevant, item
@@ -666,6 +673,30 @@ generated items in a systematic way following a combinatory approach,
 where each item's category corresponds to the union of a specific
 modality and context (Figure~\ref{fig-one}).
 
+\begin{figure*}[!htbp]
+
+{\caption{{The conceptual grid used to generate the 120 initial items
+(top-left). Each item belongs both to an interoceptive modality
+(vertical) and a facet (horizontal), with the number of each item per
+category indicated in the circles. The asterisk denotes the additional
+presence of an attention check item in that category. In the experiment,
+these items were presented on different pages grouped either by modality
+(bottom-left), by facet (top-right), or randomly. The Correlation
+Similarity (bottom-right) analysis suggested that the correlation matrix
+obtained from the participants assigned to the random-grouping condition
+was slightly more similar (but non-significantly) to the one obtained in
+the modality-grouping condition, suggesting that the scale's structure
+is robust to different presentation conditions, and that the
+modality-grouping might potentially tend to facilitate the emergence of
+the underlying item structure (and thus be interpreted as being more
+``natural'').}{\label{fig-one}}}}
+
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study1/analysis/figures/figure1.png}
+\end{center}
+
+\end{figure*}
+
 We identified 7 ``modalities'' (cardiac, respiratory, gastric, genital,
 skin \& temperature (thermoregulation), bladder \& colon, and a
 ``general state'' category corresponding to a holistic and general
@@ -679,8 +710,9 @@ pleasure, sensitivity, accuracy, and confusion).
 Using this orthogonal 7x6 modality/facet grid as a conceptual
 scaffolding, we generated 120 initial items, striving for a balanced
 number of items with consistent phrasing within modalities and
-facets\^{}{[}The initial item list is available at \emph{{[}MASKED FOR
-REVIEW{]}} . Items were generated through conversations between the
+facets.\footnote{\emph{{[}MASKED FOR REVIEW{]}}} Items were generated
+through conversations between the researchers/authors of this paper.
+Items were generated through conversations between the
 reserachers/authors of these paper.
 
 We additionally crafted 8 ``attention check'' items blending in (and
@@ -903,14 +935,14 @@ label ``Awareness''. Although other questionnaires might refer to this
 as ``Accuracy'', we preferred to preserve the notion that subjective
 self-reports, by their very nature, cannot be a pure measure of
 objective accuracy and are, at best, a proxy for subjective certainty or
-awareness of interoceptive processes. Furthermore, our \textbf{XXX}
-approach revealed intriguing facets, such as ``Olfactory Contribution''.
-This finding provides evidence for a pseudo-interoceptive pathway,
-whereby individuals with poorer access to internal signals may
-compensate by relying on external cues (e.g., odours) to infer their
-bodily state. The ``Sensitivity'' metacluster also grouped core
-visceroceptive facets (e.g., ``Cardioception'', ``Gastroception'') with
-``Dermal Hypersensitivity'', pointing to a potential common dimension of
+awareness of interoceptive processes. Furthermore, our approach revealed
+intriguing facets, such as ``Olfactory Contribution''. This finding
+provides evidence for a pseudo-interoceptive pathway, whereby
+individuals with poorer access to internal signals may compensate by
+relying on external cues (e.g., odours) to infer their bodily state. The
+``Sensitivity'' metacluster also grouped core visceroceptive facets
+(e.g., ``Cardioception'', ``Gastroception'') with ``Dermal
+Hypersensitivity'', pointing to a potential common dimension of
 heightened perceptual sensitivity to bodily sensations.
 
 An additional innovation of Study 1 was examining the effect of item
@@ -973,6 +1005,27 @@ This study was approved by the University of Sussex' Ethics Committee
 
 \subsubsection{Measures}\label{measures}
 
+\begin{figure*}[!htbp]
+
+{\caption{{Structure analysis of the final set of 33 Mint items.
+Hierarchical Exploratory Graph Analysis (EGA) was applied to jointly
+identify clusters of items, as well as higher-order metaclusters. The
+reliability of each item can be quantified by the proportion of
+structure replication across bootstrapped samples, with high values
+indicative of high structural stability. The Mint scale displayed an
+excellent structural consistency, with the exception of the \emph{Olfa}
+cluster which belonging to the \emph{Deficit} metaclusters warrants
+further research. Bottom plot shows the result of hierarchical
+clustering, providing evidence for structure statbility across methods,
+and allowing for more granular understanding of the relationships
+between variables.}{\label{fig-two}}}}
+
+\begin{center}
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig1.png}
+\end{center}
+
+\end{figure*}
+
 \paragraph{Interoception
 Questionnaires.}\label{interoception-questionnaires}
 
@@ -981,9 +1034,9 @@ were presented in a random order, with the same 7-point Likert scale as
 in study 1 (0 = \emph{Disagree}, 6 = \emph{Agree}). \textbf{Scores
 should be calculated as the average of the items within each lower-order
 cluster. However, when a broader summary is required, average scores for
-the higher-order meta-clusters can be computed from their corresponding
-lower-order clusters. Correspondingly, the high-order meta-clusters of
-the mint showed good to excellent internal consistency: Interoceptive
+the higher-order meta-clusters can be computed from the average of all
+their corresponding items. Correspondingly, the high-order meta-clusters
+of the mint showed good to excellent internal consistency: Interoceptive
 Awareness (\(\omega\) = 0.85), Interoceptive Deficit (\(\omega\) =0.74),
 Visceroception (\(\omega\) = 0.88).}
 
@@ -1168,6 +1221,24 @@ more enjoyable, the experiment ended with a radar chart summarizing the
 participants' responses to the Mint scale\^{}{[}The experiment can be
 tested by following the link on \emph{{[}MASKED FOR REVIEW{]}}.
 
+\begin{figure*}[!htbp]
+
+{\caption{{Item loadings. The table shows each item of the Mint with its
+cluster centrality, which is the EGA equivalent (in terms of
+interpretation) of factor loadings. It also shows how each lower-level
+cluster is related to higher-order metaclusters. The lower-level
+clusters are Expulsion Accuracy (ExAc), Relaxation Awareness (RelA),
+Sexual Arousal Sensitivity (SexS), Cardiorespiratory Confusion (CaCo),
+Urointestinal Inaccuracy (UrIn), Dermal Hypersensitivity (Derm), Satiety
+Noticing (Sati), Olfactory Contribution (Olfa), Respiroception (Resp),
+Cardioception (Card), Gastroception (Gast).}{\label{fig-three}}}}
+
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table1.png}
+\end{center}
+
+\end{figure*}
+
 \subsubsection{Data Analysis}\label{data-analysis-1}
 
 We started by confirming and further refining the structure of the Mint
@@ -1257,6 +1328,22 @@ frameworks) are shown in Figure~\ref{fig-three}. Additionally, we
 applied hierarchical clustering analysis which replicated this structure
 (see Figure~\ref{fig-two}), suggesting consistency across methods.
 
+\begin{figure*}[!htbp]
+
+{\caption{{Descriptive statistics and gender differences across MINT
+clusters. For each cluster, mean scores and standard deviations are
+reported separately by gender (excluding participants identifying as
+``Other''), alongside independent-samples t-test results and
+corresponding Cohen's d effect sizes. Statistical significance of group
+differences is indicated using standard thresholds (* p \textless{} .05,
+** p \textless{} .01, *** p \textless{} .001).}{\label{fig-seven}}}}
+
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table3.png}
+\end{center}
+
+\end{figure*}
+
 \textbf{The ``Interoceptive Awareness'' cluster refers to self-perceived
 awareness of specific bodily states and sensations, particularly those
 associated with distinct physiological conditions. In the present paper,
@@ -1264,22 +1351,21 @@ we do not conceptualise awareness as the correspondence between
 behavioural measures of interoceptive accuracy and metacognitive
 insight, as proposed in the model of Garfinkel et al.
 (\citeproc{ref-garfinkel2015knowing}{2015}); instead, we use the term
-more broadly to refer to interoceptive signals that are accessible to
-conscious self-report (\citeproc{ref-khalsa2018interoception}{Khalsa et
-al., 2018}). The items in this cluster therefore capture perceived
-awareness of bodily states such as relaxation (RelA), sensations
-associated with sexual arousal (SexS), and impending expulsive events
-(ExAc; e.g., burping, sneezing, or flatulence), reflecting an
-individual's perceived ability to recognise these bodily states. The
-``Interoceptive Deficit'' cluster reflects difficulties, uncertainty, or
-inaccuracies in recognising internal bodily signals. Items in this
-cluster capture experiences such as confusion about cardiorespiratory
-sensations (CaCo), uncertainty about urinary or gastrointestinal needs
-(UrIn), delayed recognition of hunger or thirst (Sati), contribution of
-external cues such as checking body odours (Olfa), and heightened
-sensitivity to dermal stimulation (Derm). Finally, ``Visceroception''
-corresponds broadly to the concept of interoceptive sensibility
-described in Khalsa et al.
+more broadly to refer to general bodily states representations
+accessible to self-report. The items in this cluster therefore capture
+perceived awareness of bodily states such as relaxation (RelA),
+sensations associated with sexual arousal (SexS), and impending
+expulsive events (ExAc; e.g., burping, sneezing, or flatulence),
+reflecting an individual's perceived ability to recognise these bodily
+states. The ``Interoceptive Deficit'' cluster reflects difficulties,
+uncertainty, or inaccuracies in recognising internal bodily signals.
+Items in this cluster capture experiences such as confusion about
+cardiorespiratory sensations (CaCo), uncertainty about urinary or
+gastrointestinal needs (UrIn), delayed recognition of hunger or thirst
+(Sati), contribution of external cues such as checking body odours
+(Olfa), and heightened sensitivity to dermal stimulation (Derm).
+Finally, ``Visceroception'' corresponds broadly to the concept of
+interoceptive sensibility described in Khalsa et al.
 (\citeproc{ref-khalsa2018interoception}{2018}) model as the
 self-reported tendency to notice internal bodily sensations. In the
 present scale, this construct is specifically focused on sensations
@@ -1306,6 +1392,25 @@ Cardiorespiratory Confusion. Overall, this structure closely resembled
 the lower-level clusters identified in the final 33-item EGA solution,
 with the main difference being that all cardiorespiratory items loaded
 onto a single factor rather than forming separate clusters.}
+
+\begin{figure*}[!htbp]
+
+{\caption{{Correlation Matrices between the Mint dimensions
+(upper-left), and between the Mint and other interoception
+questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows
+the relationships between interoception and other measures included in
+the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4),
+emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA),
+and Primal World Beliefs. Stars indicate dimensions that have been
+score-reversed for better in-context interpretation. Correlation
+coefficients are shown only for significant correlations (p \textless{}
+.001).}{\label{fig-four}}}}
+
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig2.png}
+\end{center}
+
+\end{figure*}
 
 \subsubsection{Mint}\label{mint}
 
@@ -1373,6 +1478,29 @@ belief that the world was alive (i.e., the belief that the universe is
 conscious, purposeful, and in active relationship with oneself,
 \citeproc{ref-clifton2021brief}{Clifton \& Yaden, 2021}).
 
+\begin{figure*}[!htbp]
+
+{\caption{{Summary table of the comparison between interoception
+questionnaires (Mint, MAIA, BPQ and IAS). For various outcomes included
+the study, we tested the Mint and Non-Mint dimension that had the
+strongest link (as a unique predictor). Values in parenthesis represents
+correlation coefficient for continuous variables and log-odds ratios for
+binary variables (the occurrence of mental and somatic health
+conditions). We also compared the predictive performance of regression
+models including multiple predictors, and present their ranking based on
+raw predictive power (R2) and BIC, which favours more parsimonious
+models (with less predictors). Green background indicates an advantage
+for the Mint, while red backgrounds indicate an advantage for another
+interoception scale. Orange backgrounds indicate an advantage for the
+MAIA driven by its emotion-regulation dimensions (Trusting and
+Not-Worrying).}{\label{fig-five}}}}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table2.png}
+\end{center}
+
+\end{figure*}
+
 Most of the target outcomes measured in the study to assess validity
 were best predicted by one of the Mint dimension (see
 Figure~\ref{fig-five}). \textbf{For example, \emph{Deficit} was the
@@ -1428,6 +1556,29 @@ MAIA's not worrying (\textbf{\(r = -.219, 95\% CI = [-0.58, -0.11]\))}.
 Daily activity via steps monitoring was best predicted by MAIA's
 Noticing (\textbf{\(r = .28, 95\% CI = [0.32, 0.67]\)}), followed by
 \emph{Awareness} (\textbf{\(r = .26, 95\% CI = [0.37, 0.83]\)}).
+
+\begin{figure*}[!htbp]
+
+{\caption{{Predictive performance of interoception questionnaires for
+various self-reported mental health conditions (mood disorders with
+psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The
+Receiver Operating Characteristic (ROC) curves are shown for the
+logistic regression models for various questionnaires and versions. A
+high Area Under the Curve (AUC) indicates a good discriminative power of
+the model (i.e., a strong combination of sensitivity and specificity).
+The Mint scale (in blue-green) consistently outperformed the other
+interoception scales, with the exception of the MAIA which, driven by
+its emotion-regulation dimensions (Trusting and Not-worrying), performed
+better for mood disorders and central sensitization symptoms. In several
+instances, the short versions of the Mint scale (miniMint and microMint)
+yielded reasonable performance, still outperforming other
+measures.}{\label{fig-six}}}}
+
+\begin{center}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig3.png}
+\end{center}
+
+\end{figure*}
 
 \subsection{Discussion}\label{discussion-1}
 
@@ -1551,10 +1702,10 @@ performance and scale length.}
 \textbf{A further limitation concerns the predominantly Western,
 UK-based composition of the samples, which restricts the extent to which
 the Mint's structure can be assumed to generalise cross-culturally,
-particularly given that interoceptive processes vary according to
-demographic factors such as gender, culture, and sex (e.g.,
-\citeproc{ref-ma2024demographic}{Ma-Kellams et al., 2024}). For example,
-the Japanese validation of the MAIA-2
+particularly given that interoceptive processes, and their cognitive
+elaborations, vary according to demographic factors such as gender/sex
+and culture (e.g., \citeproc{ref-ma2024demographic}{Ma-Kellams et al.,
+2024}). For example, the Japanese validation of the MAIA-2
 (\citeproc{ref-shoji2018investigating}{Shoji et al., 2018}) identified a
 six-factor structure rather than the original eight-factor model, partly
 due to the removal of items from the Self-Regulation and Not-Worrying
@@ -1748,12 +1899,6 @@ accuracy from interoceptive awareness. \emph{Biological Psychology},
 Garnefski, N., \& Kraaij, V. (2006). Cognitive emotion regulation
 questionnaire--development of a short 18-item version (CERQ-short).
 \emph{Personality and Individual Differences}, \emph{41}(6), 1045--1053.
-
-\bibitem[\citeproctext]{ref-garner1983development}
-Garner, D. M., Olmstead, M. P., \& Polivy, J. (1983). Development and
-validation of a multidimensional eating disorder inventory for anorexia
-nervosa and bulimia. \emph{International Journal of Eating Disorders},
-\emph{2}(2), 15--34.
 
 \bibitem[\citeproctext]{ref-golino2017exploratory}
 Golino, H. F., \& Epskamp, S. (2017). Exploratory graph analysis: A new
@@ -1956,150 +2101,6 @@ problematic: Evidence from simple bivariate correlations.
 \emph{Biological Psychology}, \emph{137}, 12--17.
 
 \end{CSLReferences}
-
-\begin{figure*}[!htbp]
-
-{\caption{{The conceptual grid used to generate the 120 initial items
-(top-left). Each item belongs both to an interoceptive modality
-(vertical) and a facet (horizontal), with the number of each item per
-category indicated in the circles. The asterisk denotes the additional
-presence of an attention check item in that category. In the experiment,
-these items were presented on different pages grouped either by modality
-(bottom-left), by facet (top-right), or randomly. The Correlation
-Similarity (bottom-right) analysis suggested that the correlation matrix
-obtained from the participants assigned to the random-grouping condition
-was slightly more similar (but non-significantly) to the one obtained in
-the modality-grouping condition, suggesting that the scale's structure
-is robust to different presentation conditions, and that the
-modality-grouping might potentially tend to facilitate the emergence of
-the underlying item structure (and thus be interpreted as being more
-``natural'').}{\label{fig-one}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study1/analysis/figures/figure1.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Structure analysis of the final set of 33 Mint items.
-Hierarchical Exploratory Graph Analysis (EGA) was applied to jointly
-identify clusters of items, as well as higher-order metaclusters. The
-reliability of each item can be quantified by the proportion of
-structure replication across bootstrapped samples, with high values
-indicative of high structural stability. The Mint scale displayed an
-excellent structural consistency, with the exception of the \emph{Olfa}
-cluster which belonging to the \emph{Deficit} metaclusters warrants
-further research. Bottom plot shows the result of hierarchical
-clustering, providing evidence for structure statbility across methods,
-and allowing for more granular understanding of the relationships
-between variables.}{\label{fig-two}}}}
-
-\begin{center}
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig1.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Item loadings. The table shows each item of the Mint with its
-cluster centrality, which is the EGA equivalent (in terms of
-interpretation) of factor loadings. It also shows how each lower-level
-cluster is related to higher-order metaclusters. The lower-level
-clusters are Expulsion Accuracy (ExAc), Relaxation Awareness (RelA),
-Sexual Arousal Sensitivity (SexS), Cardiorespiratory Confusion (CaCo),
-Urointestinal Inaccuracy (UrIn), Dermal Hypersensitivity (Derm), Satiety
-Noticing (Sati), Olfactory Contribution (Olfa), Respiroception (Resp),
-Cardioception (Card), Gastroception (Gast).}{\label{fig-three}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table1.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Correlation Matrices between the Mint dimensions
-(upper-left), and between the Mint and other interoception
-questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows
-the relationships between interoception and other measures included in
-the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4),
-emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA),
-and Primal World Beliefs. Stars indicate dimensions that have been
-score-reversed for better in-context interpretation. Correlation
-coefficients are shown only for significant correlations (p \textless{}
-.001).}{\label{fig-four}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig2.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Summary table of the comparison between interoception
-questionnaires (Mint, MAIA, BPQ and IAS). For various outcomes included
-the study, we tested the Mint and Non-Mint dimension that had the
-strongest link (as a unique predictor). Values in parenthesis represents
-correlation coefficient for continuous variables and log-odds ratios for
-binary variables (the occurrence of mental and somatic health
-conditions). We also compared the predictive performance of regression
-models including multiple predictors, and present their ranking based on
-raw predictive power (R2) and BIC, which favours more parsimonious
-models (with less predictors). Green background indicates an advantage
-for the Mint, while red backgrounds indicate an advantage for another
-interoception scale. Orange backgrounds indicate an advantage for the
-MAIA driven by its emotion-regulation dimensions (Trusting and
-Not-Worrying).}{\label{fig-five}}}}
-
-\begin{center}
-\includegraphics[width=0.82\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table2.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Predictive performance of interoception questionnaires for
-various self-reported mental health conditions (mood disorders with
-psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The
-Receiver Operating Characteristic (ROC) curves are shown for the
-logistic regression models for various questionnaires and versions. A
-high Area Under the Curve (AUC) indicates a good discriminative power of
-the model (i.e., a strong combination of sensitivity and specificity).
-The Mint scale (in blue-green) consistently outperformed the other
-interoception scales, with the exception of the MAIA which, driven by
-its emotion-regulation dimensions (Trusting and Not-worrying), performed
-better for mood disorders and central sensitization symptoms. In several
-instances, the short versions of the Mint scale (miniMint and microMint)
-yielded reasonable performance, still outperforming other
-measures.}{\label{fig-six}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig3.png}
-\end{center}
-
-\end{figure*}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Descriptive statistics and gender differences across MINT
-clusters. For each cluster, mean scores and standard deviations are
-reported separately by gender (excluding participants identifying as
-``Other''), alongside independent-samples t-test results and
-corresponding Cohen's d effect sizes. Statistical significance of group
-differences is indicated using standard thresholds (* p \textless{} .05,
-** p \textless{} .01, *** p \textless{} .001).}{\label{fig-seven}}}}
-
-\begin{center}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table3.png}
-\end{center}
-
-\end{figure*}
 
 
 

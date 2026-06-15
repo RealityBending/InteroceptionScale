@@ -79,14 +79,14 @@ author-note:
 abstract: |
   Interoception, the sensing of the body's internal state, is an important component of homeostatic and allostatic regulation with wide-ranging implications for mental and physical health, yet its measurement is hindered by tools with conceptual and psychometric issues. To address these limitations, we developed the Multimodal Interoception Questionnaire (Mint) and **tested its relationship with other measures**. In Study 1 (N=559), a comprehensive item pool using a novel "modality-by-context" framework was generated and then reduced using psychometric network analysis. In Study 2 (N=737), **we further establish the structure of the Mint in an independent sample**, and compare its predictive power against established interoception questionnaires (MAIA-2, BPQ, IAS), and across a wide range of clinical and cognitive outcomes. This rigorous process yielded a 33-item scale with a stable hierarchical structure comprising three metaclusters (Interoceptive Deficit, Interoceptive Awareness, Visceroception) and 11 distinct facets. The Mint demonstrated superior criterion validity, consistently outperforming existing scales in predicting outcomes tied to altered bodily perception, including alexithymia, ADHD, autism, and somatic symptom clusters. The Mint offers a psychometrically robust and nuanced measure of self-reported interoception that integrates and extends existing scales, providing researchers and clinicians with a practical and readily usable tool to investigate the role of bodily sensations in health and disease.
 #   **Significance Statement**. TODO.
-keywords: "Interoception questionnaire, interoceptive accuracy scale, MAIA, Mint Validation, Body Awareness, Health"
+keywords: "Interoception questionnaire, interoceptive accuracy yscale, MAIA, Mint Validation, Body Awareness, Health"
 numbered-lines: true
 floatsintext: true
 mask: true
 bibliography: bibliography.bib
 format:
   apaquarto-pdf:
-    documentmode: jou
+    documentmode: man
     keep-tex: true
   apaquarto-docx: default
 ---
@@ -143,6 +143,7 @@ This study was approved by the University of Sussex' Ethics Committee (ER/MB2021
 
 Based on the two goals outlined for this scale, namely to include different interoceptive modalities, and to explicitly state the context of the interoceptive experience (e.g., whether negative or positive), we generated items in a systematic way following a combinatory approach, where each item's category corresponds to the union of a specific modality and context (@fig-one).
 
+
 <!-- ```{r} -->
 <!-- #| label: fig-one -->
 <!-- #| fig-cap: "The conceptual grid used to generate the 120 initial items (top-left). Each item belongs both to an interoceptive modality (vertical) and a facet (horizontal), with the number of each item per category indicated in the circles. The asterisk denotes the additional presence of an attention check item in that category. In the experiment, these items were presented on different pages grouped either by modality (bottom-left), by facet (top-right), or randomly. The Correlation Similarity (bottom-right) analysis suggested that the correlation matrix obtained from the participants assigned to the random-grouping condition was slightly more similar (but non-significantly) to the one obtained in the modality-grouping condition, suggesting that the scale's structure is robust to different presentation conditions, and that the modality-grouping might potentially tend to facilitate the emergence of the underlying item structure (and thus be interpreted as being more \"natural\")." -->
@@ -155,7 +156,7 @@ Based on the two goals outlined for this scale, namely to include different inte
 
 We identified 7 "modalities" (cardiac, respiratory, gastric, genital, skin & temperature (thermoregulation), bladder & colon, and a "general state" category corresponding to a holistic and general awareness of an interoceptive state or dimension). Through iterative refinement (e.g., splitting or merging different categories together), we settled on 6 "facets", which encompass both *contexts* of experience (negative and positive arousal, e.g., anxious and sexual states), and potential distinct *mechanisms* (nociception & pleasure, sensitivity, accuracy, and confusion). 
 
-Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets.^[*[MASKED FOR REVIEW]*] Items were generated through conversations between the researchers/authors of this paper.
+Using this orthogonal 7x6 modality/facet grid as a conceptual scaffolding, we generated 120 initial items, striving for a balanced number of items with consistent phrasing within modalities and facets.^[See original items at *"MASKED FOR REVIEW"*] Items were generated through conversations between the researchers/authors of this paper.
 <!-- ^[The initial item list is available at [realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html](https://realitybending.github.io/InteroceptionScale/study1/analysis/2_analysis.html)] -->
 Items were generated through conversations between the reserachers/authors of these paper. 
 
@@ -258,13 +259,13 @@ This study was approved by the University of Sussex' Ethics Committee (ER/EB672/
 
 
 <!-- ```{r} -->
-<!-- #| label: fig-two -->
+<!-- #| label: fig-two --> -->
 <!-- #| fig-cap: "Structure analysis of the final set of 33 Mint items. Hierarchical Exploratory Graph Analysis (EGA) was applied to jointly identify clusters of items, as well as higher-order metaclusters. The reliability of each item can be quantified by the proportion of structure replication across bootstrapped samples, with high values indicative of high structural stability. The Mint scale displayed an excellent structural consistency, with the exception of the *Olfa* cluster which belonging to the *Deficit* metaclusters warrants further research. Bottom plot shows the result of hierarchical clustering, providing evidence for structure statbility across methods, and allowing for more granular understanding of the relationships between variables." -->
-<!-- #| fig-align: "center" -->
-<!-- #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode -->
-<!-- #| out-width: "80%" -->
+<!-- #| fig-align: "center" --> -->
+<!-- #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode --> -->
+<!-- #| out-width: "80%" --> -->
 
-<!-- knitr::include_graphics("../study2/analysis/figures/fig1.png") -->
+<!-- knitr::include_graphics("../study2/analysis/figures/fig1.png") --> -->
 <!-- ``` -->
 
 
@@ -313,8 +314,7 @@ Participants were asked to rate how physically active they consider themselves a
 
 In order to avoid the repetition of similar types of questions and balance longer and shorter questionnaires, we partitioned the measures into three groups (and randomized the order within them): 1) interoception questionnaires (MAIA, IAS, BPQ), 2) emotions (TAS, CERQ, ERS, PI-18), and 3) health (somatic symptoms, mental health, LS + PHQ-4, CEFSA). 
 After completing demographic questions, participants always started with the Mint scale, and each following interoception questionnaire was interspersed with two questionnaires from the emotions and pathology groups. 7 attention checks were embedded throughout (one within each major questionnaire). **Specifically, the following items were used: “I can always accurately answer to the extreme left on this question to show that I am reading it” (Mint); “I notice that I am being asked to respond all the way to the right” (MAIA-2); “I can always accurately choose the lowest option” (IAS); “Respond all the way to the right” (BPQ-VSF); “I am able to respond all the way to the left” (TAS-20); “On the whole, I know I must press the highest option” (PI-18); and “I feel that to show I am being attentive I will press the lowest option” (CEFSA-14).**
-In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on 
-*[MASKED FOR REVIEW]*.
+In order to make the experiment more enjoyable, the experiment ended with a radar chart summarizing the participants' responses to the Mint scale^[The experiment can be tested by following the link on *"MASKED FOR REVIEW"*].
 <!-- https://github.com/RealityBending/InteroceptionScale]. -->
 
 <!-- ```{r} -->
@@ -354,16 +354,16 @@ In order to further balance and reduce the items, we removed the *UrSe* cluster,
 The final set of 33 items yielded a good fit (**TEFI** = -77.23), with all items showing high cluster stability (> 90\%), with the exception of *Olfa*. The final structure included 11 lower-level clusters, grouped into 3 higher-order metaclusters: "Interoceptive Deficit", "Interoceptive Awareness", and "Visceroception". **Dimension stability for the lower clusters was generally very high, ranging from 100\% (SexS, Card, Gast, Resp, RelA, ExAc) to 99.2\% (Urin). Other dimensions also exhibited strong stability, with Derm and Sati at 99.6\%, RelA at 99.8\%, and CaCo at 99.4\%. Additionally, two out of the three high-order clusters showed good dimension stability (Interoceptive Awareness = 96.6\% , Visceroception = 99.4\%), while Interoceptive Deficit showed poor dimension stability (42\%). @fig-seven presents gender differences across these clusters. The largest metacluster-level difference was observed for Interoceptive Awareness, whereas the largest lower-level difference was found for Cardiorespiratory Confusion.** Item centrality (intepretable as loadings in traditional factor analysis frameworks) are shown in @fig-three. Additionally, we applied hierarchical clustering analysis which replicated this structure (see @fig-two), suggesting consistency across methods. 
 
 
-<!-- ```{r} 
-#| label: fig-seven
-#| fig-cap: "Descriptive statistics and gender differences across MINT clusters. For each cluster, mean scores and standard deviations are reported separately by gender (excluding participants identifying as “Other”), alongside independent-samples t-test results and corresponding Cohen’s d effect sizes. Statistical significance of group differences is indicated using standard thresholds (* p < .05, ** p < .01, *** p < .001)." 
-#| fig-align: "center"
-#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode 
-#| out-width: "100%" 
-#
+<!-- ```{r} -->
+<!-- #| label: fig-seven -->
+<!-- #| fig-cap: "Descriptive statistics and gender differences across MINT clusters. For each cluster, mean scores and standard deviations are reported separately by gender (excluding participants identifying as “Other”), alongside independent-samples t-test results and corresponding Cohen’s d effect sizes. Statistical significance of group differences is indicated using standard thresholds (* p < .05, ** p < .01, *** p < .001)." -->
+<!-- #| fig-align: "center" -->
+<!-- #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode -->
+<!-- #| out-width: "100%" -->
 
-knitr::include_graphics("../study2/analysis/figures/table3.png")
-``` -->
+
+<!-- knitr::include_graphics("../study2/analysis/figures/table3.png") -->
+<!-- ```  -->
 
 **The "Interoceptive Awareness" cluster refers to self-perceived awareness of specific bodily states and sensations, particularly those associated with distinct physiological conditions. In the present paper, we do not conceptualise awareness as the correspondence between behavioural measures of interoceptive accuracy and metacognitive insight, as proposed in the model of @garfinkel2015knowing; instead, we use the term more broadly to refer to general bodily states representations accessible to self-report. The items in this cluster therefore capture perceived awareness of bodily states such as relaxation (RelA), sensations associated with sexual arousal (SexS), and impending expulsive events (ExAc; e.g., burping, sneezing, or flatulence), reflecting an individual’s perceived ability to recognise these bodily states. The "Interoceptive Deficit" cluster reflects difficulties, uncertainty, or inaccuracies in recognising internal bodily signals. Items in this cluster capture experiences such as confusion about cardiorespiratory sensations (CaCo), uncertainty about urinary or gastrointestinal needs (UrIn), delayed recognition of hunger or thirst (Sati), contribution of external cues such as checking body odours (Olfa), and heightened sensitivity to dermal stimulation (Derm). Finally, "Visceroception" corresponds broadly to the concept of interoceptive sensibility described in @khalsa2018interoception model as the self-reported tendency to notice internal bodily sensations. In the present scale, this construct is specifically focused on sensations arising from three major visceral systems (i.e., cardiac, respiratory, and gastric). Accordingly, items assess perceived sensitivity to changes in heart activity (Card), breathing (Resp), and stomach sensations (Gast).**
 
@@ -532,7 +532,7 @@ knitr::include_graphics("../study2/analysis/figures/fig2.png")
 knitr::include_graphics("../study2/analysis/figures/table2.png")
 ```
 
- 
+
 ```{r}
 #| label: fig-six
 #| fig-cap: "Predictive performance of interoception questionnaires for various self-reported mental health conditions (mood disorders with psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The Receiver Operating Characteristic (ROC) curves are shown for the logistic regression models for various questionnaires and versions. A high Area Under the Curve (AUC) indicates a good discriminative power of the model (i.e., a strong combination of sensitivity and specificity). The Mint scale (in blue-green) consistently outperformed the other interoception scales, with the exception of the MAIA which, driven by its emotion-regulation dimensions (Trusting and Not-worrying), performed better for mood disorders and central sensitization symptoms. In several instances, the short versions of the Mint scale (miniMint and microMint) yielded reasonable performance, still outperforming other measures."
@@ -544,12 +544,12 @@ knitr::include_graphics("../study2/analysis/figures/fig3.png")
 ```
 
 
-```{r} 
+```{r}
 #| label: fig-seven
-#| fig-cap: "Descriptive statistics and gender differences across MINT clusters. For each cluster, mean scores and standard deviations are reported separately by gender (excluding participants identifying as “Other”), alongside independent-samples t-test results and corresponding Cohen’s d effect sizes. Statistical significance of group differences is indicated using standard thresholds (* p < .05, ** p < .01, *** p < .001)." 
+#| fig-cap: "Descriptive statistics and gender differences across MINT clusters. For each cluster, mean scores and standard deviations are reported separately by gender (excluding participants identifying as “Other”), alongside independent-samples t-test results and corresponding Cohen’s d effect sizes. Statistical significance of group differences is indicated using standard thresholds (* p < .05, ** p < .01, *** p < .001)."
 #| fig-align: "center"
-#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode 
-#| out-width: "50%" 
+#| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
+#| out-width: "50%"
 #
 
 knitr::include_graphics("../study2/analysis/figures/table3.png")
