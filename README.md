@@ -1,3 +1,5 @@
+<img src="logo.png" align="right" width="180" alt="Mint logo" />
+
 # Introducing the Mint: Validation of a Fresh Multimodal Interoception Questionnaire
 
 *Development and Validation of a New Interoception Scale*
@@ -5,6 +7,7 @@
 ## Content
 
 - [**Preprint**](https://realitybending.github.io/InteroceptionScale/paper/manuscript.pdf)
+- [**Mint items (33-item version, with dimensions and metaclusters)**](https://realitybending.github.io/InteroceptionScale/MINT_items.pdf)
 
 ### Study 1
 

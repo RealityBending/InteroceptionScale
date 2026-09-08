@@ -1,5 +1,5 @@
 \documentclass[
-  jou,
+  man,
   floatsintext,
   longtable,
   nolmodern,
@@ -143,8 +143,6 @@
 
 
 \usepackage[nolongtablepatch]{lineno}
-\setlength\linenumbersep{5pt}
-\setlength\columnsep{25pt}
 
 \linenumbers
 
@@ -201,16 +199,15 @@ important component of homeostatic and allostatic regulation with
 wide-ranging implications for mental and physical health, yet its
 measurement is hindered by tools with conceptual and psychometric
 issues. To address these limitations, we developed the Multimodal
-Interoception Questionnaire (Mint) and \textbf{tested its relationship
-with other measures}. In Study 1 (N=559), a comprehensive item pool
-using a novel ``modality-by-context'' framework was generated and then
-reduced using psychometric network analysis. In Study 2 (N=737),
-\textbf{we further establish the structure of the Mint in an independent
-sample}, and compare its predictive power against established
-interoception questionnaires (MAIA-2, BPQ, IAS), and across a wide range
-of clinical and cognitive outcomes. This rigorous process yielded a
-33-item scale with a stable hierarchical structure comprising three
-metaclusters (Interoceptive Deficit, Interoceptive Awareness,
+Interoception Questionnaire (Mint). In Study 1 (N=559), a comprehensive
+item pool using a novel ``modality-by-context'' framework was generated
+and then reduced using psychometric network analysis. In Study 2
+(N=737), \textbf{we further assessed the structure of the Mint in an
+independent sample}, and compare its predictive power against
+established interoception questionnaires (MAIA-2, BPQ, IAS), and across
+a wide range of clinical and cognitive outcomes. This rigorous process
+yielded a 33-item scale with a stable hierarchical structure comprising
+three metaclusters (Interoceptive Deficit, Interoceptive Awareness,
 Visceroception) and 11 distinct facets. The Mint demonstrated superior
 criterion validity, consistently outperforming existing scales in
 predicting outcomes tied to altered bodily perception, including
@@ -228,16 +225,9 @@ Makowski}{0000-0001-5375-9967}}\par{\addORCIDlink{Ana
 Neves}{0009-0006-0020-7599}}\par{\addORCIDlink{Giulia
 Poerio}{0000-0002-2343-5109}} 
 \par{ }
-\par{     \begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, bottomrule=.15mm, opacityback=0, leftrule=.75mm, breakable, toprule=.15mm, left=2mm, arc=.35mm, rightrule=.15mm, colback=white]
-
-This preprint is a non-peer-reviewed work from the
-\href{https://realitybending.github.io/}{\textbf{Reality Bending Lab}}.
-\begin{center}
-\includegraphics[width=0.2\linewidth,height=\textheight,keepaspectratio]{manuscript_files/mediabag/ReBeL_LogoOnly_hu114.png}
-\end{center}
-
-\end{tcolorbox}  Author roles were classified using the Contributor Role
-Taxonomy (CRediT; https://credit.niso.org/) as follows:  Dominique
+\par{     \href{https://realitybending.github.io/}{\includegraphics[width=0.6\linewidth,height=\textheight,keepaspectratio]{rebel_logo.png}}\\  Author
+roles were classified using the Contributor Role Taxonomy (CRediT;
+https://credit.niso.org/) as follows:  Dominique
 Makowski:   Conceptualization, Data curation, Formal Analysis, Funding
 acquisition, Investigation, Methodology, Project
 administration, Resources, Software, Supervision, Validation, Visualization, Writing
@@ -252,67 +242,18 @@ to Dominique
 Makowski, Email: \href{mailto:D.Makowski@sussex.ac.uk}{D.Makowski@sussex.ac.uk}}
 }
 
-\usepackage{pbalance}
-% \usepackage{float}
 \makeatletter
-\let\oldtpt\ThreePartTable
-\let\endoldtpt\endThreePartTable
-\def\ThreePartTable{\@ifnextchar[\ThreePartTable@i \ThreePartTable@ii}
-\def\ThreePartTable@i[#1]{\begin{figure}[!htbp]
-\onecolumn
-\begin{minipage}{0.485\textwidth}
-\oldtpt[#1]
-}
-\def\ThreePartTable@ii{\begin{figure}[!htbp]
-\onecolumn
-\begin{minipage}{0.48\textwidth}
-\oldtpt
-}
-\def\endThreePartTable{
-\endoldtpt
-\end{minipage}
-\twocolumn
-\end{figure}}
-\makeatother
-
-
-\makeatletter
-\let\endoldlt\endlongtable		
+\let\endoldlt\endlongtable
 \def\endlongtable{
 \hline
-\endoldlt}
+\endoldlt
+}
 \makeatother
-
-\newenvironment{twocolumntable}% environment name
-{% begin code
-\begin{table*}[!htbp]%
-\onecolumn%
-}%
-{%
-\twocolumn%
-\end{table*}%
-}% end code
 
 \urlstyle{same}
 
 
 
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
-\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
-\definecolor{quarto-callout-color}{HTML}{909090}
-\definecolor{quarto-callout-note-color}{HTML}{0758E5}
-\definecolor{quarto-callout-important-color}{HTML}{CC1914}
-\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
-\definecolor{quarto-callout-tip-color}{HTML}{00A047}
-\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
-\definecolor{quarto-callout-color-frame}{HTML}{acacac}
-\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
-\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
-\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
-\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
-\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
-\makeatother
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -398,6 +339,11 @@ Makowski, Email: \href{mailto:D.Makowski@sussex.ac.uk}{D.Makowski@sussex.ac.uk}}
 
 
 \ifdefined\Shaded\renewenvironment{Shaded}{\begin{snugshade}\begin{singlespace}}{\end{singlespace}\end{snugshade}}\fi
+
+
+\ifdefined\cslhangindent\else\newlength{\cslhangindent}\fi
+\ifdefined\csllabelwidth\else\newlength{\csllabelwidth}\fi
+\setlength{\cslhangindent}{0.5in}
 
 
 \section{Introduction}\label{introduction}
@@ -673,30 +619,6 @@ generated items in a systematic way following a combinatory approach,
 where each item's category corresponds to the union of a specific
 modality and context (Figure~\ref{fig-one}).
 
-\begin{figure*}[!htbp]
-
-{\caption{{The conceptual grid used to generate the 120 initial items
-(top-left). Each item belongs both to an interoceptive modality
-(vertical) and a facet (horizontal), with the number of each item per
-category indicated in the circles. The asterisk denotes the additional
-presence of an attention check item in that category. In the experiment,
-these items were presented on different pages grouped either by modality
-(bottom-left), by facet (top-right), or randomly. The Correlation
-Similarity (bottom-right) analysis suggested that the correlation matrix
-obtained from the participants assigned to the random-grouping condition
-was slightly more similar (but non-significantly) to the one obtained in
-the modality-grouping condition, suggesting that the scale's structure
-is robust to different presentation conditions, and that the
-modality-grouping might potentially tend to facilitate the emergence of
-the underlying item structure (and thus be interpreted as being more
-``natural'').}{\label{fig-one}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study1/analysis/figures/figure1.png}
-\end{center}
-
-\end{figure*}
-
 We identified 7 ``modalities'' (cardiac, respiratory, gastric, genital,
 skin \& temperature (thermoregulation), bladder \& colon, and a
 ``general state'' category corresponding to a holistic and general
@@ -710,10 +632,10 @@ pleasure, sensitivity, accuracy, and confusion).
 Using this orthogonal 7x6 modality/facet grid as a conceptual
 scaffolding, we generated 120 initial items, striving for a balanced
 number of items with consistent phrasing within modalities and
-facets.\footnote{\emph{{[}MASKED FOR REVIEW{]}}} Items were generated
-through conversations between the researchers/authors of this paper.
+facets.\footnote{See original items at \emph{``MASKED FOR REVIEW''}}
 Items were generated through conversations between the
-reserachers/authors of these paper.
+researchers/authors of this paper. Items were generated through
+conversations between the reserachers/authors of these paper.
 
 We additionally crafted 8 ``attention check'' items blending in (and
 distributed across) each category. \textbf{These items were designed to
@@ -1005,26 +927,9 @@ This study was approved by the University of Sussex' Ethics Committee
 
 \subsubsection{Measures}\label{measures}
 
-\begin{figure*}[!htbp]
+--\textgreater{} --\textgreater{} --\textgreater{} --\textgreater{}
 
-{\caption{{Structure analysis of the final set of 33 Mint items.
-Hierarchical Exploratory Graph Analysis (EGA) was applied to jointly
-identify clusters of items, as well as higher-order metaclusters. The
-reliability of each item can be quantified by the proportion of
-structure replication across bootstrapped samples, with high values
-indicative of high structural stability. The Mint scale displayed an
-excellent structural consistency, with the exception of the \emph{Olfa}
-cluster which belonging to the \emph{Deficit} metaclusters warrants
-further research. Bottom plot shows the result of hierarchical
-clustering, providing evidence for structure statbility across methods,
-and allowing for more granular understanding of the relationships
-between variables.}{\label{fig-two}}}}
-
-\begin{center}
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig1.png}
-\end{center}
-
-\end{figure*}
+--\textgreater{}
 
 \paragraph{Interoception
 Questionnaires.}\label{interoception-questionnaires}
@@ -1218,26 +1123,8 @@ left'' (TAS-20); ``On the whole, I know I must press the highest
 option'' (PI-18); and ``I feel that to show I am being attentive I will
 press the lowest option'' (CEFSA-14).} In order to make the experiment
 more enjoyable, the experiment ended with a radar chart summarizing the
-participants' responses to the Mint scale\^{}{[}The experiment can be
-tested by following the link on \emph{{[}MASKED FOR REVIEW{]}}.
-
-\begin{figure*}[!htbp]
-
-{\caption{{Item loadings. The table shows each item of the Mint with its
-cluster centrality, which is the EGA equivalent (in terms of
-interpretation) of factor loadings. It also shows how each lower-level
-cluster is related to higher-order metaclusters. The lower-level
-clusters are Expulsion Accuracy (ExAc), Relaxation Awareness (RelA),
-Sexual Arousal Sensitivity (SexS), Cardiorespiratory Confusion (CaCo),
-Urointestinal Inaccuracy (UrIn), Dermal Hypersensitivity (Derm), Satiety
-Noticing (Sati), Olfactory Contribution (Olfa), Respiroception (Resp),
-Cardioception (Card), Gastroception (Gast).}{\label{fig-three}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table1.png}
-\end{center}
-
-\end{figure*}
+participants' responses to the Mint scale\footnote{The experiment can be
+  tested by following the link on \emph{``MASKED FOR REVIEW''}}.
 
 \subsubsection{Data Analysis}\label{data-analysis-1}
 
@@ -1328,22 +1215,6 @@ frameworks) are shown in Figure~\ref{fig-three}. Additionally, we
 applied hierarchical clustering analysis which replicated this structure
 (see Figure~\ref{fig-two}), suggesting consistency across methods.
 
-\begin{figure*}[!htbp]
-
-{\caption{{Descriptive statistics and gender differences across MINT
-clusters. For each cluster, mean scores and standard deviations are
-reported separately by gender (excluding participants identifying as
-``Other''), alongside independent-samples t-test results and
-corresponding Cohen's d effect sizes. Statistical significance of group
-differences is indicated using standard thresholds (* p \textless{} .05,
-** p \textless{} .01, *** p \textless{} .001).}{\label{fig-seven}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table3.png}
-\end{center}
-
-\end{figure*}
-
 \textbf{The ``Interoceptive Awareness'' cluster refers to self-perceived
 awareness of specific bodily states and sensations, particularly those
 associated with distinct physiological conditions. In the present paper,
@@ -1392,25 +1263,6 @@ Cardiorespiratory Confusion. Overall, this structure closely resembled
 the lower-level clusters identified in the final 33-item EGA solution,
 with the main difference being that all cardiorespiratory items loaded
 onto a single factor rather than forming separate clusters.}
-
-\begin{figure*}[!htbp]
-
-{\caption{{Correlation Matrices between the Mint dimensions
-(upper-left), and between the Mint and other interoception
-questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows
-the relationships between interoception and other measures included in
-the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4),
-emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA),
-and Primal World Beliefs. Stars indicate dimensions that have been
-score-reversed for better in-context interpretation. Correlation
-coefficients are shown only for significant correlations (p \textless{}
-.001).}{\label{fig-four}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig2.png}
-\end{center}
-
-\end{figure*}
 
 \subsubsection{Mint}\label{mint}
 
@@ -1478,29 +1330,6 @@ belief that the world was alive (i.e., the belief that the universe is
 conscious, purposeful, and in active relationship with oneself,
 \citeproc{ref-clifton2021brief}{Clifton \& Yaden, 2021}).
 
-\begin{figure*}[!htbp]
-
-{\caption{{Summary table of the comparison between interoception
-questionnaires (Mint, MAIA, BPQ and IAS). For various outcomes included
-the study, we tested the Mint and Non-Mint dimension that had the
-strongest link (as a unique predictor). Values in parenthesis represents
-correlation coefficient for continuous variables and log-odds ratios for
-binary variables (the occurrence of mental and somatic health
-conditions). We also compared the predictive performance of regression
-models including multiple predictors, and present their ranking based on
-raw predictive power (R2) and BIC, which favours more parsimonious
-models (with less predictors). Green background indicates an advantage
-for the Mint, while red backgrounds indicate an advantage for another
-interoception scale. Orange backgrounds indicate an advantage for the
-MAIA driven by its emotion-regulation dimensions (Trusting and
-Not-Worrying).}{\label{fig-five}}}}
-
-\begin{center}
-\includegraphics[width=0.82\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table2.png}
-\end{center}
-
-\end{figure*}
-
 Most of the target outcomes measured in the study to assess validity
 were best predicted by one of the Mint dimension (see
 Figure~\ref{fig-five}). \textbf{For example, \emph{Deficit} was the
@@ -1556,29 +1385,6 @@ MAIA's not worrying (\textbf{\(r = -.219, 95\% CI = [-0.58, -0.11]\))}.
 Daily activity via steps monitoring was best predicted by MAIA's
 Noticing (\textbf{\(r = .28, 95\% CI = [0.32, 0.67]\)}), followed by
 \emph{Awareness} (\textbf{\(r = .26, 95\% CI = [0.37, 0.83]\)}).
-
-\begin{figure*}[!htbp]
-
-{\caption{{Predictive performance of interoception questionnaires for
-various self-reported mental health conditions (mood disorders with
-psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The
-Receiver Operating Characteristic (ROC) curves are shown for the
-logistic regression models for various questionnaires and versions. A
-high Area Under the Curve (AUC) indicates a good discriminative power of
-the model (i.e., a strong combination of sensitivity and specificity).
-The Mint scale (in blue-green) consistently outperformed the other
-interoception scales, with the exception of the MAIA which, driven by
-its emotion-regulation dimensions (Trusting and Not-worrying), performed
-better for mood disorders and central sensitization symptoms. In several
-instances, the short versions of the Mint scale (miniMint and microMint)
-yielded reasonable performance, still outperforming other
-measures.}{\label{fig-six}}}}
-
-\begin{center}
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig3.png}
-\end{center}
-
-\end{figure*}
 
 \subsection{Discussion}\label{discussion-1}
 
@@ -2101,6 +1907,164 @@ problematic: Evidence from simple bivariate correlations.
 \emph{Biological Psychology}, \emph{137}, 12--17.
 
 \end{CSLReferences}
+
+\begin{figure}
+
+\caption{\label{fig-one}The conceptual grid used to generate the 120
+initial items (top-left). Each item belongs both to an interoceptive
+modality (vertical) and a facet (horizontal), with the number of each
+item per category indicated in the circles. The asterisk denotes the
+additional presence of an attention check item in that category. In the
+experiment, these items were presented on different pages grouped either
+by modality (bottom-left), by facet (top-right), or randomly. The
+Correlation Similarity (bottom-right) analysis suggested that the
+correlation matrix obtained from the participants assigned to the
+random-grouping condition was slightly more similar (but
+non-significantly) to the one obtained in the modality-grouping
+condition, suggesting that the scale's structure is robust to different
+presentation conditions, and that the modality-grouping might
+potentially tend to facilitate the emergence of the underlying item
+structure (and thus be interpreted as being more ``natural'').}
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study1/analysis/figures/figure1.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-two}Structure analysis of the final set of 33 Mint
+items. Hierarchical Exploratory Graph Analysis (EGA) was applied to
+jointly identify clusters of items, as well as higher-order
+metaclusters. The reliability of each item can be quantified by the
+proportion of structure replication across bootstrapped samples, with
+high values indicative of high structural stability. The Mint scale
+displayed an excellent structural consistency, with the exception of the
+\emph{Olfa} cluster which belonging to the \emph{Deficit} metaclusters
+warrants further research. Bottom plot shows the result of hierarchical
+clustering, providing evidence for structure statbility across methods,
+and allowing for more granular understanding of the relationships
+between variables.}
+
+\centering{
+
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig1.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-three}Item loadings. The table shows each item of
+the Mint with its cluster centrality, which is the EGA equivalent (in
+terms of interpretation) of factor loadings. It also shows how each
+lower-level cluster is related to higher-order metaclusters. The
+lower-level clusters are Expulsion Accuracy (ExAc), Relaxation Awareness
+(RelA), Sexual Arousal Sensitivity (SexS), Cardiorespiratory Confusion
+(CaCo), Urointestinal Inaccuracy (UrIn), Dermal Hypersensitivity (Derm),
+Satiety Noticing (Sati), Olfactory Contribution (Olfa), Respiroception
+(Resp), Cardioception (Card), Gastroception (Gast).}
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table1.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-four}Correlation Matrices between the Mint
+dimensions (upper-left), and between the Mint and other interoception
+questionnaires (MAIA, BPQ and IAS; upper-right). The bottom matrix shows
+the relationships between interoception and other measures included in
+the study, such as alexithymia (TAS-20), depression and anxiety (PHQ-4),
+emotion reactivity (ERS), abnormal and dissociative experiences (CEFSA),
+and Primal World Beliefs. Stars indicate dimensions that have been
+score-reversed for better in-context interpretation. Correlation
+coefficients are shown only for significant correlations (p \textless{}
+.001).}
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig2.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-five}Summary table of the comparison between
+interoception questionnaires (Mint, MAIA, BPQ and IAS). For various
+outcomes included the study, we tested the Mint and Non-Mint dimension
+that had the strongest link (as a unique predictor). Values in
+parenthesis represents correlation coefficient for continuous variables
+and log-odds ratios for binary variables (the occurrence of mental and
+somatic health conditions). We also compared the predictive performance
+of regression models including multiple predictors, and present their
+ranking based on raw predictive power (R2) and BIC, which favours more
+parsimonious models (with less predictors). Green background indicates
+an advantage for the Mint, while red backgrounds indicate an advantage
+for another interoception scale. Orange backgrounds indicate an
+advantage for the MAIA driven by its emotion-regulation dimensions
+(Trusting and Not-Worrying).}
+
+\centering{
+
+\includegraphics[width=0.82\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table2.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-six}Predictive performance of interoception
+questionnaires for various self-reported mental health conditions (mood
+disorders with psychopharmacological treatment, ADHD and ASD) and
+somatic symptoms. The Receiver Operating Characteristic (ROC) curves are
+shown for the logistic regression models for various questionnaires and
+versions. A high Area Under the Curve (AUC) indicates a good
+discriminative power of the model (i.e., a strong combination of
+sensitivity and specificity). The Mint scale (in blue-green)
+consistently outperformed the other interoception scales, with the
+exception of the MAIA which, driven by its emotion-regulation dimensions
+(Trusting and Not-worrying), performed better for mood disorders and
+central sensitization symptoms. In several instances, the short versions
+of the Mint scale (miniMint and microMint) yielded reasonable
+performance, still outperforming other measures.}
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/fig3.png}
+
+}
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-seven}Descriptive statistics and gender differences
+across MINT clusters. For each cluster, mean scores and standard
+deviations are reported separately by gender (excluding participants
+identifying as ``Other''), alongside independent-samples t-test results
+and corresponding Cohen's d effect sizes. Statistical significance of
+group differences is indicated using standard thresholds (* p
+\textless{} .05, ** p \textless{} .01, *** p \textless{} .001).}
+
+\centering{
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{../study2/analysis/figures/table3.png}
+
+}
+
+\end{figure}%
 
 
 

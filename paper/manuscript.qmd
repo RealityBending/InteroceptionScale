@@ -66,10 +66,7 @@ author-note:
     deceased: ~
   disclosures:
     gratitude: |
-      ::: {.callout-note icon=false appearance="simple"}
-      This preprint is a non-peer-reviewed work from the [**Reality Bending Lab**](https://realitybending.github.io/).
-      ![](https://realitybending.github.io/media/ReBeL_LogoOnly_hu11484441381606756729.png){width=20% fig-align="center"}
-      :::
+      [![](rebel_logo.png){width="60%"}](https://realitybending.github.io/)\
     study-registration: ~
     data-sharing: ~
     related-report: ~
@@ -77,7 +74,7 @@ author-note:
     financial-support: ~
     authorship-agreements: ~
 abstract: |
-  Interoception, the sensing of the body's internal state, is an important component of homeostatic and allostatic regulation with wide-ranging implications for mental and physical health, yet its measurement is hindered by tools with conceptual and psychometric issues. To address these limitations, we developed the Multimodal Interoception Questionnaire (Mint) and **tested its relationship with other measures**. In Study 1 (N=559), a comprehensive item pool using a novel "modality-by-context" framework was generated and then reduced using psychometric network analysis. In Study 2 (N=737), **we further establish the structure of the Mint in an independent sample**, and compare its predictive power against established interoception questionnaires (MAIA-2, BPQ, IAS), and across a wide range of clinical and cognitive outcomes. This rigorous process yielded a 33-item scale with a stable hierarchical structure comprising three metaclusters (Interoceptive Deficit, Interoceptive Awareness, Visceroception) and 11 distinct facets. The Mint demonstrated superior criterion validity, consistently outperforming existing scales in predicting outcomes tied to altered bodily perception, including alexithymia, ADHD, autism, and somatic symptom clusters. The Mint offers a psychometrically robust and nuanced measure of self-reported interoception that integrates and extends existing scales, providing researchers and clinicians with a practical and readily usable tool to investigate the role of bodily sensations in health and disease.
+  Interoception, the sensing of the body's internal state, is an important component of homeostatic and allostatic regulation with wide-ranging implications for mental and physical health, yet its measurement is hindered by tools with conceptual and psychometric issues. To address these limitations, we developed the Multimodal Interoception Questionnaire (Mint). In Study 1 (N=559), a comprehensive item pool using a novel "modality-by-context" framework was generated and then reduced using psychometric network analysis. In Study 2 (N=737), **we further assessed the structure of the Mint in an independent sample**, and compare its predictive power against established interoception questionnaires (MAIA-2, BPQ, IAS), and across a wide range of clinical and cognitive outcomes. This rigorous process yielded a 33-item scale with a stable hierarchical structure comprising three metaclusters (Interoceptive Deficit, Interoceptive Awareness, Visceroception) and 11 distinct facets. The Mint demonstrated superior criterion validity, consistently outperforming existing scales in predicting outcomes tied to altered bodily perception, including alexithymia, ADHD, autism, and somatic symptom clusters. The Mint offers a psychometrically robust and nuanced measure of self-reported interoception that integrates and extends existing scales, providing researchers and clinicians with a practical and readily usable tool to investigate the role of bodily sensations in health and disease.
 #   **Significance Statement**. TODO.
 keywords: "Interoception questionnaire, interoceptive accuracy yscale, MAIA, Mint Validation, Body Awareness, Health"
 numbered-lines: true
