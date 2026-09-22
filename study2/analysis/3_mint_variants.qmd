@@ -1,0 +1,1451 @@
+---
+title: "InteroceptionScale (study 2) - Mint Variants Analysis"
+subtitle: "Comparison of the full Mint against the metaMint, miniMint and microMint short-form variants"
+editor: source
+editor_options:
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute:
+  cache: true
+---
+
+## Overview
+
+This document isolates the analyses comparing the full **Mint** scale against three shortened variants (**metaMint**, **miniMint**, **microMint**), as well as an interoception-focused version of the MAIA (**iMAIA**). 
+
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(gt)
+
+set.seed(42)
+
+Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
+```
+
+```{r}
+df <- read.csv("../data/data_participants.csv") |>
+  rename(MINT_Urin_1 = MINT_Deficit_Urin_1,
+         MINT_Urin_2 = MINT_Deficit_Urin_2,
+         MINT_Urin_3 = MINT_Deficit_Urin_3,
+         MINT_CaCo_1 = MINT_Deficit_CaCo_4,
+         MINT_CaCo_2 = MINT_Deficit_CaCo_5,
+         MINT_CaCo_3 = MINT_Deficit_CaCo_6,
+         MINT_CaNo_1 = MINT_Deficit_CaNo_7,
+         MINT_CaNo_2 = MINT_Deficit_CaNo_8,
+         MINT_CaNo_3 = MINT_Deficit_CaNo_9,
+         MINT_Olfa_1 = MINT_Deficit_Olfa_10,
+         MINT_Olfa_2 = MINT_Deficit_Olfa_11,
+         MINT_Olfa_3 = MINT_Deficit_Olfa_12,
+         MINT_Sati_1 = MINT_Deficit_Sati_13,
+         MINT_Sati_2 = MINT_Deficit_Sati_14,
+         MINT_Sati_3 = MINT_Deficit_Sati_15,
+         MINT_SexS_1 = MINT_Awareness_SexS_19,
+         MINT_SexS_2 = MINT_Awareness_SexS_20,
+         MINT_SexS_3 = MINT_Awareness_SexS_21,
+         MINT_SexO_1 = MINT_Awareness_SexO_22,
+         MINT_SexO_2 = MINT_Awareness_SexO_23,
+         MINT_SexO_3 = MINT_Awareness_SexO_24,
+         MINT_UrSe_1 = MINT_Awareness_UrSe_25,
+         MINT_UrSe_2 = MINT_Awareness_UrSe_26,
+         MINT_UrSe_3 = MINT_Awareness_UrSe_27,
+         MINT_RelA_1 = MINT_Awareness_RelA_28,
+         MINT_RelA_2 = MINT_Awareness_RelA_29,
+         MINT_RelA_3 = MINT_Awareness_RelA_30,
+         MINT_StaS_1 = MINT_Awareness_StaS_31,
+         MINT_StaS_2 = MINT_Awareness_StaS_32,
+         MINT_StaS_3 = MINT_Awareness_StaS_33,
+         MINT_ExAc_1 = MINT_Awareness_ExAc_34,
+         MINT_ExAc_2 = MINT_Awareness_ExAc_35,
+         MINT_ExAc_3 = MINT_Awareness_ExAc_36,
+         MINT_Card_1 = MINT_Sensitivity_Card_37,
+         MINT_Card_2 = MINT_Sensitivity_Card_38,
+         MINT_Card_3 = MINT_Sensitivity_Card_39,
+         MINT_Resp_1 = MINT_Sensitivity_Resp_40,
+         MINT_Resp_2 = MINT_Sensitivity_Resp_41,
+         MINT_Resp_3 = MINT_Sensitivity_Resp_42,
+         MINT_Gast_1 = MINT_Sensitivity_Gast_46,
+         MINT_Gast_2 = MINT_Sensitivity_Gast_47,
+         MINT_Gast_3 = MINT_Sensitivity_Gast_48,
+         MINT_Derm_1 = MINT_Sensitivity_Derm_49,
+         MINT_Derm_2 = MINT_Sensitivity_Derm_50,
+         MINT_Derm_3 = MINT_Sensitivity_Derm_51)
+
+colors <- c(Mint="#00BCD4", metaMint="#673AB7", miniMint="#26A36C", microMint="#8BC34A",
+            IAS="#F44336", MAIA="#FFAD04",  iMAIA="#FF7811", BPQ="#795548")
+```
+
+```{r}
+cleanlabels <- function(x, qname=FALSE) {
+  is_factor <- FALSE
+  if(is.factor(x)) {
+    is_factor <- TRUE
+    vec <- x
+    x <- levels(x)
+  }
+
+  x <- x |>
+    str_replace("MINT_", ifelse(qname, "MINT - ", "")) |>
+    str_replace("MAIA_", ifelse(qname, "MAIA - ", "")) |>
+    str_replace("_", " - ")
+
+  if(is_factor) {
+    levels(vec) <- x
+    return(vec)
+  }
+  x
+}
+```
+
+## Score Extraction
+
+```{r}
+# Awareness
+df$MINT_SexS <- rowMeans(select(df, starts_with("MINT_SexS_")), na.rm = TRUE)
+df$MINT_ExaC <- rowMeans(select(df, starts_with("MINT_ExaC_")), na.rm = TRUE)
+df$MINT_RelA <- rowMeans(select(df, starts_with("MINT_RelA_")), na.rm = TRUE)
+# df$MINT_StaS <- rowMeans(select(df, starts_with("MINT_StaS_")), na.rm = TRUE)
+# df$MINT_SexO <- rowMeans(select(df, starts_with("MINT_SexO_")), na.rm = TRUE)
+# df$MINT_UrSe <- rowMeans(select(df, starts_with("MINT_UrSe_")), na.rm = TRUE)
+
+# Deficit
+df$MINT_Urin <- rowMeans(select(df, starts_with("MINT_Urin_")), na.rm = TRUE)
+df$MINT_CaCo <- rowMeans(select(df, starts_with("MINT_CaCo_")), na.rm = TRUE)
+df$MINT_Derm <- rowMeans(select(df, starts_with("MINT_Derm_")), na.rm = TRUE)
+# df$MINT_CaNo <- rowMeans(select(df, starts_with("MINT_CaNo_")), na.rm = TRUE)
+
+df$MINT_Sati <- rowMeans(select(df, starts_with("MINT_Sati_")), na.rm = TRUE)
+df$MINT_Olfa <- rowMeans(select(df, starts_with("MINT_Olfa_")), na.rm = TRUE)
+
+# Visceral
+df$MINT_Resp <- rowMeans(select(df, starts_with("MINT_Resp_")), na.rm = TRUE)
+df$MINT_Card <- rowMeans(select(df, starts_with("MINT_Card_")), na.rm = TRUE)
+df$MINT_Gast <- rowMeans(select(df, starts_with("MINT_Gast_")), na.rm = TRUE)
+
+df <- df[names(df)[!grepl("MINT_.*[0-9]$", names(df))]]
+```
+
+```{r}
+df$MINT_Meta_Awareness<- rowMeans(df[, c("MINT_SexS", "MINT_ExaC", "MINT_RelA")], na.rm = TRUE)
+df$MINT_Meta_Visceroception <- rowMeans(df[, c("MINT_Resp", "MINT_Card", "MINT_Gast")], na.rm = TRUE)
+df$MINT_Meta_Deficit<- rowMeans(df[, c("MINT_Urin", "MINT_CaCo", "MINT_Derm", "MINT_Sati", "MINT_Olfa")], na.rm = TRUE)
+```
+
+## Mint Variants
+
+```{r}
+mint <- select(df, starts_with("MINT_"))
+
+metamint <- data.frame(
+  MINT_Awareness = rowMeans(select(df, MINT_SexS, MINT_ExaC, MINT_RelA)),
+  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin, MINT_Derm, MINT_Sati, MINT_Olfa)),
+  MINT_Visceroception = rowMeans(select(df, MINT_Card, MINT_Resp, MINT_Gast))
+)
+
+minimint <- data.frame(
+  MINT_Awareness = rowMeans(select(df, MINT_ExaC, MINT_RelA)),
+  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin)),
+  MINT_Visceroception = rowMeans(select(df, MINT_Resp, MINT_Card))
+)
+
+micromint <- data.frame(
+  MINT_ExaC = df$MINT_ExaC,
+  MINT_CaCo = df$MINT_CaCo,
+  MINT_Resp = df$MINT_Resp
+)
+```
+
+```{r}
+#| warning: false
+
+make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 3, xcol = "#424242", ycol="#424242") {
+
+  r_raw <- df1 |>
+    correlation::correlation(data2=df2, p_adjust="none", ci = 0.95, redundant=ifelse(is.null(df2), TRUE, FALSE))
+
+  r <- correlation::cor_sort(r_raw) |>
+    mutate(label = ifelse(p < .001, paste0(insight::format_value(r, lead_zero = FALSE, zap_small = TRUE)), ""),
+           Parameter1 = cleanlabels(Parameter1, qname=qname_x),
+           Parameter2 = cleanlabels(Parameter2, qname=qname_y))
+  r[as.character(r$Parameter1) == as.character(r$Parameter2), "label"] <- ""
+
+  xnames <- levels(r$Parameter1)
+  ynames <- levels(r$Parameter2)
+
+  xcol <- case_when(
+    str_detect(xnames, "MINT") ~ "#00838F",
+    str_detect(xnames, "MAIA") ~ "#EF6C00",
+    str_detect(xnames, "IAS") ~ "#C62828",
+    str_detect(xnames, "BPQ") ~ "#795548",
+    .default = xcol
+  )
+  ycol <- case_when(
+    str_detect(ynames, "MINT") ~ "#00838F",
+    str_detect(ynames, "MAIA") ~ "#EF6C00",
+    str_detect(ynames, "IAS") ~ "#C62828",
+    str_detect(ynames, "BPQ") ~ "#795548",
+    .default = ycol
+  )
+  xbold <- case_when(
+    xnames %in% c("Awareness", "MINT - Awareness") ~ "bold",
+    str_detect(xnames, "Visceroception") ~ "bold",
+    str_detect(xnames, "Deficit") ~ "bold",
+    .default = "plain"
+  )
+  ybold <- case_when(
+    ynames %in% c("Awareness", "MINT - Awareness") ~ "bold",
+    str_detect(ynames, "Visceroception") ~ "bold",
+    str_detect(ynames, "Deficit") ~ "bold",
+    .default = "plain"
+  )
+
+  p <- r |>
+    ggplot(aes(x=Parameter1, y=Parameter2, fill=r)) +
+    geom_tile() +
+    geom_text(aes(label=label), size=textsize) +
+    scale_fill_gradient2(low="blue", high="red", mid="white", midpoint=0) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust=1, color = xcol, face = xbold),
+          axis.text.y = element_text(color = ycol, face = ybold),
+          legend.position = "none",
+          axis.title = element_blank())
+
+  attr(p, "cor_table") <- r_raw
+  p
+}
+
+# Renders the correlation table for a plot produced by make_cor(), for use in a "Table" tab
+show_cor_table <- function(p) {
+  attr(p, "cor_table") |>
+    summary() |>
+    gt::gt() |>
+    gt::fmt_number(decimals = 2) |>
+    gt::opt_interactive(use_compact_mode = TRUE)
+}
+
+
+p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, textsize = 2.8,
+                      xcol = "#00838F", ycol = "#00838F") +
+  labs(title="Correlations between MINT dimensions") +
+  theme(axis.title = element_blank())
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_cormint
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_cormint)
+```
+
+:::
+
+## Convergent Validity
+
+::: {.panel-tabset}
+
+### Interoception
+
+
+```{r}
+#| warning: false
+
+p_corintero <- make_cor(select(df, starts_with("MAIA"), IAS, BPQ),
+                        cbind(mint, metamint), qname_y = FALSE, textsize = 2.8,
+                        ycol = "#00838F") +
+  labs(title="MINT vs. Other Interoception Questionnaires") +
+  theme(axis.title = element_blank())
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_corintero
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_corintero)
+```
+
+:::
+
+Most correlated dimensions:
+- IAS: ExAc
+- Trusting: RelA
+- Noticing: Resp
+- Emotional Awareness: Resp
+- Body Listening: Gast
+- SelfRegulation: RelA
+- AttentionRegulation: RelA
+- BPQ: Card
+
+
+### Alexithymia
+
+```{r}
+table_models <- function(models, conf.level = 0.95) {
+  test <- test_performance(models)
+  table <- compare_performance(models, metrics=c("R2", "BIC"))
+  test$Model <- NULL
+  test$Omega2 <- NULL
+  test$p_Omega2 <- NULL
+  test$LR <- NULL
+  test$p_LR <- NULL
+  test$R2 <- table$R2
+  test$BIC <- table$BIC
+
+  preds <- c()
+  coefs <- c()
+  ci_low <- c()
+  ci_high <- c()
+
+  for(m in models){
+    x <- names(sort(abs(coef(m)[-1]), decreasing=TRUE))
+    preds <- c(preds, paste0(cleanlabels(x), collapse = ", "))
+    if(length(coef(m)) == 2) {
+      coefs <- c(coefs, coef(m)[2])
+      ci <- confint(m, level = conf.level)[2, ]
+      ci_low <- c(ci_low, ci[1])
+      ci_high <- c(ci_high, ci[2])
+    }
+  }
+
+  test <- datawizard::data_select(test, c("Name", "R2", "BIC", "BF"))
+
+  if(length(coefs) == length(models)) {
+  test$Coefficient <- coefs
+  test$CI_low <- round(ci_low,2)
+  test$CI_high <- round(ci_high,2)
+  }
+  test
+}
+
+
+display_models <- function(table, title = "", subtitle = "") {
+   numcols <- c("R2", "BIC", "Coefficient", "CI_low", "CI_high")[c("R2", "BIC", "Coefficient", "CI_low", "CI_high") %in% names(table)]
+  table |>
+    mutate(BF = format_bf(BF, name = NULL, stars = TRUE)) |>
+    gt::gt() |>
+    gt::fmt_number(columns = numcols, decimals = 3) |>
+    gt::tab_header(title = title, subtitle = subtitle) |>
+    gt::data_color(
+      columns = c("R2"),
+      palette = c("white", "green")
+    ) |>
+    gt::data_color(
+      columns = c("BIC"),
+      palette = c("green", "white")
+    ) |>
+    gt::opt_interactive(use_compact_mode=TRUE)
+
+}
+# Individual predictors ------------------------------------------------------
+
+compare_predictors <- function(outcome="TAS_DIF", family = "linear") {
+
+  preds <- c("BPQ", "IAS",
+             names(select(df, starts_with("MINT"), -matches("[[:digit:]]"))),
+             names(select(df, starts_with("MAIA"))),
+             names(metamint))
+
+  models <- list()
+  for(p in preds) {
+    if(length(unique(df[[outcome]])) > 2) {
+      if (family == "linear") {
+        models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint))
+      } else {
+        models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint), family=family)
+      }
+    } else {
+      models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=standardize(cbind(df, metamint), exclude=outcome), family="binomial")
+    }
+  }
+  perf <- compare_performance(models) |>
+    arrange(AIC)
+
+  best_mint <- perf$Name[str_detect(perf$Name, "MINT_")][1]
+  best_maia <- perf$Name[str_detect(perf$Name, "MAIA")][1]
+
+  table <- table_models(models[c(best_mint, best_maia, "BPQ", "IAS")])
+
+  # Make plots --------------------------------------------------
+  df_pred <- data.frame()
+  for(p in c(best_mint, best_maia, "BPQ", "IAS")) {
+    pred <- modelbased::estimate_relation(models[[p]], by=p, length=30)
+    names(pred)[1] <- "Value"
+    pred$Predictor <- p
+    df_pred <- rbind(df_pred, pred)
+  }
+
+  cols <- colors
+  cols[[best_mint]] <- cols["Mint"]
+  cols[[best_maia]] <- cols["MAIA"]
+
+  p <- df_pred |>
+    mutate(Predictor = fct_rev(Predictor)) |>
+    ggplot(aes(x=Value, y=Predicted)) +
+    geom_ribbon(aes(ymin=CI_low, ymax=CI_high, fill=Predictor), alpha=0.3) +
+    geom_line(aes(color=Predictor)) +
+    scale_fill_manual(values=cols) +
+    scale_color_manual(values=cols) +
+    facet_wrap(~Predictor, scales="free_x") +
+    labs(y=outcome, x="Interoception Index")
+
+  list(table=table, p=p, outcome=outcome)
+}
+
+
+
+
+# Full Models ------------------------------------------------------
+
+compare_models_lm <- function(outcome="TAS_DIF") {
+
+  # Full Questionnaires
+  m_mint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(mint, df[outcome]))
+  m_metamint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(metamint, df[outcome]))
+  m_minimint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minimint, df[outcome]))
+  m_micromint <- lm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(micromint, df[outcome]))
+  m_ias <- lm(as.formula(paste0(outcome, " ~ IAS")),
+              data = df)
+  m_maia <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), starts_with("MAIA")))
+  m_imaia <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome),
+                              starts_with("MAIA"),
+                              -contains("NotWorrying"),
+                              -contains("NotDistracting")))
+  m_imaia <- lm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome),
+                              # MAIA_AttentionRegulation, # remove?
+                              # MAIA_SelfRegulation, # remove?
+                              # MAIA_Trusting, # remove?
+                              MAIA_BodyListening,
+                              MAIA_EmotionalAwareness,
+                              MAIA_Noticing))
+  m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
+                data = df)
+
+  models_full <- list(m_mint=m_mint, m_metamint=m_metamint,
+                      m_minimint=m_minimint, m_micromint=m_micromint,
+                      m_maia=m_maia, m_imaia=m_imaia,
+                      m_ias=m_ias, m_bpq=m_bpq)
+  table_models(models_full)
+}
+```
+
+
+
+
+```{r}
+preds_dif <- compare_predictors("TAS_DIF")
+display_models(preds_dif$table, title="Best Predictor", subtitle = "TAS - DIF")
+preds_dif$p
+mods_dif <- compare_models_lm("TAS_DIF")
+display_models(mods_dif, title="Best Model", subtitle = "DIF")
+
+preds_ddf <- compare_predictors("TAS_DDF")
+display_models(preds_ddf$table, title="Best Predictor", subtitle = "DDF")
+preds_ddf$p
+mods_ddf <- compare_models_lm("TAS_DDF")
+display_models(mods_ddf, title="Best Model", subtitle = "DDF")
+
+preds_eot <- compare_predictors("TAS_EOT")
+display_models(preds_eot$table, title="Best Predictor", subtitle = "EOT")
+preds_eot$p
+mods_eot <- compare_models_lm("TAS_EOT")
+display_models(mods_eot, title="Best Model", subtitle = "EOT")
+```
+
+```{r}
+p_cortas <- make_cor(select(df, starts_with("TAS_")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_cortas
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_cortas)
+```
+
+:::
+
+
+### Mood
+
+```{r}
+preds_ls <- compare_predictors("LifeSatisfaction")
+display_models(preds_ls$table, title="Best Predictor", subtitle = "Life Satisfaction")
+preds_ls$p
+mods_ls <- compare_models_lm("LifeSatisfaction")
+display_models(mods_ls, title="Best Model", subtitle = "Life Satisfaction")
+
+preds_anx <- compare_predictors("PHQ4_Anxiety")
+display_models(preds_anx$table, title="Best Predictor", subtitle = "PHQ4 Anxiety")
+preds_anx$p
+mods_anx <- compare_models_lm("PHQ4_Anxiety")
+display_models(mods_anx, title="Best Model", subtitle = "PHQ4 Anxiety")
+
+preds_dep <- compare_predictors("PHQ4_Depression")
+display_models(preds_dep$table, title="Best Predictor", subtitle = "PHQ4 Depression")
+preds_dep$p
+mods_dep <- compare_models_lm("PHQ4_Depression")
+display_models(mods_dep, title="Best Model", subtitle = "PHQ4 Depression")
+```
+
+```{r}
+p_cormood <- make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_cormood
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_cormood)
+```
+
+:::
+
+- CaCo and RelA
+
+### Emotions
+
+```{r}
+preds_arou <- compare_predictors("ERS_Arousal")
+display_models(preds_arou$table, title="Best Predictor", subtitle = "ERS Arousal")
+preds_arou$p
+mods_arou <- compare_models_lm("ERS_Arousal")
+display_models(mods_arou, title="Best Model", subtitle = "ERS Arousal")
+
+preds_sens <- compare_predictors("ERS_Sensitivity")
+display_models(preds_sens$table, title="Best Predictor", subtitle = "ERS Sensitivity")
+preds_sens$p
+mods_sens <- compare_models_lm("ERS_Sensitivity")
+display_models(mods_sens, title="Best Model", subtitle = "ERS Sensitivity")
+
+preds_pers <- compare_predictors("ERS_Persistence")
+display_models(preds_pers$table, title="Best Predictor", subtitle = "ERS Persistence")
+preds_pers$p
+mods_pers <- compare_models_lm("ERS_Persistence")
+display_models(mods_pers, title="Best Model", subtitle = "ERS Persistence")
+```
+
+
+```{r}
+p_corers <- make_cor(select(df, starts_with("ERS_")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_corers
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_corers)
+```
+
+:::
+
+- CaCo
+
+:::
+
+
+
+
+## Exploratory
+
+::: {.panel-tabset}
+
+
+### CEFSA
+
+```{r}
+#| warning: false
+
+p_corcefsa <- make_cor(select(df, starts_with("CEFSA")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_corcefsa
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_corcefsa)
+```
+
+:::
+
+```{r}
+preds_cefsabody <- compare_predictors("CEFSA_Body")
+display_models(preds_cefsabody$table, title="Best Predictor", subtitle = "CEFSA - Body")
+preds_cefsabody$p
+mods_cefsabody <- compare_models_lm("CEFSA_Body")
+display_models(mods_cefsabody, title="Best Model", subtitle = "CEFSA - Body")
+
+preds_cefsaself <- compare_predictors("CEFSA_Self")
+display_models(preds_cefsaself$table, title="Best Predictor", subtitle = "CEFSA - Self")
+preds_cefsaself$p
+mods_cefsaself <- compare_models_lm("CEFSA_Self")
+display_models(mods_cefsaself, title="Best Model", subtitle = "CEFSA - Self")
+
+preds_cefsaemo <- compare_predictors("CEFSA_Emotion")
+display_models(preds_cefsaemo$table, title="Best Predictor", subtitle = "CEFSA - Emotion")
+preds_cefsaemo$p
+mods_cefsaemo <- compare_models_lm("CEFSA_Emotion")
+display_models(mods_cefsaemo, title="Best Model", subtitle = "CEFSA - Emotion")
+
+preds_cefsareal <- compare_predictors("CEFSA_Reality")
+display_models(preds_cefsareal$table, title="Best Predictor", subtitle = "CEFSA - Reality")
+preds_cefsareal$p
+mods_cefsareal <- compare_models_lm("CEFSA_Reality")
+display_models(mods_cefsareal, title="Best Model", subtitle = "CEFSA - Reality")
+
+preds_cefsacon <- compare_predictors("CEFSA_Connection")
+display_models(preds_cefsacon$table, title="Best Predictor", subtitle = "CEFSA - Connection")
+preds_cefsacon$p
+mods_cefsacon <- compare_models_lm("CEFSA_Connection")
+display_models(mods_cefsacon, title="Best Model", subtitle = "CEFSA - Connection")
+
+preds_cefsagency <- compare_predictors("CEFSA_Agency")
+display_models(preds_cefsagency$table, title="Best Predictor", subtitle = "CEFSA - Agency")
+preds_cefsagency$p
+mods_cefsagency <- compare_models_lm("CEFSA_Agency")
+display_models(mods_cefsagency, title="Best Model", subtitle = "CEFSA - Agency")
+```
+
+
+### Emotion Regulation
+
+```{r}
+#| warning: false
+
+p_corcerq <- make_cor(select(df, starts_with("CERQ")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_corcerq
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_corcerq)
+```
+
+:::
+
+```{r}
+preds_cerqreapp <- compare_predictors("CERQ_PositiveReappraisal")
+display_models(preds_cerqreapp$table, title="Best Predictor", subtitle = "CERQ - Positive Reappraisal")
+preds_cerqreapp$p
+mods_cerqreapp <- compare_models_lm("CERQ_PositiveReappraisal")
+display_models(mods_cerqreapp, title="Best Model", subtitle = "CERQ - Positive Reappraisal")
+
+preds_cerqrefocus <- compare_predictors("CERQ_PositiveRefocusing")
+display_models(preds_cerqrefocus$table, title="Best Predictor", subtitle = "CERQ - Positive Refocusing")
+preds_cerqrefocus$p
+mods_cerqrefocus <- compare_models_lm("CERQ_PositiveRefocusing")
+display_models(mods_cerqrefocus, title="Best Model", subtitle = "CERQ - Positive Refocusing")
+
+preds_cerqpersp <- compare_predictors("CERQ_Perspective")
+display_models(preds_cerqpersp$table, title="Best Predictor", subtitle = "CERQ - Perspective")
+preds_cerqpersp$p
+mods_cerqpersp <- compare_models_lm("CERQ_Perspective")
+display_models(mods_cerqpersp, title="Best Model", subtitle = "CERQ - Perspective")
+
+preds_cerqacceptance <- compare_predictors("CERQ_Acceptance")
+display_models(preds_cerqacceptance$table, title="Best Predictor", subtitle = "CERQ - Acceptance")
+preds_cerqacceptance$p
+mods_cerqacceptance <- compare_models_lm("CERQ_Acceptance")
+display_models(mods_cerqacceptance, title="Best Model", subtitle = "CERQ - Acceptance")
+```
+
+
+### Primals
+
+```{r}
+#| warning: false
+
+p_corpi <- make_cor(select(df, starts_with("PI")),
+         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+p_corpi
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_corpi)
+```
+
+:::
+
+```{r}
+preds_pialive <- compare_predictors("PI_Alive")
+display_models(preds_pialive$table, title="Best Predictor", subtitle = "Primals - Alive")
+preds_pialive$p
+mods_pialive <- compare_models_lm("PI_Alive")
+display_models(mods_pialive, title="Best Model", subtitle = "Primals - Alive")
+
+
+preds_pisafe <- compare_predictors("PI_Safe")
+display_models(preds_pisafe$table, title="Best Predictor", subtitle = "Primals - Safe")
+preds_pisafe$p
+mods_pisafe <- compare_models_lm("PI_Safe")
+display_models(mods_pisafe, title="Best Model", subtitle = "Primals - Safe")
+
+
+preds_pient <- compare_predictors("PI_Enticing")
+display_models(preds_pient$table, title="Best Predictor", subtitle = "Primals - Enticing")
+preds_pient$p
+mods_pient <- compare_models_lm("PI_Enticing")
+display_models(mods_pient, title="Best Model", subtitle = "Primals - Enticing")
+
+
+preds_pigood <- compare_predictors("PI_Good")
+display_models(preds_pigood$table, title="Best Predictor", subtitle = "Primals - Good")
+preds_pigood$p
+mods_pigood <- compare_models_lm("PI_Good")
+display_models(mods_pigood, title="Best Model", subtitle = "Primals - Good")
+```
+
+
+:::
+
+## Predictive
+
+### Mental Health
+
+::: panel-tabset
+
+#### Mood Disorders
+
+```{r}
+table(df$Disorders_Psychiatric_MoodTreatment)
+```
+
+
+```{r}
+compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", subtitle = "") {
+
+
+  # Full Questionnaires
+  m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(mint, df[outcome]),
+              family = "binomial")
+  m_metamint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(metamint, df[outcome]),
+              family = "binomial")
+  m_minimint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(minimint, df[outcome]),
+              family = "binomial")
+  m_micromint <- glm(as.formula(paste0(outcome, " ~ .")),
+              data = cbind(micromint, df[outcome]),
+              family = "binomial")
+  m_ias <- glm(as.formula(paste0(outcome, " ~ IAS")),
+              data = df,
+              family = "binomial")
+  m_maia <- glm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome), starts_with("MAIA")),
+              family = "binomial")
+  m_imaia <- glm(as.formula(paste0(outcome, " ~ .")),
+                data = select(df, all_of(outcome),
+                              # MAIA_AttentionRegulation, # remove?
+                              # MAIA_SelfRegulation, # remove?
+                              # MAIA_Trusting, # remove?
+                              MAIA_BodyListening,
+                              MAIA_EmotionalAwareness,
+                              MAIA_Noticing),
+              family = "binomial")
+  m_bpq <- glm(as.formula(paste0(outcome, " ~ BPQ")),
+               data = df,
+               family = "binomial")
+
+  models_full <- list(m_mint=m_mint, m_metamint=m_metamint,
+                      m_minimint=m_minimint, m_micromint=m_micromint,
+                      m_maia=m_maia, m_imaia=m_imaia,
+                      m_ias=m_ias, m_bpq=m_bpq)
+
+  table <- table_models(models_full)
+
+  # get_auc <- function(m) {
+  #   roc <- as.data.frame(performance_roc(m))
+  #   auc <- bayestestR::area_under_curve(roc$Specificity, roc$Sensitivity)
+  #   paste0("AUC = ", insight::format_percent(auc))
+  # }
+  #
+
+      # SE for AUC
+    get_auc <- function(m, n_boot = 1000) {
+
+    probs <- predict(m, type = "response")
+    outcome_vec <- model.response(model.frame(m))
+    roc_obj <- pROC::roc(outcome_vec, probs, quiet = TRUE)
+    auc_val <- as.numeric(pROC::auc(roc_obj))
+
+    ci_auc <- pROC::ci.auc(roc_obj, method = "bootstrap",
+                           boot.n = n_boot, quiet = TRUE)
+
+    se <- round(((ci_auc[3] - ci_auc[1]) / (2 * 1.96) )*100, 1)
+
+    paste0(
+    "AUC = ",
+    insight::format_percent(auc_val, digits = 1),
+    " (± "  ,
+    sub("^0", "", sprintf("%.1f", se)),
+    "%)")
+    }
+
+  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
+
+  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
+
+  p <- rbind(
+    mutate(as.data.frame(performance_roc(m_mint)), Predictor = "Mint"),
+    mutate(as.data.frame(performance_roc(m_metamint)), Predictor = "metaMint"),
+    mutate(as.data.frame(performance_roc(m_minimint)), Predictor = "miniMint"),
+    mutate(as.data.frame(performance_roc(m_micromint)), Predictor = "microMint"),
+    mutate(as.data.frame(performance_roc(m_maia)), Predictor = "MAIA"),
+    mutate(as.data.frame(performance_roc(m_imaia)), Predictor = "iMAIA"),
+    mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
+    mutate(as.data.frame(performance_roc(m_bpq)), Predictor = "BPQ")
+  ) |>
+    mutate(Predictor = fct_relevel(Predictor, mods_order)) |>
+    ggplot(aes(x=Specificity)) +
+    geom_abline(intercept=0, slope=1, color="gray", linewidth=1) +
+    geom_line(aes(y=Sensitivity, color=Predictor), linewidth=1.5, alpha=0.9) +
+    geom_label(data=data.frame(
+      label = c(get_auc(m_mint), get_auc(m_metamint),
+                get_auc(m_minimint), get_auc(m_micromint),
+                get_auc(m_maia), get_auc(m_imaia), get_auc(m_ias), get_auc(m_bpq)),
+      Predictor = mods_order,
+      x = 0.8,
+      y = c(0.55, 0.475, 0.425, 0.375, 0.30, 0.25, 0.20, 0.15)),
+      aes(x=x, y=y, label=label), color=colors[mods_order], size=3) +
+    labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
+         color="Questionnaire", title = title, subtitle=subtitle) +
+    scale_color_manual(values=colors) +
+    scale_x_continuous(labels=scales::percent) +
+    scale_y_continuous(labels=scales::percent) +
+    theme_minimal() +
+    theme(plot.title = element_text(face="bold"))
+
+  list(table=table, p=p)
+}
+```
+
+
+```{r}
+preds_mood <- compare_predictors("Disorders_Psychiatric_Mood")
+display_models(preds_mood$table, title="Best Predictor", subtitle = "Mood Disorders")
+preds_mood$p
+mods_mood <- compare_models_glm("Disorders_Psychiatric_Mood")
+display_models(mods_mood$table, title="Best Predictor", subtitle = "Mood Disorders")
+mods_mood$p
+```
+
+```{r}
+preds_moodt <- compare_predictors("Disorders_Psychiatric_MoodTreatment")
+display_models(preds_moodt$table, title="Best Predictor", subtitle = "Mood Disorders (with Treatment)")
+preds_moodt$p
+mods_moodt <- compare_models_glm("Disorders_Psychiatric_MoodTreatment",
+                                 title="Mood Disorders", subtitle = "MDD, GAD, Bipolar (with Treatment)")
+display_models(mods_moodt$table, title="Best Predictor", subtitle = "Mood Disorders (with Treatment)")
+mods_moodt$p
+```
+
+#### Anxiety
+
+```{r}
+preds_anxdis <- compare_predictors("Disorders_Psychiatric_Anxiety")
+display_models(preds_anxdis$table, title="Best Predictor", subtitle = "Anxiety Disorders")
+preds_anxdis$p
+mods_anxdis <- compare_models_glm("Disorders_Psychiatric_Anxiety")
+display_models(mods_anxdis$table, title="Best Model", subtitle = "Anxiety Disorders")
+mods_anxdis$p
+```
+
+```{r}
+preds_anxdist <- compare_predictors("Disorders_Psychiatric_AnxietyTreatment")
+display_models(preds_anxdist$table, title="Best Predictor", subtitle = "Anxiety Disorders (with Treatment)")
+preds_anxdist$p
+mods_anxdist <- compare_models_glm("Disorders_Psychiatric_AnxietyTreatment")
+display_models(mods_anxdist$table, title="Best Model", subtitle = "Anxiety Disorders (with Treatment)")
+mods_anxdist$p
+```
+
+#### Eating
+
+```{r}
+preds_eat <- compare_predictors("Disorders_Psychiatric_Eating")
+display_models(preds_eat$table, title="Best Predictor", subtitle = "Eating Disorders")
+preds_eat$p
+mods_eat <- compare_models_glm("Disorders_Psychiatric_Eating")
+display_models(mods_eat$table, title="Best Model", subtitle = "Eating Disorders")
+mods_eat$p
+```
+
+#### Addiction
+
+```{r}
+preds_addict <- compare_predictors("Disorders_Psychiatric_Addiction")
+display_models(preds_addict$table, title="Best Predictor", subtitle = "Addiction")
+preds_addict$p
+mods_addict <- compare_models_glm("Disorders_Psychiatric_Addiction")
+display_models(mods_addict$table, title="Best Model", subtitle = "Addiction")
+mods_addict$p
+```
+
+#### ADHD
+
+```{r}
+table(df$Disorders_Psychiatric_ADHD)
+```
+
+
+```{r}
+preds_adhd <- compare_predictors("Disorders_Psychiatric_ADHD")
+display_models(preds_adhd$table, title="Best Predictor", subtitle = "ADHD")
+preds_adhd$p
+mods_adhd <- compare_models_glm("Disorders_Psychiatric_ADHD",
+                                title = "ADHD", subtitle = "Attention Deficit/Hyperactivity Disorder")
+display_models(mods_adhd$table, title="Best Model", subtitle = "ADHD")
+mods_adhd$p
+```
+
+#### Autism
+
+```{r}
+table(df$Disorders_Psychiatric_Autism)
+```
+
+
+```{r}
+preds_asd <- compare_predictors("Disorders_Psychiatric_Autism")
+display_models(preds_asd$table, title="Best Predictor", subtitle = "Autism")
+preds_asd$p
+mods_asd <- compare_models_glm("Disorders_Psychiatric_Autism",
+                                title = "ASD", subtitle = "Autism Spectrum Disorder")
+display_models(mods_asd$table, title="Best Model", subtitle = "Autism")
+mods_asd$p
+```
+
+
+#### Borderline
+
+```{r}
+preds_bpd <- compare_predictors("Disorders_Psychiatric_Borderline")
+display_models(preds_bpd$table, title="Best Predictor", subtitle = "Borderline Personality Disorder")
+preds_bpd$p
+mods_bpd <- compare_models_glm("Disorders_Psychiatric_Borderline")
+display_models(mods_bpd$table, title="Best Model", subtitle = "Borderline Personality Disorder")
+mods_bpd$p
+```
+
+
+::::
+
+
+
+### Somatic Issues
+
+::: panel-tabset
+
+#### Afferent Sensitivity
+
+```{r}
+preds_afferent <- compare_predictors("Disorders_Somatic_AfferentSensitivity")
+display_models(preds_afferent$table, title="Best Predictor", subtitle = "Afferent Sensitivity Symptoms")
+preds_afferent$p
+mods_afferent <- compare_models_glm("Disorders_Somatic_AfferentSensitivity",
+                                    title="Afferent Sensitivity Symptoms",
+                                    subtitle = "Migraine, neuropathy, muscle tension, dizziness, ...")
+display_models(mods_afferent$table, title="Best Model", subtitle = "Afferent Sensitivity Symptoms")
+mods_afferent$p
+```
+
+#### Central Sensitization
+
+```{r}
+preds_central <- compare_predictors("Disorders_Somatic_CentralSensitization")
+display_models(preds_central$table, title="Best Predictor", subtitle = "Central Sensitization Symptoms")
+preds_central$p
+mods_central <- compare_models_glm("Disorders_Somatic_CentralSensitization",
+                                   title="Central Sensitization Symptoms",
+                                   subtitle = "Fibromyalgia, chronic fatigue, back pain, IBS, ...")
+display_models(mods_central$table, title="Best Model", subtitle = "Central Sensitization Symptoms")
+mods_central$p
+```
+
+#### Autonomic Dysfunction
+
+```{r}
+preds_autonomic <- compare_predictors("Disorders_Somatic_AutonomicDysfunction")
+display_models(preds_autonomic$table, title="Best Predictor", subtitle = "Autonomic Dysfunction")
+preds_autonomic$p
+mods_autonomic <- compare_models_glm("Disorders_Somatic_AutonomicDysfunction",
+                                     title="Autonomic Dysfunction",
+                                     subtitle = "Hypermobility, chest pain, hypo/hypertension, ....")
+display_models(mods_autonomic$table, title="Best Model", subtitle = "Autonomic Dysfunction")
+mods_autonomic$p
+```
+
+#### Immune-Inflammatory
+
+```{r}
+preds_immune <- compare_predictors("Disorders_Somatic_ImmuneInflammatory")
+display_models(preds_immune$table, title="Best Predictor", subtitle = "Immune-Inflammatory Symptoms")
+preds_immune$p
+mods_immune <- compare_models_glm("Disorders_Somatic_ImmuneInflammatory",
+                                  title="Immune-Inflammatory Symptoms",
+                                  subtitle = "Allergies, asthma, eczema, autoimmune, ...")
+display_models(mods_immune$table, title="Best Model", subtitle = "Immune-Inflammatory Symptoms")
+mods_immune$p
+```
+
+:::
+
+
+### Lifestyle and Demographic
+
+::: {.panel-tabset}
+
+#### Age
+
+```{r}
+preds_age <- compare_predictors("Age")
+display_models(preds_age$table, title="Best Predictor", subtitle = "Age")
+preds_age$p
+mods_age <- compare_models_lm("Age")
+display_models(mods_age, title="Best Model", subtitle = "Age")
+```
+
+#### Sex
+
+```{r}
+df$Sex <- ifelse(df$Gender == "Female", 1, ifelse(df$Gender == "Male", 0, NA))
+
+preds_sex <- compare_predictors("Sex")
+display_models(preds_sex$table, title="Best Predictor", subtitle = "Sex")
+preds_sex$p
+mods_sex <- compare_models_glm("Sex")
+display_models(mods_sex$table, title="Best Model", subtitle = "Sex")
+mods_sex$p
+```
+
+#### BMI
+
+```{r}
+preds_bmi <- compare_predictors("BMI")
+display_models(preds_bmi$table, title="Best Predictor", subtitle = "BMI")
+preds_bmi$p
+mods_bmi <- compare_models_lm("BMI")
+display_models(mods_bmi, title="Best Model", subtitle = "BMI")
+```
+
+#### Physical Activity
+
+```{r}
+preds_physactiv <- compare_predictors("Physical_Active")
+display_models(preds_physactiv$table, title="Best Predictor", subtitle = "Physical Activity")
+preds_physactiv$p
+mods_physactiv <- compare_models_lm("Physical_Active")
+display_models(mods_physactiv, title="Best Model", subtitle = "Physical Activity")
+```
+
+:::
+
+### Biofeedback Usage (Wearables)
+
+::: {.panel-tabset}
+
+#### Number of Wearables
+
+```{r}
+preds_wearN <- compare_predictors("Wearables_Number", family = "poisson")
+display_models(preds_wearN$table, title="Best Predictor", subtitle = "Wearables Number")
+preds_wearN$p
+```
+
+#### Heart
+
+```{r}
+df$Wearables_HeartOwn <- ifelse(df$Wearables_Heart == "Not owning", 0, 1)
+preds_wearHeartOwn <- compare_predictors("Wearables_HeartOwn")
+display_models(preds_wearHeartOwn$table, title="Best Predictor", subtitle = "Wearables Heart Ownership")
+preds_wearHeartOwn$p
+mods_wearHeartOwn <- compare_models_glm("Wearables_HeartOwn")
+display_models(mods_wearHeartOwn$table, title="Best Model", subtitle = "Wearables Heart Ownership")
+mods_wearHeartOwn$p
+
+preds_wearHeartImp <- compare_predictors("Wearables_HeartImportance")
+display_models(preds_wearHeartImp$table, title="Best Predictor", subtitle = "Wearables Heart Importance")
+preds_wearHeartImp$p
+mods_wearHeartImp <- compare_models_lm("Wearables_HeartImportance")
+display_models(mods_wearHeartImp, title="Best Model", subtitle = "Wearables Heart Importance")
+```
+
+#### Sleep
+
+```{r}
+df$Wearables_SleepOwn <- ifelse(df$Wearables_Sleep == "Not owning", 0, 1)
+preds_wearSleepOwn <- compare_predictors("Wearables_SleepOwn")
+display_models(preds_wearSleepOwn$table, title="Best Predictor", subtitle = "Wearables Sleep Ownership")
+preds_wearSleepOwn$p
+mods_wearSleepOwn <- compare_models_glm("Wearables_SleepOwn")
+display_models(mods_wearSleepOwn$table, title="Best Model", subtitle = "Wearables Sleep Ownership")
+
+preds_wearSleepImp <- compare_predictors("Wearables_SleepImportance")
+display_models(preds_wearSleepImp$table, title="Best Predictor", subtitle = "Wearables Sleep Importance")
+preds_wearSleepImp$p
+mods_wearSleepImp <- compare_models_lm("Wearables_SleepImportance")
+display_models(mods_wearSleepImp, title="Best Model", subtitle = "Wearables Sleep Importance")
+```
+
+#### Steps
+
+```{r}
+df$Wearables_StepsOwn <- ifelse(df$Wearables_Steps == "Not owning", 0, 1)
+preds_wearStepsOwn <- compare_predictors("Wearables_StepsOwn")
+display_models(preds_wearStepsOwn$table, title="Best Predictor", subtitle = "Wearables Steps Ownership")
+preds_wearStepsOwn$p
+mods_wearStepsOwn <- compare_models_glm("Wearables_StepsOwn")
+display_models(mods_wearStepsOwn$table, title="Best Model", subtitle = "Wearables Steps Ownership")
+
+preds_wearStepsImp <- compare_predictors("Wearables_StepsImportance")
+display_models(preds_wearStepsImp$table, title="Best Predictor", subtitle = "Wearables Steps Importance")
+preds_wearStepsImp$p
+mods_wearStepsImp <- compare_models_lm("Wearables_StepsImportance")
+display_models(mods_wearStepsImp, title="Best Model", subtitle = "Wearables Steps Importance")
+```
+
+#### Weight
+
+```{r}
+df$Wearables_WeightOwn <- ifelse(df$Wearables_Weight == "Not owning", 0, 1)
+preds_wearWeightOwn <- compare_predictors("Wearables_WeightOwn")
+display_models(preds_wearWeightOwn$table, title="Best Predictor", subtitle = "Wearables Weight Ownership")
+preds_wearWeightOwn$p
+mods_wearWeightOwn <- compare_models_glm("Wearables_WeightOwn")
+display_models(mods_wearWeightOwn$table, title="Best Model", subtitle = "Wearables Weight Ownership")
+
+preds_wearWeightImp <- compare_predictors("Wearables_WeightImportance")
+display_models(preds_wearWeightImp$table, title="Best Predictor", subtitle = "Wearables Weight Importance")
+preds_wearWeightImp$p
+mods_wearWeightImp <- compare_models_lm("Wearables_WeightImportance")
+display_models(mods_wearWeightImp, title="Best Model", subtitle = "Wearables Weight Importance")
+```
+
+:::
+
+## Summary Table
+
+In order to evaluate the potential for a short version of our scale, we compared 4 variants of the Mint: the (full) *Mint* (including all lower-level dimensions), the *metaMint* (only including the metaclusters), the *miniMint* (including the metaclusters computed from a reduced number of items), and the *microMint* (including only the most representative dimension of each metacluster). Moreover, we also included an alternative "interoception-focused" version of the MAIA (*iMAIA*) that only contains the 3 most interoceptive dimensions (Body Listening, Noticing, and Emotional Awareness).
+
+Model comparison included 4 variants of the Mint scale, the full *Mint* (including all lower-level clusters - 33 items), the *metaMint* (including only the 3 metaclusters based on all items), the *miniMint* (including the 3 metaclusters computed from 2 of its most loading triplets - 18 items), and the *microMint* (including only the most representative dimension of each metacluster - 9 items). This analysis confirmed the clear advantage for the Mint over the other interoception scales. The full *Mint* model was typically the best model based on R2, and the *metaMint* was the best model when parsimony was taken into account (i.e., based on BIC). Moreover, most of the instances were the *MAIA* was the best model were explainable by the inclusion of Trusting, and the interoception-only version *iMAIA* typically yielded worse performance than the Mint. In many instances, the *miniMint* yielded reasonable performance, although the *microMint* was typically less promising.
+
+<!-- > The predictive performance for the mental health outcomes displayed a consistent pattern, with an advantage for the *MAIA* for depression and anxiety which dropped below the *Mint* versions for its *iMAIA* variant. The *Mint*, however, displayed a clear advantage for the prediction of autism, ADHD, and all somatic groups of symptoms (with the exception of Central Sensitization, which was best predicted by the *MAIA*). -->
+
+Future research could systematically examine the usefulness of shorter versions of the Mint, for example, by investigating the tradeoffs incurred by versions with only the one or two most central facets per metacluster on psychometric qualities and predictive power.
+
+```{r}
+make_table1 <- function(preds=preds_dif, mods=mods_dif, group = "Alexithymia", outcome = "TAS - DIF") {
+  yvar <- preds$outcome
+  preds <- preds$table
+
+  best_pred_mint <- preds[str_detect(preds$Name, "MINT"), ]
+  best_pred_nonmint <- preds[!str_detect(preds$Name, "MINT"), ]
+  best_pred_nonmint <- best_pred_nonmint[best_pred_nonmint$R2 == max(best_pred_nonmint$R2), ][1,]
+  best_models_R2 <- str_remove(arrange(mods, desc(as.numeric(R2)))$Name, "m_")
+  best_model_BIC <- str_remove(arrange(mods, as.numeric(BIC))$Name, "m_")
+
+  if(length(unique(df[[yvar]])) > 2) {
+    # LMs - display correlation
+    r_mint <- cor.test(cbind(df, metamint)[[best_pred_mint$Name[1]]], df[[yvar]])
+    r_mint <- paste0(insight::format_value(r_mint$estimate, zap_small = TRUE))
+    r_nonmint <- cor.test(df[[best_pred_nonmint$Name[1]]], df[[yvar]])
+    r_nonmint <- paste0(insight::format_value(r_nonmint$estimate, zap_small = TRUE))
+  } else {
+    # GLMs - display log-odds
+    r_mint <- insight::format_value(best_pred_mint$Coefficient)
+    r_nonmint <- insight::format_value(best_pred_nonmint$Coefficient)
+  }
+
+  # Format
+  best_models_R2[str_detect(best_models_R2, "mint")] <- paste0("<b>", best_models_R2[str_detect(best_models_R2, "mint")], "</b>")
+  best_model_BIC[str_detect(best_model_BIC, "mint")] <- paste0("<b>", best_model_BIC[str_detect(best_model_BIC, "mint")], "</b>")
+  best_models_R2 <- paste0("<small>", paste0(best_models_R2, collapse = " > "), "</small>")
+  best_model_BIC <- paste0("<small>", paste0(best_model_BIC, collapse = " > "), "</small>")
+
+
+  data.frame(
+    Group = group,
+    Outcome = outcome,
+    Best_MINT_Predictor = paste0(str_remove(best_pred_mint$Name[1], "MINT_"), "<br><small><i>(", r_mint, ")</i></small>"),
+    Best_NonMINT_Predictor = paste0(str_replace(best_pred_nonmint$Name[1], "_", " - "), "<br><small><i>(",  r_nonmint, ")</i></small>"),
+    Best_Models_R2 = best_models_R2,
+    Best_Models_BIC = best_model_BIC
+    )
+}
+
+rez <- rbind(
+  make_table1(preds_dif, mods_dif, group = "Alexithymia", outcome = "Difficulty Identifying Feelings (DIF)<small><p align='right'><i>TAS-20</i></small><p>"),
+  make_table1(preds_ddf, mods_ddf, group = "Alexithymia", outcome = "Difficulty Describing Feelings (DDF)<small><p align='right'><i>TAS-20</i></small><p>"),
+  make_table1(preds_eot, mods_eot, group = "Alexithymia", outcome = "Externally Oriented Thinking (EOT)<small><p align='right'><i>TAS-20</i></small><p>"),
+
+  make_table1(preds_arou, mods_arou, group = "Emotion Reactivity", outcome = "Arousal<small><p align='right'><i>ERS</i></small><p>"),
+  make_table1(preds_sens, mods_sens, group = "Emotion Reactivity", outcome = "Sensitivity<small><p align='right'><i>ERS</i></small><p>"),
+  make_table1(preds_pers, mods_pers, group = "Emotion Reactivity", outcome = "Persistence<small><p align='right'><i>ERS</i></small><p>"),
+
+  make_table1(preds_ls, mods_ls, group = "Mood", outcome = "Life Satisfaction"),
+  make_table1(preds_anx, mods_anx, group = "Mood", outcome = "Anxiety<small><p align='right'><i>PHQ-4</i></small><p>"),
+  make_table1(preds_dep, mods_dep, group = "Mood", outcome = "Depression<small><p align='right'><i>PHQ-4</i></small><p>"),
+
+  make_table1(preds_moodt, mods_moodt$table, group = "Mental Health", outcome = "Mood Disorder"),
+  make_table1(preds_adhd, mods_adhd$table, group = "Mental Health", outcome = "ADHD"),
+  make_table1(preds_asd, mods_asd$table, group = "Mental Health", outcome = "Autism"),
+
+  make_table1(preds_afferent, mods_afferent$table, group = "Somatic Health", outcome = "Afferent Sensitivity<small><small><p align='right'><i>Migraine, neuropathy, muscle tension, dizziness, ...</i></small></small><p>"),
+  make_table1(preds_central, mods_central$table, group = "Somatic Health", outcome = "Central Sensitization<small><small><p align='right'><i>Fibromyalgia, chronic fatigue, back pain, IBS, ...</i></small></small><p>"),
+  make_table1(preds_autonomic, mods_autonomic$table, group = "Somatic Health", outcome = "Autonomic Dysfunction<small><small><p align='right'><i>Hypermobility, chest pain, hypo/hypertension, ...</i></small></small><p>"),
+  make_table1(preds_immune, mods_immune$table, group = "Somatic Health", outcome = "Immune-Inflammatory<small><small><p align='right'><i>Allergies, eczema, autoimmune, ...</i></small></small><p>"),
+
+  make_table1(preds_cefsabody, mods_cefsabody, group = "Dissociative Symptoms", outcome = "Body<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsaself, mods_cefsaself, group = "Dissociative Symptoms", outcome = "Self<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsaemo, mods_cefsaemo, group = "Dissociative Symptoms", outcome = "Emotions<small><p align='right'><i>CEFSA</i></small><p>"),
+  make_table1(preds_cefsareal, mods_cefsareal, group = "Dissociative Symptoms", outcome = "Reality<small><p align='right'><i>CEFSA</i></small><p>"),
+
+  # make_table1(preds_pialive, mods_pialive, group = "Primals", outcome = "Alive<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pisafe, mods_pisafe, group = "Primals", outcome = "Safe<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pient, mods_pient, group = "Primals", outcome = "Enticing<small><p align='right'><i>PI-18</i></small><p>"),
+  # make_table1(preds_pigood, mods_pigood, group = "Primals", outcome = "Good<small><p align='right'><i>PI-18</i></small><p>")
+
+  make_table1(preds_bmi, mods_bmi, group = "Lifestyle", outcome = "BMI"),
+  make_table1(preds_physactiv, mods_physactiv, group = "Lifestyle", outcome = "Physical Activity"),
+  # make_table1(preds_age, mods_age, group = "Lifestyle", outcome = "Age"),
+  make_table1(preds_wearHeartImp, mods_wearHeartImp, group = "Lifestyle", outcome = "Cardiac Monitoring"),
+  make_table1(preds_wearSleepImp, mods_wearSleepImp, group = "Lifestyle", outcome = "Sleep Monitoring"),
+  make_table1(preds_wearStepsImp, mods_wearStepsImp, group = "Lifestyle", outcome = "Steps Monitoring")
+  # make_table1(preds_wearWeightImp, mods_wearWeightImp, group = "Lifestyle", outcome = "Weight Monitoring")
+)
+
+tab2 <- rez |>
+  gt::gt() |>
+  gt::tab_header(
+    title = gt::md("**Interoception Questionnaires Comparison**"),
+    subtitle = "MINT (and its variants) vs. MAIA, IAS, BPQ"
+  ) |>
+  gt::cols_width(
+    Outcome ~ gt::pct(23),
+    Best_MINT_Predictor ~ gt::pct(12),
+    Best_NonMINT_Predictor ~ gt::pct(15),
+    Best_Models_R2 ~ gt::pct(25),
+    Best_Models_BIC ~ gt::pct(25)
+  ) |>
+  gt::tab_style(
+    style = gt::cell_text(weight="bold", v_align = "middle"),
+    locations = gt::cells_column_labels()
+  )  |>
+  gt::tab_style(
+    style = gt::cell_text(align = "center", v_align = "middle"),
+    locations = gt::cells_body(columns=c("Best_MINT_Predictor", "Best_NonMINT_Predictor"))
+  )  |>
+  gt::tab_row_group(
+    label = "Lifestyle",
+    rows = Group == "Lifestyle"
+  ) |>
+  gt::tab_row_group(
+    label = "Dissociative Symptoms",
+    rows = Group == "Dissociative Symptoms"
+  ) |>
+  gt::tab_row_group(
+    label = "Primal World Beliefs",
+    rows = Group == "Primals"
+  ) |>
+  gt::tab_row_group(
+    label = "Somatic Health",
+    rows = Group == "Somatic Health"
+  ) |>
+  gt::tab_row_group(
+    label = "Mental Health",
+    rows = Group == "Mental Health"
+  ) |>
+  gt::tab_row_group(
+    label = "Mood",
+    rows = Group == "Mood"
+  ) |>
+  gt::tab_row_group(
+    label = "Emotional Reactivity",
+    rows = Group == "Emotion Reactivity"
+  ) |>
+  gt::tab_row_group(
+    label = "Alexithymia",
+    rows = Group == "Alexithymia"
+  ) |>
+  gt::tab_style(
+    style = list(
+      gt::cell_fill(color = "gray85"),
+      gt::cell_text(weight="bold", style="italic")),
+    locations = gt::cells_row_groups()
+  )  |>
+  gt::cols_label(
+    Best_MINT_Predictor = "Best Predictor\n(MINT)",
+    Best_NonMINT_Predictor = "Best Predictor\n(Non-MINT)",
+    Best_Models_R2 = "Best Models (R2)",
+    Best_Models_BIC = "Best Models (BIC)"
+  ) |>
+  gt::cols_hide(Group) |>
+  gt::fmt_markdown() |>
+  gt::tab_options(
+    table.font.size = gt::pct(125)
+  )
+
+
+tab2 |>
+  gt::tab_options(
+    table.font.size = gt::pct(50)
+  ) |>
+  gt::opt_interactive()
+
+tab2 |>
+  gt::cols_width(
+    Outcome ~ gt::pct(21),
+    Best_MINT_Predictor ~ gt::pct(17),
+    Best_NonMINT_Predictor ~ gt::pct(18),
+    Best_Models_R2 ~ gt::pct(22),
+    Best_Models_BIC ~ gt::pct(22)
+  ) |>
+  gt::gtsave("figures/table2_variants.png", vwidth=1700, expand=0, quiet=TRUE)
+```
+
+
+## Figures
+
+```{r}
+#| warning: false
+#| eval: true
+
+p_cor <- df |>
+  select(starts_with("TAS_"), LifeSatisfaction, starts_with("PHQ4_"), starts_with("CEFSA"), starts_with("PI"), starts_with("ERS_")) |>
+  mutate(LifeSatisfaction = datawizard::reverse_scale(LifeSatisfaction),
+         PI_Safe = datawizard::reverse_scale(PI_Safe),
+         PI_Good = datawizard::reverse_scale(PI_Good),
+         PI_Enticing = datawizard::reverse_scale(PI_Enticing)) |>
+  rename(`Life Satisfaction*` = LifeSatisfaction,
+         `Primals - Alive` = PI_Alive,
+         `Primals - Safe*` = PI_Safe,
+         `Primals - Good*` = PI_Good,
+         `Primals - Enticing*` = PI_Enticing) |>
+  make_cor(cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ))) +
+  labs(title="Correlates of Interoception")
+
+fig2 <- (p_cormint | p_corintero) / p_cor + plot_layout(heights = c(0.4, 0.6))
+```
+
+::: {.panel-tabset}
+
+#### Figure
+
+```{r}
+fig2
+
+ggsave("figures/fig2_variants.png", fig2, width=10, height=12, dpi=300)
+```
+
+#### Table
+
+```{r}
+show_cor_table(p_cor)
+```
+
+:::
+
+**ROC comparison**: The Mint scale (in blue-green) consistently outperformed the other interoception scales, with the exception of the MAIA which, driven by its emotion-regulation dimensions (Trusting and Not-worrying), performed better for mood disorders and central sensitization symptoms. In several instances, the short versions of the Mint scale (miniMint and microMint) yielded reasonable performance, still outperforming other measures.
+
+```{r}
+#| warning: false
+#| eval: true
+#| fig-width: 15
+#| fig-height: 10
+
+
+fig3 <- (mods_moodt$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank()) |
+    mods_adhd$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank()) |
+    mods_asd$p + theme(axis.text.x = element_blank(), axis.title.x = element_blank())) /
+  (mods_central$p | mods_autonomic$p | mods_immune$p) +
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Predictive Performance of Interoceptive Questionnaires (incl. Mint variants)",
+       subtitle = "ROC Curves",
+       theme = theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(1.4)),
+                     plot.subtitle = element_text(hjust = 0.5, size = rel(1.25))))
+
+fig3
+
+ggsave("figures/fig3_variants.png", fig3, width=15, height=10, dpi=300)
+```
