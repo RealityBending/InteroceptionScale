@@ -26,6 +26,7 @@ library(EGAnet)
 library(tidygraph)
 library(ggraph)
 library(ggdist)
+library(gt)
 
 set.seed(42)
 
@@ -83,8 +84,7 @@ df <- read.csv("../data/data_participants.csv") |>
          MINT_Derm_2 = MINT_Sensitivity_Derm_50,
          MINT_Derm_3 = MINT_Sensitivity_Derm_51)
 
-colors <- c(Mint="#00BCD4", metaMint="#673AB7", miniMint="#26A36C", microMint="#8BC34A", 
-            IAS="#F44336", MAIA="#FFAD04",  iMAIA="#FF7811", BPQ="#795548")
+colors <- c(Mint="#00BCD4", IAS="#F44336", MAIA="#FFAD04",  iMAIA="#FF7811", BPQ="#795548")
 ```
 
 ## Structure Validation
@@ -1209,28 +1209,12 @@ final_table |>
 
 ```
 
-### Mini Versions
+### Correlations
+
+Note: the comparison against the *metaMint*, *miniMint* and *microMint* short-form variants (and the corresponding *iMAIA*-inclusive model comparisons) has been moved to [3_mint_variants.qmd](3_mint_variants.qmd), so that the figures produced here only contrast the full Mint against the MAIA, BPQ and IAS.
 
 ```{r}
 mint <- select(df, starts_with("MINT_"))
-
-metamint <- data.frame(
-  MINT_Awareness = rowMeans(select(df, MINT_SexS, MINT_ExaC, MINT_RelA)),
-  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin, MINT_Derm, MINT_Sati, MINT_Olfa)),
-  MINT_Visceroception = rowMeans(select(df, MINT_Card, MINT_Resp, MINT_Gast))
-)
-
-minimint <- data.frame(
-  MINT_Awareness = rowMeans(select(df, MINT_ExaC, MINT_RelA)),
-  MINT_Deficit = rowMeans(select(df, MINT_CaCo, MINT_Urin)),
-  MINT_Visceroception = rowMeans(select(df, MINT_Resp, MINT_Card))
-)
-
-micromint <- data.frame(
-  MINT_ExaC = df$MINT_ExaC,
-  MINT_CaCo = df$MINT_CaCo,
-  MINT_Resp = df$MINT_Resp
-)
 ```
 
 ```{r}
@@ -1291,7 +1275,7 @@ make_cor <- function(df1, df2=NULL, qname_x=TRUE, qname_y=TRUE, textsize = 3, xc
 }
 
 
-p_cormint <- make_cor(cbind(mint, metamint), qname_x = FALSE, qname_y = FALSE, textsize = 2.8,
+p_cormint <- make_cor(mint, qname_x = FALSE, qname_y = FALSE, textsize = 2.8,
                       xcol = "#00838F", ycol = "#00838F") +
   labs(title="Correlations between MINT dimensions") +
   theme(axis.title = element_blank())
@@ -1421,7 +1405,7 @@ final_table |>
 #| warning: false
 
 p_corintero <- make_cor(select(df, starts_with("MAIA"), IAS, BPQ),
-                        cbind(mint, metamint), qname_y = FALSE, textsize = 2.8,
+                        mint, qname_y = FALSE, textsize = 2.8,
                         ycol = "#00838F") +
   labs(title="MINT vs. Other Interoception Questionnaires") +
   theme(axis.title = element_blank())
@@ -1502,21 +1486,20 @@ display_models <- function(table, title = "", subtitle = "") {
 
 compare_predictors <- function(outcome="TAS_DIF", family = "linear") {
   
-  preds <- c("BPQ", "IAS", 
+  preds <- c("BPQ", "IAS",
              names(select(df, starts_with("MINT"), -matches("[[:digit:]]"))),
-             names(select(df, starts_with("MAIA"))),
-             names(metamint))
-  
+             names(select(df, starts_with("MAIA"))))
+
   models <- list()
   for(p in preds) {
     if(length(unique(df[[outcome]])) > 2) {
       if (family == "linear") {
-        models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint))
+        models[[p]] <- lm(as.formula(paste0(outcome, " ~ ", p)), data=df)
       } else {
-        models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=cbind(df, metamint), family=family)
+        models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=df, family=family)
       }
     } else {
-      models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=standardize(cbind(df, metamint), exclude=outcome), family="binomial")
+      models[[p]] <- glm(as.formula(paste0(outcome, " ~ ", p)), data=standardize(df, exclude=outcome), family="binomial")
     }
   }
   perf <- compare_performance(models) |> 
@@ -1563,12 +1546,6 @@ compare_models_lm <- function(outcome="TAS_DIF") {
   # Full Questionnaires
   m_mint <- lm(as.formula(paste0(outcome, " ~ .")),
               data = cbind(mint, df[outcome]))
-  m_metamint <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(metamint, df[outcome])) 
-  m_minimint <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(minimint, df[outcome])) 
-  m_micromint <- lm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(micromint, df[outcome])) 
   m_ias <- lm(as.formula(paste0(outcome, " ~ IAS")),
               data = df)
   m_maia <- lm(as.formula(paste0(outcome, " ~ .")),
@@ -1589,9 +1566,8 @@ compare_models_lm <- function(outcome="TAS_DIF") {
   m_bpq <- lm(as.formula(paste0(outcome, " ~ BPQ")),
                 data = df)
   
-  models_full <- list(m_mint=m_mint, m_metamint=m_metamint,
-                      m_minimint=m_minimint, m_micromint=m_micromint, 
-                      m_maia=m_maia, m_imaia=m_imaia, 
+  models_full <- list(m_mint=m_mint,
+                      m_maia=m_maia, m_imaia=m_imaia,
                       m_ias=m_ias, m_bpq=m_bpq)
   table_models(models_full)
 }
@@ -1622,7 +1598,7 @@ display_models(mods_eot, title="Best Model", subtitle = "EOT")
 
 ```{r}
 make_cor(select(df, starts_with("TAS_")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 
@@ -1650,7 +1626,7 @@ display_models(mods_dep, title="Best Model", subtitle = "PHQ4 Depression")
 
 ```{r}
 make_cor(select(df, LifeSatisfaction, starts_with("PHQ4_")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 
@@ -1681,7 +1657,7 @@ display_models(mods_pers, title="Best Model", subtitle = "ERS Persistence")
 
 ```{r}
 make_cor(select(df, starts_with("ERS_")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 - CaCo
@@ -1703,7 +1679,7 @@ make_cor(select(df, starts_with("ERS_")),
 #| warning: false
 
 make_cor(select(df, starts_with("CEFSA")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
@@ -1751,7 +1727,7 @@ display_models(mods_cefsagency, title="Best Model", subtitle = "CEFSA - Agency")
 #| warning: false
 
 make_cor(select(df, starts_with("CERQ")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
@@ -1787,7 +1763,7 @@ display_models(mods_cerqacceptance, title="Best Model", subtitle = "CERQ - Accep
 #| warning: false
 
 make_cor(select(df, starts_with("PI")),
-         cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ)))
+         cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ)))
 ```
 
 ```{r}
@@ -1843,15 +1819,6 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
   m_mint <- glm(as.formula(paste0(outcome, " ~ .")),
               data = cbind(mint, df[outcome]),
               family = "binomial")
-  m_metamint <- glm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(metamint, df[outcome]),
-              family = "binomial")
-  m_minimint <- glm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(minimint, df[outcome]),
-              family = "binomial") 
-  m_micromint <- glm(as.formula(paste0(outcome, " ~ .")),
-              data = cbind(micromint, df[outcome]),
-              family = "binomial") 
   m_ias <- glm(as.formula(paste0(outcome, " ~ IAS")),
               data = df,
               family = "binomial")
@@ -1871,11 +1838,10 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
                data = df,
                family = "binomial")
   
-  models_full <- list(m_mint=m_mint, m_metamint=m_metamint, 
-                      m_minimint=m_minimint, m_micromint=m_micromint,
-                      m_maia=m_maia, m_imaia=m_imaia, 
+  models_full <- list(m_mint=m_mint,
+                      m_maia=m_maia, m_imaia=m_imaia,
                       m_ias=m_ias, m_bpq=m_bpq)
-  
+
   table <- table_models(models_full)
 
   # get_auc <- function(m) {
@@ -1906,15 +1872,10 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
     "%)")
     }
     
-  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
-  
-  mods_order <- c("Mint", "metaMint", "miniMint", "microMint", "MAIA", "iMAIA", "IAS", "BPQ")
+  mods_order <- c("Mint", "MAIA", "iMAIA", "IAS", "BPQ")
 
   p <- rbind(
     mutate(as.data.frame(performance_roc(m_mint)), Predictor = "Mint"),
-    mutate(as.data.frame(performance_roc(m_metamint)), Predictor = "metaMint"),
-    mutate(as.data.frame(performance_roc(m_minimint)), Predictor = "miniMint"),
-    mutate(as.data.frame(performance_roc(m_micromint)), Predictor = "microMint"),
     mutate(as.data.frame(performance_roc(m_maia)), Predictor = "MAIA"),
     mutate(as.data.frame(performance_roc(m_imaia)), Predictor = "iMAIA"),
     mutate(as.data.frame(performance_roc(m_ias)), Predictor = "IAS"),
@@ -1925,12 +1886,11 @@ compare_models_glm <- function(outcome="Disorders_Psychiatric_Mood", title="", s
     geom_abline(intercept=0, slope=1, color="gray", linewidth=1) +
     geom_line(aes(y=Sensitivity, color=Predictor), linewidth=1.5, alpha=0.9) +
     geom_label(data=data.frame(
-      label = c(get_auc(m_mint), get_auc(m_metamint), 
-                get_auc(m_minimint), get_auc(m_micromint), 
+      label = c(get_auc(m_mint),
                 get_auc(m_maia), get_auc(m_imaia), get_auc(m_ias), get_auc(m_bpq)),
       Predictor = mods_order,
       x = 0.8,
-      y = c(0.55, 0.475, 0.425, 0.375, 0.30, 0.25, 0.20, 0.15)),
+      y = c(0.55, 0.30, 0.25, 0.20, 0.15)),
       aes(x=x, y=y, label=label), color=colors[mods_order], size=3) +
     labs(x= "1 - Specificity (False Positive Rate)", y="Sensitivity (True Positive Rate)",
          color="Questionnaire", title = title, subtitle=subtitle) +
@@ -2287,7 +2247,7 @@ make_table1 <- function(preds=preds_dif, mods=mods_dif, group = "Alexithymia", o
   
   if(length(unique(df[[yvar]])) > 2) {
     # LMs - display correlation
-    r_mint <- cor.test(cbind(df, metamint)[[best_pred_mint$Name[1]]], df[[yvar]])
+    r_mint <- cor.test(df[[best_pred_mint$Name[1]]], df[[yvar]])
     r_mint <- paste0(insight::format_value(r_mint$estimate, zap_small = TRUE))
     r_nonmint <- cor.test(df[[best_pred_nonmint$Name[1]]], df[[yvar]])
     r_nonmint <- paste0(insight::format_value(r_nonmint$estimate, zap_small = TRUE))
@@ -2531,7 +2491,7 @@ p_cor <- df |>
          `Primals - Safe*` = PI_Safe,
          `Primals - Good*` = PI_Good,
          `Primals - Enticing*` = PI_Enticing) |>
-  make_cor(cbind(mint, metamint, select(df, starts_with("MAIA"), IAS, BPQ))) +
+  make_cor(cbind(mint, select(df, starts_with("MAIA"), IAS, BPQ))) +
   labs(title="Correlates of Interoception") 
 p_cor
 
