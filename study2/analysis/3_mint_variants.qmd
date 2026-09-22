@@ -31,7 +31,9 @@ library(gt)
 
 set.seed(42)
 
-Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
+options(chromote.timeout = 60)
+
+Sys.setenv(CHROMOTE_CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
 ```
 
 ```{r}
