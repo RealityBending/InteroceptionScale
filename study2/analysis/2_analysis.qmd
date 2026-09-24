@@ -2475,10 +2475,11 @@ fig1b <- patchwork::wrap_elements(
                              theme = theme(plot.title = element_text(face="bold", hjust = 0, size = rel(1.4)),
                                            plot.subtitle = element_text(hjust = 0, size = rel(1)))))
 ggsave("figures/fig1.png", fig1a / fig1b, width=8, height=12, dpi=300)
+```
 
+::: {.panel-tabset}
 
-
-
+```{r}
 p_cor <- df |> 
   select(starts_with("TAS_"), LifeSatisfaction, starts_with("PHQ4_"), starts_with("CEFSA"), starts_with("PI"), starts_with("ERS_")) |> 
   mutate(LifeSatisfaction = datawizard::reverse_scale(LifeSatisfaction),
