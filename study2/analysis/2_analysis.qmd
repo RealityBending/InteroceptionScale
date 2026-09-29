@@ -1417,7 +1417,7 @@ final_table |>
     column_labels.padding = px(8)
   ) |>
   tab_footnote(footnote = gt::md("*t* = Independent samples Welch's *t*-tests.Pink cells indicate higher scores in women; blue cells indicate higher scores in men. Colour intensity reflects significance, with darker shades corresponding to smaller p-values. df = degrees of freedom.")) |>
-  gt::gtsave("figures/table3.png", vwidth = 2200, expand = 40, quiet = TRUE)
+  gt::gtsave("figures/table3.png", vwidth = 800, expand = 40, quiet = TRUE)
 ```
 
 
