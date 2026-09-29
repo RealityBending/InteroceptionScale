@@ -1325,17 +1325,14 @@ final_table <- scores_desc |>
   left_join(desc_clusters, by = "Cluster") |>
   arrange(desc(Cohens_d)) |>
   mutate(
-     t_df = sprintf("t(%.0f) = %.2f", parameter, statistic),
+    d_numeric = Cohens_d,
+    t_df = sprintf("t(%.0f) = %.2f", parameter, statistic),
     p_fmt = ifelse(
       p.value < .001,
       "< .001",
       sub("^0", "", sprintf("%.3f", p.value))
     ),
     Cohens_d = sprintf("%.2f", Cohens_d),
-    # Meta_clusters  = case_when(
-    #   Cluster == "MINT_Meta_Awareness" ~ "MINT - Awareness",
-    #   Cluster == "MINT_Meta_Visceroception"  ~ "MINT - Visceroception",
-    #   Cluster == "MINT_Meta_Deficit" ~  "MINT - Deficit"),
     Cluster = recode(
       Cluster,
       "MINT_SexS" = "MINT - Sexual Sensibility",
@@ -1348,10 +1345,10 @@ final_table <- scores_desc |>
       "MINT_Olfa" = "MINT - Olfactory Contribution",
       "MINT_Resp" = "MINT - Respiroception",
       "MINT_Card" = "MINT - Cardioception",
-      "MINT_Gast" = "MINT - Gastroception" ,
+      "MINT_Gast" = "MINT - Gastroception",
       "MINT_Meta_Awareness" = "MINT - Awareness",
-      "MINT_Meta_Visceroception"  = "MINT - Visceroception",
-      "MINT_Meta_Deficit" =  "MINT - Deficit"),
+      "MINT_Meta_Visceroception" = "MINT - Visceroception",
+      "MINT_Meta_Deficit" = "MINT - Deficit"),
     Cluster = factor(Cluster, levels = c(
       "MINT - Visceroception",
       "MINT - Cardioception",
@@ -1368,30 +1365,59 @@ final_table <- scores_desc |>
       "MINT - Expulsion Accuracy",
       "MINT - Relaxation Awareness"
     ))
-    ) |>
-  select(!c("p.value","statistic","parameter")) |>
+  ) |>
+  select(!c("statistic", "parameter")) |>
   arrange(Cluster)
-  
+
 
 final_table |>
-  select(Cluster, Female, Male, t_df, p_fmt, Cohens_d) |>
+  select(Cluster, Female, Male, t_df, p_fmt, Cohens_d, p.value, d_numeric) |>
   gt() |>
- tab_style(
+  tab_style(
     style = cell_text(weight = "bold"),
     locations = cells_body(
       columns = Cluster,
       rows = Cluster %in% c("MINT - Visceroception", "MINT - Deficit", "MINT - Awareness")
     )) |>
+  tab_style(
+    style = cell_fill(color = "#e07e93"),
+    locations = cells_body(
+      columns = Cohens_d,
+      rows = p.value < .001 & d_numeric > 0
+    )) |>
+  tab_style(
+    style = cell_fill(color = "#dea2af"),
+    locations = cells_body(
+      columns = Cohens_d,
+      rows = p.value >= .001 & p.value < .05 & d_numeric > 0
+    )) |>
+  tab_style(
+    style = cell_fill(color = "#7ca1d9"),
+    locations = cells_body(
+      columns = Cohens_d,
+      rows = p.value < .001 & d_numeric < 0
+    )) |>
+  tab_style(
+    style = cell_fill(color = "#a5bad9"),
+    locations = cells_body(
+      columns = Cohens_d,
+      rows = p.value >= .001 & p.value < .05 & d_numeric < 0
+    )) |>
+  cols_hide(columns = c(p.value, d_numeric)) |>
   cols_align(align = "left") |>
   cols_label(
-  Cluster  = "",
-  t_df     = gt::md("*t*(df)"),
-  p_fmt    = gt::md("*p*"),
-  Cohens_d = gt::md("*d*")
-) |>
-  tab_footnote(footnote = gt::md("*t* = Independent samples Welch's *t*-tests. Positive *d* values indicate higher scores in women. df = degrees of freedom.")) |>
-  gt::gtsave("figures/table3.png", vwidth=1900, expand=0, quiet=TRUE)
-
+    Cluster  = "",
+    t_df     = gt::md("*t*(df)"),
+    p_fmt    = gt::md("*p*"),
+    Cohens_d = gt::md("*d*")
+  ) |>
+    tab_options(
+    table.font.size = px(16),
+    data_row.padding = px(8),
+    column_labels.padding = px(8)
+  ) |>
+  tab_footnote(footnote = gt::md("*t* = Independent samples Welch's *t*-tests.Pink cells indicate higher scores in women; blue cells indicate higher scores in men. Colour intensity reflects significance, with darker shades corresponding to smaller p-values. df = degrees of freedom.")) |>
+  gt::gtsave("figures/table3.png", vwidth = 2200, expand = 40, quiet = TRUE)
 ```
 
 
