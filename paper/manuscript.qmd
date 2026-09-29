@@ -438,7 +438,7 @@ Moreover, most of the instances where the *MAIA* was the best model were explain
 #### Health, Wellbeing and Lifestyle
 
 The predictive performance for the mental health outcomes (see @fig-six) displayed a consistent pattern, with an advantage for the *MAIA* for depression and anxiety which dropped below the *Mint* versions for its *iMAIA* variant. 
-The *Mint*, however, displayed a clear advantage for the prediction of autism, ADHD, and all somatic groups of symptoms (with the exception of Central Sensitization, **where the *Mint* and *MAIA* performed equivalently when accounting for uncertainty in the estimates).**
+The *Mint*, however, displayed a clear advantage for the prediction of autism, ADHD, and all somatic groups of symptoms (with the exception of Central Sensitization, **where the *Mint* and *MAIA* performed comparitively).**
 
 Finally, the importance of heart monitoring (for owners of such wearable) was best predicted by MAIA's Body listening ($r = .36, 95\% CI = [0.35, 0.68]$), followed the *Card* dimension of the Mint ($r = .37, 95\% CI = [0.23, 0.51]$). 
 The importance of sleep monitoring importance was best predicted by *RelA* ($r = .33, 95\% CI = [0.11, 0.56]$), followed by MAIA's not worrying ($r = -.219, 95\% CI = [-0.58, -0.11]$). 
@@ -576,7 +576,7 @@ knitr::include_graphics("../study2/analysis/figures/table2.png")
 
 ```{r}
 #| label: fig-six
-#| fig-cap: "Predictive performance of interoception questionnaires for various self-reported mental health conditions (mood disorders with psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The Receiver Operating Characteristic (ROC) curves are shown for the logistic regression models for various questionnaires and versions. A high Area Under the Curve (AUC) indicates a good discriminative power of the model (i.e., a strong combination of sensitivity and specificity). The Mint scale (in blue-green) consistently outperformed the other interoception scales, with the exception of the MAIA which, driven by its emotion-regulation dimensions (Trusting and Not-worrying), performed better for mood disorders. **However, the Mint and MAIA performed equivalently for central sensitization when accounting for uncertainty in the estimates.**"
+#| fig-cap: "Predictive performance of interoception questionnaires for various self-reported mental health conditions (mood disorders with psychopharmacological treatment, ADHD and ASD) and somatic symptoms. The Receiver Operating Characteristic (ROC) curves are shown for the logistic regression models for various questionnaires and versions. A high Area Under the Curve (AUC) indicates a good discriminative power of the model (i.e., a strong combination of sensitivity and specificity). The Mint scale (in blue-green) consistently outperformed the other interoception scales, with the exception of the MAIA which, driven by its emotion-regulation dimensions (Trusting and Not-worrying), performed better for mood disorders. **However, the Mint and MAIA performed comparatively for central sensitization.**"
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
 #| out-width: "100%"
@@ -590,8 +590,8 @@ knitr::include_graphics("../study2/analysis/figures/fig3.png")
 #| fig-cap: "Descriptive statistics and gender differences across MINT clusters. For each cluster, mean scores and standard deviations are reported separately by gender (excluding participants identifying as “Other”), alongside independent-samples t-test results and corresponding Cohen’s d effect sizes."
 #| fig-align: "center"
 #| apa-twocolumn: true  # A Figure Spanning Two Columns When in Journal Mode
-#| out-width: "80%"
-#
+#| out-width: "100%"
+
 
 knitr::include_graphics("../study2/analysis/figures/table3.png")
 ```
